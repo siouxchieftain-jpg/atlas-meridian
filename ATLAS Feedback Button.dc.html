@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<button onClick="{{ open }}" data-fb-section="{{ section }}" data-fb-heading="{{ heading }}" aria-label="{{ aria }}" style="display:inline-flex;align-items:center;gap:6px;height:32px;padding:0 10px;border:1px solid {{ bd }};border-radius:4px;background:{{ bg }};color:#242424;font:600 14px/20px 'Segoe UI','Segoe UI Web (West European)',-apple-system,BlinkMacSystemFont,Roboto,'Helvetica Neue',sans-serif;white-space:nowrap;cursor:pointer" style-hover="filter:brightness(0.97)" style-active="filter:brightness(0.92)"><i style="width:20px;height:20px;flex:none;background:{{ icc }};mask:url(assets/icons/{{ ic }}.svg) 0/20px"></i>{{ label }}</button>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:220,&quot;height&quot;:56},&quot;section&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;band&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;heading&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;Uncertainty band&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;page&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;Clinical patterns&quot;,&quot;tsType&quot;:&quot;string&quot;}}">
+class Component extends DCLogic {
+  state = { done: false };
+  key() { return (this.props.page || 'ATLAS') + '::' + (this.props.section || ''); }
+  read() { try { const d = JSON.parse(localStorage.getItem('atlas-fb-done') || '{}'); this.setState({ done: !!d[this.key()] }); } catch (e) {} }
+  componentDidMount() { this.read(); this.onUpd = () => this.read(); window.addEventListener('atlas-feedback-updated', this.onUpd); }
+  componentWillUnmount() { window.removeEventListener('atlas-feedback-updated', this.onUpd); }
+  renderVals() {
+    const d = this.state.done, heading = this.props.heading || this.props.section || '';
+    return {
+      section: this.props.section || '', heading,
+      open: () => window.dispatchEvent(new CustomEvent('atlas-feedback-open', { detail: { section: this.props.section || '', heading } })),
+      label: d ? 'Vurdert' : 'Gi tilbakemelding',
+      aria: (d ? 'Vurdert: ' : 'Gi tilbakemelding på ') + heading,
+      ic: d ? 'checkmark_circle_20_regular' : 'chat_20_regular',
+      icc: d ? '#6656D1' : '#424242',
+      bg: d ? '#F9F8FE' : '#FFFFFF',
+      bd: d ? '#DCD8FA' : '#D1D1D1',
+    };
+  }
+}
+</script>
+</body>
+</html>

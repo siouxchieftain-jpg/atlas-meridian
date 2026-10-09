@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;background:#FFFFFF;color:#242424;font-family:'Segoe UI','Segoe UI Web (West European)',-apple-system,BlinkMacSystemFont,Roboto,'Helvetica Neue',sans-serif;font-size:14px;line-height:20px;-webkit-font-smoothing:antialiased}
+button,input,textarea,select{font:inherit;color:inherit}
+input::placeholder,textarea::placeholder{color:#707070}
+a{color:#6656D1;text-decoration:none}a:hover{color:#5649B0;text-decoration:underline}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</helmet>
+<div lang="en" style="min-height:100vh;display:flex;flex-direction:column">
+<header style="position:sticky;top:0;z-index:10;display:flex;align-items:center;gap:20px;height:56px;padding:0 24px;background:#FFFFFF;border-bottom:1px solid #E0E0E0">
+<a href="ATLAS%20DS%20-%20Design%20language.dc.html" style="display:flex;align-items:center;gap:10px;color:#242424;text-decoration:none"><span style="font-size:16px;line-height:22px;font-weight:700;letter-spacing:.04em">ATLAS</span><span style="width:1px;height:20px;background:#E0E0E0"></span><span style="color:#424242">Meridian</span></a>
+<span style="display:inline-flex;flex:none;white-space:nowrap;align-items:center;height:20px;padding:0 6px;border-radius:4px;background:#F9F8FE;border:1px solid #DCD8FA;color:#6656D1;font-size:12px;line-height:16px;font-weight:600">1.0 for review</span>
+<nav style="display:flex;align-self:stretch;margin-left:12px">
+<a href="ATLAS%20DS%20-%20Design%20language.dc.html" style="display:flex;align-items:center;padding:0 12px;color:#424242;text-decoration:none" style-hover="color:#242424;background:#F5F5F5">Design language</a>
+<a href="ATLAS%20DS%20-%20Components.dc.html" style="display:flex;align-items:center;padding:0 12px;color:#424242;text-decoration:none" style-hover="color:#242424;background:#F5F5F5">Components</a>
+<a href="#overview" style="position:relative;display:flex;align-items:center;padding:0 12px;color:#242424;font-weight:600;text-decoration:none">Clinical patterns<span style="position:absolute;left:12px;right:12px;bottom:0;height:3px;border-radius:3px 3px 0 0;background:#7160E8"></span></a>
+</nav>
+</header>
+
+<div style="display:grid;grid-template-columns:248px minmax(0,1fr);flex:1">
+<aside style="position:sticky;top:56px;align-self:start;height:calc(100vh - 56px);overflow:auto;display:flex;flex-direction:column;gap:2px;padding:20px 8px;background:#FAFAFA;border-right:1px solid #E0E0E0">
+<div style="padding:0 12px 8px;font-size:12px;line-height:16px;font-weight:600;color:#616161">Clinical patterns</div>
+<sc-for list="{{ nav }}" as="n" hint-placeholder-count="14">
+<a href="#{{ n.id }}" style="position:relative;display:flex;align-items:center;min-height:32px;padding:6px 12px 6px 16px;border-radius:4px;color:#242424;text-decoration:none;font-weight:{{ n.fw }};background:{{ n.bg }}" style-hover="background:#F0F0F0"><span style="position:absolute;left:4px;top:8px;bottom:8px;width:3px;border-radius:2px;background:{{ n.ind }}"></span>{{ n.label }}</a>
+</sc-for>
+</aside>
+
+<main style="min-width:0;padding:40px 56px 120px">
+<div style="max-width:1080px;display:flex;flex-direction:column">
+
+<section id="overview" style="scroll-margin-top:72px;display:flex;flex-direction:column;gap:12px;padding-bottom:40px;max-width:760px">
+<div style="font-weight:600;color:#6656D1">Meridian design language · 1.0 for review</div>
+<h1 style="margin:0;font-size:40px;line-height:52px;font-weight:600">Clinical patterns</h1>
+<p style="margin:0;font-size:16px;line-height:22px;color:#424242;text-wrap:pretty">ATLAS’s own building blocks, made from Fluent components. Each pattern names the guardrails it enforces. Examples are interactive; clinical content is sample text, not a vignette.</p>
+</section>
+
+<section id="workspace" style="scroll-margin-top:72px;display:flex;flex-direction:column;gap:20px;padding:40px 0;border-top:1px solid #E0E0E0">
+<div style="display:flex;flex-direction:column;gap:6px;max-width:760px"><div style="display:flex;align-items:center;justify-content:space-between;gap:8px 16px;flex-wrap:wrap"><h2 style="margin:0;font-size:24px;line-height:32px;font-weight:600">Consultation workspace</h2><dc-import name="ATLAS Feedback Button" section="workspace" heading="Consultation workspace" page="Clinical patterns" hint-size="172px,32px"></dc-import></div><p style="margin:0;font-size:16px;line-height:22px;color:#424242;text-wrap:pretty">The GP’s main screen in the app shell: frame, nav rail, the note in the content panel and ATLAS in the side panel. Shown at 1000px wide; scroll sideways on narrow screens.</p></div>
+<div style="overflow:auto;border-radius:8px;border:1px solid #E0E0E0">
+<div lang="nb" style="min-width:1000px;display:grid;grid-template-columns:48px minmax(0,1fr) 340px;grid-template-rows:48px 640px;background:linear-gradient(90deg,#F5F5F5 0%,#F9F8FE 100%)">
+<div style="grid-column:1 / -1;display:flex;align-items:center;gap:16px;padding:0 12px 0 16px">
+<span style="font-size:16px;line-height:22px;font-weight:700;letter-spacing:.04em">ATLAS</span>
+<span style="flex:1;display:flex;justify-content:center"><span style="width:360px;display:flex;align-items:center;gap:6px;height:32px;padding:0 8px;border-radius:4px;background:#FFFFFF;color:#707070"><i style="width:20px;height:20px;background:#616161;mask:url(assets/icons/search_20_regular.svg) 0/20px"></i>Søk etter pasient</span></span>
+<span style="display:inline-flex;align-items:center;height:24px;padding:0 8px;border-radius:4px;background:#FFFFFF;border:1px solid #E0E0E0;font-size:12px;line-height:16px">Fastlege</span>
+<span style="display:grid;place-items:center;width:32px;height:32px;border-radius:4px"><i style="width:20px;height:20px;background:#424242;mask:url(assets/icons/local_language_20_regular.svg) 0/20px"></i></span>
+<span style="display:grid;place-items:center;width:32px;height:32px;border-radius:4px"><i style="width:20px;height:20px;background:#424242;mask:url(assets/icons/settings_20_regular.svg) 0/20px"></i></span>
+</div>
+<nav style="display:flex;flex-direction:column;align-items:center;gap:2px;padding:4px 0">
+<span style="position:relative;display:grid;place-items:center;width:40px;height:40px;border-radius:4px;background:#E6E6E6"><span style="position:absolute;left:-4px;top:10px;width:4px;height:20px;border-radius:2px;background:#7160E8"></span><i style="width:20px;height:20px;background:#7160E8;mask:url(assets/icons/calendar_ltr_20_filled.svg) 0/20px"></i></span>
+<span style="display:grid;place-items:center;width:40px;height:40px"><i style="width:20px;height:20px;background:#424242;mask:url(assets/icons/people_20_regular.svg) 0/20px"></i></span>
+<span style="position:relative;display:grid;place-items:center;width:40px;height:40px"><i style="width:20px;height:20px;background:#424242;mask:url(assets/icons/chat_multiple_20_regular.svg) 0/20px"></i><span style="position:absolute;top:5px;right:4px;min-width:16px;height:16px;padding:0 4px;border-radius:8px;background:#7160E8;color:#FFFFFF;font-size:10px;line-height:16px;font-weight:600;text-align:center">2</span></span>
+<span style="display:grid;place-items:center;width:40px;height:40px"><i style="width:20px;height:20px;background:#424242;mask:url(assets/icons/document_text_20_regular.svg) 0/20px"></i></span>
+</nav>
+<div style="margin:0 8px 8px 0;display:flex;flex-direction:column;min-height:0;border-radius:8px;background:#FFFFFF;box-shadow:0 0 2px rgba(0,0,0,.12),0 1px 2px rgba(0,0,0,.14)">
+<div style="display:flex;align-items:center;gap:12px;padding:16px 20px 0">
+<span style="display:grid;place-items:center;width:40px;height:40px;border-radius:50%;background:#E6E6E6;color:#616161;font-size:16px;line-height:22px;font-weight:600">K</span>
+<span style="display:flex;flex-direction:column;flex:1"><span style="font-size:20px;line-height:26px;font-weight:600">Kari, 34 år</span><span style="font-size:12px;line-height:16px;color:#616161">Kontroll · kl. 09:30 · Selvrapport mottatt kl. 08:12</span></span>
+<span style="display:inline-flex;align-items:center;gap:6px;height:32px;padding:0 12px;border:1px solid #D1D1D1;border-radius:4px;font-weight:600"><i style="width:20px;height:20px;background:#424242;mask:url(assets/icons/save_20_regular.svg) 0/20px"></i>Lagre notat</span>
+</div>
+<div style="display:flex;gap:4px;padding:4px 10px 0;border-bottom:1px solid #E0E0E0">
+<span style="position:relative;display:flex;align-items:center;gap:6px;height:44px;padding:0 10px;font-weight:600"><i style="width:20px;height:20px;background:#7160E8;mask:url(assets/icons/notepad_20_regular.svg) 0/20px"></i>Notat<span style="position:absolute;left:10px;right:10px;bottom:0;height:3px;border-radius:2px;background:#7160E8"></span></span>
+<span style="display:flex;align-items:center;gap:6px;height:44px;padding:0 10px"><i style="width:20px;height:20px;background:#424242;mask:url(assets/icons/pill_20_regular.svg) 0/20px"></i>Legemidler</span>
+<span style="display:flex;align-items:center;gap:6px;height:44px;padding:0 10px"><i style="width:20px;height:20px;background:#424242;mask:url(assets/icons/history_20_regular.svg) 0/20px"></i>Historikk</span>
+<span style="display:flex;align-items:center;gap:6px;height:44px;padding:0 10px"><i style="width:20px;height:20px;background:#424242;mask:url(assets/icons/chat_multiple_20_regular.svg) 0/20px"></i>Dialog med DPS<span style="display:inline-grid;place-items:center;min-width:20px;height:20px;padding:0 6px;border-radius:10px;background:#7160E8;color:#FFFFFF;font-size:12px;line-height:16px;font-weight:600">2</span></span>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:16px;padding:20px;overflow:hidden">
+<div style="display:flex;align-items:center;gap:8px;min-height:36px;padding:6px 12px;border-radius:4px;background:#F5F5F5;border:1px solid #E0E0E0"><i style="width:20px;height:20px;flex:none;background:#616161;mask:url(assets/icons/info_20_filled.svg) 0/20px"></i><span style="flex:1"><b style="font-weight:600">Selvrapport</b> Pasienten fylte ut skjemaet før timen.</span><span style="color:#6656D1">Vis svar</span></div>
+<div style="display:flex;flex-direction:column;gap:4px"><span style="font-weight:600">Konsultasjonsnotat</span><div style="min-height:300px;display:flex;flex-direction:column;gap:10px;padding:10px 12px;border:1px solid #D1D1D1;border-bottom:2px solid #7160E8;border-radius:4px;color:#242424;max-width:720px"><span>Kontroll etter oppstart sertralin i mars. Beskriver nedstemthet over flere måneder, noe bedre søvn siste uker.</span><span>Arbeid: redusert stilling siden august. Opplever at funksjonen på jobb ikke har bedret seg.</span><span style="color:#707070">Fortsett å skrive …</span></div></div>
+</div>
+</div>
+<aside aria-label="ATLAS" style="margin:0 8px 8px 0;display:flex;flex-direction:column;gap:16px;padding:16px;border-radius:8px;background:#FFFFFF;box-shadow:0 0 2px rgba(0,0,0,.12),0 1px 2px rgba(0,0,0,.14);overflow:hidden">
+<div style="display:flex;flex-direction:column;gap:2px"><span style="font-size:16px;line-height:22px;font-weight:600">ATLAS</span><span style="font-size:12px;line-height:16px;color:#616161">Viser usikkerhet, anbefaler ikke</span></div>
+<div style="display:flex;flex-direction:column;gap:8px">
+<span style="font-weight:600">Plassering</span>
+<div style="position:relative;height:16px"><div style="position:absolute;left:0;right:0;top:5px;height:6px;border-radius:3px;background:linear-gradient(90deg,#8DA48A,#D6C8A0 50%,#B27560)"></div><div style="position:absolute;left:54%;top:0;width:3px;height:16px;margin-left:-1px;border-radius:2px;background:#242424;box-shadow:0 0 0 1px #FFFFFF"></div></div>
+<span style="color:#424242">Nær midten. Liknende henvisninger har blitt vurdert ulikt.</span>
+<div style="display:flex;gap:6px"><span style="display:inline-flex;align-items:center;height:24px;padding:0 8px;border-radius:4px;background:#F5F5F5;font-size:12px;line-height:16px">Terskel</span><span style="display:inline-flex;align-items:center;height:24px;padding:0 8px;border-radius:4px;background:#F5F5F5;font-size:12px;line-height:16px">Epistemisk</span></div>
+</div>
+<span style="height:1px;background:#E0E0E0"></span>
+<div style="display:flex;align-items:center;gap:8px"><i style="width:20px;height:20px;background:#424242;mask:url(assets/icons/text_bullet_list_ltr_20_regular.svg) 0/20px"></i><span style="flex:1">4 av 7 kriterier omtalt</span><span style="color:#6656D1">Vis</span></div>
+<span style="height:1px;background:#E0E0E0"></span>
+<div style="display:flex;flex-direction:column;gap:8px">
+<span style="font-weight:600">Din beslutning</span>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px"><span style="display:flex;align-items:center;justify-content:center;gap:6px;height:40px;border:1px solid #D1D1D1;border-radius:8px;font-weight:600"><i style="width:20px;height:20px;background:#424242;mask:url(assets/icons/pause_circle_20_regular.svg) 0/20px"></i>Behold</span><span style="display:flex;align-items:center;justify-content:center;gap:6px;height:40px;border:1px solid #D1D1D1;border-radius:8px;font-weight:600"><i style="width:20px;height:20px;background:#424242;mask:url(assets/icons/arrow_forward_20_regular.svg) 0/20px"></i>Henvis</span></div>
+<span style="display:flex;align-items:flex-start;height:64px;padding:6px 10px;border-radius:4px;background:#F5F5F5;color:#707070">Begrunnelse (valgfritt)</span>
+</div>
+</aside>
+</div>
+</div>
+<span style="font-size:12px;line-height:16px;color:#616161">Band shown with option A until the scale decision below is made.</span>
+</section>
+
+<section id="band" style="scroll-margin-top:72px;display:flex;flex-direction:column;gap:20px;padding:40px 0;border-top:1px solid #E0E0E0">
+<div style="display:flex;flex-direction:column;gap:6px;max-width:760px"><div style="display:flex;align-items:center;justify-content:space-between;gap:8px 16px;flex-wrap:wrap"><h2 style="margin:0;font-size:24px;line-height:32px;font-weight:600">Uncertainty band</h2><dc-import name="ATLAS Feedback Button" section="band" heading="Uncertainty band" page="Clinical patterns" hint-size="172px,32px"></dc-import></div><p style="margin:0;font-size:16px;line-height:22px;color:#424242;text-wrap:pretty">The grey-zone marker. A 6px track with a 3px ink marker for ATLAS’s placement, a caption, and a sentence that says the same thing in words. Guardrails 1, 3 and 5.</p></div>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:24px;padding:24px;border:1px solid #E0E0E0;border-radius:8px">
+<div lang="nb" style="display:flex;flex-direction:column;gap:8px">
+<span style="font-size:12px;line-height:16px;font-weight:600;color:#616161">Placed</span>
+<div style="position:relative;height:16px"><div style="position:absolute;left:0;right:0;top:5px;height:6px;border-radius:3px;background:linear-gradient(90deg,#8DA48A,#D6C8A0 50%,#B27560)"></div><div style="position:absolute;left:54%;top:0;width:3px;height:16px;margin-left:-1px;border-radius:2px;background:#242424;box-shadow:0 0 0 1px #FFFFFF"></div></div>
+<span style="font-size:12px;line-height:16px;color:#616161">Viser usikkerhet, anbefaler ikke</span>
+<span>Nær midten. Liknende henvisninger har blitt vurdert ulikt.</span>
+</div>
+<div lang="nb" style="display:flex;flex-direction:column;gap:8px">
+<span style="font-size:12px;line-height:16px;font-weight:600;color:#616161">Not enough information</span>
+<div style="position:relative;height:16px"><div style="position:absolute;left:0;right:0;top:5px;height:6px;border-radius:3px;background:#F0F0F0;box-shadow:inset 0 0 0 1px #E0E0E0"></div></div>
+<span style="font-size:12px;line-height:16px;color:#616161">Viser usikkerhet, anbefaler ikke</span>
+<span>Notatet har for lite informasjon til å plassere saken.</span>
+</div>
+<div lang="nb" style="display:flex;flex-direction:column;gap:8px">
+<span style="font-size:12px;line-height:16px;font-weight:600;color:#616161">Compact, in a card</span>
+<div style="display:flex;align-items:center;gap:10px"><div style="position:relative;width:120px;height:12px;flex:none"><div style="position:absolute;left:0;right:0;top:4px;height:4px;border-radius:2px;background:linear-gradient(90deg,#8DA48A,#D6C8A0 50%,#B27560)"></div><div style="position:absolute;left:54%;top:0;width:2px;height:12px;margin-left:-1px;border-radius:1px;background:#242424;box-shadow:0 0 0 1px #FFFFFF"></div></div><span style="font-size:12px;line-height:16px;color:#424242">Nær midten</span></div>
+</div>
+</div>
+<div style="display:flex;flex-direction:column;gap:12px">
+<div style="display:flex;align-items:center;gap:10px"><h3 style="margin:0;font-size:20px;line-height:26px;font-weight:600">Which way the scale runs</h3><span style="display:inline-flex;align-items:center;height:20px;padding:0 8px;border-radius:10px;background:#242424;color:#FFFFFF;font-size:12px;line-height:16px;font-weight:600">Decision needed</span></div>
+<p style="margin:0;color:#424242;max-width:760px">The ATLAS 0.x design system reads the band as low to high uncertainty. The prototype repo reads it as a position from clearly outside to clearly within the DPS criteria. The marker, the caption and the sentence all depend on which one is chosen.</p>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px">
+<div lang="nb" style="display:flex;flex-direction:column;gap:10px;padding:16px;border:1px solid #E0E0E0;border-radius:8px">
+<span lang="en" style="font-weight:600">A · Amount of uncertainty</span>
+<div style="position:relative;height:16px"><div style="position:absolute;left:0;right:0;top:5px;height:6px;border-radius:3px;background:linear-gradient(90deg,#8DA48A,#D6C8A0 50%,#B27560)"></div><div style="position:absolute;left:70%;top:0;width:3px;height:16px;margin-left:-1px;border-radius:2px;background:#242424;box-shadow:0 0 0 1px #FFFFFF"></div></div>
+<div style="display:flex;justify-content:space-between;font-size:12px;line-height:16px;color:#616161"><span>Lav usikkerhet</span><span>Høy usikkerhet</span></div>
+<span lang="en" style="font-size:12px;line-height:16px;color:#616161">ATLAS 0.x design system. Says how unsure, not which way.</span>
+</div>
+<div lang="nb" style="display:flex;flex-direction:column;gap:10px;padding:16px;border:1px solid #E0E0E0;border-radius:8px">
+<span lang="en" style="font-weight:600">B · Position against criteria</span>
+<div style="position:relative;height:16px"><div style="position:absolute;left:0;right:0;top:5px;height:6px;border-radius:3px;background:linear-gradient(90deg,#8DA48A,#D6C8A0 50%,#B27560)"></div><div style="position:absolute;left:54%;top:0;width:3px;height:16px;margin-left:-1px;border-radius:2px;background:#242424;box-shadow:0 0 0 1px #FFFFFF"></div></div>
+<div style="display:flex;justify-content:space-between;font-size:12px;line-height:16px;color:#616161"><span>Klart utenfor</span><span>Gråsone</span><span>Klart innenfor</span></div>
+<span lang="en" style="font-size:12px;line-height:16px;color:#616161">Prototype repo. The end colours can read as a direction: calm sage to keep, warm clay to refer.</span>
+</div>
+<div lang="nb" style="display:flex;flex-direction:column;gap:10px;padding:16px;border:1px solid #DCD8FA;border-radius:8px;background:#F9F8FE">
+<span lang="en" style="font-weight:600;color:#6656D1">C · Position, grey zone marked (proposal)</span>
+<div style="position:relative;height:16px"><div style="position:absolute;left:0;right:0;top:5px;height:6px;border-radius:3px;background:linear-gradient(90deg,#D1D1D1 0%,#D1D1D1 28%,#D6C8A0 40%,#D6C8A0 60%,#D1D1D1 72%,#D1D1D1 100%)"></div><div style="position:absolute;left:54%;top:0;width:3px;height:16px;margin-left:-1px;border-radius:2px;background:#242424;box-shadow:0 0 0 1px #FFFFFF"></div></div>
+<div style="display:flex;justify-content:space-between;font-size:12px;line-height:16px;color:#424242"><span>Klart utenfor</span><span>Gråsone</span><span>Klart innenfor</span></div>
+<span lang="en" style="font-size:12px;line-height:16px;color:#424242">Keeps the repo’s meaning. Both ends are the same grey, so neither looks preferred; uncertainty is highest where the sand is.</span>
+</div>
+</div>
+</div>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px 32px">
+<div style="display:flex;flex-direction:column;gap:6px"><span style="font-weight:600">Rules</span><span style="color:#424242">Appears instantly and never animates. No number, percentage or axis ticks. The caption is always present. The sentence describes; it never says what to do.</span></div>
+<div style="display:flex;flex-direction:column;gap:6px"><span style="font-weight:600">Accessibility</span><span style="color:#424242">The band is decorative to screen readers; the sentence is the accessible text. In forced-colours mode the track becomes a system-colour line and the marker stays.</span></div>
+</div>
+</section>
+
+<section id="types" style="scroll-margin-top:72px;display:flex;flex-direction:column;gap:20px;padding:40px 0;border-top:1px solid #E0E0E0">
+<div style="display:flex;flex-direction:column;gap:6px;max-width:760px"><div style="display:flex;align-items:center;justify-content:space-between;gap:8px 16px;flex-wrap:wrap"><h2 style="margin:0;font-size:24px;line-height:32px;font-weight:600">Uncertainty types</h2><dc-import name="ATLAS Feedback Button" section="types" heading="Uncertainty types" page="Clinical patterns" hint-size="172px,32px"></dc-import></div><p style="margin:0;font-size:16px;line-height:22px;color:#424242;text-wrap:pretty">Filled neutral tags that name what kind of uncertainty is present. Shown under the band; each opens a one-line definition.</p></div>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px;padding:24px;border:1px solid #E0E0E0;border-radius:8px">
+<div lang="nb" style="display:flex;flex-direction:column;gap:8px"><span style="align-self:flex-start;display:inline-flex;align-items:center;height:32px;padding:0 10px;border-radius:4px;background:#F5F5F5">Diagnostisk</span><span style="color:#424242">Det er uklart hvilken tilstand det er.</span></div>
+<div lang="nb" style="display:flex;flex-direction:column;gap:8px"><span style="align-self:flex-start;display:inline-flex;align-items:center;height:32px;padding:0 10px;border-radius:4px;background:#F5F5F5">Terskel</span><span style="color:#424242">Tilstanden er kjent, men det er uklart om den når terskelen for rett til helsehjelp.</span></div>
+<div lang="nb" style="display:flex;flex-direction:column;gap:8px"><span style="align-self:flex-start;display:inline-flex;align-items:center;height:32px;padding:0 10px;border-radius:4px;background:#F5F5F5">Epistemisk</span><span style="color:#424242">Opplysningene er for tynne til å vurdere saken.</span></div>
+</div>
+<span style="font-size:12px;line-height:16px;color:#616161">Working definitions, to be confirmed by the clinical team.</span>
+</section>
+
+<section id="decision" style="scroll-margin-top:72px;display:flex;flex-direction:column;gap:20px;padding:40px 0;border-top:1px solid #E0E0E0">
+<div style="display:flex;flex-direction:column;gap:6px;max-width:760px"><div style="display:flex;align-items:center;justify-content:space-between;gap:8px 16px;flex-wrap:wrap"><h2 style="margin:0;font-size:24px;line-height:32px;font-weight:600">Refer or hold</h2><dc-import name="ATLAS Feedback Button" section="decision" heading="Refer or hold" page="Clinical patterns" hint-size="172px,32px"></dc-import></div><p style="margin:0;font-size:16px;line-height:22px;color:#424242;text-wrap:pretty">Two equal choices, nothing pre-selected, one optional rationale field, then a save button. Guardrails 2 and 3.</p></div>
+<div lang="nb" style="display:flex;flex-direction:column;gap:12px;max-width:420px;padding:24px;border:1px solid #E0E0E0;border-radius:8px">
+<span style="font-weight:600">Din beslutning</span>
+<div role="radiogroup" aria-label="Din beslutning" style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+<sc-for list="{{ choices }}" as="c" hint-placeholder-count="2">
+<button onClick="{{ c.on }}" role="radio" aria-checked="{{ c.aria }}" style="display:flex;align-items:center;justify-content:center;gap:6px;height:40px;padding:0 16px;border:1px solid {{ c.bd }};box-shadow:inset 0 0 0 1px {{ c.ring }};border-radius:8px;background:{{ c.bg }};font-size:16px;line-height:22px;font-weight:600;cursor:pointer"><i style="width:20px;height:20px;flex:none;background:{{ c.icc }};mask:url(assets/icons/{{ c.ic }}.svg) 0/20px"></i>{{ c.label }}</button>
+</sc-for>
+</div>
+<label style="display:flex;flex-direction:column;gap:4px"><span>Begrunnelse <span style="color:#616161">(valgfritt)</span></span><textarea placeholder="Skriv kort hvorfor" style="min-height:72px;padding:6px 10px;border:0;border-radius:4px;background:#F5F5F5;resize:vertical;outline:0"></textarea></label>
+<button onClick="{{ onSave }}" disabled="{{ saveDisabled }}" style="align-self:flex-start;height:32px;min-width:96px;padding:0 12px;border:1px solid {{ save.bd }};border-radius:4px;background:{{ save.bg }};color:{{ save.fg }};font-weight:600;cursor:{{ save.cur }}">Lagre beslutning</button>
+<sc-if value="{{ needChoice }}" hint-placeholder-val="{{ true }}"><span style="font-size:12px;line-height:16px;color:#616161">Velg Behold eller Henvis for å lagre.</span></sc-if>
+<sc-if value="{{ saved }}" hint-placeholder-val="{{ false }}"><div role="status" style="display:flex;align-items:center;gap:8px;min-height:36px;padding:6px 12px;border-radius:4px;background:#F1FAF1;border:1px solid #9FD89F"><i style="width:20px;height:20px;flex:none;background:#0E700E;mask:url(assets/icons/checkmark_circle_20_filled.svg) 0/20px"></i><span>Beslutningen er lagret: {{ savedLabel }}.</span></div></sc-if>
+</div>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px 32px">
+<div style="display:flex;flex-direction:column;gap:6px"><span style="font-weight:600">Rules</span><span style="color:#424242">Same size, same style, fixed alphabetical order (Behold, Henvis) on every screen. The selected choice gets a brand outline and tint; the other stays as it was.</span></div>
+<div style="display:flex;flex-direction:column;gap:6px"><span style="font-weight:600">Never</span><span style="color:#424242">A confirmation dialog, a warning colour, or an extra required field when the choice differs from where the band sits.</span></div>
+</div>
+</section>
+
+<section id="completeness" style="scroll-margin-top:72px;display:flex;flex-direction:column;gap:20px;padding:40px 0;border-top:1px solid #E0E0E0">
+<div style="display:flex;flex-direction:column;gap:6px;max-width:760px"><div style="display:flex;align-items:center;justify-content:space-between;gap:8px 16px;flex-wrap:wrap"><h2 style="margin:0;font-size:24px;line-height:32px;font-weight:600">Completeness guide</h2><dc-import name="ATLAS Feedback Button" section="completeness" heading="Completeness guide" page="Clinical patterns" hint-size="172px,32px"></dc-import></div><p style="margin:0;font-size:16px;line-height:22px;color:#424242;text-wrap:pretty">Shows which DPS referral criteria the note mentions. It describes alignment and is never a gate: sending is possible at any count.</p></div>
+<div lang="nb" style="display:flex;flex-direction:column;max-width:480px;border:1px solid #E0E0E0;border-radius:8px">
+<div style="display:flex;flex-direction:column;gap:2px;padding:14px 16px;border-bottom:1px solid #E0E0E0"><span style="font-weight:600">4 av 7 kriterier omtalt i notatet</span><span style="font-size:12px;line-height:16px;color:#616161">Viser hva notatet omtaler. Er ikke et krav.</span></div>
+<sc-for list="{{ criteria }}" as="k" hint-placeholder-count="7">
+<div style="display:flex;align-items:center;gap:10px;min-height:40px;padding:0 16px;border-bottom:1px solid #F0F0F0"><i style="width:20px;height:20px;flex:none;background:#424242;mask:url(assets/icons/{{ k.ic }}.svg) 0/20px"></i><span style="flex:1">{{ k.n }}</span><span style="font-size:12px;line-height:16px;color:#616161">{{ k.state }}</span></div>
+</sc-for>
+</div>
+<div style="display:flex;flex-direction:column;gap:6px;max-width:760px"><span style="font-weight:600">Rules</span><span style="color:#424242">Counts as text, no progress bar or percentage. Both states use the same neutral colour; the icon and the word carry the difference. Criteria follow the order in the priority guide.</span></div>
+</section>
+
+<section id="dual" style="scroll-margin-top:72px;display:flex;flex-direction:column;gap:20px;padding:40px 0;border-top:1px solid #E0E0E0">
+<div style="display:flex;flex-direction:column;gap:6px;max-width:760px"><div style="display:flex;align-items:center;justify-content:space-between;gap:8px 16px;flex-wrap:wrap"><h2 style="margin:0;font-size:24px;line-height:32px;font-weight:600">Summary and reasoning</h2><dc-import name="ATLAS Feedback Button" section="dual" heading="Summary and reasoning" page="Clinical patterns" hint-size="172px,32px"></dc-import></div><p style="margin:0;font-size:16px;line-height:22px;color:#424242;text-wrap:pretty">The dual-process disclosure: a short summary for a quick read, and the full reasoning one click away. Built from Accordion.</p></div>
+<div lang="nb" style="display:flex;flex-direction:column;max-width:640px;padding:4px 16px;border:1px solid #E0E0E0;border-radius:8px">
+<sc-for list="{{ dual }}" as="a" hint-placeholder-count="2">
+<div style="display:flex;flex-direction:column;border-bottom:1px solid #F0F0F0">
+<button onClick="{{ a.on }}" aria-expanded="{{ a.aria }}" style="display:flex;align-items:center;gap:8px;height:44px;padding:0 4px;border:0;background:transparent;text-align:left;cursor:pointer;font-weight:600" style-hover="background:#F5F5F5"><i style="width:20px;height:20px;flex:none;background:#424242;mask:url(assets/icons/chevron_right_20_regular.svg) 0/20px;transition:transform 150ms cubic-bezier(0.33,0,0.67,1);transform:{{ a.rot }}"></i>{{ a.h }}</button>
+<sc-if value="{{ a.open }}" hint-placeholder-val="{{ true }}"><div style="padding:0 4px 14px 32px;color:#424242">{{ a.b }}</div></sc-if>
+</div>
+</sc-for>
+</div>
+<div style="display:flex;flex-direction:column;gap:6px;max-width:760px"><span style="font-weight:600">Rules</span><span style="color:#424242">The summary is open by default; the reasoning is closed. Reasoning lists its sources (note, self-report, medication list) and what is missing.</span></div>
+</section>
+
+<section id="confidence" style="scroll-margin-top:72px;display:flex;flex-direction:column;gap:20px;padding:40px 0;border-top:1px solid #E0E0E0">
+<div style="display:flex;flex-direction:column;gap:6px;max-width:760px"><div style="display:flex;align-items:center;justify-content:space-between;gap:8px 16px;flex-wrap:wrap"><h2 style="margin:0;font-size:24px;line-height:32px;font-weight:600">Own confidence</h2><dc-import name="ATLAS Feedback Button" section="confidence" heading="Own confidence" page="Clinical patterns" hint-size="172px,32px"></dc-import></div><p style="margin:0;font-size:16px;line-height:22px;color:#424242;text-wrap:pretty">After deciding, the clinician can rate their own confidence from 0 to 100. Only they see it. Over time they can look back at their own ratings beside outcomes.</p></div>
+<div lang="nb" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:32px;padding:24px;border:1px solid #E0E0E0;border-radius:8px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<div style="display:flex;justify-content:space-between"><span>Hvor sikker er du i egen vurdering?</span><span style="font-weight:600;font-variant-numeric:tabular-nums">{{ slider.v }}</span></div>
+<div style="position:relative;height:32px">
+<span style="position:absolute;left:10px;right:10px;top:14px;height:4px;border-radius:2px;background:#616161"></span>
+<span style="position:absolute;left:10px;top:14px;height:4px;border-radius:2px;background:#7160E8;width:{{ slider.fill }}"></span>
+<span style="position:absolute;top:6px;width:20px;height:20px;margin-left:-10px;border-radius:50%;background:#FFFFFF;box-shadow:inset 0 0 0 4px #7160E8,0 0 0 1px #FFFFFF;left:{{ slider.pos }}"></span>
+<input type="range" min="0" max="100" onInput="{{ onSlider }}" aria-label="Egen sikkerhet" style="position:absolute;inset:0;width:100%;margin:0;opacity:0;cursor:pointer">
+</div>
+<div style="display:flex;justify-content:space-between;font-size:12px;line-height:16px;color:#616161"><span>Lite sikker</span><span>Svært sikker</span></div>
+<span style="display:flex;align-items:center;gap:6px;font-size:12px;line-height:16px;color:#616161"><i style="width:16px;height:16px;background:#616161;mask:url(assets/icons/lock_closed_20_regular.svg) center/16px"></i>Bare du ser dette tallet. Du kan hoppe over.</span>
+</div>
+<div style="display:flex;flex-direction:column;gap:8px">
+<span style="font-weight:600">Dine siste 10 henvisninger</span>
+<div style="display:flex;flex-direction:column;border-top:1px solid #E0E0E0">
+<div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #F0F0F0"><span>Tatt inn</span><span style="font-variant-numeric:tabular-nums">7</span></div>
+<div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #F0F0F0"><span>Returnert med råd</span><span style="font-variant-numeric:tabular-nums">2</span></div>
+<div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #F0F0F0"><span>Venter på vurdering</span><span style="font-variant-numeric:tabular-nums">1</span></div>
+</div>
+<span style="font-size:12px;line-height:16px;color:#616161">Egen historikk. Ingen sammenlikning med andre.</span>
+</div>
+</div>
+<div style="display:flex;flex-direction:column;gap:6px;max-width:760px"><span style="font-weight:600">Rules</span><span style="color:#424242">Never aggregated across clinicians, never shown to DPS, never a leaderboard. The rating is asked after the decision is saved, so it cannot shape it.</span></div>
+</section>
+
+<section id="outcome" style="scroll-margin-top:72px;display:flex;flex-direction:column;gap:20px;padding:40px 0;border-top:1px solid #E0E0E0">
+<div style="display:flex;flex-direction:column;gap:6px;max-width:760px"><div style="display:flex;align-items:center;justify-content:space-between;gap:8px 16px;flex-wrap:wrap"><h2 style="margin:0;font-size:24px;line-height:32px;font-weight:600">DPS outcome</h2><dc-import name="ATLAS Feedback Button" section="outcome" heading="DPS outcome" page="Clinical patterns" hint-size="172px,32px"></dc-import></div><p style="margin:0;font-size:16px;line-height:22px;color:#424242;text-wrap:pretty">The DPS clinician’s answer. Three neutral options; a return always carries structured reasons and advice. Guardrails 1 and 4.</p></div>
+<div lang="nb" style="display:flex;flex-direction:column;gap:14px;max-width:560px;padding:24px;border:1px solid #E0E0E0;border-radius:8px">
+<div style="display:flex;align-items:center;justify-content:space-between;gap:12px"><span style="font-weight:600">Vurdering</span><span style="display:inline-flex;align-items:center;height:20px;padding:0 8px;border-radius:10px;background:#242424;color:#FFFFFF;font-size:12px;line-height:16px;font-weight:600">Frist 2026-10-21</span></div>
+<div role="radiogroup" aria-label="Vurdering" style="display:flex;flex-wrap:wrap;gap:8px">
+<sc-for list="{{ outcomes }}" as="o" hint-placeholder-count="3">
+<button onClick="{{ o.on }}" role="radio" aria-checked="{{ o.aria }}" style="display:inline-flex;align-items:center;gap:6px;height:32px;padding:0 10px;border:1px solid {{ o.bd }};border-radius:4px;background:{{ o.bg }};color:{{ o.fg }};cursor:pointer"><i style="width:20px;height:20px;flex:none;background:{{ o.fg }};mask:url(assets/icons/{{ o.ic }}.svg) 0/20px"></i>{{ o.label }}</button>
+</sc-for>
+</div>
+<sc-if value="{{ isReturn }}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;flex-direction:column;gap:4px;padding-top:4px">
+<span>Årsak</span>
+<sc-for list="{{ reasons }}" as="r" hint-placeholder-count="4">
+<button onClick="{{ r.on }}" role="checkbox" aria-checked="{{ r.aria }}" style="display:flex;align-items:center;gap:8px;min-height:32px;padding:0;border:0;background:transparent;text-align:left;cursor:pointer"><span style="display:grid;place-items:center;width:16px;height:16px;flex:none;border:1px solid {{ r.bd }};border-radius:2px;background:{{ r.bg }}"><i style="width:12px;height:12px;background:#FFFFFF;mask:url(assets/icons/checkmark_16_regular.svg) center/14px;opacity:{{ r.op }}"></i></span>{{ r.label }}</button>
+</sc-for>
+<label style="display:flex;flex-direction:column;gap:4px;margin-top:8px"><span>Råd til fastlegen</span><textarea placeholder="For eksempel hva som kan prøves først, og når en ny henvisning er aktuell" style="min-height:72px;padding:6px 10px;border:1px solid #D1D1D1;border-bottom-color:#616161;border-radius:4px;resize:vertical;outline:0"></textarea></label>
+</div>
+</sc-if>
+</div>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px 32px">
+<div style="display:flex;flex-direction:column;gap:6px"><span style="font-weight:600">Rules</span><span style="color:#424242">Outcomes are neutral tags, in alphabetical order, selected with a brand outline. The legal deadline is a date, not a countdown.</span></div>
+<div style="display:flex;flex-direction:column;gap:6px"><span style="font-weight:600">Never</span><span style="color:#424242">Green for accepted, red for returned, or a bare “Avvist” without reasons.</span></div>
+</div>
+</section>
+
+<section id="dialogue" style="scroll-margin-top:72px;display:flex;flex-direction:column;gap:20px;padding:40px 0;border-top:1px solid #E0E0E0">
+<div style="display:flex;flex-direction:column;gap:6px;max-width:760px"><div style="display:flex;align-items:center;justify-content:space-between;gap:8px 16px;flex-wrap:wrap"><h2 style="margin:0;font-size:24px;line-height:32px;font-weight:600">Dialogue with DPS</h2><dc-import name="ATLAS Feedback Button" section="dialogue" heading="Dialogue with DPS" page="Clinical patterns" hint-size="172px,32px"></dc-import></div><p style="margin:0;font-size:16px;line-height:22px;color:#424242;text-wrap:pretty">A message thread attached to one referral. Participants are roles. The viewer’s own messages sit on the right on brand tint. Guardrail 4.</p></div>
+<div lang="nb" style="display:flex;flex-direction:column;max-width:560px;border:1px solid #E0E0E0;border-radius:8px">
+<div style="display:flex;align-items:center;gap:10px;padding:12px 16px;border-bottom:1px solid #E0E0E0"><i style="width:20px;height:20px;background:#424242;mask:url(assets/icons/chat_multiple_20_regular.svg) 0/20px"></i><span style="flex:1;font-weight:600">Dialog med DPS</span><span style="font-size:12px;line-height:16px;color:#616161">Henvisning 2026-10-07</span></div>
+<div style="display:flex;flex-direction:column;gap:14px;padding:16px">
+<span style="display:flex;align-items:center;gap:12px;font-size:12px;line-height:16px;color:#616161"><span style="flex:1;height:1px;background:#E0E0E0"></span>Henvisningen ble sendt 2026-10-07<span style="flex:1;height:1px;background:#E0E0E0"></span></span>
+<div style="display:flex;gap:8px;max-width:85%"><span style="display:grid;place-items:center;width:32px;height:32px;flex:none;border-radius:50%;background:#F9F8FE;box-shadow:inset 0 0 0 1px #DCD8FA"><i style="width:16px;height:16px;background:#6656D1;mask:url(assets/icons/people_20_regular.svg) center/16px"></i></span><span style="display:flex;flex-direction:column;gap:4px"><span style="font-size:12px;line-height:16px;color:#616161"><b style="color:#242424;font-weight:600">DPS, inntak</b> · 2026-10-08 kl. 13:05</span><span style="padding:8px 12px;border-radius:4px;background:#F5F5F5">Er det forsøkt behandling i allmennpraksis? Hvor lenge har funksjonsfallet vart?</span></span></div>
+<div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px;align-self:flex-end;max-width:85%"><span style="font-size:12px;line-height:16px;color:#616161"><b style="color:#242424;font-weight:600">Deg</b> · Henvisende fastlege · kl. 15:20</span><span style="padding:8px 12px;border-radius:4px;background:#F9F8FE">Sertralin siden mars og samtaler hver tredje uke. Redusert stilling siden august.</span></div>
+</div>
+<div style="display:flex;gap:8px;padding:12px 16px 16px;border-top:1px solid #F0F0F0"><span style="flex:1;display:flex;align-items:center;height:32px;padding:0 10px;border:1px solid #D1D1D1;border-bottom-color:#616161;border-radius:4px;color:#707070">Skriv til DPS, inntak</span><span style="display:grid;place-items:center;width:32px;height:32px;border-radius:4px;background:#7160E8"><i style="width:20px;height:20px;background:#FFFFFF;mask:url(assets/icons/send_20_regular.svg) 0/20px"></i></span></div>
+</div>
+<div style="display:flex;flex-direction:column;gap:6px;max-width:760px"><span style="font-weight:600">Rules</span><span style="color:#424242">Role icon and role label, never a name or photo. System events (sent, read, answered) are dividers, not messages. Read receipts show that a message was read, not who read it.</span></div>
+</section>
+
+<section id="language" style="scroll-margin-top:72px;display:flex;flex-direction:column;gap:20px;padding:40px 0;border-top:1px solid #E0E0E0">
+<div style="display:flex;flex-direction:column;gap:6px;max-width:760px"><div style="display:flex;align-items:center;justify-content:space-between;gap:8px 16px;flex-wrap:wrap"><h2 style="margin:0;font-size:24px;line-height:32px;font-weight:600">Two languages</h2><dc-import name="ATLAS Feedback Button" section="language" heading="Two languages" page="Clinical patterns" hint-size="172px,32px"></dc-import></div><p style="margin:0;font-size:16px;line-height:22px;color:#424242;text-wrap:pretty">Norwegian always shows. English lines appear under it when the language switch in the header is on. Try it.</p></div>
+<div style="display:flex;flex-direction:column;gap:16px;max-width:560px;padding:24px;border:1px solid #E0E0E0;border-radius:8px">
+<button onClick="{{ onEn }}" role="switch" aria-checked="{{ en.aria }}" style="align-self:flex-start;display:flex;align-items:center;gap:10px;border:0;padding:4px 0;background:transparent;cursor:pointer"><span style="position:relative;width:40px;height:20px;flex:none;border:1px solid {{ en.bd }};border-radius:10px;background:{{ en.bg }}"><span style="position:absolute;top:2px;width:14px;height:14px;border-radius:50%;background:{{ en.tc }};left:{{ en.x }};transition:left 100ms cubic-bezier(0.33,0,0.67,1)"></span></span><span lang="nb">Vis engelsk tekst</span></button>
+<sc-for list="{{ pairs }}" as="p" hint-placeholder-count="3">
+<div style="display:flex;flex-direction:column;gap:2px"><span lang="nb">{{ p.nb }}</span><sc-if value="{{ en.on }}" hint-placeholder-val="{{ false }}"><span lang="en" style="font-size:12px;line-height:16px;color:#616161">{{ p.en }}</span></sc-if></div>
+</sc-for>
+</div>
+<div style="display:flex;flex-direction:column;gap:6px;max-width:760px"><span style="font-weight:600">Rules</span><span style="color:#424242">English is a reading aid for researchers and non-Norwegian reviewers, not a translation of the product. Button labels stay Norwegian.</span></div>
+</section>
+
+<section id="empty" style="scroll-margin-top:72px;display:flex;flex-direction:column;gap:20px;padding:40px 0;border-top:1px solid #E0E0E0">
+<div style="display:flex;flex-direction:column;gap:6px;max-width:760px"><div style="display:flex;align-items:center;justify-content:space-between;gap:8px 16px;flex-wrap:wrap"><h2 style="margin:0;font-size:24px;line-height:32px;font-weight:600">Empty states</h2><dc-import name="ATLAS Feedback Button" section="empty" heading="Empty states" page="Clinical patterns" hint-size="172px,32px"></dc-import></div><p style="margin:0;font-size:16px;line-height:22px;color:#424242;text-wrap:pretty">Every view that depends on data has a designed first-use state: a 24px icon, one sentence, and an action if there is one.</p></div>
+<div lang="nb" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px">
+<div style="display:flex;flex-direction:column;align-items:flex-start;gap:8px;padding:24px;border:1px solid #E0E0E0;border-radius:8px"><i style="width:24px;height:24px;background:#616161;mask:url(assets/icons/chat_multiple_20_regular.svg) 0/24px"></i><span style="font-weight:600">Ingen meldinger ennå</span><span style="color:#424242">Meldinger om denne henvisningen vises her.</span><span style="display:inline-flex;align-items:center;height:32px;padding:0 12px;margin-top:4px;border:1px solid #D1D1D1;border-radius:4px;font-weight:600">Skriv til DPS</span></div>
+<div style="display:flex;flex-direction:column;align-items:flex-start;gap:8px;padding:24px;border:1px solid #E0E0E0;border-radius:8px"><i style="width:24px;height:24px;background:#616161;mask:url(assets/icons/calendar_ltr_20_regular.svg) 0/24px"></i><span style="font-weight:600">Ingen timer i dag</span><span style="color:#424242">Timelisten oppdateres fra journalsystemet.</span></div>
+<div style="display:flex;flex-direction:column;align-items:flex-start;gap:8px;padding:24px;border:1px solid #E0E0E0;border-radius:8px"><i style="width:24px;height:24px;background:#616161;mask:url(assets/icons/history_20_regular.svg) 0/24px"></i><span style="font-weight:600">Ingen historikk ennå</span><span style="color:#424242">Etter de første beslutningene ser du egne vurderinger her.</span></div>
+</div>
+</section>
+
+<section id="tour" style="scroll-margin-top:72px;display:flex;flex-direction:column;gap:20px;padding:40px 0;border-top:1px solid #E0E0E0">
+<div style="display:flex;flex-direction:column;gap:6px;max-width:760px"><div style="display:flex;align-items:center;justify-content:space-between;gap:8px 16px;flex-wrap:wrap"><h2 style="margin:0;font-size:24px;line-height:32px;font-weight:600">Guided tour</h2><dc-import name="ATLAS Feedback Button" section="tour" heading="Guided tour" page="Clinical patterns" hint-size="172px,32px"></dc-import></div><p style="margin:0;font-size:16px;line-height:22px;color:#424242;text-wrap:pretty">A guide surface: the dawn atmosphere behind, text on the left, the real component on a white card on the right. The person reacts first; the explanation opens after. Answer the example.</p></div>
+<div lang="nb" style="position:relative;display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:40px;align-items:center;min-height:460px;padding:clamp(24px,5vw,48px);border-radius:8px;border:1px solid #E0E0E0;background:radial-gradient(22% 34% at 76% 36%,#FDCFB4 0%,rgba(253,207,180,0) 75%),radial-gradient(44% 64% at 78% 34%,#FEE5D7 0%,rgba(254,229,215,0) 72%),radial-gradient(36% 50% at 56% 4%,#FBDDF0 0%,rgba(251,221,240,0) 72%),radial-gradient(40% 58% at 96% 86%,#D2CCF8 0%,rgba(210,204,248,0) 72%),radial-gradient(50% 65% at 0% 100%,#E7E4FB 0%,rgba(231,228,251,0) 70%),#FFFFFF">
+<div style="display:flex;flex-direction:column;gap:16px">
+<span style="font-size:12px;line-height:16px;font-weight:600;color:#6656D1">Steg 3 av 6</span>
+<span style="font-size:28px;line-height:36px;font-weight:600">Hva ville du gjort?</span>
+<span style="font-size:16px;line-height:22px;color:#424242">Kari har vært nedstemt i flere måneder og har redusert stilling. Velg før du ser hva ATLAS viser.</span>
+<div role="radiogroup" aria-label="Ditt valg" style="display:flex;flex-wrap:wrap;gap:8px">
+<sc-for list="{{ tourChoices }}" as="c" hint-placeholder-count="2">
+<button onClick="{{ c.on }}" role="radio" aria-checked="{{ c.aria }}" style="height:40px;min-width:112px;padding:0 16px;border:1px solid {{ c.bd }};box-shadow:inset 0 0 0 1px {{ c.ring }};border-radius:8px;background:{{ c.bg }};color:#242424;font-size:16px;line-height:22px;font-weight:600;cursor:pointer">{{ c.label }}</button>
+</sc-for>
+</div>
+<div style="display:flex;flex-direction:column;border-top:1px solid #E0E0E0;padding-top:12px">
+<button onClick="{{ onWhy }}" disabled="{{ whyLocked }}" aria-expanded="{{ why.aria }}" style="display:flex;align-items:center;gap:8px;padding:4px 0;border:0;background:transparent;color:#242424;font-weight:600;text-align:left;cursor:{{ why.cur }};opacity:{{ why.op }}"><i style="width:20px;height:20px;flex:none;background:#424242;mask:url(assets/icons/{{ why.ic }}.svg) 0/20px;transform:{{ why.rot }}"></i>Hvorfor dette finnes<span style="font-weight:400;font-size:12px;line-height:16px;color:#616161">{{ why.hint }}</span></button>
+<sc-if value="{{ why.open }}" hint-placeholder-val="{{ false }}"><span style="padding:6px 0 0 28px;color:#424242">Liknende henvisninger blir vurdert ulikt. Båndet viser hvor saken ligger, slik at du kan se usikkerheten før du bestemmer deg.</span></sc-if>
+</div>
+<div style="display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px;margin-top:8px">
+<button onClick="{{ tourNext }}" style="display:inline-flex;align-items:center;gap:6px;height:40px;padding:0 16px;border:0;border-radius:8px;background:linear-gradient(135deg,#7160E8 0%,#3F3682 100%);color:#FFFFFF;font-size:16px;line-height:22px;font-weight:600;cursor:pointer;box-shadow:0 0 2px rgba(0,0,0,.30),0 2px 4px rgba(0,0,0,.25)" style-hover="background:linear-gradient(135deg,#6656D1 0%,#3F3682 100%)" style-active="background:#3F3682">Neste<i style="width:20px;height:20px;background:#FFFFFF;mask:url(assets/icons/arrow_right_20_regular.svg) 0/20px"></i></button>
+<a href="#tour" style="display:inline-flex;align-items:center;height:40px;padding:0 8px;border-radius:8px;color:#242424;font-weight:600;text-decoration:none" style-hover="background:rgba(255,255,255,.6);color:#242424;text-decoration:none">Hopp over omvisningen</a>
+<span style="flex:1"></span>
+<span role="img" aria-label="Steg 3 av 6" style="display:flex;align-items:center;gap:6px"><span style="width:6px;height:6px;border-radius:50%;background:#C7C7C7"></span><span style="width:6px;height:6px;border-radius:50%;background:#C7C7C7"></span><span style="width:16px;height:6px;border-radius:3px;background:#7160E8"></span><span style="width:6px;height:6px;border-radius:50%;background:#C7C7C7"></span><span style="width:6px;height:6px;border-radius:50%;background:#C7C7C7"></span><span style="width:6px;height:6px;border-radius:50%;background:#C7C7C7"></span></span>
+</div>
+</div>
+<div style="display:flex;flex-direction:column;gap:12px;padding:20px;border-radius:12px;background:#FFFFFF;color:#242424;box-shadow:0 0 2px rgba(0,0,0,.12),0 8px 16px rgba(0,0,0,.14)">
+<div style="display:flex;flex-direction:column;gap:2px"><span style="font-size:16px;line-height:22px;font-weight:600">ATLAS</span><span style="font-size:12px;line-height:16px;color:#616161">Viser usikkerhet, anbefaler ikke</span></div>
+<sc-if value="{{ answered }}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;flex-direction:column;gap:8px"><div style="position:relative;height:16px"><div style="position:absolute;left:0;right:0;top:5px;height:6px;border-radius:3px;background:linear-gradient(90deg,#8DA48A,#D6C8A0 50%,#B27560)"></div><div style="position:absolute;left:54%;top:0;width:3px;height:16px;margin-left:-1px;border-radius:2px;background:#242424;box-shadow:0 0 0 1px #FFFFFF"></div></div><span style="color:#424242">Nær midten. Liknende henvisninger har blitt vurdert ulikt.</span><span style="font-size:12px;line-height:16px;color:#616161">Du valgte: {{ answerLabel }}</span></div>
+</sc-if>
+<sc-if value="{{ notAnswered }}" hint-placeholder-val="{{ true }}">
+<div style="display:flex;flex-direction:column;gap:8px"><div style="position:relative;height:16px"><div style="position:absolute;left:0;right:0;top:5px;height:6px;border-radius:3px;background:#F0F0F0;box-shadow:inset 0 0 0 1px #E0E0E0"></div></div><span style="color:#616161">Vises når du har valgt.</span></div>
+</sc-if>
+</div>
+</div>
+<div style="display:flex;flex-direction:column;gap:6px;max-width:760px"><span style="font-weight:600">Rules</span><span style="color:#424242">Guide surfaces are the only place for Title 1–2, Body 2, the dawn atmosphere and the sheen button. Clinical choices stay secondary here too. The excerpt is the real component on a solid white card, so the band never sits on the atmosphere. Skip is always one click.</span></div>
+</section>
+
+<section id="briefing" style="scroll-margin-top:72px;display:flex;flex-direction:column;gap:20px;padding:40px 0;border-top:1px solid #E0E0E0">
+<div style="display:flex;flex-direction:column;gap:6px;max-width:760px"><div style="display:flex;align-items:center;justify-content:space-between;gap:8px 16px;flex-wrap:wrap"><h2 style="margin:0;font-size:24px;line-height:32px;font-weight:600">Vignette briefing</h2><dc-import name="ATLAS Feedback Button" section="briefing" heading="Vignette briefing" page="Clinical patterns" hint-size="172px,32px"></dc-import></div><p style="margin:0;font-size:16px;line-height:22px;color:#424242;text-wrap:pretty">The page before a vignette starts. Dawn atmosphere, one column, one sheen action.</p></div>
+<div lang="nb" style="display:flex;flex-direction:column;gap:16px;max-width:760px;padding:40px;border-radius:8px;border:1px solid #E0E0E0;background:radial-gradient(22% 34% at 76% 36%,#FDCFB4 0%,rgba(253,207,180,0) 75%),radial-gradient(44% 64% at 78% 34%,#FEE5D7 0%,rgba(254,229,215,0) 72%),radial-gradient(36% 50% at 56% 4%,#FBDDF0 0%,rgba(251,221,240,0) 72%),radial-gradient(40% 58% at 96% 86%,#D2CCF8 0%,rgba(210,204,248,0) 72%),radial-gradient(50% 65% at 0% 100%,#E7E4FB 0%,rgba(231,228,251,0) 70%),#FFFFFF">
+<span style="font-size:12px;line-height:16px;font-weight:600;color:#6656D1">Vignett 1 av 6 · Fastlege</span>
+<span style="font-size:32px;line-height:40px;font-weight:600">Kari, 34 år</span>
+<span style="font-size:16px;line-height:22px;color:#242424">Du er fastlegen. Kari kommer til kontroll. Les notatet, se hva ATLAS viser, og bestem om du vil henvise til DPS.</span>
+<div style="display:flex;flex-wrap:wrap;gap:8px"><span style="display:inline-flex;align-items:center;gap:6px;height:24px;padding:0 8px;border-radius:4px;background:#FFFFFF;font-size:12px;line-height:16px"><i style="width:16px;height:16px;background:#424242;mask:url(assets/icons/clock_20_regular.svg) center/16px"></i>Omtrent 10 minutter</span><span style="display:inline-flex;align-items:center;gap:6px;height:24px;padding:0 8px;border-radius:4px;background:#FFFFFF;font-size:12px;line-height:16px"><i style="width:16px;height:16px;background:#424242;mask:url(assets/icons/lock_closed_20_regular.svg) center/16px"></i>Fiktiv pasient</span></div>
+<span style="align-self:flex-start;display:inline-flex;align-items:center;gap:6px;height:40px;padding:0 16px;margin-top:8px;border-radius:8px;background:linear-gradient(135deg,#7160E8 0%,#3F3682 100%);color:#FFFFFF;font-size:16px;line-height:22px;font-weight:600;box-shadow:0 0 2px rgba(0,0,0,.30),0 2px 4px rgba(0,0,0,.25)">Start konsultasjonen<i style="width:20px;height:20px;background:#FFFFFF;mask:url(assets/icons/arrow_right_20_regular.svg) 0/20px"></i></span>
+</div>
+</section>
+
+</div>
+</main>
+</div>
+<dc-import name="ATLAS Feedback Panel" page="Clinical patterns" hint-size="1px,1px"></dc-import>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { active: 'overview', decision: null, saved: false, dual: [true, false], outcome: null, reasons: [false, false, false, false], en: false, answer: null, why: false, slider: 62 };
+  nav = [['overview','Overview'],['workspace','Consultation workspace'],['band','Uncertainty band'],['types','Uncertainty types'],['decision','Refer or hold'],['completeness','Completeness guide'],['dual','Summary and reasoning'],['confidence','Own confidence'],['outcome','DPS outcome'],['dialogue','Dialogue with DPS'],['language','Two languages'],['empty','Empty states'],['tour','Guided tour'],['briefing','Vignette briefing']];
+  componentDidMount() {
+    this.onScroll = () => {
+      let cur = this.nav[0][0];
+      for (const [id] of this.nav) { const el = document.getElementById(id); if (el && el.getBoundingClientRect().top < 120) cur = id; }
+      if (cur !== this.state.active) this.setState({ active: cur });
+    };
+    document.addEventListener('scroll', this.onScroll, true);
+  }
+  componentWillUnmount() { document.removeEventListener('scroll', this.onScroll, true); }
+  renderVals() {
+    const s = this.state;
+    const labels = { behold: 'Behold', henvis: 'Henvis' };
+    const has = !!s.decision;
+    const outcomeList = [['info', 'Be om mer informasjon', 'question_circle_20_regular'], ['rett', 'Rett til helsehjelp', 'checkmark_circle_20_regular'], ['retur', 'Retur med råd', 'arrow_reply_20_regular']];
+    return {
+      nav: this.nav.map(([id, label]) => { const on = id === s.active; return { id, label, bg: on ? '#EBEBEB' : 'transparent', fw: on ? 600 : 400, ind: on ? '#7160E8' : 'transparent' }; }),
+      choices: [['behold', 'Behold', 'pause_circle_20_regular'], ['henvis', 'Henvis', 'arrow_forward_20_regular']].map(([id, label, ic]) => { const on = s.decision === id; return { label, ic, aria: on ? 'true' : 'false', bd: on ? '#7160E8' : '#D1D1D1', ring: on ? '#7160E8' : 'transparent', bg: on ? '#F9F8FE' : '#FFFFFF', icc: on ? '#7160E8' : '#424242', on: () => this.setState({ decision: id, saved: false }) }; }),
+      saveDisabled: !has,
+      needChoice: !has,
+      save: { bg: has ? '#7160E8' : '#F0F0F0', fg: has ? '#FFFFFF' : '#BDBDBD', bd: has ? '#7160E8' : '#E0E0E0', cur: has ? 'pointer' : 'not-allowed' },
+      onSave: () => { if (s.decision) this.setState({ saved: true }); },
+      saved: s.saved,
+      savedLabel: s.decision ? labels[s.decision] : '',
+      criteria: [['Symptomer og varighet', true], ['Funksjonsfall', true], ['Tidligere behandling', false], ['Legemidler', true], ['Rusmiddelbruk', false], ['Selvmordsrisiko vurdert', false], ['Spørsmål til DPS', true]].map(([n, ok]) => ({ n, ic: ok ? 'checkmark_circle_20_regular' : 'circle_20_regular', state: ok ? 'Omtalt' : 'Ikke omtalt' })),
+      dual: [['Kort oppsummering', 'Nedstemthet over flere måneder med funksjonsfall i arbeid. Behandlet i allmennpraksis siden mars.'], ['Begrunnelse', 'Kilder: notat, selvrapport, legemiddelliste. Varighet og funksjonsfall trekker mot DPS-kriteriene; effekt av pågående behandling er ikke vurdert ennå. Rusmiddelbruk og selvmordsrisiko er ikke omtalt.']].map(([h, b], i) => { const on = s.dual[i]; return { h, b, open: on, aria: on ? 'true' : 'false', rot: on ? 'rotate(90deg)' : 'none', on: () => this.setState(st => { const dual = st.dual.slice(); dual[i] = !dual[i]; return { dual }; }) }; }),
+      slider: { v: s.slider, fill: 'calc((100% - 20px) * ' + (s.slider / 100) + ')', pos: 'calc(10px + (100% - 20px) * ' + (s.slider / 100) + ')' },
+      onSlider: e => this.setState({ slider: +e.target.value }),
+      outcomes: outcomeList.map(([id, label, ic]) => { const on = s.outcome === id; return { label, ic, aria: on ? 'true' : 'false', bd: on ? '#7160E8' : 'transparent', bg: on ? '#F9F8FE' : '#F5F5F5', fg: on ? '#6656D1' : '#242424', on: () => this.setState({ outcome: id }) }; }),
+      isReturn: s.outcome === 'retur',
+      reasons: ['Behandling i allmennpraksis er ikke prøvd ut', 'Et kommunalt tilbud passer bedre', 'Ligger utenfor DPS-kriteriene', 'Annet'].map((label, i) => { const on = s.reasons[i]; return { label, aria: on ? 'true' : 'false', bg: on ? '#7160E8' : '#FFFFFF', bd: on ? '#7160E8' : '#616161', op: on ? 1 : 0, on: () => this.setState(st => { const reasons = st.reasons.slice(); reasons[i] = !reasons[i]; return { reasons }; }) }; }),
+      en: { on: s.en, aria: s.en ? 'true' : 'false', bg: s.en ? '#7160E8' : '#FFFFFF', bd: s.en ? '#7160E8' : '#616161', tc: s.en ? '#FFFFFF' : '#616161', x: s.en ? '22px' : '2px' },
+      onEn: () => this.setState({ en: !s.en }),
+      pairs: [['Henvisningen mangler informasjon om tidligere behandling.', 'Referral is missing information about prior treatment.'], ['Vurderingen er usikker. Liknende henvisninger har blitt vurdert ulikt.', 'Assessment carries uncertainty. Similar referrals have been triaged differently.'], ['Viser usikkerhet, anbefaler ikke', 'Shows uncertainty, does not recommend']].map(([nb, en]) => ({ nb, en })),
+      tourChoices: [['behold', 'Behold'], ['henvis', 'Henvis']].map(([id, label]) => { const on = s.answer === id; return { label, aria: on ? 'true' : 'false', bg: on ? '#F9F8FE' : '#FFFFFF', bd: on ? '#7160E8' : '#D1D1D1', ring: on ? '#7160E8' : 'transparent', on: () => this.setState({ answer: id }) }; }),
+      answered: !!s.answer,
+      notAnswered: !s.answer,
+      answerLabel: s.answer ? labels[s.answer] : '',
+      whyLocked: !s.answer,
+      why: { open: !!s.answer && s.why, aria: s.why ? 'true' : 'false', ic: s.answer ? 'chevron_right_20_regular' : 'lock_closed_20_regular', rot: s.answer && s.why ? 'rotate(90deg)' : 'none', op: s.answer ? 1 : 0.7, cur: s.answer ? 'pointer' : 'not-allowed', hint: s.answer ? '' : 'Åpnes når du har valgt' },
+      tourNext: () => this.setState({ answer: null, why: false }),
+      onWhy: () => { if (s.answer) this.setState({ why: !s.why }); },
+    };
+  }
+}
+</script>
+</body>
+</html>

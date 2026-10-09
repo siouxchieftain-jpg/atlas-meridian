@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<div lang="nb" style="font-family:'Segoe UI','Segoe UI Web (West European)',-apple-system,BlinkMacSystemFont,Roboto,'Helvetica Neue',sans-serif;font-size:14px;line-height:20px;color:#242424">
+<button onClick="{{ openSummary }}" aria-label="{{ launcherAria }}" style="position:fixed;right:0;top:50%;transform:translateY(-50%);z-index:40;display:flex;flex-direction:column;align-items:center;gap:8px;width:36px;padding:12px 0;border:0;border-radius:8px 0 0 8px;background:#7160E8;color:#FFFFFF;font:inherit;cursor:pointer;box-shadow:0 0 2px rgba(0,0,0,.30),0 2px 4px rgba(0,0,0,.25)" style-hover="background:#6656D1" style-active="background:#3F3682"><i style="width:20px;height:20px;flex:none;background:#FFFFFF;mask:url(assets/icons/chat_multiple_20_regular.svg) 0/20px"></i><span style="writing-mode:vertical-rl;transform:rotate(180deg);font-weight:600">Tilbakemelding</span><span style="writing-mode:vertical-rl;transform:rotate(180deg);font-size:12px;line-height:16px;font-variant-numeric:tabular-nums">{{ progress }}</span></button>
+<sc-if value="{{ open }}" hint-placeholder-val="{{ false }}">
+<aside role="dialog" aria-labelledby="fbTitle" style="position:fixed;top:0;right:0;bottom:0;z-index:50;width:min(440px,100vw);display:flex;flex-direction:column;background:#FFFFFF;box-shadow:0 0 8px rgba(0,0,0,.20),0 14px 28px rgba(0,0,0,.24)">
+<div style="display:flex;align-items:flex-start;gap:8px;padding:16px 16px 12px 20px;border-bottom:1px solid #E0E0E0">
+<span style="flex:1;display:flex;flex-direction:column;gap:2px;min-width:0"><span style="font-size:12px;line-height:16px;font-weight:600;color:#6656D1">{{ eyebrow }}</span><span id="fbTitle" style="font-size:20px;line-height:26px;font-weight:600">{{ heading }}</span></span>
+<button onClick="{{ close }}" aria-label="Lukk" title="Lukk" style="display:grid;place-items:center;width:32px;height:32px;flex:none;border:0;border-radius:4px;background:transparent;cursor:pointer" style-hover="background:#F5F5F5"><i style="width:20px;height:20px;background:#424242;mask:url(assets/icons/dismiss_20_regular.svg) 0/20px"></i></button>
+</div>
+<sc-if value="{{ showWho }}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;align-items:center;gap:8px;padding:8px 20px;background:#FAFAFA;border-bottom:1px solid #F0F0F0;font-size:12px;line-height:16px;color:#424242"><i style="width:16px;height:16px;flex:none;background:#616161;mask:url(assets/icons/person_20_regular.svg) center/16px"></i><span style="flex:1;min-width:0">Fra {{ who }}</span><button onClick="{{ editIdentity }}" style="border:0;padding:2px 4px;background:transparent;color:#6656D1;font:inherit;font-weight:600;text-decoration:underline;cursor:pointer">Endre</button></div>
+</sc-if>
+<div style="flex:1;min-height:0;overflow:auto;display:flex;flex-direction:column;gap:20px;padding:20px">
+<sc-if value="{{ isIdentity }}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;flex-direction:column;gap:16px">
+<span style="display:flex;flex-direction:column"><span style="color:#424242">Navn og rolle sendes med hvert svar, slik at prosjektet kan følge opp. De lagres i denne nettleseren til du endrer dem.</span><span lang="en" style="font-size:12px;line-height:16px;color:#616161">Your name and role are sent with each answer and stored in this browser.</span></span>
+<label style="display:flex;flex-direction:column;gap:4px"><span>Navn</span><input value="{{ nameIn }}" onInput="{{ onName }}" autocomplete="name" style="height:32px;padding:0 10px;border:1px solid #D1D1D1;border-bottom-color:#616161;border-radius:4px;outline:0;background:#FFFFFF;font:inherit;color:inherit"></label>
+<div role="radiogroup" aria-label="Rolle" style="display:flex;flex-direction:column;gap:2px"><span style="padding-bottom:4px">Rolle</span>
+<sc-for list="{{ roles }}" as="r" hint-placeholder-count="4">
+<button onClick="{{ r.on }}" role="radio" aria-checked="{{ r.aria }}" style="display:flex;align-items:center;gap:8px;min-height:32px;padding:0 4px;border:0;background:transparent;font:inherit;color:inherit;text-align:left;cursor:pointer"><span style="display:grid;place-items:center;width:16px;height:16px;flex:none;border:1px solid {{ r.bd }};border-radius:50%"><span style="width:10px;height:10px;border-radius:50%;background:#7160E8;opacity:{{ r.op }}"></span></span>{{ r.label }}</button>
+</sc-for>
+</div>
+</div>
+</sc-if>
+<sc-if value="{{ showPreviewNote }}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;gap:8px;padding:8px 12px;border-radius:4px;background:#F5F5F5;border:1px solid #E0E0E0"><i style="width:20px;height:20px;flex:none;background:#616161;mask:url(assets/icons/info_20_filled.svg) 0/20px"></i><span style="display:flex;flex-direction:column"><span>Forhåndsvisning. Svarene lagres i denne nettleseren til Nettskjema-lenken er lagt inn.</span><span lang="en" style="font-size:12px;line-height:16px;color:#616161">Preview. Answers stay in this browser until the Nettskjema link is added.</span></span></div>
+</sc-if>
+<sc-if value="{{ useBuiltIn }}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;flex-direction:column;gap:20px">
+<sc-for list="{{ qs }}" as="q" hint-placeholder-count="5">
+<div style="display:flex;flex-direction:column;gap:8px">
+<span style="display:flex;flex-direction:column"><span style="font-weight:600">{{ q.nb }}</span><span lang="en" style="font-size:12px;line-height:16px;color:#616161">{{ q.en }}</span></span>
+<sc-if value="{{ q.isText }}" hint-placeholder-val="{{ false }}"><textarea value="{{ q.value }}" onInput="{{ q.onInput }}" aria-label="{{ q.nb }}" style="min-height:72px;padding:6px 10px;border:1px solid #D1D1D1;border-bottom-color:#616161;border-radius:4px;resize:vertical;outline:0;background:#FFFFFF;font:inherit;color:inherit"></textarea></sc-if>
+<sc-if value="{{ q.hasOptions }}" hint-placeholder-val="{{ true }}">
+<div role="radiogroup" aria-label="{{ q.nb }}" style="display:flex;flex-wrap:wrap;gap:6px">
+<sc-for list="{{ q.options }}" as="o" hint-placeholder-count="4">
+<button onClick="{{ o.on }}" role="radio" aria-checked="{{ o.aria }}" style="min-width:{{ o.minW }};height:32px;padding:0 10px;border:1px solid {{ o.bd }};box-shadow:inset 0 0 0 1px {{ o.ring }};border-radius:4px;background:{{ o.bg }};font:inherit;color:#242424;font-variant-numeric:tabular-nums;cursor:pointer">{{ o.label }}</button>
+</sc-for>
+</div>
+<sc-if value="{{ q.isScale }}" hint-placeholder-val="{{ false }}"><span style="display:flex;justify-content:space-between;max-width:224px;font-size:12px;line-height:16px;color:#616161"><span>{{ q.min }}</span><span>{{ q.max }}</span></span></sc-if>
+</sc-if>
+</div>
+</sc-for>
+</div>
+</sc-if>
+<sc-if value="{{ useFrame }}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;flex-direction:column;gap:8px;flex:1;min-height:480px">
+<iframe src="{{ frameSrc }}" title="Nettskjema" style="flex:1;width:100%;min-height:480px;border:1px solid #E0E0E0;border-radius:4px"></iframe>
+<a href="{{ frameSrc }}" target="_blank" rel="noopener" style="align-self:flex-start;font-size:12px;line-height:16px;color:#6656D1">Åpne skjemaet i en ny fane</a>
+</div>
+</sc-if>
+<sc-if value="{{ isSent }}" hint-placeholder-val="{{ false }}">
+<div role="status" style="display:flex;gap:8px;padding:8px 12px;border-radius:4px;background:#F1FAF1;border:1px solid #9FD89F"><i style="width:20px;height:20px;flex:none;background:#0E700E;mask:url(assets/icons/checkmark_circle_20_filled.svg) 0/20px"></i><span style="display:flex;flex-direction:column"><span style="font-weight:600">Takk. Tilbakemeldingen er registrert.</span><span style="color:#424242">{{ sentNote }}</span></span></div>
+</sc-if>
+<sc-if value="{{ isSummary }}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;flex-direction:column;gap:16px">
+<span style="color:#424242">{{ summaryLine }}</span>
+<div style="display:flex;flex-direction:column;border-top:1px solid #E0E0E0">
+<sc-for list="{{ rows }}" as="r" hint-placeholder-count="8">
+<button onClick="{{ r.on }}" style="display:flex;align-items:center;gap:10px;min-height:40px;padding:6px 4px;border:0;border-bottom:1px solid #F0F0F0;background:transparent;font:inherit;color:inherit;text-align:left;cursor:pointer" style-hover="background:#F5F5F5"><i style="width:20px;height:20px;flex:none;background:{{ r.icc }};mask:url(assets/icons/{{ r.ic }}.svg) 0/20px"></i><span style="flex:1;min-width:0">{{ r.heading }}</span><span style="font-size:12px;line-height:16px;color:#616161">{{ r.state }}</span></button>
+</sc-for>
+</div>
+<div style="display:flex;flex-direction:column;gap:4px;padding:16px;border-radius:8px;background:#F9F8FE;border:1px solid #DCD8FA"><span style="font-weight:600">Helhetsvurdering</span><span style="color:#424242">Fem korte spørsmål når du er ferdig med delene.</span><span style="font-size:12px;line-height:16px;color:#616161">{{ wrapState }}</span></div>
+</div>
+</sc-if>
+</div>
+<div style="display:flex;flex-wrap:wrap;align-items:center;gap:8px;padding:12px 20px 20px;border-top:1px solid #E0E0E0">
+<sc-for list="{{ footer }}" as="b" hint-placeholder-count="2">
+<button onClick="{{ b.on }}" aria-disabled="{{ b.dis }}" style="display:inline-flex;align-items:center;justify-content:center;height:32px;min-width:96px;padding:0 12px;border:1px solid {{ b.bd }};border-radius:4px;background:{{ b.bg }};color:{{ b.fg }};font:inherit;font-weight:600;cursor:{{ b.cur }}" style-hover="filter:brightness(0.95)">{{ b.label }}</button>
+</sc-for>
+</div>
+</aside>
+</sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:480,&quot;height&quot;:720},&quot;page&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;Design language&quot;,&quot;tsType&quot;:&quot;string&quot;}}">
+class Component extends DCLogic {
+  state = { open: false, mode: 'summary', after: 'summary', cur: null, identity: null, nameIn: '', roleIn: '', answers: {}, sent: false, cfg: null, list: [], done: {}, nLocal: 0 };
+  defaults = {
+    nettskjemaUrl: '', wrapupUrl: '', version: '1.0',
+    fields: { name: 'navn', role: 'rolle', page: 'side', section: 'seksjon', version: 'versjon' },
+    roles: ['Fastlege', 'DPS-kliniker', 'Veileder', 'Ekstern fagperson'],
+    sectionQuestions: [
+      { id: 'klarhet', type: 'scale', nb: 'Hvor tydelig er denne delen?', en: 'How clear is this section?', min: 'Uklar', max: 'Svært tydelig' },
+      { id: 'fungerer', type: 'text', nb: 'Hva fungerer godt?', en: 'What works well?' },
+      { id: 'endre', type: 'text', nb: 'Hva bør endres?', en: 'What should change?' },
+    ],
+    wrapupQuestions: [
+      { id: 'viktigst', type: 'text', nb: 'Hva er det viktigste å endre?', en: 'What is the most important thing to change?' },
+    ],
+  };
+  componentDidMount() {
+    this.load();
+    import('./atlas-feedback-config.js').then(m => this.setState({ cfg: Object.assign({}, this.defaults, (m && m.default) || {}) })).catch(() => this.setState({ cfg: this.defaults }));
+    this.onOpen = e => this.openSection((e && e.detail) || {});
+    window.addEventListener('atlas-feedback-open', this.onOpen);
+    this.onKey = e => { if (e.key === 'Escape' && this.state.open) this.setState({ open: false }); };
+    document.addEventListener('keydown', this.onKey);
+    this.timer = setTimeout(() => this.scan(), 800);
+  }
+  componentWillUnmount() { window.removeEventListener('atlas-feedback-open', this.onOpen); document.removeEventListener('keydown', this.onKey); clearTimeout(this.timer); }
+  read(k, d) { try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch (e) { return d; } }
+  write(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
+  load() { this.setState({ identity: this.read('atlas-fb-identity', null), done: this.read('atlas-fb-done', {}), nLocal: this.read('atlas-fb-responses', []).length }); }
+  scan() { const list = Array.from(document.querySelectorAll('[data-fb-section]')).map(el => ({ section: el.getAttribute('data-fb-section'), heading: el.getAttribute('data-fb-heading') || el.getAttribute('data-fb-section') })); this.setState({ list }); }
+  cfg() { return this.state.cfg || this.defaults; }
+  page() { return this.props.page || 'ATLAS'; }
+  key(section) { return this.page() + '::' + section; }
+  isDone(section) { return !!this.state.done[this.key(section)]; }
+  openSection(d) { this.scan(); this.setState(st => ({ open: true, cur: d, answers: {}, sent: false, mode: st.identity ? 'section' : 'identity', after: 'section' })); }
+  go(mode) { this.scan(); this.setState(st => ({ open: true, answers: {}, sent: false, mode: st.identity ? mode : 'identity', after: mode })); }
+  markDone(section) { const done = Object.assign({}, this.state.done, { [this.key(section)]: new Date().toISOString() }); this.write('atlas-fb-done', done); this.setState({ done }); window.dispatchEvent(new CustomEvent('atlas-feedback-updated')); }
+  sectionId() { return this.state.mode === 'wrapup' ? 'avslutning' : (this.state.cur && this.state.cur.section) || ''; }
+  frameSrc() {
+    const c = this.cfg(), wrap = this.state.mode === 'wrapup';
+    const base = (wrap && c.wrapupUrl) ? c.wrapupUrl : c.nettskjemaUrl;
+    if (!base) return '';
+    const f = c.fields || this.defaults.fields, id = this.state.identity || {};
+    const p = ['embed=1'];
+    [[f.name, id.name], [f.role, id.role], [f.page, this.page()], [f.section, this.sectionId()], [f.version, c.version]].forEach(([k, v]) => { if (k) { p.push('CB' + k + '=' + encodeURIComponent(v || '')); p.push('LCK' + k + '=true'); } });
+    return base + (base.indexOf('?') >= 0 ? '&' : '?') + p.join('&');
+  }
+  submit() {
+    const s = this.state, wrap = s.mode === 'wrapup', id = s.identity || {};
+    const rec = Object.assign({ tid: new Date().toISOString(), side: this.page(), seksjon: this.sectionId(), tittel: wrap ? 'Helhetsvurdering' : ((s.cur && s.cur.heading) || ''), navn: id.name || '', rolle: id.role || '', versjon: this.cfg().version }, s.answers);
+    const all = this.read('atlas-fb-responses', []); all.push(rec); this.write('atlas-fb-responses', all);
+    this.markDone(this.sectionId()); this.setState({ sent: true, nLocal: all.length });
+  }
+  jump(n) { const el = document.getElementById(n.section); if (el) window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - 72, behavior: 'smooth' }); this.openSection(n); }
+  next() {
+    const list = this.state.list, cur = this.state.cur;
+    const i = cur ? list.findIndex(x => x.section === cur.section) : -1;
+    const n = list.slice(i + 1).concat(list.slice(0, Math.max(i, 0))).find(x => !this.isDone(x.section));
+    if (n) this.jump(n); else this.go('summary');
+  }
+  exportCsv() {
+    const all = this.read('atlas-fb-responses', []); if (!all.length) return;
+    const keys = []; all.forEach(r => Object.keys(r).forEach(k => { if (keys.indexOf(k) < 0) keys.push(k); }));
+    const esc = v => '"' + String(v == null ? '' : v).replace(/"/g, '""') + '"';
+    const csv = [keys.map(esc).join(';')].concat(all.map(r => keys.map(k => esc(r[k])).join(';'))).join('\r\n');
+    const url = URL.createObjectURL(new Blob(['\ufeff' + csv], { type: 'text/csv;charset=utf-8' }));
+    const a = document.createElement('a'); a.href = url; a.download = 'atlas-tilbakemelding.csv'; document.body.appendChild(a); a.click();
+    setTimeout(() => { URL.revokeObjectURL(url); a.remove(); }, 500);
+  }
+  btn(label, on, primary, disabled) {
+    const d = !!disabled;
+    return { label, on: d ? () => {} : on, dis: d, bg: d ? '#F0F0F0' : primary ? '#7160E8' : '#FFFFFF', fg: d ? '#BDBDBD' : primary ? '#FFFFFF' : '#242424', bd: d ? '#E0E0E0' : primary ? '#7160E8' : '#D1D1D1', cur: d ? 'not-allowed' : 'pointer' };
+  }
+  renderVals() {
+    const s = this.state, c = this.cfg(), id = s.identity;
+    const hasUrl = !!c.nettskjemaUrl, isForm = s.mode === 'section' || s.mode === 'wrapup';
+    const total = s.list.length, doneN = s.list.filter(x => this.isDone(x.section)).length;
+    const setA = (qid, v) => this.setState(st => ({ answers: Object.assign({}, st.answers, { [qid]: v }) }));
+    const qs = (s.mode === 'wrapup' ? (c.wrapupQuestions || []) : (c.sectionQuestions || [])).map(q => {
+      const isScale = q.type === 'scale', isText = q.type === 'text', val = s.answers[q.id] || '';
+      const opts = isScale ? ['1', '2', '3', '4', '5'] : (q.options || []);
+      return { nb: q.nb, en: q.en || '', min: q.min || '', max: q.max || '', isText, isScale, hasOptions: !isText, value: val, onInput: e => setA(q.id, e.target.value),
+        options: opts.map(o => { const on = val === o; return { label: o, aria: on ? 'true' : 'false', minW: isScale ? '40px' : '0px', bg: on ? '#F9F8FE' : '#FFFFFF', bd: on ? '#7160E8' : '#D1D1D1', ring: on ? '#7160E8' : 'transparent', on: () => setA(q.id, on ? '' : o) }; }) };
+    });
+    const anyAnswer = Object.keys(s.answers).some(k => String(s.answers[k] || '').trim());
+    const canSave = !!s.nameIn.trim() && !!s.roleIn;
+    const close = () => this.setState({ open: false });
+    let footer;
+    if (s.mode === 'identity') footer = [this.btn('Lagre og fortsett', () => { const identity = { name: s.nameIn.trim(), role: s.roleIn }; this.write('atlas-fb-identity', identity); this.setState({ identity, mode: s.after }); }, true, !canSave), this.btn('Avbryt', close)];
+    else if (isForm && s.sent) footer = s.mode === 'wrapup' ? [this.btn('Lukk', close)] : [this.btn('Neste del', () => this.next(), true), this.btn('Lukk', close)];
+    else if (isForm && hasUrl) footer = [this.btn('Jeg har sendt skjemaet', () => { this.markDone(this.sectionId()); this.setState({ sent: true }); }, true), this.btn('Lukk', close)];
+    else if (isForm) footer = [this.btn('Send tilbakemelding', () => this.submit(), true, !anyAnswer), this.btn('Avbryt', close)];
+    else footer = [this.btn('Gi helhetsvurdering', () => this.go('wrapup'), true)].concat(!hasUrl && s.nLocal ? [this.btn('Last ned svar (CSV)', () => this.exportCsv())] : [], [this.btn('Lukk', close)]);
+    const headings = { identity: 'Hvem gir tilbakemelding?', wrapup: 'Helhetsvurdering', summary: 'Din tilbakemelding' };
+    return {
+      open: s.open,
+      progress: total ? doneN + ' av ' + total : '',
+      launcherAria: 'Tilbakemelding' + (total ? ', ' + doneN + ' av ' + total + ' deler vurdert' : ''),
+      openSummary: () => this.go('summary'),
+      close,
+      eyebrow: this.page() + ' · Tilbakemelding',
+      heading: s.mode === 'section' ? ((s.cur && s.cur.heading) || 'Tilbakemelding') : headings[s.mode],
+      showWho: !!id && s.mode !== 'identity',
+      who: id ? id.name + ' · ' + id.role : '',
+      editIdentity: () => this.setState({ nameIn: (id && id.name) || '', roleIn: (id && id.role) || '', after: s.mode === 'identity' ? s.after : s.mode, mode: 'identity' }),
+      isIdentity: s.mode === 'identity',
+      nameIn: s.nameIn,
+      onName: e => this.setState({ nameIn: e.target.value }),
+      roles: (c.roles || []).map(r => { const on = s.roleIn === r; return { label: r, aria: on ? 'true' : 'false', bd: on ? '#7160E8' : '#616161', op: on ? 1 : 0, on: () => this.setState({ roleIn: r }) }; }),
+      showPreviewNote: isForm && !hasUrl && !s.sent,
+      useBuiltIn: isForm && !hasUrl && !s.sent,
+      useFrame: isForm && hasUrl && !s.sent,
+      frameSrc: this.frameSrc(),
+      qs,
+      isSent: isForm && s.sent,
+      sentNote: hasUrl ? 'Svaret ligger i Nettskjema.' : 'Svaret er lagret i denne nettleseren.',
+      isSummary: s.mode === 'summary',
+      summaryLine: total ? doneN + ' av ' + total + ' deler på denne siden er vurdert.' : 'Ingen deler funnet på denne siden.',
+      rows: s.list.map(x => { const d = this.isDone(x.section); return { heading: x.heading, state: d ? 'Vurdert' : 'Ikke vurdert', ic: d ? 'checkmark_circle_20_regular' : 'circle_20_regular', icc: d ? '#6656D1' : '#616161', on: () => this.jump(x) }; }),
+      wrapState: this.isDone('avslutning') ? 'Sendt' : 'Ikke sendt ennå',
+      footer,
+    };
+  }
+}
+</script>
+</body>
+</html>

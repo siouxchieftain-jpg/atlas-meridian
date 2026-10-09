@@ -1,0 +1,805 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;background:#FFFFFF;color:#242424;font-family:'Segoe UI','Segoe UI Web (West European)',-apple-system,BlinkMacSystemFont,Roboto,'Helvetica Neue',sans-serif;font-size:14px;line-height:20px;-webkit-font-smoothing:antialiased}
+button,input,textarea,select{font:inherit;color:inherit}
+a{color:#6656D1;text-decoration:none}a:hover{color:#5649B0;text-decoration:underline}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</helmet>
+<div lang="en" style="min-height:100vh;display:flex;flex-direction:column">
+<header style="position:sticky;top:0;z-index:10;display:flex;align-items:center;gap:20px;height:56px;padding:0 24px;background:#FFFFFF;border-bottom:1px solid #E0E0E0">
+<a href="#overview" style="display:flex;align-items:center;gap:10px;color:#242424;text-decoration:none"><span style="font-size:16px;line-height:22px;font-weight:700;letter-spacing:.04em">ATLAS</span><span style="width:1px;height:20px;background:#E0E0E0"></span><span style="color:#424242">Meridian</span></a>
+<span style="display:inline-flex;flex:none;white-space:nowrap;align-items:center;height:20px;padding:0 6px;border-radius:4px;background:#F9F8FE;border:1px solid #DCD8FA;color:#6656D1;font-size:12px;line-height:16px;font-weight:600">1.0 for review</span>
+<nav style="display:flex;align-self:stretch;margin-left:12px">
+<a href="#overview" style="position:relative;display:flex;align-items:center;padding:0 12px;color:#242424;font-weight:600;text-decoration:none">Design language<span style="position:absolute;left:12px;right:12px;bottom:0;height:3px;border-radius:3px 3px 0 0;background:#7160E8"></span></a>
+<a href="ATLAS%20DS%20-%20Components.dc.html" style="display:flex;align-items:center;padding:0 12px;color:#424242;text-decoration:none" style-hover="color:#242424;background:#F5F5F5">Components</a>
+<a href="ATLAS%20DS%20-%20Clinical%20patterns.dc.html" style="display:flex;align-items:center;padding:0 12px;color:#424242;text-decoration:none" style-hover="color:#242424;background:#F5F5F5">Clinical patterns</a>
+</nav>
+<span style="flex:1"></span>
+<a href="https://fluent2.microsoft.design/" target="_blank" rel="noopener" style="font-size:12px;line-height:16px;color:#616161">Built on Fluent 2</a>
+</header>
+
+<div style="display:grid;grid-template-columns:248px minmax(0,1fr);flex:1">
+<aside style="position:sticky;top:56px;align-self:start;height:calc(100vh - 56px);overflow:auto;display:flex;flex-direction:column;gap:2px;padding:20px 8px;background:#FAFAFA;border-right:1px solid #E0E0E0">
+<div style="padding:0 12px 8px;font-size:12px;line-height:16px;font-weight:600;color:#616161">Design language</div>
+<sc-for list="{{ nav }}" as="n" hint-placeholder-count="14">
+<a href="#{{ n.id }}" style="position:relative;display:flex;align-items:center;min-height:32px;padding:6px 12px 6px 16px;border-radius:4px;color:#242424;text-decoration:none;font-weight:{{ n.fw }};background:{{ n.bg }}" style-hover="background:#F0F0F0"><span style="position:absolute;left:4px;top:8px;bottom:8px;width:3px;border-radius:2px;background:{{ n.ind }}"></span>{{ n.label }}</a>
+</sc-for>
+</aside>
+
+<main style="min-width:0;padding:40px 56px 120px">
+<div style="max-width:1040px;display:flex;flex-direction:column">
+
+<section id="overview" style="scroll-margin-top:72px;display:flex;flex-direction:column;gap:32px;padding-bottom:48px">
+<div style="display:flex;flex-direction:column;gap:12px;max-width:760px">
+<div style="font-weight:600;color:#6656D1">Meridian design language · 1.0 for review</div>
+<h1 style="margin:0;font-size:40px;line-height:52px;font-weight:600">Design language</h1>
+<p style="margin:0;font-size:16px;line-height:22px;color:#424242;text-wrap:pretty">Meridian is the design language for ATLAS. On an atlas, a meridian is the line that joins the two poles; here it joins the GP and the DPS clinician on one record. ATLAS is built on Fluent 2, Microsoft’s design system, and adds the rules a clinical decision-support tool needs. Foundations, tokens and components follow Fluent 2 for web as published. Every colour is a Fluent token. ATLAS adds two things of its own: the uncertainty band, and a set of guardrails that stop the tool from recommending.</p>
+</div>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px">
+<a href="#principles" style="display:flex;flex-direction:column;gap:8px;padding:16px;border-radius:8px;background:#FFFFFF;box-shadow:0 0 2px rgba(0,0,0,.12),0 2px 4px rgba(0,0,0,.14);color:#242424;text-decoration:none" style-hover="box-shadow:0 0 2px rgba(0,0,0,.12),0 4px 8px rgba(0,0,0,.14)"><i style="width:24px;height:24px;background:#7160E8;mask:url(assets/icons/color_20_regular.svg) 0/24px"></i><span style="font-size:16px;line-height:22px;font-weight:600">Design language</span><span style="color:#616161">Principles, guardrails, colour, type, layout, shape, elevation, material, motion, icons, accessibility, content and tokens.</span></a>
+<a href="ATLAS%20DS%20-%20Components.dc.html" style="display:flex;flex-direction:column;gap:8px;padding:16px;border-radius:8px;background:#FFFFFF;box-shadow:0 0 2px rgba(0,0,0,.12),0 2px 4px rgba(0,0,0,.14);color:#242424;text-decoration:none" style-hover="box-shadow:0 0 2px rgba(0,0,0,.12),0 4px 8px rgba(0,0,0,.14)"><i style="width:24px;height:24px;background:#7160E8;mask:url(assets/icons/apps_list_20_regular.svg) 0/24px"></i><span style="font-size:16px;line-height:22px;font-weight:600">Components</span><span style="color:#616161">The Fluent 2 components ATLAS uses, with ATLAS rules for each.</span></a>
+<a href="ATLAS%20DS%20-%20Clinical%20patterns.dc.html" style="display:flex;flex-direction:column;gap:8px;padding:16px;border-radius:8px;background:#FFFFFF;box-shadow:0 0 2px rgba(0,0,0,.12),0 2px 4px rgba(0,0,0,.14);color:#242424;text-decoration:none" style-hover="box-shadow:0 0 2px rgba(0,0,0,.12),0 4px 8px rgba(0,0,0,.14)"><i style="width:24px;height:24px;background:#7160E8;mask:url(assets/icons/stethoscope_20_regular.svg) 0/24px"></i><span style="font-size:16px;line-height:22px;font-weight:600">Clinical patterns</span><span style="color:#616161">Uncertainty band, refer or hold, dialogue with DPS, tours and the app shell.</span></a>
+</div>
+<div style="display:flex;flex-direction:column;gap:12px;padding:20px 24px;border-radius:8px;background:#FAFAFA;border:1px solid #E0E0E0">
+<h3 style="margin:0;font-size:16px;line-height:22px;font-weight:600">Decisions in this version</h3>
+<ul style="margin:0;padding-left:20px;display:flex;flex-direction:column;gap:6px;color:#424242">
+<li>Fluent 2 for web is the base. Neutral greys, the Segoe UI type ramp, 4px spacing, corner radius, shadows, motion and Fluent System Icons are used as published.</li>
+<li>Every colour comes from Fluent’s global palette. The brand is Fluent lavender <span style="font-family:Consolas,ui-monospace,Menlo,monospace">#7160E8</span>, laid out as a 16-step brand ramp.</li><li>Kit: Fluent 2 Web, with the Fluent 2 design language tokens and Fluent System Icons. The other Microsoft kits are reviewed in <a href="#kits">Microsoft kits</a>.</li>
+<li>Warm paper, Source Serif 4, Inter and JetBrains Mono from ATLAS 0.x are retired.</li>
+<li>Fluent’s status colours stay, for system feedback only. Clinical states are neutral.</li>
+<li>The coloured wrapper panels (Register A) become guide surfaces with a dawn atmosphere: Fluent’s coral, pink and lavender tints. Clinical views stay white and grey, with lavender only for interaction; see <a href="#harmony">Harmony</a>.</li>
+<li>Open: which way the grey-zone scale runs. See <a href="ATLAS%20DS%20-%20Clinical%20patterns.dc.html#band">Clinical patterns</a>.</li>
+</ul>
+</div>
+</section>
+
+<section id="kits" style="scroll-margin-top:72px;display:flex;flex-direction:column;gap:24px;padding:48px 0;border-top:1px solid #E0E0E0">
+<div style="display:flex;flex-direction:column;gap:8px;max-width:760px">
+<div style="display:flex;align-items:center;justify-content:space-between;gap:8px 16px;flex-wrap:wrap"><h2 style="margin:0;font-size:28px;line-height:36px;font-weight:600">Microsoft kits</h2><dc-import name="ATLAS Feedback Button" section="kits" heading="Microsoft kits" page="Design language" hint-size="172px,32px"></dc-import></div>
+<p style="margin:0;font-size:16px;line-height:22px;color:#424242;text-wrap:pretty">Microsoft publishes several Fluent-based kits on Figma. ATLAS is built on the three core ones. From Fabric it takes one idea, a lively palette for guide surfaces, rebuilt from Fluent’s own tints.</p>
+</div>
+<div style="overflow:auto;border:1px solid #E0E0E0;border-radius:8px">
+<div style="display:flex;flex-direction:column">
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:4px 16px;padding:10px 16px;background:#FAFAFA;border-bottom:1px solid #E0E0E0;font-weight:600"><span>Kit</span><span>What it is for</span><span>ATLAS</span><span>Why</span></div>
+<sc-for list="{{ kits }}" as="k" hint-placeholder-count="11">
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:4px 16px;align-items:start;padding:12px 16px;border-bottom:1px solid #F0F0F0"><span style="font-weight:600">{{ k.n }}</span><span style="color:#424242">{{ k.p }}</span><span style="justify-self:start;display:inline-flex;align-items:center;height:20px;padding:0 8px;border-radius:10px;font-size:12px;line-height:16px;font-weight:600;white-space:nowrap;background:{{ k.bg }};color:{{ k.fg }};border:1px solid {{ k.bd }}">{{ k.s }}</span><span style="color:#424242">{{ k.w }}</span></div>
+</sc-for>
+</div></div>
+<span style="font-size:12px;line-height:16px;color:#616161">Colour values are from the <a href="https://microsoft.github.io/fluentui-design-tokens/" target="_blank" rel="noopener">Fluent UI style reference</a>. Kit descriptions are from Fluent 2’s design guide and Microsoft’s pages on Figma Community.</span>
+</section>
+
+<section id="principles" style="scroll-margin-top:72px;display:flex;flex-direction:column;gap:24px;padding:48px 0;border-top:1px solid #E0E0E0">
+<div style="display:flex;flex-direction:column;gap:8px;max-width:760px">
+<div style="display:flex;align-items:center;justify-content:space-between;gap:8px 16px;flex-wrap:wrap"><h2 style="margin:0;font-size:28px;line-height:36px;font-weight:600">Principles</h2><dc-import name="ATLAS Feedback Button" section="principles" heading="Principles" page="Design language" hint-size="172px,32px"></dc-import></div>
+<p style="margin:0;font-size:16px;line-height:22px;color:#424242;text-wrap:pretty">Fluent 2 has four design principles. ATLAS keeps the structure and states what each one means in a consultation room and at a DPS intake desk.</p>
+</div>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px">
+<div style="display:flex;flex-direction:column;gap:8px;padding:20px;border:1px solid #E0E0E0;border-radius:8px"><span style="font-size:12px;line-height:16px;font-weight:600;color:#616161">01 · From “Natural on every platform”</span><span style="font-size:20px;line-height:26px;font-weight:600">Natural in the clinic</span><span style="color:#424242;text-wrap:pretty">ATLAS looks and behaves like the Windows and Microsoft 365 tools clinicians already use. Familiar controls leave attention for the patient.</span></div>
+<div style="display:flex;flex-direction:column;gap:8px;padding:20px;border:1px solid #E0E0E0;border-radius:8px"><span style="font-size:12px;line-height:16px;font-weight:600;color:#616161">02 · From “Built for focus”</span><span style="font-size:20px;line-height:26px;font-weight:600">Built for clinical focus</span><span style="color:#424242;text-wrap:pretty">One task per view. Neutral surfaces, with colour kept for meaning: lavender for interaction, the band for uncertainty. A consultation is 15–20 minutes; nothing competes for that time.</span></div>
+<div style="display:flex;flex-direction:column;gap:8px;padding:20px;border:1px solid #E0E0E0;border-radius:8px"><span style="font-size:12px;line-height:16px;font-weight:600;color:#616161">03 · From “One for all, all for one”</span><span style="font-size:20px;line-height:26px;font-weight:600">One record, two roles</span><span style="color:#424242;text-wrap:pretty">GP and DPS clinician see the same facts in the same components, identified by role. WCAG 2.2 AA throughout. Norwegian first, English on request.</span></div>
+<div style="display:flex;flex-direction:column;gap:8px;padding:20px;border:1px solid #E0E0E0;border-radius:8px"><span style="font-size:12px;line-height:16px;font-weight:600;color:#616161">04 · From “Unmistakably Microsoft”</span><span style="font-size:20px;line-height:26px;font-weight:600">Honest about uncertainty</span><span style="color:#424242;text-wrap:pretty">The uncertainty band is the one element that is ATLAS’s own. It shows where a case sits and how unsure that placement is. It never says what to do.</span></div>
+</div>
+</section>
+
+<section id="guardrails" style="scroll-margin-top:72px;display:flex;flex-direction:column;gap:24px;padding:48px 0;border-top:1px solid #E0E0E0">
+<div style="display:flex;flex-direction:column;gap:8px;max-width:760px">
+<div style="display:flex;align-items:center;justify-content:space-between;gap:8px 16px;flex-wrap:wrap"><h2 style="margin:0;font-size:28px;line-height:36px;font-weight:600">Clinical guardrails</h2><dc-import name="ATLAS Feedback Button" section="guardrails" heading="Clinical guardrails" page="Design language" hint-size="172px,32px"></dc-import></div>
+<p style="margin:0;font-size:16px;line-height:22px;color:#424242;text-wrap:pretty">The six ATLAS prohibitions are binding. Each one limits how specific Fluent components may be used. Check every screen against them before it ships.</p>
+</div>
+<div style="display:flex;flex-direction:column;border:1px solid #E0E0E0;border-radius:8px;overflow:hidden">
+<div style="display:grid;grid-template-columns:40px minmax(0,1fr) minmax(0,1.4fr);gap:16px;padding:10px 16px;background:#FAFAFA;border-bottom:1px solid #E0E0E0;font-weight:600"><span></span><span>Rule</span><span>What it means for components</span></div>
+<sc-for list="{{ guardrails }}" as="g" hint-placeholder-count="6">
+<div style="display:grid;grid-template-columns:40px minmax(0,1fr) minmax(0,1.4fr);gap:16px;padding:12px 16px;border-bottom:1px solid #F0F0F0"><span style="font-weight:600;color:#616161">{{ g.n }}</span><span style="font-weight:600">{{ g.rule }}</span><span style="color:#424242;text-wrap:pretty">{{ g.how }}</span></div>
+</sc-for>
+</div>
+</section>
+
+<section id="harmony" style="scroll-margin-top:72px;display:flex;flex-direction:column;gap:32px;padding:48px 0;border-top:1px solid #E0E0E0">
+<div style="display:flex;flex-direction:column;gap:8px;max-width:760px">
+<div style="display:flex;align-items:center;justify-content:space-between;gap:8px 16px;flex-wrap:wrap"><h2 style="margin:0;font-size:28px;line-height:36px;font-weight:600">Harmony</h2><dc-import name="ATLAS Feedback Button" section="harmony" heading="Harmony" page="Design language" hint-size="172px,32px"></dc-import></div>
+<p style="margin:0;font-size:16px;line-height:22px;color:#424242;text-wrap:pretty">Each colour in ATLAS has one job, and each treatment belongs to one of two registers. Those two rules keep the atmosphere, the buttons and the band from competing for attention.</p>
+</div>
+
+<div style="display:flex;flex-direction:column;gap:12px">
+<h3 style="margin:0;font-size:20px;line-height:26px;font-weight:600">One job per colour</h3>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px">
+<div style="display:flex;flex-direction:column;gap:10px;padding:16px;border:1px solid #E0E0E0;border-radius:8px"><div style="display:flex;height:28px;border-radius:4px;overflow:hidden"><span style="flex:1;background:#F9F8FE"></span><span style="flex:1;background:#DCD8FA"></span><span style="flex:1;background:#9184EE"></span><span style="flex:1;background:#7160E8"></span><span style="flex:1;background:#3F3682"></span></div><span style="font-weight:600">Lavender · interaction</span><span style="color:#424242">Buttons, links, selection, focus, guide light.</span><span style="font-size:12px;line-height:16px;color:#616161">Never carries clinical meaning.</span></div>
+<div style="display:flex;flex-direction:column;gap:10px;padding:16px;border:1px solid #E0E0E0;border-radius:8px"><div style="display:flex;height:28px;border-radius:4px;overflow:hidden;box-shadow:inset 0 0 0 1px rgba(0,0,0,.06)"><span style="flex:1;background:#FFFFFF"></span><span style="flex:1;background:#F5F5F5"></span><span style="flex:1;background:#E0E0E0"></span><span style="flex:1;background:#616161"></span><span style="flex:1;background:#242424"></span></div><span style="font-weight:600">Greys · structure</span><span style="color:#424242">Surfaces, text, strokes.</span><span style="font-size:12px;line-height:16px;color:#616161">Never used for emphasis.</span></div>
+<div style="display:flex;flex-direction:column;gap:10px;padding:16px;border:1px solid #E0E0E0;border-radius:8px"><div style="display:flex;height:28px;border-radius:4px;overflow:hidden"><span style="flex:1;background:#FDCFB4"></span><span style="flex:1;background:#FEE5D7"></span><span style="flex:1;background:#FBDDF0"></span><span style="flex:1;background:#D2CCF8"></span></div><span style="font-weight:600">Dawn · atmosphere</span><span style="color:#424242">Guide surfaces: welcome, tours, briefings.</span><span style="font-size:12px;line-height:16px;color:#616161">Never in clinical views or behind the band.</span></div><div style="display:flex;flex-direction:column;gap:10px;padding:16px;border:1px solid #E0E0E0;border-radius:8px"><div style="height:28px;border-radius:4px;background:linear-gradient(90deg,#8DA48A,#D6C8A0 50%,#B27560)"></div><span style="font-weight:600">Sage, sand, clay · uncertainty</span><span style="color:#424242">The uncertainty band, and nothing else.</span><span style="font-size:12px;line-height:16px;color:#616161">Never in backgrounds, tags, charts or text.</span></div>
+<div style="display:flex;flex-direction:column;gap:10px;padding:16px;border:1px solid #E0E0E0;border-radius:8px"><div style="display:flex;height:28px;border-radius:4px;overflow:hidden"><span style="flex:1;background:#C50F1F"></span><span style="flex:1;background:#F7630C"></span><span style="flex:1;background:#107C10"></span></div><span style="font-weight:600">Status · system state</span><span style="color:#424242">Saving, sending, connection, form errors.</span><span style="font-size:12px;line-height:16px;color:#616161">Never for patients, outcomes or urgency.</span></div>
+</div>
+</div>
+
+<div style="display:flex;flex-direction:column;gap:12px">
+<h3 style="margin:0;font-size:20px;line-height:26px;font-weight:600">Two registers</h3>
+<div style="display:flex;flex-direction:column;border:1px solid #E0E0E0;border-radius:8px;overflow:hidden">
+<div style="display:grid;grid-template-columns:140px minmax(0,1fr) minmax(0,1fr);gap:16px;padding:10px 16px;background:#FAFAFA;border-bottom:1px solid #E0E0E0;font-weight:600"><span></span><span>Clinical work</span><span>Guide surfaces</span></div>
+<sc-for list="{{ registers }}" as="r" hint-placeholder-count="7">
+<div style="display:grid;grid-template-columns:140px minmax(0,1fr) minmax(0,1fr);gap:16px;padding:10px 16px;border-bottom:1px solid #F0F0F0"><span style="font-weight:600">{{ r.k }}</span><span style="color:#424242">{{ r.a }}</span><span style="color:#424242">{{ r.b }}</span></div>
+</sc-for>
+</div>
+</div>
+
+<div style="display:flex;flex-direction:column;gap:12px">
+<h3 style="margin:0;font-size:20px;line-height:26px;font-weight:600">Button emphasis</h3>
+<p style="margin:0;color:#424242;max-width:760px">Five levels. Emphasis follows the system action a surface exists for, never the clinical answer. As in Fluent, a layout has at most one primary button, placed first, to the left of other actions. Buttons of equal priority all get neutral backgrounds.</p>
+<div style="display:flex;flex-direction:column;border-top:1px solid #E0E0E0">
+<div style="display:grid;grid-template-columns:220px minmax(0,1fr);gap:24px;align-items:center;padding:14px 0;border-bottom:1px solid #F0F0F0"><span style="justify-self:start;display:inline-flex;align-items:center;gap:6px;height:40px;padding:0 16px;border-radius:8px;background:linear-gradient(135deg,#7160E8 0%,#3F3682 100%);color:#FFFFFF;font-size:16px;line-height:22px;font-weight:600;box-shadow:0 0 2px rgba(0,0,0,.30),0 2px 4px rgba(0,0,0,.25)">Start omvisningen</span><span style="display:flex;flex-direction:column"><span style="font-weight:600">1 · Sheen</span><span style="color:#424242">Guide surfaces only. The one start action: Start omvisningen, Start konsultasjonen. Large, 8px corners, brand 80 to brand 40, brand shadow.</span></span></div>
+<div style="display:grid;grid-template-columns:220px minmax(0,1fr);gap:24px;align-items:center;padding:14px 0;border-bottom:1px solid #F0F0F0"><span style="justify-self:start;display:inline-flex;align-items:center;height:32px;padding:0 12px;border-radius:4px;background:#7160E8;color:#FFFFFF;font-weight:600">Lagre notat</span><span style="display:flex;flex-direction:column"><span style="font-weight:600">2 · Primary</span><span style="color:#424242">Clinical views. At most one per view, for the system action: Lagre notat, Send til DPS. Solid brand 80.</span></span></div>
+<div style="display:grid;grid-template-columns:220px minmax(0,1fr);gap:24px;align-items:center;padding:14px 0;border-bottom:1px solid #F0F0F0"><span style="justify-self:start;display:flex;gap:8px"><span style="display:inline-flex;align-items:center;height:32px;padding:0 12px;border:1px solid #D1D1D1;border-radius:4px;font-weight:600">Behold</span><span style="display:inline-flex;align-items:center;height:32px;padding:0 12px;border:1px solid #D1D1D1;border-radius:4px;font-weight:600">Henvis</span></span><span style="display:flex;flex-direction:column"><span style="font-weight:600">3 · Secondary</span><span style="color:#424242">Everything else, including every clinical choice. Choices always come in equal pairs or sets.</span></span></div>
+<div style="display:grid;grid-template-columns:220px minmax(0,1fr);gap:24px;align-items:center;padding:14px 0;border-bottom:1px solid #F0F0F0"><span style="justify-self:start;display:inline-flex;align-items:center;gap:6px;height:32px;padding:0 8px;border-radius:4px;background:#F5F5F5"><i style="width:20px;height:20px;background:#424242;mask:url(assets/icons/print_20_regular.svg) 0/20px"></i>Skriv ut</span><span style="display:flex;flex-direction:column"><span style="font-weight:600">4 · Subtle</span><span style="color:#424242">Toolbars and panel headers. Shown here in its hover state.</span></span></div>
+<div style="display:grid;grid-template-columns:220px minmax(0,1fr);gap:24px;align-items:center;padding:14px 0;border-bottom:1px solid #F0F0F0"><span style="justify-self:start;display:inline-flex;align-items:center;height:32px;padding:0 8px;font-weight:600">Vis alle</span><span style="display:flex;flex-direction:column"><span style="font-weight:600">5 · Transparent</span><span style="color:#424242">Inline, low-priority actions inside text-heavy areas.</span></span></div>
+</div>
+</div>
+
+<div style="display:flex;flex-direction:column;gap:12px">
+<h3 style="margin:0;font-size:20px;line-height:26px;font-weight:600">Where buttons go</h3>
+<p style="margin:0;color:#424242;max-width:760px">Every ATLAS surface, with the buttons it may use. No surface has more than one action in the first column.</p>
+<div style="overflow:auto;border:1px solid #E0E0E0;border-radius:8px">
+<div style="display:flex;flex-direction:column">
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:4px 16px;padding:10px 16px;background:#FAFAFA;border-bottom:1px solid #E0E0E0;font-weight:600"><span>Surface</span><span>Highest emphasis, one only</span><span>Equal choices, secondary</span><span>Minor actions</span></div>
+<sc-for list="{{ placement }}" as="p" hint-placeholder-count="8">
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:4px 16px;padding:10px 16px;border-bottom:1px solid #F0F0F0"><span style="font-weight:600">{{ p.s }}</span><span style="color:#424242">{{ p.a }}</span><span style="color:#424242">{{ p.b }}</span><span style="color:#424242">{{ p.c }}</span></div>
+</sc-for>
+</div></div>
+<span style="font-size:12px;line-height:16px;color:#616161">One exception to primary-first: step navigation keeps Forrige on the left and Neste on the right, because that order is spatial.</span>
+</div>
+
+<div style="display:flex;flex-direction:column;gap:12px">
+<h3 style="margin:0;font-size:20px;line-height:26px;font-weight:600">Where gradients go</h3>
+<p style="margin:0;color:#424242;max-width:760px">Three gradients. Every stop is a Fluent global token. The default is coral, pink and lavender, with lavender buttons.</p>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px">
+<div style="display:flex;flex-direction:column;gap:10px"><div style="height:120px;border-radius:8px;background:radial-gradient(22% 34% at 76% 36%,#FDCFB4 0%,rgba(253,207,180,0) 75%),radial-gradient(44% 64% at 78% 34%,#FEE5D7 0%,rgba(254,229,215,0) 72%),radial-gradient(36% 50% at 56% 4%,#FBDDF0 0%,rgba(251,221,240,0) 72%),radial-gradient(40% 58% at 96% 86%,#D2CCF8 0%,rgba(210,204,248,0) 72%),radial-gradient(50% 65% at 0% 100%,#E7E4FB 0%,rgba(231,228,251,0) 70%),#FFFFFF"></div><span style="font-weight:600">atlasDawn</span><span style="color:#424242">Guide surfaces only. White with Orange tint 40 and 50 for coral, Pink tint 50, and Lavender tint 40 and 50 in two corners.</span></div>
+<div style="display:flex;flex-direction:column;gap:10px"><div style="height:120px;display:flex;align-items:flex-end;padding:12px 12px 0 32px;border-radius:8px;background:linear-gradient(90deg,#F5F5F5 0%,#F9F8FE 100%)"><div style="flex:1;height:80px;border-radius:8px 8px 0 0;background:#FFFFFF;box-shadow:0 0 2px rgba(0,0,0,.12),0 1px 2px rgba(0,0,0,.14)"></div></div><span style="font-weight:600">atlasFrameWash</span><span style="color:#424242">The app frame behind content panels: neutral background 3 to brand 160. ATLAS’s stand-in for Mica.</span></div>
+<div style="display:flex;flex-direction:column;gap:10px"><div style="height:120px;display:grid;place-items:center;border-radius:8px;background:#FAFAFA;border:1px solid #E0E0E0"><span style="display:inline-flex;align-items:center;height:40px;padding:0 16px;border-radius:8px;background:linear-gradient(135deg,#7160E8 0%,#3F3682 100%);color:#FFFFFF;font-size:16px;line-height:22px;font-weight:600">Start</span></div><span style="font-weight:600">atlasSheen</span><span style="color:#424242">Brand 80 to brand 40 at 135°. White text stays above 4.6:1.</span></div>
+</div>
+<div style="display:flex;flex-direction:column;gap:6px;max-width:760px"><span style="font-weight:600">Never</span><span style="color:#424242">Behind clinical text or the uncertainty band. On tags, badges, cards, charts or text. In colours that are not Fluent tokens. Animated.</span></div>
+</div>
+</section>
+
+<section id="color" style="scroll-margin-top:72px;display:flex;flex-direction:column;gap:32px;padding:48px 0;border-top:1px solid #E0E0E0">
+<div style="display:flex;flex-direction:column;gap:8px;max-width:760px">
+<div style="display:flex;align-items:center;justify-content:space-between;gap:8px 16px;flex-wrap:wrap"><h2 style="margin:0;font-size:28px;line-height:36px;font-weight:600">Color</h2><dc-import name="ATLAS Feedback Button" section="color" heading="Color" page="Design language" hint-size="172px,32px"></dc-import></div>
+<p style="margin:0;font-size:16px;line-height:22px;color:#424242;text-wrap:pretty">Fluent defines three palettes: neutral, brand and shared. ATLAS takes all three from Fluent’s global palette: the greys unchanged, Fluent lavender in place of Microsoft blue, the shared status colours for system feedback only, and Orange, Pink and Lavender tints for the guide atmosphere. The uncertainty band is the one set of colours that is ATLAS’s own.</p>
+</div>
+
+<div style="display:flex;flex-direction:column;gap:12px">
+<h3 style="margin:0;font-size:20px;line-height:26px;font-weight:600">Neutral palette</h3>
+<p style="margin:0;color:#424242;max-width:760px">Fluent greys, unchanged. Neutrals make up most of every screen: surfaces, text, strokes. Only the steps used by alias tokens are shown.</p>
+<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(72px,1fr));gap:8px">
+<sc-for list="{{ greys }}" as="g" hint-placeholder-count="26">
+<div style="display:flex;flex-direction:column;gap:4px;min-width:0"><div style="height:48px;border-radius:4px;background:{{ g.hex }};box-shadow:inset 0 0 0 1px rgba(0,0,0,.08)"></div><span style="font-size:12px;line-height:16px;font-weight:600">{{ g.n }}</span><span style="font:12px/16px Consolas,ui-monospace,Menlo,monospace;color:#616161">{{ g.hex }}</span></div>
+</sc-for>
+</div>
+</div>
+
+<div style="display:flex;flex-direction:column;gap:12px">
+<h3 style="margin:0;font-size:20px;line-height:26px;font-weight:600">Brand palette</h3>
+<p style="margin:0;color:#424242;max-width:760px">Fluent lavender (Global-Color-Lavender) sits at brand 80, the stop Fluent uses for primary fills. Lavender’s six shades and six tints fill twelve steps; brand 30, 50, 120 and 140 are midpoints between their neighbours. The ramp plugs straight into Fluent’s theme functions.</p>
+<div style="display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:0;border-radius:8px;overflow:hidden;box-shadow:inset 0 0 0 1px rgba(0,0,0,.08)">
+<sc-for list="{{ brand }}" as="b" hint-placeholder-count="16">
+<div style="display:flex;flex-direction:column;justify-content:space-between;gap:12px;min-height:88px;padding:10px;background:{{ b.hex }};color:{{ b.fg }}"><span style="font-size:12px;line-height:16px;font-weight:600">{{ b.n }}</span><span style="display:flex;flex-direction:column"><span style="font:12px/16px Consolas,ui-monospace,Menlo,monospace">{{ b.hex }}</span><span style="font-size:12px;line-height:16px">{{ b.note }}</span></span></div>
+</sc-for>
+</div>
+</div>
+
+<div style="display:flex;flex-direction:column;gap:12px">
+<h3 style="margin:0;font-size:20px;line-height:26px;font-weight:600">Neutral alias tokens</h3>
+<p style="margin:0;color:#424242;max-width:760px">Design with alias tokens, never with raw greys. The names are Fluent’s, so code can use Fluent UI React directly.</p>
+<div style="display:flex;flex-direction:column;border:1px solid #E0E0E0;border-radius:8px;overflow:hidden">
+<div style="display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1.3fr) 128px 128px;gap:12px;padding:10px 16px;background:#FAFAFA;border-bottom:1px solid #E0E0E0;font-weight:600"><span>Token</span><span>Use</span><span>Light</span><span>Dark</span></div>
+<sc-for list="{{ neutralAliases }}" as="r" hint-placeholder-count="22">
+<div style="display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1.3fr) 128px 128px;gap:12px;align-items:center;padding:6px 16px;border-bottom:1px solid #F0F0F0"><span style="font:12px/16px Consolas,ui-monospace,Menlo,monospace;overflow-wrap:anywhere">{{ r.t }}</span><span style="color:#424242">{{ r.role }}</span><span style="display:flex;align-items:center;gap:8px"><span style="width:20px;height:20px;flex:none;border-radius:4px;background:{{ r.l }};box-shadow:inset 0 0 0 1px rgba(0,0,0,.12)"></span><span style="font:12px/16px Consolas,ui-monospace,Menlo,monospace">{{ r.l }}</span></span><span style="display:flex;align-items:center;gap:8px"><span style="width:20px;height:20px;flex:none;border-radius:4px;background:{{ r.d }};box-shadow:inset 0 0 0 1px rgba(0,0,0,.12)"></span><span style="font:12px/16px Consolas,ui-monospace,Menlo,monospace">{{ r.d }}</span></span></div>
+</sc-for>
+</div>
+</div>
+
+<div style="display:flex;flex-direction:column;gap:12px">
+<h3 style="margin:0;font-size:20px;line-height:26px;font-weight:600">Brand alias tokens</h3>
+<p style="margin:0;color:#424242;max-width:760px">Fluent’s dark theme uses brand 100 for brand text. Lavender 100 gives 4.7:1 on <span style="font-family:Consolas,ui-monospace,Menlo,monospace">#292929</span>, so ATLAS keeps Fluent’s dark mapping unchanged.</p>
+<div style="display:flex;flex-direction:column;border:1px solid #E0E0E0;border-radius:8px;overflow:hidden">
+<div style="display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1.3fr) 128px 128px;gap:12px;padding:10px 16px;background:#FAFAFA;border-bottom:1px solid #E0E0E0;font-weight:600"><span>Token</span><span>Use</span><span>Light</span><span>Dark</span></div>
+<sc-for list="{{ brandAliases }}" as="r" hint-placeholder-count="13">
+<div style="display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1.3fr) 128px 128px;gap:12px;align-items:center;padding:6px 16px;border-bottom:1px solid #F0F0F0"><span style="font:12px/16px Consolas,ui-monospace,Menlo,monospace;overflow-wrap:anywhere">{{ r.t }}</span><span style="color:#424242">{{ r.role }}</span><span style="display:flex;align-items:center;gap:8px"><span style="width:20px;height:20px;flex:none;border-radius:4px;background:{{ r.l }};box-shadow:inset 0 0 0 1px rgba(0,0,0,.12)"></span><span style="font:12px/16px Consolas,ui-monospace,Menlo,monospace">{{ r.lr }}</span></span><span style="display:flex;align-items:center;gap:8px"><span style="width:20px;height:20px;flex:none;border-radius:4px;background:{{ r.d }};box-shadow:inset 0 0 0 1px rgba(0,0,0,.12)"></span><span style="font:12px/16px Consolas,ui-monospace,Menlo,monospace">{{ r.dr }}</span></span></div>
+</sc-for>
+</div>
+</div>
+
+<div style="display:flex;flex-direction:column;gap:12px">
+<h3 style="margin:0;font-size:20px;line-height:26px;font-weight:600">Interaction states</h3>
+<p style="margin:0;color:#424242;max-width:760px">Fluent darkens on hover and darkens further on press. Selected sits between the two. Disabled drops to a flat grey; ATLAS no longer uses 40% opacity.</p>
+<div style="display:grid;grid-template-columns:96px repeat(5,minmax(0,1fr));gap:8px;align-items:center">
+<span></span><span style="font-size:12px;line-height:16px;color:#616161">Rest</span><span style="font-size:12px;line-height:16px;color:#616161">Hover</span><span style="font-size:12px;line-height:16px;color:#616161">Pressed</span><span style="font-size:12px;line-height:16px;color:#616161">Selected</span><span style="font-size:12px;line-height:16px;color:#616161">Disabled</span>
+<span style="font-weight:600">Neutral</span>
+<div style="height:40px;display:grid;place-items:center;border-radius:4px;background:#FFFFFF;border:1px solid #D1D1D1;font-weight:600">Lagre</div>
+<div style="height:40px;display:grid;place-items:center;border-radius:4px;background:#F5F5F5;border:1px solid #C7C7C7;font-weight:600">Lagre</div>
+<div style="height:40px;display:grid;place-items:center;border-radius:4px;background:#E0E0E0;border:1px solid #B3B3B3;font-weight:600">Lagre</div>
+<div style="height:40px;display:grid;place-items:center;border-radius:4px;background:#EBEBEB;border:1px solid #BDBDBD;font-weight:600">Lagre</div>
+<div style="height:40px;display:grid;place-items:center;border-radius:4px;background:#F0F0F0;border:1px solid #E0E0E0;font-weight:600;color:#BDBDBD">Lagre</div>
+<span style="font-weight:600">Brand</span>
+<div style="height:40px;display:grid;place-items:center;border-radius:4px;background:#7160E8;color:#FFFFFF;font-weight:600">Lagre</div>
+<div style="height:40px;display:grid;place-items:center;border-radius:4px;background:#6656D1;color:#FFFFFF;font-weight:600">Lagre</div>
+<div style="height:40px;display:grid;place-items:center;border-radius:4px;background:#3F3682;color:#FFFFFF;font-weight:600">Lagre</div>
+<div style="height:40px;display:grid;place-items:center;border-radius:4px;background:#5649B0;color:#FFFFFF;font-weight:600">Lagre</div>
+<div style="height:40px;display:grid;place-items:center;border-radius:4px;background:#F0F0F0;border:1px solid #E0E0E0;font-weight:600;color:#BDBDBD">Lagre</div>
+<span style="font-weight:600">Subtle</span>
+<div style="height:40px;display:grid;place-items:center;border-radius:4px;color:#424242">Lagre</div>
+<div style="height:40px;display:grid;place-items:center;border-radius:4px;background:#F5F5F5;color:#242424">Lagre</div>
+<div style="height:40px;display:grid;place-items:center;border-radius:4px;background:#E0E0E0;color:#242424">Lagre</div>
+<div style="height:40px;display:grid;place-items:center;border-radius:4px;background:#EBEBEB;color:#242424">Lagre</div>
+<div style="height:40px;display:grid;place-items:center;border-radius:4px;color:#BDBDBD">Lagre</div>
+</div>
+</div>
+
+<div style="display:flex;flex-direction:column;gap:12px">
+<h3 style="margin:0;font-size:20px;line-height:26px;font-weight:600">Status colours: system feedback only</h3>
+<p style="margin:0;color:#424242;max-width:760px">Fluent’s shared status colours describe what the software is doing: saving, sending, failing. They never describe a patient, a referral outcome, urgency or risk. Clinical notices use the informative intent.</p>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px">
+<sc-for list="{{ status }}" as="s" hint-placeholder-count="4">
+<div style="display:flex;flex-direction:column;gap:10px;padding:16px;border:1px solid #E0E0E0;border-radius:8px">
+<div style="display:flex;align-items:center;gap:8px;min-height:36px;padding:8px 12px;border-radius:4px;background:{{ s.bg }};border:1px solid {{ s.bd }}"><i style="width:20px;height:20px;flex:none;background:{{ s.fg }};mask:url(assets/icons/{{ s.ic }}.svg) 0/20px"></i><span style="font-weight:600">{{ s.n }}</span></div>
+<div style="display:flex;gap:6px;font:12px/16px Consolas,ui-monospace,Menlo,monospace;color:#616161;flex-wrap:wrap"><span>{{ s.bg }}</span><span>{{ s.bd }}</span><span>{{ s.fg }}</span></div>
+<span style="color:#424242">{{ s.use }}</span>
+</div>
+</sc-for>
+</div>
+</div>
+
+<div style="display:flex;flex-direction:column;gap:12px">
+<h3 style="margin:0;font-size:20px;line-height:26px;font-weight:600">Clinical colour: the uncertainty band</h3>
+<p style="margin:0;color:#424242;max-width:760px">Sage, sand and clay carry equal weight; none is good or bad. They appear only inside the band, never on text, outcomes, badges or charts. They are too light to carry meaning alone (2.7, 1.7 and 3.8:1 on white), so the marker and a text label always do the work. They are the only colours not taken from Fluent. The nearest Fluent tokens are Brass tint 40 (#E0CEA2) for sand and Brown tint 20 (#A97652) for clay; Fluent has no muted sage.</p>
+<div style="display:grid;grid-template-columns:minmax(0,2fr) repeat(3,minmax(0,1fr));gap:12px;align-items:end">
+<div style="display:flex;flex-direction:column;gap:8px;padding:16px;border:1px solid #E0E0E0;border-radius:8px">
+<div style="position:relative;height:16px"><div style="position:absolute;left:0;right:0;top:5px;height:6px;border-radius:3px;background:linear-gradient(90deg,#8DA48A,#D6C8A0 50%,#B27560)"></div><div style="position:absolute;left:58%;top:0;width:3px;height:16px;margin-left:-1px;border-radius:2px;background:#242424;box-shadow:0 0 0 1px #FFFFFF"></div></div>
+<span style="font-size:12px;line-height:16px;color:#616161">Viser usikkerhet, anbefaler ikke</span>
+</div>
+<div style="display:flex;flex-direction:column;gap:4px"><div style="height:48px;border-radius:4px;background:#8DA48A"></div><span style="font-size:12px;line-height:16px;font-weight:600">Sage</span><span style="font:12px/16px Consolas,ui-monospace,Menlo,monospace;color:#616161">#8DA48A</span></div>
+<div style="display:flex;flex-direction:column;gap:4px"><div style="height:48px;border-radius:4px;background:#D6C8A0"></div><span style="font-size:12px;line-height:16px;font-weight:600">Sand</span><span style="font:12px/16px Consolas,ui-monospace,Menlo,monospace;color:#616161">#D6C8A0</span></div>
+<div style="display:flex;flex-direction:column;gap:4px"><div style="height:48px;border-radius:4px;background:#B27560"></div><span style="font-size:12px;line-height:16px;font-weight:600">Clay</span><span style="font:12px/16px Consolas,ui-monospace,Menlo,monospace;color:#616161">#B27560</span></div>
+</div>
+</div>
+
+<div style="display:flex;flex-direction:column;gap:12px">
+<h3 style="margin:0;font-size:20px;line-height:26px;font-weight:600">Contrast</h3>
+<p style="margin:0;color:#424242;max-width:760px">WCAG 2.2 AA: 4.5:1 for text, 3:1 for large text (18.5px bold or 24px regular) and for icons and control boundaries.</p>
+<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:8px">
+<sc-for list="{{ contrast }}" as="c" hint-placeholder-count="10">
+<div style="display:flex;flex-direction:column;gap:6px;padding:12px;border-radius:4px;background:{{ c.bg }};color:{{ c.fg }};box-shadow:inset 0 0 0 1px rgba(0,0,0,.08)"><span style="font-size:20px;line-height:26px;font-weight:600">{{ c.r }}:1</span><span>{{ c.use }}</span><span style="font:12px/16px Consolas,ui-monospace,Menlo,monospace">{{ c.fg }} / {{ c.bg }}</span></div>
+</sc-for>
+</div>
+</div>
+</section>
+
+<section id="typography" style="scroll-margin-top:72px;display:flex;flex-direction:column;gap:32px;padding:48px 0;border-top:1px solid #E0E0E0">
+<div style="display:flex;flex-direction:column;gap:8px;max-width:760px">
+<div style="display:flex;align-items:center;justify-content:space-between;gap:8px 16px;flex-wrap:wrap"><h2 style="margin:0;font-size:28px;line-height:36px;font-weight:600">Typography</h2><dc-import name="ATLAS Feedback Button" section="typography" heading="Typography" page="Design language" hint-size="172px,32px"></dc-import></div>
+<p style="margin:0;font-size:16px;line-height:22px;color:#424242;text-wrap:pretty">Segoe UI is Fluent’s typeface. On macOS, iOS and Android the stack falls back to the native system font, as Fluent specifies. ATLAS uses one family; size and weight carry the hierarchy.</p>
+</div>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px">
+<div style="display:flex;flex-direction:column;gap:12px;padding:20px;border:1px solid #E0E0E0;border-radius:8px"><span style="font-size:68px;line-height:72px;font-weight:600">Aa Øø</span><span style="font-weight:600">Sans: all text</span><span style="font:12px/16px Consolas,ui-monospace,Menlo,monospace;color:#616161;overflow-wrap:anywhere">'Segoe UI', 'Segoe UI Web (West European)', -apple-system, BlinkMacSystemFont, Roboto, 'Helvetica Neue', sans-serif</span></div>
+<div style="display:flex;flex-direction:column;gap:12px;padding:20px;border:1px solid #E0E0E0;border-radius:8px"><span style="font:400 40px/72px Consolas,ui-monospace,Menlo,monospace">P76 · F32.1</span><span style="font-weight:600">Mono: codes, IDs and timestamps</span><span style="font:12px/16px Consolas,ui-monospace,Menlo,monospace;color:#616161;overflow-wrap:anywhere">Consolas, ui-monospace, Menlo, 'Courier New', monospace</span></div>
+</div>
+<div style="display:flex;flex-direction:column;gap:12px">
+<h3 style="margin:0;font-size:20px;line-height:26px;font-weight:600">Type ramp</h3>
+<p style="margin:0;color:#424242;max-width:760px">The Fluent web ramp, with ATLAS’s use for each style. Body 2 comes from Fluent UI React; the rest are from the Fluent 2 website.</p>
+<div style="display:flex;flex-direction:column;border-top:1px solid #E0E0E0">
+<sc-for list="{{ ramp }}" as="r" hint-placeholder-count="17">
+<div style="display:flex;flex-wrap:wrap;align-items:center;gap:8px 24px;padding:12px 0;border-bottom:1px solid #F0F0F0">
+<span style="flex:1 1 360px;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:{{ r.fs }};line-height:{{ r.lh }};font-weight:{{ r.w }}">{{ r.t }}</span>
+<span style="flex:0 1 340px;display:flex;flex-direction:column"><span style="font-weight:600">{{ r.n }}</span><span style="font-size:12px;line-height:16px;color:#616161">{{ r.spec }} · {{ r.use }}</span></span>
+</div>
+</sc-for>
+</div>
+</div>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px">
+<div style="display:flex;flex-direction:column;gap:10px">
+<h3 style="margin:0;font-size:20px;line-height:26px;font-weight:600">Styling text</h3>
+<ul style="margin:0;padding-left:20px;display:flex;flex-direction:column;gap:6px;color:#424242">
+<li>Sentence case in Norwegian and English. No all caps; the uppercase label style from ATLAS 0.x is retired.</li>
+<li>Left-aligned. Centre only short text on guide surfaces and empty states.</li>
+<li>Foreground 1 for content, Foreground 2 for secondary text, Foreground 3 for metadata and English lines. Brand colour only for links and selected states.</li>
+<li>Tabular figures for times, doses and table columns.</li>
+<li>Mono only for ICPC-2 and ICD-10 codes, IDs and timestamps.</li>
+</ul>
+</div>
+<div style="display:flex;flex-direction:column;gap:10px">
+<h3 style="margin:0;font-size:20px;line-height:26px;font-weight:600">Two languages</h3>
+<div style="display:flex;flex-direction:column;gap:2px;padding:16px;border:1px solid #E0E0E0;border-radius:8px">
+<span lang="nb">Henvisningen mangler informasjon om tidligere behandling.</span>
+<span lang="en" style="font-size:12px;line-height:16px;color:#616161">Referral is missing information about prior treatment.</span>
+</div>
+<span style="color:#424242">Norwegian in Body 1, Foreground 1. English below it in Caption 1, Foreground 3, tagged <span style="font-family:Consolas,ui-monospace,Menlo,monospace">lang="en"</span>. English lines are hidden by default and shown with the language switch.</span>
+</div>
+</div>
+</section>
+
+<section id="layout" style="scroll-margin-top:72px;display:flex;flex-direction:column;gap:32px;padding:48px 0;border-top:1px solid #E0E0E0">
+<div style="display:flex;flex-direction:column;gap:8px;max-width:760px">
+<div style="display:flex;align-items:center;justify-content:space-between;gap:8px 16px;flex-wrap:wrap"><h2 style="margin:0;font-size:28px;line-height:36px;font-weight:600">Layout and spacing</h2><dc-import name="ATLAS Feedback Button" section="layout" heading="Layout and spacing" page="Design language" hint-size="172px,32px"></dc-import></div>
+<p style="margin:0;font-size:16px;line-height:22px;color:#424242;text-wrap:pretty">Fluent uses a 4px grid with a few 2px nudges. Items that belong together sit closer; space separates groups. ATLAS screens are dense working views, so the small end of the ramp does most of the work.</p>
+</div>
+<div style="display:flex;flex-direction:column;gap:12px">
+<h3 style="margin:0;font-size:20px;line-height:26px;font-weight:600">Spacing tokens</h3>
+<div style="display:flex;flex-direction:column;border-top:1px solid #E0E0E0">
+<sc-for list="{{ spacing }}" as="s" hint-placeholder-count="10">
+<div style="display:grid;grid-template-columns:minmax(0,1.3fr) 56px 120px minmax(0,1.5fr);gap:12px;align-items:center;padding:8px 0;border-bottom:1px solid #F0F0F0"><span style="font:12px/16px Consolas,ui-monospace,Menlo,monospace">spacingHorizontal{{ s.t }}</span><span style="font-weight:600">{{ s.v }}px</span><span style="display:flex"><span style="height:16px;background:#7160E8;border-radius:2px;width:{{ s.w }}"></span></span><span style="color:#424242">{{ s.u }}</span></div>
+</sc-for>
+</div>
+<span style="font-size:12px;line-height:16px;color:#616161">Vertical tokens (spacingVerticalXXS … XXXL) use the same values.</span>
+</div>
+<div style="display:flex;flex-direction:column;gap:12px">
+<h3 style="margin:0;font-size:20px;line-height:26px;font-weight:600">Global size ramp</h3>
+<div style="display:flex;flex-wrap:wrap;align-items:flex-end;gap:12px">
+<sc-for list="{{ sizes }}" as="z" hint-placeholder-count="17">
+<div style="display:flex;flex-direction:column;align-items:center;gap:6px"><span style="background:#DCD8FA;border-radius:2px;width:{{ z.w }};height:{{ z.w }};min-width:1px;min-height:1px"></span><span style="font:12px/16px Consolas,ui-monospace,Menlo,monospace;color:#616161">{{ z.n }}</span><span style="font-size:12px;line-height:16px;font-weight:600">{{ z.v }}</span></div>
+</sc-for>
+</div>
+</div>
+<div style="display:flex;flex-direction:column;gap:12px">
+<h3 style="margin:0;font-size:20px;line-height:26px;font-weight:600">App shell</h3>
+<p style="margin:0;color:#424242;max-width:760px">The Fluent 2 app frame: a neutral frame (header and nav on atlasFrameWash) holding white content panels with 8px corners. Panels sit 8px in from the window edge and from each other; nothing is rounded at the screen edge.</p>
+<div style="display:grid;grid-template-columns:132px minmax(0,1fr) 168px;grid-template-rows:36px 260px;border:1px solid #E0E0E0;border-radius:8px;overflow:hidden;background:linear-gradient(90deg,#F5F5F5 0%,#F9F8FE 100%);font-size:12px;line-height:16px">
+<div style="grid-column:1 / -1;display:flex;align-items:center;gap:12px;padding:0 12px;color:#424242"><b style="color:#242424">ATLAS</b><span>Header · 48px · product name, search, role, language</span></div>
+<div style="display:flex;flex-direction:column;gap:6px;padding:8px 12px;color:#424242"><b style="color:#242424">Nav</b><span>260px open, 48px rail</span></div>
+<div style="display:flex;flex-direction:column;gap:6px;margin:0 8px 8px 0;padding:12px;border-radius:8px;background:#FFFFFF;box-shadow:0 0 2px rgba(0,0,0,.12),0 1px 2px rgba(0,0,0,.14);color:#424242"><b style="color:#242424">Content panel</b><span>Fluid, min 640px. Page title, toolbar, then working content.</span></div>
+<div style="display:flex;flex-direction:column;gap:6px;margin:0 8px 8px 0;padding:12px;border-radius:8px;background:#FFFFFF;box-shadow:0 0 2px rgba(0,0,0,.12),0 1px 2px rgba(0,0,0,.14);color:#424242"><b style="color:#242424">Side panel</b><span>320px. ATLAS rail or DPS dialogue. Becomes an overlay drawer below 1024px.</span></div>
+</div>
+</div>
+<div style="display:flex;flex-direction:column;gap:12px">
+<h3 style="margin:0;font-size:20px;line-height:26px;font-weight:600">Breakpoints</h3>
+<div style="display:flex;flex-direction:column;border:1px solid #E0E0E0;border-radius:8px;overflow:hidden">
+<div style="display:grid;grid-template-columns:120px 120px minmax(0,1fr);gap:12px;padding:10px 16px;background:#FAFAFA;border-bottom:1px solid #E0E0E0;font-weight:600"><span>Fluent size</span><span>Width</span><span>ATLAS behaviour</span></div>
+<sc-for list="{{ breakpoints }}" as="b" hint-placeholder-count="6">
+<div style="display:grid;grid-template-columns:120px 120px minmax(0,1fr);gap:12px;padding:8px 16px;border-bottom:1px solid #F0F0F0"><span style="font-weight:600">{{ b.n }}</span><span style="font-variant-numeric:tabular-nums">{{ b.r }}</span><span style="color:#424242">{{ b.a }}</span></div>
+</sc-for>
+</div>
+</div>
+<div style="display:flex;flex-direction:column;gap:12px">
+<h3 style="margin:0;font-size:20px;line-height:26px;font-weight:600">Control sizes</h3>
+<div style="display:flex;flex-wrap:wrap;align-items:flex-end;gap:24px">
+<div style="display:flex;flex-direction:column;gap:6px"><span style="display:inline-flex;align-items:center;height:24px;padding:0 8px;border:1px solid #D1D1D1;border-radius:4px;font-size:12px;line-height:16px">Small · 24</span><span style="font-size:12px;line-height:16px;color:#616161">Dense tables, inline actions</span></div>
+<div style="display:flex;flex-direction:column;gap:6px"><span style="display:inline-flex;align-items:center;height:32px;padding:0 12px;border:1px solid #D1D1D1;border-radius:4px;font-weight:600">Medium · 32</span><span style="font-size:12px;line-height:16px;color:#616161">Default everywhere</span></div>
+<div style="display:flex;flex-direction:column;gap:6px"><span style="display:inline-flex;align-items:center;height:40px;padding:0 16px;border:1px solid #D1D1D1;border-radius:4px;font-size:16px;line-height:22px;font-weight:600">Large · 40</span><span style="font-size:12px;line-height:16px;color:#616161">Guide surfaces, tablets</span></div>
+</div>
+</div>
+</section>
+
+<section id="shapes" style="scroll-margin-top:72px;display:flex;flex-direction:column;gap:32px;padding:48px 0;border-top:1px solid #E0E0E0">
+<div style="display:flex;flex-direction:column;gap:8px;max-width:760px">
+<div style="display:flex;align-items:center;justify-content:space-between;gap:8px 16px;flex-wrap:wrap"><h2 style="margin:0;font-size:28px;line-height:36px;font-weight:600">Shapes</h2><dc-import name="ATLAS Feedback Button" section="shapes" heading="Shapes" page="Design language" hint-size="172px,32px"></dc-import></div>
+<p style="margin:0;font-size:16px;line-height:22px;color:#424242;text-wrap:pretty">Corner radius is 4px by default, 2px for shapes under 32px, and 8px or 12px for large surfaces, as on the Fluent 2 shapes page.</p>
+</div>
+<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:16px">
+<sc-for list="{{ radius }}" as="r" hint-placeholder-count="6">
+<div style="display:flex;flex-direction:column;gap:8px"><div style="height:72px;background:#F9F8FE;border:2px solid #7160E8;border-radius:{{ r.css }}"></div><span style="font:12px/16px Consolas,ui-monospace,Menlo,monospace">{{ r.t }}</span><span style="font-weight:600">{{ r.v }}</span><span style="font-size:12px;line-height:16px;color:#616161">{{ r.u }}</span></div>
+</sc-for>
+</div>
+<div style="display:flex;flex-direction:column;gap:12px">
+<h3 style="margin:0;font-size:20px;line-height:26px;font-weight:600">Stroke widths</h3>
+<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:16px">
+<sc-for list="{{ strokes }}" as="s" hint-placeholder-count="4">
+<div style="display:flex;flex-direction:column;gap:8px"><div style="height:24px;display:flex;align-items:center"><span style="width:100%;background:#242424;border-radius:2px;height:{{ s.h }}"></span></div><span style="font:12px/16px Consolas,ui-monospace,Menlo,monospace">{{ s.t }}</span><span style="font-size:12px;line-height:16px;color:#616161">{{ s.u }}</span></div>
+</sc-for>
+</div>
+</div>
+<ul style="margin:0;padding-left:20px;display:flex;flex-direction:column;gap:6px;color:#424242;max-width:760px">
+<li>No rounding where a surface meets the screen edge.</li>
+<li>Joined controls (split button, segmented choice) round only their outer corners.</li>
+<li>Nested surfaces use a smaller radius than their parent: 8px panel, 4px card inside it.</li>
+</ul>
+</section>
+
+<section id="elevation" style="scroll-margin-top:72px;display:flex;flex-direction:column;gap:32px;padding:48px 0;border-top:1px solid #E0E0E0">
+<div style="display:flex;flex-direction:column;gap:8px;max-width:760px">
+<div style="display:flex;align-items:center;justify-content:space-between;gap:8px 16px;flex-wrap:wrap"><h2 style="margin:0;font-size:28px;line-height:36px;font-weight:600">Elevation</h2><dc-import name="ATLAS Feedback Button" section="elevation" heading="Elevation" page="Design language" hint-size="172px,32px"></dc-import></div>
+<p style="margin:0;font-size:16px;line-height:22px;color:#424242;text-wrap:pretty">Each Fluent shadow has two layers: a tight ambient shadow and a softer key shadow. Low elevations use 12% and 14% black; shadow 28 and 64 use 20% and 24%.</p>
+</div>
+<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:24px;padding:32px;border-radius:8px;background:#F5F5F5">
+<sc-for list="{{ shadows }}" as="s" hint-placeholder-count="6">
+<div style="display:flex;flex-direction:column;justify-content:space-between;gap:8px;min-height:120px;padding:12px;border-radius:8px;background:#FFFFFF;box-shadow:{{ s.v }}"><span style="font-size:16px;line-height:22px;font-weight:600">{{ s.t }}</span><span style="font-size:12px;line-height:16px;color:#616161">{{ s.u }}</span></div>
+</sc-for>
+</div>
+<div style="display:flex;flex-direction:column;gap:8px;max-width:760px">
+<h3 style="margin:0;font-size:20px;line-height:26px;font-weight:600">ATLAS use</h3>
+<ul style="margin:0;padding-left:20px;display:flex;flex-direction:column;gap:6px;color:#424242">
+<li>Clinical content stays at shadow 4 or below. Separation inside a panel comes from strokes and background steps, not shadows.</li>
+<li>Higher shadows are for surfaces that come and go: menus, popovers, toasts, drawers, dialogs.</li>
+<li>Cards that cannot be clicked do not lift on hover.</li>
+<li>On brand-coloured surfaces, use Fluent’s brand shadows (30% ambient, 25% key) so elevation reads the same.</li>
+</ul>
+</div>
+</section>
+
+<section id="material" style="scroll-margin-top:72px;display:flex;flex-direction:column;gap:32px;padding:48px 0;border-top:1px solid #E0E0E0">
+<div style="display:flex;flex-direction:column;gap:8px;max-width:760px">
+<div style="display:flex;align-items:center;justify-content:space-between;gap:8px 16px;flex-wrap:wrap"><h2 style="margin:0;font-size:28px;line-height:36px;font-weight:600">Material</h2><dc-import name="ATLAS Feedback Button" section="material" heading="Material" page="Design language" hint-size="172px,32px"></dc-import></div>
+<p style="margin:0;font-size:16px;line-height:22px;color:#424242;text-wrap:pretty">Fluent has four materials: solid, mica, acrylic and smoke. ATLAS runs in a browser and shows clinical text, so it uses solid almost everywhere.</p>
+</div>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px">
+<div style="display:flex;flex-direction:column;gap:10px"><div style="height:120px;border-radius:8px;background:#FFFFFF;border:1px solid #E0E0E0;padding:12px"><div style="height:8px;width:70%;background:#E0E0E0;border-radius:2px"></div><div style="height:8px;width:50%;margin-top:8px;background:#E0E0E0;border-radius:2px"></div></div><span style="font-weight:600">Solid · used</span><span style="color:#424242">Default for every surface. Mode-aware: white in light, #292929 in dark.</span></div>
+<div style="display:flex;flex-direction:column;gap:10px"><div style="height:120px;border-radius:8px;background:linear-gradient(90deg,#F5F5F5 0%,#F9F8FE 100%);border:1px solid #E0E0E0;padding:12px"><div style="height:8px;width:40%;background:#E7E4FB;border-radius:2px"></div></div><span style="font-weight:600">Mica · frame wash</span><span style="color:#424242">The app frame. Browsers cannot sample the desktop, so the frame uses atlasFrameWash, a faint gradient from neutral grey to brand 160.</span></div>
+<div style="display:flex;flex-direction:column;gap:10px"><div style="position:relative;height:120px;border-radius:8px;overflow:hidden;background:radial-gradient(22% 34% at 76% 36%,#FDCFB4 0%,rgba(253,207,180,0) 75%),radial-gradient(44% 64% at 78% 34%,#FEE5D7 0%,rgba(254,229,215,0) 72%),radial-gradient(36% 50% at 56% 4%,#FBDDF0 0%,rgba(251,221,240,0) 72%),radial-gradient(40% 58% at 96% 86%,#D2CCF8 0%,rgba(210,204,248,0) 72%),radial-gradient(50% 65% at 0% 100%,#E7E4FB 0%,rgba(231,228,251,0) 70%),#FFFFFF"><div style="position:absolute;left:20px;right:20px;top:24px;bottom:24px;border-radius:12px;background:rgba(255,255,255,.72);border:1px solid rgba(255,255,255,.85);backdrop-filter:blur(24px) saturate(1.2);box-shadow:0 0 2px rgba(0,0,0,.08),0 8px 16px rgba(0,0,0,.10)"></div></div><span style="font-weight:600">Acrylic · guide surfaces only</span><span style="color:#424242">Frosted cards on the dawn atmosphere: white at 72% with a 24px blur. Never behind clinical text; menus and popovers in the app stay solid white.</span></div>
+<div style="display:flex;flex-direction:column;gap:10px"><div style="position:relative;height:120px;border-radius:8px;overflow:hidden;background:#FFFFFF;border:1px solid #E0E0E0;padding:12px"><div style="height:8px;width:70%;background:#E0E0E0;border-radius:2px"></div><div style="position:absolute;inset:0;background:rgba(0,0,0,.4)"></div><div style="position:absolute;left:24%;right:24%;top:30px;bottom:30px;border-radius:8px;background:#FFFFFF;box-shadow:0 0 8px rgba(0,0,0,.2),0 32px 64px rgba(0,0,0,.24)"></div></div><span style="font-weight:600">Smoke · used</span><span style="color:#424242">Backdrop for dialogs and overlay drawers. rgba(0, 0, 0, 0.4) in light, 0.5 in dark.</span></div>
+</div>
+</section>
+
+<section id="motion" style="scroll-margin-top:72px;display:flex;flex-direction:column;gap:32px;padding:48px 0;border-top:1px solid #E0E0E0">
+<div style="display:flex;flex-direction:column;gap:8px;max-width:760px">
+<div style="display:flex;align-items:center;justify-content:space-between;gap:8px 16px;flex-wrap:wrap"><h2 style="margin:0;font-size:28px;line-height:36px;font-weight:600">Motion</h2><dc-import name="ATLAS Feedback Button" section="motion" heading="Motion" page="Design language" hint-size="172px,32px"></dc-import></div>
+<p style="margin:0;font-size:16px;line-height:22px;color:#424242;text-wrap:pretty">Motion explains where something came from or went. Elements enter with deceleration and leave with acceleration. Larger elements get more time. ATLAS adds one rule: the uncertainty band never animates.</p>
+</div>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:24px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<h3 style="margin:0;font-size:20px;line-height:26px;font-weight:600">Duration</h3>
+<div style="display:flex;flex-direction:column;border-top:1px solid #E0E0E0">
+<sc-for list="{{ durations }}" as="d" hint-placeholder-count="8">
+<div style="display:grid;grid-template-columns:minmax(0,1fr) 56px minmax(0,1.3fr);gap:12px;padding:8px 0;border-bottom:1px solid #F0F0F0"><span style="font:12px/20px Consolas,ui-monospace,Menlo,monospace">{{ d.t }}</span><span style="font-weight:600;font-variant-numeric:tabular-nums">{{ d.v }}</span><span style="color:#424242">{{ d.u }}</span></div>
+</sc-for>
+</div>
+</div>
+<div style="display:flex;flex-direction:column;gap:8px">
+<h3 style="margin:0;font-size:20px;line-height:26px;font-weight:600">Easing</h3>
+<div style="display:flex;flex-direction:column;border-top:1px solid #E0E0E0">
+<sc-for list="{{ curves }}" as="c" hint-placeholder-count="9">
+<div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.2fr);gap:12px;padding:8px 0;border-bottom:1px solid #F0F0F0"><span style="font:12px/20px Consolas,ui-monospace,Menlo,monospace">{{ c.t }}</span><span style="display:flex;flex-direction:column"><span style="font:12px/20px Consolas,ui-monospace,Menlo,monospace">{{ c.v }}</span><span style="font-size:12px;line-height:16px;color:#616161">{{ c.u }}</span></span></div>
+</sc-for>
+</div>
+</div>
+</div>
+<div style="display:flex;flex-direction:column;gap:12px;padding:20px;border:1px solid #E0E0E0;border-radius:8px">
+<div style="display:flex;align-items:center;gap:12px"><button onClick="{{ togglePlay }}" style="height:32px;min-width:96px;padding:0 12px;border:1px solid #D1D1D1;border-radius:4px;background:#FFFFFF;font-weight:600;cursor:pointer" style-hover="background:#F5F5F5;border-color:#C7C7C7" style-active="background:#E0E0E0;border-color:#B3B3B3">{{ playLabel }}</button><span style="font-size:12px;line-height:16px;color:#616161">Slowed to 500ms so the curves are visible.</span></div>
+<div style="display:grid;grid-template-columns:150px minmax(0,1fr);gap:10px 16px;align-items:center">
+<span style="font-size:12px;line-height:16px">Enter · decelerateMid</span><div style="position:relative;height:16px;border-radius:8px;background:#F5F5F5"><span style="position:absolute;top:0;width:16px;height:16px;border-radius:8px;background:#7160E8;transition:left 500ms cubic-bezier(0,0,0,1);left:{{ dotLeft }}"></span></div>
+<span style="font-size:12px;line-height:16px">Exit · accelerateMid</span><div style="position:relative;height:16px;border-radius:8px;background:#F5F5F5"><span style="position:absolute;top:0;width:16px;height:16px;border-radius:8px;background:#7160E8;transition:left 500ms cubic-bezier(1,0,1,1);left:{{ dotLeft }}"></span></div>
+<span style="font-size:12px;line-height:16px">Move · easyEase</span><div style="position:relative;height:16px;border-radius:8px;background:#F5F5F5"><span style="position:absolute;top:0;width:16px;height:16px;border-radius:8px;background:#7160E8;transition:left 500ms cubic-bezier(0.33,0,0.67,1);left:{{ dotLeft }}"></span></div>
+<span style="font-size:12px;line-height:16px">Progress · linear</span><div style="position:relative;height:16px;border-radius:8px;background:#F5F5F5"><span style="position:absolute;top:0;width:16px;height:16px;border-radius:8px;background:#7160E8;transition:left 500ms linear;left:{{ dotLeft }}"></span></div>
+</div>
+</div>
+<ul style="margin:0;padding-left:20px;display:flex;flex-direction:column;gap:6px;color:#424242;max-width:760px">
+<li>Colour changes on hover and press: faster (100ms), easyEase.</li>
+<li>Menus, popovers and tooltips: fade and 10px slide, fast (150ms), decelerateMid.</li>
+<li>Dialogs: fade in, gentle (250ms). Drawers: slide in, slow (300ms); out, normal (200ms) with accelerateMid.</li>
+<li>No bounce, spring, parallax or looping decoration. Skeletons do not shimmer.</li>
+<li>The uncertainty band and its marker appear instantly. An animated marker would suggest the system arriving at an answer.</li>
+<li>With reduced motion on, all transitions drop to instant.</li>
+</ul>
+</section>
+
+<section id="iconography" style="scroll-margin-top:72px;display:flex;flex-direction:column;gap:32px;padding:48px 0;border-top:1px solid #E0E0E0">
+<div style="display:flex;flex-direction:column;gap:8px;max-width:760px">
+<div style="display:flex;align-items:center;justify-content:space-between;gap:8px 16px;flex-wrap:wrap"><h2 style="margin:0;font-size:28px;line-height:36px;font-weight:600">Iconography</h2><dc-import name="ATLAS Feedback Button" section="iconography" heading="Iconography" page="Design language" hint-size="172px,32px"></dc-import></div>
+<p style="margin:0;font-size:16px;line-height:22px;color:#424242;text-wrap:pretty">ATLAS uses Fluent System Icons (MIT licence). They replace the hand-drawn hairline set from ATLAS 0.x. Icons are named for what they show, not what they do.</p>
+</div>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:24px">
+<ul style="margin:0;padding-left:20px;display:flex;flex-direction:column;gap:6px;color:#424242">
+<li>20px Regular is the default. 16px in dense tables and inline text, 24px on guide surfaces.</li>
+<li>Filled marks the selected or active state: the current nav item, a checked toggle.</li>
+<li>Colour: Foreground 2 by default; brand only when selected. No colour icons.</li>
+<li>Clinical states always pair an icon with a text label.</li>
+<li>Icon-only buttons need a tooltip and an accessible name.</li>
+<li>No emoji anywhere.</li>
+</ul>
+<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(88px,1fr));gap:8px">
+<sc-for list="{{ pairs }}" as="p" hint-placeholder-count="9">
+<div style="display:flex;flex-direction:column;align-items:center;gap:6px;padding:10px 4px;border:1px solid #E0E0E0;border-radius:4px"><span style="display:flex;gap:8px"><i style="width:20px;height:20px;background:#424242;mask:url(assets/icons/{{ p.r }}.svg) 0/20px"></i><i style="width:20px;height:20px;background:#7160E8;mask:url(assets/icons/{{ p.f }}.svg) 0/20px"></i></span><span style="font-size:12px;line-height:16px;color:#616161">{{ p.n }}</span></div>
+</sc-for>
+</div>
+</div>
+<div style="display:flex;flex-direction:column;gap:12px">
+<h3 style="margin:0;font-size:20px;line-height:26px;font-weight:600">Fixed meanings in ATLAS</h3>
+<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:8px">
+<sc-for list="{{ meanings }}" as="m" hint-placeholder-count="12">
+<div style="display:flex;align-items:center;gap:12px;padding:10px 12px;border:1px solid #E0E0E0;border-radius:4px"><i style="width:20px;height:20px;flex:none;background:#424242;mask:url(assets/icons/{{ m.ic }}.svg) 0/20px"></i><span style="display:flex;flex-direction:column;min-width:0"><span lang="nb">{{ m.m }}</span><span lang="en" style="font-size:12px;line-height:16px;color:#616161">{{ m.e }}</span></span></div>
+</sc-for>
+</div>
+</div>
+<div style="display:flex;flex-direction:column;gap:12px">
+<h3 style="margin:0;font-size:20px;line-height:26px;font-weight:600">Icons in this project</h3>
+<span style="color:#424242">{{ iconCount }} icons copied from @fluentui/svg-icons into assets/icons.</span>
+<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:4px">
+<sc-for list="{{ icons }}" as="ic" hint-placeholder-count="24">
+<div style="display:flex;align-items:center;gap:8px;min-width:0;padding:6px 8px;border-radius:4px" style-hover="background:#F5F5F5"><i style="width:20px;height:20px;flex:none;background:#424242;mask:url(assets/icons/{{ ic.f }}.svg) center/contain no-repeat"></i><span style="font:11px/14px Consolas,ui-monospace,Menlo,monospace;color:#424242;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ ic.n }}</span></div>
+</sc-for>
+</div>
+</div>
+</section>
+
+<section id="accessibility" style="scroll-margin-top:72px;display:flex;flex-direction:column;gap:32px;padding:48px 0;border-top:1px solid #E0E0E0">
+<div style="display:flex;flex-direction:column;gap:8px;max-width:760px">
+<div style="display:flex;align-items:center;justify-content:space-between;gap:8px 16px;flex-wrap:wrap"><h2 style="margin:0;font-size:28px;line-height:36px;font-weight:600">Accessibility</h2><dc-import name="ATLAS Feedback Button" section="accessibility" heading="Accessibility" page="Design language" hint-size="172px,32px"></dc-import></div>
+<p style="margin:0;font-size:16px;line-height:22px;color:#424242;text-wrap:pretty">ATLAS targets WCAG 2.2 AA, the level Norwegian regulation requires for public-sector and health services. Fluent components meet most of it by default; the items below are the ones teams break.</p>
+</div>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px">
+<div style="display:flex;flex-direction:column;gap:12px;padding:20px;border:1px solid #E0E0E0;border-radius:8px">
+<span style="font-size:16px;line-height:22px;font-weight:600">Focus</span>
+<div style="display:flex;gap:16px;align-items:center;padding:8px 4px"><span style="display:inline-flex;align-items:center;height:32px;padding:0 12px;border:1px solid #D1D1D1;border-radius:4px;font-weight:600;outline:2px solid #000000;outline-offset:1px">Lagre notat</span><span style="display:inline-flex;align-items:center;height:32px;padding:0 12px;border-radius:4px;background:#7160E8;color:#FFFFFF;font-weight:600;outline:2px solid #000000;outline-offset:1px;box-shadow:inset 0 0 0 1px #FFFFFF">Send til DPS</span></div>
+<span style="color:#424242">Keyboard focus shows a 2px black ring (white in dark theme), with a 1px white inner line on brand fills. It appears for keyboard use only.</span>
+</div>
+<sc-for list="{{ a11y }}" as="a" hint-placeholder-count="8">
+<div style="display:flex;flex-direction:column;gap:8px;padding:20px;border:1px solid #E0E0E0;border-radius:8px"><span style="font-size:16px;line-height:22px;font-weight:600">{{ a.t }}</span><span style="color:#424242;text-wrap:pretty">{{ a.d }}</span></div>
+</sc-for>
+</div>
+</section>
+
+<section id="content" style="scroll-margin-top:72px;display:flex;flex-direction:column;gap:32px;padding:48px 0;border-top:1px solid #E0E0E0">
+<div style="display:flex;flex-direction:column;gap:8px;max-width:760px">
+<div style="display:flex;align-items:center;justify-content:space-between;gap:8px 16px;flex-wrap:wrap"><h2 style="margin:0;font-size:28px;line-height:36px;font-weight:600">Content design</h2><dc-import name="ATLAS Feedback Button" section="content" heading="Content design" page="Design language" hint-size="172px,32px"></dc-import></div>
+<p style="margin:0;font-size:16px;line-height:22px;color:#424242;text-wrap:pretty">ATLAS writes like a senior clinician writing a chart note for a colleague: precise, brief, never breezy. Fluent’s content rules apply: sentence case, short descriptive links, no directional words such as “above” or “to the right”.</p>
+</div>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px">
+<div style="display:flex;flex-direction:column;gap:6px;padding:20px;border:1px solid #E0E0E0;border-radius:8px"><span style="font-size:16px;line-height:22px;font-weight:600">Describe, never instruct</span><span style="color:#424242">No <i lang="nb">Anbefalt</i>, <i lang="nb">Du bør</i> or “Recommended”. The verb stays with the clinician. Buttons name the clinician’s own action: <i lang="nb">Lagre notat</i>, <i lang="nb">Send til DPS</i>.</span></div>
+<div style="display:flex;flex-direction:column;gap:6px;padding:20px;border:1px solid #E0E0E0;border-radius:8px"><span style="font-size:16px;line-height:22px;font-weight:600">Third person, no “we”</span><span style="color:#424242">The system addresses no one and speaks of itself only when needed. <i lang="nb">Pasienten beskriver …</i>, not <i lang="nb">Du sier …</i>.</span></div>
+<div style="display:flex;flex-direction:column;gap:6px;padding:20px;border:1px solid #E0E0E0;border-radius:8px"><span style="font-size:16px;line-height:22px;font-weight:600">Real terms, real time</span><span style="color:#424242">Use the terms from the Helsedirektoratet priority guide. Referrals take days and triage takes weeks; never “instant” or “in seconds”.</span></div>
+</div>
+<div style="display:flex;flex-direction:column;gap:12px">
+<h3 style="margin:0;font-size:20px;line-height:26px;font-weight:600">Examples</h3>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:12px">
+<sc-for list="{{ examples }}" as="x" hint-placeholder-count="3">
+<div style="display:flex;flex-direction:column;border:1px solid #E0E0E0;border-radius:8px;overflow:hidden">
+<div style="display:flex;flex-direction:column;gap:4px;padding:14px 16px;border-top:3px solid #107C10"><span style="display:flex;align-items:center;gap:6px;font-size:12px;line-height:16px;font-weight:600;color:#0E700E"><i style="width:16px;height:16px;background:#0E700E;mask:url(assets/icons/checkmark_16_regular.svg) 0/16px"></i>Do</span><span lang="nb">{{ x.d }}</span><span lang="en" style="font-size:12px;line-height:16px;color:#616161">{{ x.de }}</span></div>
+<div style="display:flex;flex-direction:column;gap:4px;padding:14px 16px;border-top:1px solid #E0E0E0;background:#FAFAFA"><span style="display:flex;align-items:center;gap:6px;font-size:12px;line-height:16px;font-weight:600;color:#B10E1C"><i style="width:16px;height:16px;background:#B10E1C;mask:url(assets/icons/dismiss_16_regular.svg) 0/16px"></i>Don’t</span><span style="color:#424242;text-decoration:line-through">{{ x.n }}</span></div>
+</div>
+</sc-for>
+</div>
+<span style="font-size:12px;line-height:16px;color:#616161">Green and red appear here because this is documentation about the product, not the product.</span>
+</div>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:24px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<h3 style="margin:0;font-size:20px;line-height:26px;font-weight:600">Vocabulary</h3>
+<div style="display:flex;flex-direction:column;border-top:1px solid #E0E0E0">
+<sc-for list="{{ vocab }}" as="v" hint-placeholder-count="10">
+<div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:12px;padding:6px 0;border-bottom:1px solid #F0F0F0"><span lang="nb" style="font-weight:600">{{ v.nb }}</span><span lang="en" style="color:#424242">{{ v.en }}</span></div>
+</sc-for>
+</div>
+</div>
+<div style="display:flex;flex-direction:column;gap:12px">
+<h3 style="margin:0;font-size:20px;line-height:26px;font-weight:600">Numbers, dates and times</h3>
+<div style="display:flex;flex-direction:column;border-top:1px solid #E0E0E0">
+<sc-for list="{{ formats }}" as="f" hint-placeholder-count="6">
+<div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.2fr);gap:12px;padding:6px 0;border-bottom:1px solid #F0F0F0"><span style="color:#424242">{{ f.k }}</span><span style="font-variant-numeric:tabular-nums">{{ f.v }}</span></div>
+</sc-for>
+</div>
+</div>
+</div>
+</section>
+
+<section id="tokens" style="scroll-margin-top:72px;display:flex;flex-direction:column;gap:32px;padding:48px 0;border-top:1px solid #E0E0E0">
+<div style="display:flex;flex-direction:column;gap:8px;max-width:760px">
+<div style="display:flex;align-items:center;justify-content:space-between;gap:8px 16px;flex-wrap:wrap"><h2 style="margin:0;font-size:28px;line-height:36px;font-weight:600">Design tokens</h2><dc-import name="ATLAS Feedback Button" section="tokens" heading="Design tokens" page="Design language" hint-size="172px,32px"></dc-import></div>
+<p style="margin:0;font-size:16px;line-height:22px;color:#424242;text-wrap:pretty">Fluent stores styles in two layers. Global tokens hold raw values. Alias tokens give them meaning. ATLAS changes only the brand ramp, so every Fluent component picks up ATLAS styling without overrides.</p>
+</div>
+<div style="display:grid;grid-template-columns:minmax(0,1fr) 32px minmax(0,1fr) 32px minmax(0,1fr);align-items:center;gap:8px">
+<div style="display:flex;flex-direction:column;gap:4px;padding:16px;border:1px solid #E0E0E0;border-radius:8px"><span style="font-size:12px;line-height:16px;font-weight:600;color:#616161">Global</span><span style="font:12px/16px Consolas,ui-monospace,Menlo,monospace">brand[80] = #7160E8</span><span style="font:12px/16px Consolas,ui-monospace,Menlo,monospace">grey[14] = #242424</span></div>
+<i style="width:20px;height:20px;justify-self:center;background:#616161;mask:url(assets/icons/arrow_right_20_regular.svg) 0/20px"></i>
+<div style="display:flex;flex-direction:column;gap:4px;padding:16px;border:1px solid #E0E0E0;border-radius:8px"><span style="font-size:12px;line-height:16px;font-weight:600;color:#616161">Alias</span><span style="font:12px/16px Consolas,ui-monospace,Menlo,monospace;overflow-wrap:anywhere">colorBrandBackground</span><span style="font:12px/16px Consolas,ui-monospace,Menlo,monospace;overflow-wrap:anywhere">colorNeutralForeground1</span></div>
+<i style="width:20px;height:20px;justify-self:center;background:#616161;mask:url(assets/icons/arrow_right_20_regular.svg) 0/20px"></i>
+<div style="display:flex;flex-direction:column;gap:4px;padding:16px;border:1px solid #E0E0E0;border-radius:8px"><span style="font-size:12px;line-height:16px;font-weight:600;color:#616161">Component</span><span>Primary button fill</span><span>Body text</span></div>
+</div>
+<div style="display:flex;flex-direction:column;gap:12px">
+<h3 style="margin:0;font-size:20px;line-height:26px;font-weight:600">Naming</h3>
+<div style="display:flex;flex-wrap:wrap;gap:4px;align-items:center;font:14px/20px Consolas,ui-monospace,Menlo,monospace">
+<span style="padding:6px 10px;border-radius:4px;background:#F5F5F5">color</span><span style="padding:6px 10px;border-radius:4px;background:#F9F8FE;color:#6656D1">Neutral · Brand · Status</span><span style="padding:6px 10px;border-radius:4px;background:#F5F5F5">Background · Foreground · Stroke</span><span style="padding:6px 10px;border-radius:4px;background:#F9F8FE;color:#6656D1">1 … 6</span><span style="padding:6px 10px;border-radius:4px;background:#F5F5F5">Hover · Pressed · Selected · Disabled</span>
+</div>
+<span style="color:#424242">Other families: fontSize, lineHeight, fontWeight, spacingHorizontal and spacingVertical, borderRadius, strokeWidth, shadow, duration, curve.</span>
+</div>
+<div style="display:flex;flex-direction:column;gap:12px">
+<h3 style="margin:0;font-size:20px;line-height:26px;font-weight:600">ATLAS theme for Fluent UI React</h3>
+<pre style="margin:0;padding:16px 20px;border-radius:8px;background:#FAFAFA;border:1px solid #E0E0E0;font:12px/18px Consolas,ui-monospace,Menlo,monospace;color:#242424;overflow:auto;white-space:pre">{{ themeCode }}</pre>
+</div>
+</section>
+
+</div>
+</main>
+</div>
+<dc-import name="ATLAS Feedback Panel" page="Design language" hint-size="1px,1px"></dc-import>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { active: 'overview', play: false };
+  nav = [['overview','Overview'],['kits','Microsoft kits'],['principles','Principles'],['guardrails','Clinical guardrails'],['harmony','Harmony'],['color','Color'],['typography','Typography'],['layout','Layout and spacing'],['shapes','Shapes'],['elevation','Elevation'],['material','Material'],['motion','Motion'],['iconography','Iconography'],['accessibility','Accessibility'],['content','Content design'],['tokens','Design tokens']];
+  icons = ['accessibility','add','add_16','alert','apps_list','arrow_forward','arrow_left','arrow_reply','arrow_right','arrow_sort','arrow_swap','arrow_undo','beaker','board','book_open','brain_circuit','branch','calendar_ltr','calendar_ltr_20_filled','chat','chat_20_filled','chat_multiple','checkmark','checkmark_16','checkmark_circle','checkmark_circle_20_filled','chevron_down','chevron_down_16','chevron_left','chevron_right','chevron_up','circle','clipboard','clock','color','compose','copy','data_trending','delete','dismiss','dismiss_16','dismiss_circle_20_filled','doctor','document_text','document_text_20_filled','edit','error_circle','error_circle_20_filled','eye','filter','flag','globe','heart_pulse','history','home','home_20_filled','hourglass_half','info','info_16','info_20_filled','layer','lightbulb','link','local_language','lock_closed','mail','more_horizontal','navigation','notepad','panel_left','pause_circle','people','person','person_20_filled','person_circle','pill','print','question_circle','record','save','scales','search','send','settings','shape_union','share','shield','sign_out','stethoscope','subtract','tag','target','text_bullet_list_ltr','text_font','video','warning','warning_20_filled','weather_moon'];
+  componentDidMount() {
+    this.onScroll = () => {
+      let cur = this.nav[0][0];
+      for (const [id] of this.nav) { const el = document.getElementById(id); if (el && el.getBoundingClientRect().top < 120) cur = id; }
+      if (cur !== this.state.active) this.setState({ active: cur });
+    };
+    document.addEventListener('scroll', this.onScroll, true);
+  }
+  componentWillUnmount() { document.removeEventListener('scroll', this.onScroll, true); }
+  ink(hex) {
+    const c = [1, 3, 5].map(i => parseInt(hex.slice(i, i + 2), 16) / 255).map(v => v <= 0.04045 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4));
+    return (0.2126 * c[0] + 0.7152 * c[1] + 0.0722 * c[2]) > 0.18 ? '#242424' : '#FFFFFF';
+  }
+  renderVals() {
+    const B = {10:'#120F25',20:'#221D46',30:'#302963',40:'#3F3682',50:'#4A3F99',60:'#5649B0',70:'#6656D1',80:'#7160E8',90:'#8172EB',100:'#9184EE',110:'#A79CF1',120:'#BCB4F5',130:'#D2CCF8',140:'#DCD8FA',150:'#E7E4FB',160:'#F9F8FE'};
+    const bNote = {10:'Shade 50',20:'Shade 40',30:'Midpoint',40:'Shade 30 · pressed',50:'Midpoint',60:'Shade 20 · selected',70:'Shade 10 · hover, links',80:'Primary · fills',90:'Tint 10',100:'Tint 20',110:'Tint 30 · dark compound',120:'Midpoint · dark text',130:'Tint 40',140:'Midpoint · tint borders',150:'Tint 50',160:'Tint 60 · brand tint'};
+    const greys = [[8,'#141414'],[12,'#1F1F1F'],[14,'#242424'],[16,'#292929'],[20,'#333333'],[22,'#383838'],[24,'#3D3D3D'],[26,'#424242'],[32,'#525252'],[36,'#5C5C5C'],[38,'#616161'],[40,'#666666'],[44,'#707070'],[60,'#999999'],[68,'#ADADAD'],[74,'#BDBDBD'],[78,'#C7C7C7'],[82,'#D1D1D1'],[84,'#D6D6D6'],[88,'#E0E0E0'],[90,'#E6E6E6'],[92,'#EBEBEB'],[94,'#F0F0F0'],[96,'#F5F5F5'],[98,'#FAFAFA'],['white','#FFFFFF']];
+    const row = (t, role, l, d, lr, dr) => ({ t, role, l, d, lr: lr || l, dr: dr || d });
+    const br = (t, role, a, b) => row(t, role, B[a], B[b], 'brand ' + a, 'brand ' + b);
+    return {
+      nav: this.nav.map(([id, label]) => { const on = id === this.state.active; return { id, label, bg: on ? '#EBEBEB' : 'transparent', fw: on ? 600 : 400, ind: on ? '#7160E8' : 'transparent' }; }),
+      kits: [
+        ['Fluent 2 design language', 'Colour, stroke, radius, spacing and size tokens, as Figma variables with light and dark modes.', 'Used', 'Every ATLAS token comes from here.'],
+        ['Fluent 2 Web UI kit', 'Code-aligned components that map to Fluent UI React v9.', 'Used', 'The base for every screen.'],
+        ['Fluent System Icons', 'The Fluent icon set, regular and filled.', 'Used', '98 icons are copied into this project.'],
+        ['Fabric UX System and Fabric UI kit', 'Microsoft Fabric’s system, built on Fluent 2, with its own illustration palettes.', 'Idea only', 'The lively guide palette comes from here, rebuilt from Fluent tints. Fabric’s components and artwork are not used.'],
+        ['Fluent 2 iOS and Android', 'Native mobile components.', 'Later', 'Only if ATLAS gets a mobile view.'],
+        ['Copilot UI kits', 'AI-specific components that extend Fluent core.', 'Not used', 'ATLAS shows uncertainty. It must not look like an assistant giving answers (guardrails 3 and 6).'],
+        ['Microsoft Teams UI kit', 'Apps that run inside Teams.', 'Not used', 'Referrals and DPS dialogue run through the EHR, not Teams.'],
+        ['Microsoft 365 UI kit', 'Apps across Microsoft 365, including Teams and Outlook.', 'Not used', 'Same reason as Teams.'],
+        ['Windows UI kit', 'Native Windows apps built with WinUI.', 'Not used', 'ATLAS runs in a browser. Mica and acrylic are adapted for the web.'],
+        ['Office UI Fabric', 'Fluent UI v8, the older system Fluent 2 replaced.', 'Not used', 'Legacy.'],
+        ['Fluent Emoji', 'Expressive emoji.', 'Not used', 'ATLAS has no emoji.'],
+      ].map(([n, p, s, w]) => ({ n, p, s, w, bg: s === 'Used' ? '#F9F8FE' : s === 'Idea only' ? '#F5F5F5' : '#FFFFFF', fg: s === 'Used' ? '#6656D1' : '#424242', bd: s === 'Used' ? '#DCD8FA' : '#D1D1D1' })),
+      placement: [
+        ['Welcome, tour step, vignette briefing', 'Sheen: Start omvisningen, Neste, Start konsultasjonen', 'Practice answers such as Behold and Henvis', 'Secondary: Forrige. Transparent: Hopp over'],
+        ['Consultation workspace', 'Primary: Lagre notat', 'Behold and Henvis', 'Subtle: Skriv ut, Kopier, Mer'],
+        ['Referral draft', 'Primary: Send til DPS', 'None', 'Secondary: Lagre utkast. Subtle: Legg ved'],
+        ['DPS assessment', 'Primary: Send vurdering', 'The three outcomes, as a radio group', 'Subtle: toolbar'],
+        ['Dialogue panel', 'Primary icon button: Send', 'None', 'Subtle: Lukk, Mer'],
+        ['Dialog', 'Primary: the action in the title, such as Forkast', 'None', 'Secondary: the way back, such as Fortsett å skrive. Two buttons at most.'],
+        ['Toolbars, tables, cards', 'None', 'None', 'Subtle or transparent only'],
+        ['Empty state', 'None', 'None', 'One secondary action, if any'],
+      ].map(([s, a, b, c]) => ({ s, a, b, c })),
+      registers: [
+        ['Where', 'Consultation, assessment, queue, patient profile', 'Tours, vignette briefings, welcome, role picker'],
+        ['Background', 'White content panels on atlasFrameWash', 'atlasDawn'],
+        ['Cards', 'Solid white; shadow 4 or a stroke', 'Frosted acrylic, shadow 16. Anything that shows the band stays solid white.'],
+        ['Type', 'Body 1; Subtitle 1 at most', 'Large title, Title 1–2, Body 2'],
+        ['Buttons', 'One solid primary at most; clinical choices secondary', 'One sheen button; the rest secondary'],
+        ['Gradients', 'Frame wash and the band only', 'atlasDawn and the sheen button'],
+        ['Motion', 'Functional, 100–300ms', 'Step changes, 400ms'],
+      ].map(([k, a, b]) => ({ k, a, b })),
+      guardrails: [
+        { n: '1', rule: 'Never traffic-light an outcome', how: 'Badge and MessageBar danger, warning and success are for system states only. Clinical outcomes use neutral Tags that differ by label and icon.' },
+        { n: '2', rule: 'Never add friction to an override', how: 'Refer and hold are equal secondary buttons. Neither opens a confirmation dialog. Both use the same optional rationale field.' },
+        { n: '3', rule: 'Never use recommendation language', how: 'No string says Anbefalt, Du bør or Recommended. Nothing is pre-selected. No action is styled as the default.' },
+        { n: '4', rule: 'Never name a clinician across roles', how: 'Persona shows a role label and role icon (Henvisende fastlege, DPS, inntak), never a name, photo or per-person history.' },
+        { n: '5', rule: 'Never hide uncertainty behind a single score', how: 'No ProgressBar, percentage, gauge or number for uncertainty. Use the band with its caption and the uncertainty-type tags.' },
+        { n: '6', rule: 'Clinical views must not look like a product demo', how: 'No hero banners, marketing motion, testimonials or celebratory feedback. Large type, gradients and the sheen button belong to guide surfaces only.' },
+      ],
+      greys: greys.map(([n, hex]) => ({ n: typeof n === 'number' ? 'grey ' + n : n, hex })),
+      brand: Object.keys(B).map(k => ({ n: 'brand ' + k, hex: B[k], fg: this.ink(B[k]), note: bNote[k] || '' })),
+      neutralAliases: [
+        row('colorNeutralForeground1', 'Primary text', '#242424', '#FFFFFF'),
+        row('colorNeutralForeground2', 'Secondary text, default icons', '#424242', '#D6D6D6'),
+        row('colorNeutralForeground3', 'Metadata, hints, English line', '#616161', '#ADADAD'),
+        row('colorNeutralForeground4', 'Placeholder text', '#707070', '#999999'),
+        row('colorNeutralForegroundDisabled', 'Disabled text and icons', '#BDBDBD', '#5C5C5C'),
+        row('colorNeutralForegroundOnBrand', 'Text on brand fills', '#FFFFFF', '#FFFFFF'),
+        row('colorNeutralBackground1', 'Content panels, cards, inputs', '#FFFFFF', '#292929'),
+        row('colorNeutralBackground1Hover', 'Hover on background 1', '#F5F5F5', '#3D3D3D'),
+        row('colorNeutralBackground1Pressed', 'Pressed on background 1', '#E0E0E0', '#1F1F1F'),
+        row('colorNeutralBackground1Selected', 'Selected rows, checked toggles', '#EBEBEB', '#383838'),
+        row('colorNeutralBackground2', 'Alternative cards, table headers', '#FAFAFA', '#1F1F1F'),
+        row('colorNeutralBackground3', 'App frame: header and nav', '#F5F5F5', '#141414'),
+        row('colorNeutralBackground4', 'Wells inside panels', '#F0F0F0', '#0A0A0A'),
+        row('colorNeutralBackground5', 'Deepest well', '#EBEBEB', '#000000'),
+        row('colorNeutralBackground6', 'Avatar fill, progress rail', '#E6E6E6', '#333333'),
+        row('colorNeutralBackgroundDisabled', 'Disabled control fill', '#F0F0F0', '#141414'),
+        row('colorNeutralStroke1', 'Control borders', '#D1D1D1', '#666666'),
+        row('colorNeutralStroke2', 'Dividers, card outlines', '#E0E0E0', '#525252'),
+        row('colorNeutralStroke3', 'Table row lines', '#F0F0F0', '#3D3D3D'),
+        row('colorNeutralStrokeAccessible', 'Input underline, checkbox and radio borders', '#616161', '#ADADAD'),
+        row('colorNeutralStrokeDisabled', 'Disabled borders', '#E0E0E0', '#424242'),
+        row('colorStrokeFocus2', 'Keyboard focus ring', '#000000', '#FFFFFF'),
+      ],
+      brandAliases: [
+        br('colorBrandBackground', 'Primary button, checked checkbox and switch', 80, 70),
+        br('colorBrandBackgroundHover', 'Primary hover', 70, 80),
+        br('colorBrandBackgroundPressed', 'Primary pressed', 40, 40),
+        br('colorBrandBackgroundSelected', 'Primary selected', 60, 60),
+        br('colorBrandBackground2', 'Brand tint: own messages, selected choices', 160, 40),
+        br('colorBrandForeground1', 'Selected tab and nav text and icon', 80, 100),
+        br('colorBrandForeground2', 'Text on brand tint', 70, 110),
+        br('colorBrandForegroundLink', 'Links', 70, 100),
+        br('colorBrandForegroundLinkHover', 'Link hover', 60, 110),
+        br('colorBrandStroke1', 'Selected outlines', 80, 100),
+        br('colorBrandStroke2', 'Brand tint borders', 140, 50),
+        br('colorCompoundBrandStroke', 'Input focus underline, tab indicator', 80, 100),
+        br('colorCompoundBrandBackground', 'Slider fill, radio dot', 80, 100),
+      ],
+      status: [
+        { n: 'Danger', ic: 'error_circle_20_filled', bg: '#FDF3F4', bd: '#EEACB2', fg: '#B10E1C', use: 'Save failed, invalid input, connection lost.' },
+        { n: 'Warning', ic: 'warning_20_filled', bg: '#FFF9F5', bd: '#FDCFB4', fg: '#BC4B09', use: 'Unsaved changes, session about to end.' },
+        { n: 'Success', ic: 'checkmark_circle_20_filled', bg: '#F1FAF1', bd: '#9FD89F', fg: '#0E700E', use: 'Saved, sent, synchronised.' },
+        { n: 'Informative', ic: 'info_20_filled', bg: '#F5F5F5', bd: '#E0E0E0', fg: '#616161', use: 'Neutral notices. The only intent allowed for clinical content.' },
+      ],
+      contrast: [
+        { fg: '#242424', bg: '#FFFFFF', r: '15.5', use: 'Body text' },
+        { fg: '#424242', bg: '#FFFFFF', r: '10.0', use: 'Secondary text' },
+        { fg: '#616161', bg: '#FFFFFF', r: '6.2', use: 'Metadata' },
+        { fg: '#616161', bg: '#F5F5F5', r: '5.7', use: 'Metadata on the frame' },
+        { fg: '#707070', bg: '#FFFFFF', r: '5.0', use: 'Placeholder' },
+        { fg: '#FFFFFF', bg: '#7160E8', r: '4.6', use: 'Primary button' },
+        { fg: '#6656D1', bg: '#FFFFFF', r: '5.5', use: 'Link' },
+        { fg: '#6656D1', bg: '#F9F8FE', r: '5.2', use: 'Brand 70 on tint' },
+        { fg: '#9184EE', bg: '#292929', r: '4.6', use: 'Dark-theme link' },
+        { fg: '#242424', bg: '#D6C8A0', r: '9.3', use: 'Band marker on sand' },
+      ],
+      ramp: [
+        ['Display', 68, 92, 600, 'Gråsone', 'Not used in clinical views'],
+        ['Large title', 40, 52, 600, 'Velkommen til ATLAS', 'Guide surfaces: tour welcome'],
+        ['Title 1', 32, 40, 600, 'Kari, 34 år', 'Guide surfaces: vignette briefing'],
+        ['Title 2', 28, 36, 600, 'Slik leser du båndet', 'Tour step heading'],
+        ['Title 3', 24, 32, 600, 'Timeliste i dag', 'Page title'],
+        ['Subtitle 1', 20, 26, 600, 'Konsultasjon kl. 09:30', 'Patient name in workspace; dialog and drawer titles'],
+        ['Subtitle 2', 16, 22, 600, 'Legemidler', 'Card and panel titles'],
+        ['Subtitle 2 Stronger', 16, 22, 700, 'Legemidler', 'Avoid'],
+        ['Body 2', 16, 22, 400, 'Pasienten beskriver nedstemthet over flere måneder.', 'Long-form reading on guide surfaces'],
+        ['Body 1', 14, 20, 400, 'Henvisningen mangler informasjon om tidligere behandling.', 'Default for all UI and clinical text'],
+        ['Body 1 Strong', 14, 20, 600, 'Tidligere behandling', 'Labels, table headers, emphasis'],
+        ['Body 1 Stronger', 14, 20, 700, 'Tidligere behandling', 'Avoid'],
+        ['Caption 1', 12, 16, 400, 'Referral is missing information about prior treatment.', 'Metadata, hints, English line'],
+        ['Caption 1 Strong', 12, 16, 600, 'Konsultasjon', 'Nav section headers, small labels'],
+        ['Caption 1 Stronger', 12, 16, 700, 'Konsultasjon', 'Avoid'],
+        ['Caption 2', 10, 14, 400, '3 nye', 'Counter badges only'],
+        ['Caption 2 Strong', 10, 14, 600, '3 nye', 'Counter badges only'],
+      ].map(([n, s, lh, w, t, use]) => ({ n, t, use, fs: s + 'px', lh: lh + 'px', w, spec: s + '/' + lh + ' ' + (w === 700 ? 'Bold' : w === 600 ? 'Semibold' : 'Regular') })),
+      spacing: [['XXS',2,'Icon to badge'],['XS',4,'Label to hint'],['SNudge',6,'Icon to label inside buttons'],['S',8,'Between related controls'],['MNudge',10,'Input inner padding'],['M',12,'Card padding, list item gap'],['L',16,'Card gap, panel padding'],['XL',20,'Between groups in a panel'],['XXL',24,'Page margin, dialog padding'],['XXXL',32,'Between page sections']].map(([t, v, u]) => ({ t, v, u, w: v + 'px' })),
+      sizes: [0,2,4,6,8,10,12,16,20,24,28,32,36,40,48,52,56].map(v => ({ v, n: 'size' + (v * 10), w: v + 'px' })),
+      breakpoints: [
+        { n: 'Small', r: '320–479', a: 'One column. The reflow target for 400% zoom.' },
+        { n: 'Medium', r: '480–639', a: 'One column. Side panels open as overlay drawers.' },
+        { n: 'Large', r: '640–1023', a: 'Nav collapses to the 48px rail. ATLAS rail opens as an overlay drawer.' },
+        { n: 'X-large', r: '1024–1365', a: 'Minimum for the consultation workspace: nav rail, content and a 320px side panel.' },
+        { n: 'XX-large', r: '1366–1919', a: 'Design target for GP and DPS desktops. Full nav, content, side panel.' },
+        { n: 'XXX-large', r: '1920+', a: 'Content stops growing at 1600px; extra width goes to the margins.' },
+      ],
+      radius: [['borderRadiusNone','0','Nav bars, tab bars, screen-edge panels','0px'],['borderRadiusSmall','2px','Checkboxes, small badges, shapes under 32px','2px'],['borderRadiusMedium','4px','Buttons, inputs, dropdowns, cards, tags','4px'],['borderRadiusLarge','8px','Content panels, dialogs, large buttons','8px'],['borderRadiusXLarge','12px','Popovers, teaching popovers, sheets','12px'],['borderRadiusCircular','50%','Avatars, counter badges, switch thumbs','36px']].map(([t, v, u, css]) => ({ t, v, u, css })),
+      strokes: [['strokeWidthThin · 1px','Borders and dividers','1px'],['strokeWidthThick · 2px','Focus ring, input focus underline','2px'],['strokeWidthThicker · 3px','Selected tab indicator','3px'],['strokeWidthThickest · 4px','Selected nav indicator','4px']].map(([t, u, h]) => ({ t, u, h })),
+      shadows: [
+        ['shadow2', '0 0 2px rgba(0,0,0,.12), 0 1px 2px rgba(0,0,0,.14)', 'Content panels in the app frame'],
+        ['shadow4', '0 0 2px rgba(0,0,0,.12), 0 2px 4px rgba(0,0,0,.14)', 'Cards at rest, timeliste entries'],
+        ['shadow8', '0 0 2px rgba(0,0,0,.12), 0 4px 8px rgba(0,0,0,.14)', 'Clickable card hover, toasts'],
+        ['shadow16', '0 0 2px rgba(0,0,0,.12), 0 8px 16px rgba(0,0,0,.14)', 'Menus, popovers, tooltips, dropdown lists'],
+        ['shadow28', '0 0 8px rgba(0,0,0,.20), 0 14px 28px rgba(0,0,0,.24)', 'Overlay drawers'],
+        ['shadow64', '0 0 8px rgba(0,0,0,.20), 0 32px 64px rgba(0,0,0,.24)', 'Dialogs'],
+      ].map(([t, v, u]) => ({ t, v, u })),
+      durations: [['durationUltraFast','50ms','Checkbox and switch toggles'],['durationFaster','100ms','Hover and press colour'],['durationFast','150ms','Menus, popovers, tooltips'],['durationNormal','200ms','Tab indicator, toasts, drawer exit'],['durationGentle','250ms','Dialog enter'],['durationSlow','300ms','Drawer enter'],['durationSlower','400ms','Tour step change'],['durationUltraSlow','500ms','Not used']].map(([t, v, u]) => ({ t, v, u })),
+      curves: [['curveDecelerateMid','cubic-bezier(0,0,0,1)','Default for entering'],['curveDecelerateMax','cubic-bezier(0.1,0.9,0.2,1)','Large surfaces entering'],['curveDecelerateMin','cubic-bezier(0.33,0,0.1,1)','Subtle entrances'],['curveAccelerateMid','cubic-bezier(1,0,1,1)','Default for leaving'],['curveAccelerateMax','cubic-bezier(0.9,0.1,1,0.2)','Large surfaces leaving'],['curveAccelerateMin','cubic-bezier(0.8,0,0.78,1)','Subtle exits'],['curveEasyEase','cubic-bezier(0.33,0,0.67,1)','Colour changes, moves on screen'],['curveEasyEaseMax','cubic-bezier(0.8,0,0.2,1)','Long moves on screen'],['curveLinear','cubic-bezier(0,0,1,1)','Spinners and progress only']].map(([t, v, u]) => ({ t, v, u })),
+      dotLeft: this.state.play ? 'calc(100% - 16px)' : '0px',
+      playLabel: this.state.play ? 'Reset' : 'Play',
+      togglePlay: () => this.setState(s => ({ play: !s.play })),
+      pairs: ['home','person','chat','calendar_ltr','document_text','info','warning','error_circle','checkmark_circle'].map(n => ({ n: n.replace('_ltr', ''), r: n + '_20_regular', f: n + '_20_filled' })),
+      meanings: [['stethoscope','Henvisende fastlege','Referring GP (role)'],['people','DPS, inntak','DPS intake (role)'],['person','Pasient','Patient'],['notepad','Notat','Consultation note'],['pill','Legemidler','Medication'],['chat_multiple','Dialog med DPS','Dialogue with DPS'],['scales','Beslutning','Refer or hold decision'],['arrow_forward','Henvis','Refer'],['pause_circle','Behold','Hold'],['checkmark_circle','Kriterium omtalt','Criterion addressed'],['circle','Kriterium ikke omtalt','Criterion not addressed'],['clock','Frist','Deadline']].map(([ic, m, e]) => ({ ic: ic + '_20_regular', m, e })),
+      iconCount: this.icons.length,
+      icons: this.icons.map(n => { const f = /_20_filled$/.test(n) ? n : /_16$/.test(n) ? n + '_regular' : n + '_20_regular'; return { f, n: f }; }),
+      a11y: [
+        { t: 'Colour is never the only signal', d: 'Every state has a text label and, where useful, an icon. This is also ATLAS guardrail 1.' },
+        { t: 'Keyboard', d: 'Every action works from the keyboard. Tab order follows reading order. Esc closes menus, popovers, drawers and dialogs, and focus returns to the trigger.' },
+        { t: 'Reflow and zoom', d: 'Screens reflow down to 320px wide (400% zoom) without horizontal scrolling. Text can grow to 200% without clipping.' },
+        { t: 'Language', d: 'Pages declare lang="nb". English lines carry lang="en" so screen readers switch voice.' },
+        { t: 'Screen readers', d: 'The uncertainty band has a text equivalent, for example “Plassering: gråsone, nær midten”. Toasts use a polite live region.' },
+        { t: 'Targets', d: 'Pointer targets are at least 24×24px. Default controls are 32px high; tablet layouts use 40px.' },
+        { t: 'Forced colours', d: 'In Windows high-contrast mode the band falls back to a system-colour line, the marker and its text label.' },
+        { t: 'Motion', d: 'All transitions respect prefers-reduced-motion.' },
+      ],
+      examples: [
+        { d: 'Henvisningen mangler informasjon om tidligere behandling.', de: 'Referral is missing information about prior treatment.', n: 'We noticed your referral is missing some details!' },
+        { d: 'Vurderingen er usikker. Liknende henvisninger har blitt vurdert ulikt.', de: 'Assessment carries uncertainty. Similar referrals have been triaged differently.', n: 'Recommended: rett til helsehjelp. Confidence: 73%.' },
+        { d: 'Du kan returnere henvisningen, akseptere den eller be om mer informasjon.', de: 'You can return the referral, accept it, or ask for more information.', n: 'Anbefalt handling: Returner med kommentar.' },
+      ],
+      vocab: [['fastlege','GP'],['DPS','District psychiatric centre'],['henvisning','Referral'],['inntak','Intake, triage'],['vurdering','Assessment'],['funksjonsfall','Functional decline'],['gråsone','Grey zone'],['terskel','Threshold'],['rett til helsehjelp','Right to specialist care'],['frist','Legal deadline']].map(([nb, en]) => ({ nb, en })),
+      formats: [['Decimal','12,4'],['Date in text','23. mai 2026'],['Date in metadata','2026-05-23'],['Time','kl. 14:30'],['Duration','3 uker'],['Code','P76 · F32.1 (mono)']].map(([k, v]) => ({ k, v })),
+      themeCode: "import { createLightTheme, createDarkTheme } from '@fluentui/react-components';\n\n// Fluent lavender (Global-Color-Lavender): 12 published steps, 4 midpoints\nexport const atlasBrand = {\n  10: '#120F25', 20: '#221D46', 30: '#302963', 40: '#3F3682',\n  50: '#4A3F99', 60: '#5649B0', 70: '#6656D1', 80: '#7160E8',\n  90: '#8172EB', 100: '#9184EE', 110: '#A79CF1', 120: '#BCB4F5',\n  130: '#D2CCF8', 140: '#DCD8FA', 150: '#E7E4FB', 160: '#F9F8FE',\n};\n\nexport const atlasLight = createLightTheme(atlasBrand);\n\nexport const atlasDark = createDarkTheme(atlasBrand);",
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;background:#FFFFFF;color:#242424;font-family:'Segoe UI','Segoe UI Web (West European)',-apple-system,BlinkMacSystemFont,Roboto,'Helvetica Neue',sans-serif;font-size:14px;line-height:20px;-webkit-font-smoothing:antialiased}
+button,input,textarea,select{font:inherit;color:inherit}
+input::placeholder,textarea::placeholder{color:#707070}
+a{color:#6656D1;text-decoration:none}a:hover{color:#5649B0;text-decoration:underline}
+@keyframes atlasSpin{to{transform:rotate(360deg)}}
+@keyframes atlasIndet{0%{left:-30%}100%{left:100%}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</helmet>
+<div lang="en" style="min-height:100vh;display:flex;flex-direction:column">
+<header style="position:sticky;top:0;z-index:10;display:flex;align-items:center;gap:20px;height:56px;padding:0 24px;background:#FFFFFF;border-bottom:1px solid #E0E0E0">
+<a href="ATLAS%20DS%20-%20Design%20language.dc.html" style="display:flex;align-items:center;gap:10px;color:#242424;text-decoration:none"><span style="font-size:16px;line-height:22px;font-weight:700;letter-spacing:.04em">ATLAS</span><span style="width:1px;height:20px;background:#E0E0E0"></span><span style="color:#424242">Meridian</span></a>
+<span style="display:inline-flex;flex:none;white-space:nowrap;align-items:center;height:20px;padding:0 6px;border-radius:4px;background:#F9F8FE;border:1px solid #DCD8FA;color:#6656D1;font-size:12px;line-height:16px;font-weight:600">1.0 for review</span>
+<nav style="display:flex;align-self:stretch;margin-left:12px">
+<a href="ATLAS%20DS%20-%20Design%20language.dc.html" style="display:flex;align-items:center;padding:0 12px;color:#424242;text-decoration:none" style-hover="color:#242424;background:#F5F5F5">Design language</a>
+<a href="#overview" style="position:relative;display:flex;align-items:center;padding:0 12px;color:#242424;font-weight:600;text-decoration:none">Components<span style="position:absolute;left:12px;right:12px;bottom:0;height:3px;border-radius:3px 3px 0 0;background:#7160E8"></span></a>
+<a href="ATLAS%20DS%20-%20Clinical%20patterns.dc.html" style="display:flex;align-items:center;padding:0 12px;color:#424242;text-decoration:none" style-hover="color:#242424;background:#F5F5F5">Clinical patterns</a>
+</nav>
+<span style="flex:1"></span>
+<a href="https://fluent2.microsoft.design/components/web/react/" target="_blank" rel="noopener" style="font-size:12px;line-height:16px;color:#616161">Fluent 2 components</a>
+</header>
+
+<div style="display:grid;grid-template-columns:248px minmax(0,1fr);flex:1">
+<aside style="position:sticky;top:56px;align-self:start;height:calc(100vh - 56px);overflow:auto;display:flex;flex-direction:column;gap:2px;padding:20px 8px;background:#FAFAFA;border-right:1px solid #E0E0E0">
+<div style="padding:0 12px 8px;font-size:12px;line-height:16px;font-weight:600;color:#616161">Components</div>
+<sc-for list="{{ nav }}" as="n" hint-placeholder-count="30">
+<a href="#{{ n.id }}" style="position:relative;display:flex;align-items:center;min-height:32px;padding:6px 12px 6px 16px;border-radius:4px;color:#242424;text-decoration:none;font-weight:{{ n.fw }};background:{{ n.bg }}" style-hover="background:#F0F0F0"><span style="position:absolute;left:4px;top:8px;bottom:8px;width:3px;border-radius:2px;background:{{ n.ind }}"></span>{{ n.label }}</a>
+</sc-for>
+</aside>
+
+<main style="min-width:0;padding:40px 56px 120px">
+<div style="max-width:1040px;display:flex;flex-direction:column">
+
+<section id="overview" style="scroll-margin-top:72px;display:flex;flex-direction:column;gap:24px;padding-bottom:40px">
+<div style="display:flex;flex-direction:column;gap:12px;max-width:760px">
+<div style="font-weight:600;color:#6656D1">Meridian design language · 1.0 for review</div>
+<h1 style="margin:0;font-size:40px;line-height:52px;font-weight:600">Components</h1>
+<p style="margin:0;font-size:16px;line-height:22px;color:#424242;text-wrap:pretty">The Fluent 2 web components ATLAS uses, shown with the ATLAS theme. Sizes, paddings and states are Fluent UI React v9 defaults. Each entry adds what ATLAS allows and forbids. Components ATLAS has no screen for yet are listed at the end.</p>
+</div>
+<div style="display:flex;flex-wrap:wrap;gap:8px">
+<sc-for list="{{ index }}" as="x" hint-placeholder-count="30">
+<a href="#{{ x.id }}" style="display:inline-flex;align-items:center;height:32px;padding:0 12px;border:1px solid #D1D1D1;border-radius:4px;background:#FFFFFF;color:#242424;text-decoration:none" style-hover="background:#F5F5F5;border-color:#C7C7C7">{{ x.label }}</a>
+</sc-for>
+</div>
+</section>
+
+<section id="button" style="scroll-margin-top:72px;display:flex;flex-direction:column;gap:20px;padding:40px 0;border-top:1px solid #E0E0E0">
+<div style="display:flex;flex-direction:column;gap:6px;max-width:760px"><div style="display:flex;align-items:center;justify-content:space-between;gap:8px 16px;flex-wrap:wrap"><h2 style="margin:0;font-size:24px;line-height:32px;font-weight:600">Button</h2><dc-import name="ATLAS Feedback Button" section="button" heading="Button" page="Components" hint-size="172px,32px"></dc-import></div><p style="margin:0;font-size:16px;line-height:22px;color:#424242;text-wrap:pretty">Starts an action. Five appearances, three sizes. Hover and press the examples.</p></div>
+<div style="display:flex;flex-direction:column;gap:20px;padding:24px;border:1px solid #E0E0E0;border-radius:8px">
+<div style="display:flex;flex-direction:column;gap:10px"><span style="font-size:12px;line-height:16px;font-weight:600;color:#616161">Appearance</span>
+<div style="display:flex;flex-wrap:wrap;align-items:center;gap:12px">
+<button style="display:inline-flex;align-items:center;justify-content:center;gap:6px;height:32px;min-width:96px;padding:0 12px;border:1px solid transparent;border-radius:4px;background:#7160E8;color:#FFFFFF;font-weight:600;cursor:pointer;transition:background 100ms cubic-bezier(0.33,0,0.67,1)" style-hover="background:#6656D1" style-active="background:#3F3682">Primary</button>
+<button style="display:inline-flex;align-items:center;justify-content:center;gap:6px;height:32px;min-width:96px;padding:0 12px;border:1px solid #D1D1D1;border-radius:4px;background:#FFFFFF;color:#242424;font-weight:600;cursor:pointer;transition:background 100ms cubic-bezier(0.33,0,0.67,1)" style-hover="background:#F5F5F5;border-color:#C7C7C7" style-active="background:#E0E0E0;border-color:#B3B3B3">Secondary</button>
+<button style="display:inline-flex;align-items:center;justify-content:center;gap:6px;height:32px;min-width:96px;padding:0 12px;border:1px solid #D1D1D1;border-radius:4px;background:transparent;color:#242424;font-weight:600;cursor:pointer" style-hover="border-color:#C7C7C7" style-active="border-color:#B3B3B3">Outline</button>
+<button style="display:inline-flex;align-items:center;justify-content:center;gap:6px;height:32px;min-width:96px;padding:0 12px;border:1px solid transparent;border-radius:4px;background:transparent;color:#242424;font-weight:600;cursor:pointer" style-hover="background:#F5F5F5" style-active="background:#E0E0E0">Subtle</button>
+<button style="display:inline-flex;align-items:center;justify-content:center;gap:6px;height:32px;min-width:96px;padding:0 12px;border:1px solid transparent;border-radius:4px;background:transparent;color:#242424;font-weight:600;cursor:pointer" style-hover="color:#7160E8" style-active="color:#5649B0">Transparent</button>
+<button disabled style="display:inline-flex;align-items:center;justify-content:center;gap:6px;height:32px;min-width:96px;padding:0 12px;border:1px solid #E0E0E0;border-radius:4px;background:#F0F0F0;color:#BDBDBD;font-weight:600;cursor:not-allowed">Disabled</button>
+</div></div>
+<div style="display:flex;flex-direction:column;gap:10px"><span style="font-size:12px;line-height:16px;font-weight:600;color:#616161">Sheen · guide surfaces only</span>
+<div style="display:flex;flex-wrap:wrap;align-items:center;gap:16px;padding:20px;border-radius:8px;background:radial-gradient(22% 34% at 76% 36%,#FDCFB4 0%,rgba(253,207,180,0) 75%),radial-gradient(44% 64% at 78% 34%,#FEE5D7 0%,rgba(254,229,215,0) 72%),radial-gradient(36% 50% at 56% 4%,#FBDDF0 0%,rgba(251,221,240,0) 72%),radial-gradient(40% 58% at 96% 86%,#D2CCF8 0%,rgba(210,204,248,0) 72%),radial-gradient(50% 65% at 0% 100%,#E7E4FB 0%,rgba(231,228,251,0) 70%),#FFFFFF">
+<button style="display:inline-flex;align-items:center;gap:6px;height:40px;padding:0 16px;border:0;border-radius:8px;background:linear-gradient(135deg,#7160E8 0%,#3F3682 100%);color:#FFFFFF;font-size:16px;line-height:22px;font-weight:600;cursor:pointer;box-shadow:0 0 2px rgba(0,0,0,.30),0 2px 4px rgba(0,0,0,.25)" style-hover="background:linear-gradient(135deg,#6656D1 0%,#3F3682 100%)" style-active="background:#3F3682">Start omvisningen<i style="width:20px;height:20px;background:#FFFFFF;mask:url(assets/icons/arrow_right_20_regular.svg) 0/20px"></i></button>
+<button style="height:40px;padding:0 12px;border:0;border-radius:8px;background:transparent;font-size:16px;line-height:22px;font-weight:600;cursor:pointer" style-hover="background:rgba(255,255,255,.6)">Hopp over</button>
+</div></div>
+<div style="display:flex;flex-direction:column;gap:10px"><span style="font-size:12px;line-height:16px;font-weight:600;color:#616161">Size</span>
+<div style="display:flex;flex-wrap:wrap;align-items:center;gap:12px">
+<button style="display:inline-flex;align-items:center;justify-content:center;gap:4px;height:24px;min-width:64px;padding:0 8px;border:1px solid #D1D1D1;border-radius:4px;background:#FFFFFF;font-size:12px;line-height:16px;cursor:pointer" style-hover="background:#F5F5F5;border-color:#C7C7C7" style-active="background:#E0E0E0">Small · 24</button>
+<button style="display:inline-flex;align-items:center;justify-content:center;gap:6px;height:32px;min-width:96px;padding:0 12px;border:1px solid #D1D1D1;border-radius:4px;background:#FFFFFF;font-weight:600;cursor:pointer" style-hover="background:#F5F5F5;border-color:#C7C7C7" style-active="background:#E0E0E0">Medium · 32</button>
+<button style="display:inline-flex;align-items:center;justify-content:center;gap:6px;height:40px;min-width:96px;padding:0 16px;border:1px solid #D1D1D1;border-radius:8px;background:#FFFFFF;font-size:16px;line-height:22px;font-weight:600;cursor:pointer" style-hover="background:#F5F5F5;border-color:#C7C7C7" style-active="background:#E0E0E0">Large · 40</button>
+</div></div>
+<div style="display:flex;flex-direction:column;gap:10px"><span style="font-size:12px;line-height:16px;font-weight:600;color:#616161">With icon, icon only, toggle, menu and split</span>
+<div style="display:flex;flex-wrap:wrap;align-items:center;gap:12px">
+<button style="display:inline-flex;align-items:center;justify-content:center;gap:6px;height:32px;min-width:96px;padding:0 12px;border:1px solid transparent;border-radius:4px;background:#7160E8;color:#FFFFFF;font-weight:600;cursor:pointer" style-hover="background:#6656D1" style-active="background:#3F3682"><i style="width:20px;height:20px;flex:none;background:#FFFFFF;mask:url(assets/icons/send_20_regular.svg) 0/20px"></i>Send til DPS</button>
+<button style="display:inline-flex;align-items:center;justify-content:center;gap:6px;height:32px;min-width:96px;padding:0 12px;border:1px solid #D1D1D1;border-radius:4px;background:#FFFFFF;font-weight:600;cursor:pointer" style-hover="background:#F5F5F5;border-color:#C7C7C7" style-active="background:#E0E0E0"><i style="width:20px;height:20px;flex:none;background:#424242;mask:url(assets/icons/save_20_regular.svg) 0/20px"></i>Lagre utkast</button>
+<button title="Kopier" aria-label="Kopier" style="display:inline-grid;place-items:center;width:32px;height:32px;padding:0;border:1px solid transparent;border-radius:4px;background:transparent;cursor:pointer" style-hover="background:#F5F5F5" style-active="background:#E0E0E0"><i style="width:20px;height:20px;background:#424242;mask:url(assets/icons/copy_20_regular.svg) 0/20px"></i></button>
+<button onClick="{{ onTog }}" aria-pressed="{{ tog.pressed }}" style="display:inline-flex;align-items:center;justify-content:center;gap:6px;height:32px;min-width:96px;padding:0 12px;border:1px solid {{ tog.bd }};border-radius:4px;background:{{ tog.bg }};font-weight:600;cursor:pointer"><i style="width:20px;height:20px;flex:none;background:#424242;mask:url(assets/icons/local_language_20_regular.svg) 0/20px"></i>{{ tog.label }}</button>
+<button style="display:inline-flex;align-items:center;justify-content:center;gap:6px;height:32px;padding:0 8px 0 12px;border:1px solid #D1D1D1;border-radius:4px;background:#FFFFFF;font-weight:600;cursor:pointer" style-hover="background:#F5F5F5;border-color:#C7C7C7" style-active="background:#E0E0E0">Mer<i style="width:16px;height:16px;flex:none;background:#424242;mask:url(assets/icons/chevron_down_16_regular.svg) 0/16px"></i></button>
+<span style="display:inline-flex"><button style="height:32px;padding:0 12px;border:1px solid transparent;border-radius:4px 0 0 4px;background:#7160E8;color:#FFFFFF;font-weight:600;cursor:pointer" style-hover="background:#6656D1" style-active="background:#3F3682">Lagre notat</button><button aria-label="Flere lagringsvalg" style="display:inline-grid;place-items:center;width:32px;height:32px;padding:0;border:0;border-left:1px solid #FFFFFF;border-radius:0 4px 4px 0;background:#7160E8;cursor:pointer" style-hover="background:#6656D1" style-active="background:#3F3682"><i style="width:16px;height:16px;background:#FFFFFF;mask:url(assets/icons/chevron_down_16_regular.svg) 0/16px"></i></button></span>
+</div></div>
+</div>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px 32px">
+<div style="display:flex;flex-direction:column;gap:6px"><span style="font-weight:600">Use in ATLAS</span><span style="color:#424242">Primary for the one system action a view exists for: <i lang="nb">Lagre notat</i>, <i lang="nb">Send til DPS</i>. Secondary for everything else. Subtle inside toolbars and panels. The primary goes first; see <a href="ATLAS%20DS%20-%20Design%20language.dc.html#harmony">where buttons go</a>.</span></div>
+<div style="display:flex;flex-direction:column;gap:6px"><span style="font-weight:600">ATLAS rule</span><span style="color:#424242">Sheen is for the one start action on a guide surface. A clinical choice is never a primary button. <i lang="nb">Henvis</i> and <i lang="nb">Behold</i> are equal secondary buttons, side by side, nothing pre-selected. Labels name the clinician’s action, never the system’s advice.</span></div>
+</div>
+</section>
+
+<section id="link" style="scroll-margin-top:72px;display:flex;flex-direction:column;gap:20px;padding:40px 0;border-top:1px solid #E0E0E0">
+<div style="display:flex;flex-direction:column;gap:6px;max-width:760px"><div style="display:flex;align-items:center;justify-content:space-between;gap:8px 16px;flex-wrap:wrap"><h2 style="margin:0;font-size:24px;line-height:32px;font-weight:600">Link</h2><dc-import name="ATLAS Feedback Button" section="link" heading="Link" page="Components" hint-size="172px,32px"></dc-import></div><p style="margin:0;font-size:16px;line-height:22px;color:#424242;text-wrap:pretty">Moves to another place. Use a button when the user starts an action instead.</p></div>
+<div style="display:flex;flex-wrap:wrap;align-items:center;gap:24px;padding:24px;border:1px solid #E0E0E0;border-radius:8px">
+<span style="max-width:420px">Kriteriene står i <a href="#link" style="color:#6656D1;text-decoration:underline">prioriteringsveilederen for psykisk helsevern</a>, kapittel 3.</span>
+<a href="#link" style="color:#6656D1">Åpne henvisningen</a>
+<a href="#link" style="color:#424242" style-hover="color:#242424;text-decoration:underline">Subtle link</a>
+<span style="color:#BDBDBD">Disabled link</span>
+</div>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px 32px">
+<div style="display:flex;flex-direction:column;gap:6px"><span style="font-weight:600">Use in ATLAS</span><span style="color:#424242">Inline links in running text are underlined. Standalone links underline on hover. Brand 70 at rest, brand 60 on hover.</span></div>
+<div style="display:flex;flex-direction:column;gap:6px"><span style="font-weight:600">ATLAS rule</span><span style="color:#424242">Link text says where it goes. Never “Klikk her” or “Les mer”.</span></div>
+</div>
+</section>
+
+<section id="input" style="scroll-margin-top:72px;display:flex;flex-direction:column;gap:20px;padding:40px 0;border-top:1px solid #E0E0E0">
+<div style="display:flex;flex-direction:column;gap:6px;max-width:760px"><div style="display:flex;align-items:center;justify-content:space-between;gap:8px 16px;flex-wrap:wrap"><h2 style="margin:0;font-size:24px;line-height:32px;font-weight:600">Input</h2><dc-import name="ATLAS Feedback Button" section="input" heading="Input" page="Components" hint-size="172px,32px"></dc-import></div><p style="margin:0;font-size:16px;line-height:22px;color:#424242;text-wrap:pretty">Single-line text. Fluent inputs have a darker bottom stroke that turns into a 2px brand line on focus.</p></div>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:20px 24px;padding:24px;border:1px solid #E0E0E0;border-radius:8px">
+<div style="display:flex;flex-direction:column;gap:4px"><span style="font-size:12px;line-height:16px;color:#616161">Outline · rest (try it)</span><span style="display:flex;align-items:center;gap:8px;height:32px;padding:0 10px;border:1px solid #D1D1D1;border-bottom-color:#616161;border-radius:4px;background:#FFFFFF"><input placeholder="Dose" style="flex:1;min-width:0;border:0;outline:0;padding:0;background:transparent"><span style="color:#616161">mg</span></span></div>
+<div style="display:flex;flex-direction:column;gap:4px"><span style="font-size:12px;line-height:16px;color:#616161">Hover</span><span style="display:flex;align-items:center;height:32px;padding:0 10px;border:1px solid #C7C7C7;border-bottom-color:#575757;border-radius:4px;background:#FFFFFF;color:#707070">Dose</span></div>
+<div style="display:flex;flex-direction:column;gap:4px"><span style="font-size:12px;line-height:16px;color:#616161">Focus</span><span style="display:flex;align-items:center;height:32px;padding:0 10px;border:1px solid #D1D1D1;border-bottom-color:#7160E8;box-shadow:inset 0 -1px 0 #7160E8;border-radius:4px;background:#FFFFFF">50</span></div>
+<div style="display:flex;flex-direction:column;gap:4px"><span style="font-size:12px;line-height:16px;color:#616161">Disabled</span><span style="display:flex;align-items:center;height:32px;padding:0 10px;border:1px solid #E0E0E0;border-radius:4px;background:#FAFAFA;color:#BDBDBD">Dose</span></div>
+<div style="display:flex;flex-direction:column;gap:4px"><span style="font-size:12px;line-height:16px;color:#616161">Invalid</span><span style="display:flex;align-items:center;height:32px;padding:0 10px;border:1px solid #D13438;border-radius:4px;background:#FFFFFF">1234</span></div>
+<div style="display:flex;flex-direction:column;gap:4px"><span style="font-size:12px;line-height:16px;color:#616161">Underline</span><span style="display:flex;align-items:center;height:32px;padding:0 2px;border-bottom:1px solid #616161;color:#707070">Søk i notatet</span></div>
+<div style="display:flex;flex-direction:column;gap:4px"><span style="font-size:12px;line-height:16px;color:#616161">Filled darker (on white)</span><span style="display:flex;align-items:center;height:32px;padding:0 10px;border-radius:4px;background:#F5F5F5;color:#707070">Fritekst</span></div>
+<div style="display:flex;flex-direction:column;gap:4px;padding:8px;margin:-8px;border-radius:4px;background:#F5F5F5"><span style="font-size:12px;line-height:16px;color:#616161">Filled lighter (on the frame)</span><span style="display:flex;align-items:center;height:32px;padding:0 10px;border-radius:4px;background:#FFFFFF;color:#707070">Fritekst</span></div>
+<div style="display:flex;flex-direction:column;gap:4px"><span style="font-size:12px;line-height:16px;color:#616161">Small · 24</span><span style="display:flex;align-items:center;height:24px;padding:0 8px;border:1px solid #D1D1D1;border-bottom-color:#616161;border-radius:4px;font-size:12px;line-height:16px;color:#707070">Dose</span></div>
+<div style="display:flex;flex-direction:column;gap:4px"><span style="font-size:12px;line-height:16px;color:#616161">Large · 40</span><span style="display:flex;align-items:center;height:40px;padding:0 12px;border:1px solid #D1D1D1;border-bottom-color:#616161;border-radius:4px;font-size:16px;line-height:22px;color:#707070">Dose</span></div>
+</div>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px 32px">
+<div style="display:flex;flex-direction:column;gap:6px"><span style="font-weight:600">Use in ATLAS</span><span style="color:#424242">Outline on white panels; filled lighter on the grey frame. Units (mg, år) sit inside the field after the value.</span></div>
+<div style="display:flex;flex-direction:column;gap:6px"><span style="font-weight:600">ATLAS rule</span><span style="color:#424242">Invalid styling is for format errors only (a fødselsnummer with 10 digits). Never mark clinical content as invalid.</span></div>
+</div>
+</section>
+
+<section id="textarea" style="scroll-margin-top:72px;display:flex;flex-direction:column;gap:20px;padding:40px 0;border-top:1px solid #E0E0E0">
+<div style="display:flex;flex-direction:column;gap:6px;max-width:760px"><div style="display:flex;align-items:center;justify-content:space-between;gap:8px 16px;flex-wrap:wrap"><h2 style="margin:0;font-size:24px;line-height:32px;font-weight:600">Textarea</h2><dc-import name="ATLAS Feedback Button" section="textarea" heading="Textarea" page="Components" hint-size="172px,32px"></dc-import></div><p style="margin:0;font-size:16px;line-height:22px;color:#424242;text-wrap:pretty">Multi-line text, such as the consultation note and the rationale for a decision.</p></div>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px 24px;padding:24px;border:1px solid #E0E0E0;border-radius:8px">
+<label style="display:flex;flex-direction:column;gap:4px"><span>Konsultasjonsnotat</span><textarea placeholder="Pasienten beskriver …" style="min-height:96px;padding:6px 10px;border:1px solid #D1D1D1;border-bottom-color:#616161;border-radius:4px;background:#FFFFFF;resize:vertical;outline:0"></textarea></label>
+<label style="display:flex;flex-direction:column;gap:4px"><span>Begrunnelse <span style="color:#616161">(valgfritt)</span></span><textarea placeholder="Skriv kort hvorfor" style="min-height:96px;padding:6px 10px;border:0;border-radius:4px;background:#F5F5F5;resize:vertical;outline:0"></textarea></label>
+</div>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px 32px">
+<div style="display:flex;flex-direction:column;gap:6px"><span style="font-weight:600">Use in ATLAS</span><span style="color:#424242">Grows vertically with content; the user can resize. Long notes save automatically, with a toast on save.</span></div>
+<div style="display:flex;flex-direction:column;gap:6px"><span style="font-weight:600">ATLAS rule</span><span style="color:#424242">A rationale field is optional and identical for every decision. It never appears only when the clinician goes against the band.</span></div>
+</div>
+</section>
+
+<section id="searchbox" style="scroll-margin-top:72px;display:flex;flex-direction:column;gap:20px;padding:40px 0;border-top:1px solid #E0E0E0">
+<div style="display:flex;flex-direction:column;gap:6px;max-width:760px"><div style="display:flex;align-items:center;justify-content:space-between;gap:8px 16px;flex-wrap:wrap"><h2 style="margin:0;font-size:24px;line-height:32px;font-weight:600">SearchBox</h2><dc-import name="ATLAS Feedback Button" section="searchbox" heading="SearchBox" page="Components" hint-size="172px,32px"></dc-import></div><p style="margin:0;font-size:16px;line-height:22px;color:#424242;text-wrap:pretty">An input with a search icon and a clear button once it has content.</p></div>
+<div style="display:flex;flex-wrap:wrap;gap:24px;padding:24px;border:1px solid #E0E0E0;border-radius:8px">
+<span style="flex:1 1 280px;display:flex;align-items:center;gap:6px;height:32px;padding:0 8px;border:1px solid #D1D1D1;border-bottom-color:#616161;border-radius:4px;background:#FFFFFF"><i style="width:20px;height:20px;flex:none;background:#616161;mask:url(assets/icons/search_20_regular.svg) 0/20px"></i><input placeholder="Søk etter pasient eller fødselsnummer" style="flex:1;min-width:0;border:0;outline:0;padding:0;background:transparent"></span>
+<span style="flex:1 1 280px;display:flex;align-items:center;gap:6px;height:32px;padding:0 4px 0 8px;border:1px solid #D1D1D1;border-bottom-color:#7160E8;box-shadow:inset 0 -1px 0 #7160E8;border-radius:4px;background:#FFFFFF"><i style="width:20px;height:20px;flex:none;background:#616161;mask:url(assets/icons/search_20_regular.svg) 0/20px"></i><span style="flex:1">Kari</span><span style="display:grid;place-items:center;width:24px;height:24px;border-radius:4px"><i style="width:16px;height:16px;background:#616161;mask:url(assets/icons/dismiss_16_regular.svg) 0/16px"></i></span></span>
+</div>
+<div style="display:flex;flex-direction:column;gap:6px;max-width:760px"><span style="font-weight:600">Use in ATLAS</span><span style="color:#424242">Patient search in the header and on the timeliste. The header search sits on the frame and uses the filled lighter appearance.</span></div>
+</section>
+
+<section id="dropdown" style="scroll-margin-top:72px;display:flex;flex-direction:column;gap:20px;padding:40px 0;border-top:1px solid #E0E0E0">
+<div style="display:flex;flex-direction:column;gap:6px;max-width:760px"><div style="display:flex;align-items:center;justify-content:space-between;gap:8px 16px;flex-wrap:wrap"><h2 style="margin:0;font-size:24px;line-height:32px;font-weight:600">Dropdown and Combobox</h2><dc-import name="ATLAS Feedback Button" section="dropdown" heading="Dropdown and Combobox" page="Components" hint-size="172px,32px"></dc-import></div><p style="margin:0;font-size:16px;line-height:22px;color:#424242;text-wrap:pretty">Dropdown picks from a short list. Combobox adds typing to filter a long one, such as ICPC-2 codes. Both open a listbox at shadow 16.</p></div>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px;align-items:start;padding:24px;border:1px solid #E0E0E0;border-radius:8px;min-height:300px">
+<div style="position:relative;display:flex;flex-direction:column;gap:4px"><span>Kontakttype</span>
+<button onClick="{{ onDd }}" aria-expanded="{{ dd.open }}" style="display:flex;align-items:center;gap:8px;height:32px;padding:0 8px 0 10px;border:1px solid #D1D1D1;border-bottom-color:#616161;border-radius:4px;background:#FFFFFF;text-align:left;cursor:pointer" style-hover="border-color:#C7C7C7"><span style="flex:1">{{ dd.val }}</span><i style="width:20px;height:20px;flex:none;background:#616161;mask:url(assets/icons/chevron_down_20_regular.svg) 0/20px"></i></button>
+<sc-if value="{{ dd.open }}" hint-placeholder-val="{{ false }}">
+<div role="listbox" style="position:absolute;top:60px;left:0;right:0;z-index:2;display:flex;flex-direction:column;padding:4px;border-radius:4px;background:#FFFFFF;box-shadow:0 0 2px rgba(0,0,0,.12),0 8px 16px rgba(0,0,0,.14)">
+<sc-for list="{{ dd.items }}" as="o" hint-placeholder-count="4">
+<button onClick="{{ o.pick }}" role="option" style="display:flex;align-items:center;gap:8px;height:32px;padding:0 8px;border:0;border-radius:4px;background:transparent;text-align:left;cursor:pointer;font-weight:{{ o.fw }}" style-hover="background:#F5F5F5"><i style="width:16px;height:16px;flex:none;background:#7160E8;mask:url(assets/icons/checkmark_16_regular.svg) 0/16px;opacity:{{ o.op }}"></i>{{ o.v }}</button>
+</sc-for>
+</div>
+</sc-if>
+</div>
+<div style="position:relative;display:flex;flex-direction:column;gap:4px"><span>Diagnose (ICPC-2)</span>
+<span style="display:flex;align-items:center;gap:8px;height:32px;padding:0 8px 0 10px;border:1px solid #D1D1D1;border-bottom-color:#616161;border-radius:4px;background:#FFFFFF"><input onInput="{{ onCbo }}" placeholder="Skriv kode eller navn" style="flex:1;min-width:0;border:0;outline:0;padding:0;background:transparent"><i style="width:20px;height:20px;flex:none;background:#616161;mask:url(assets/icons/chevron_down_20_regular.svg) 0/20px"></i></span>
+<div role="listbox" style="display:flex;flex-direction:column;margin-top:4px;padding:4px;border-radius:4px;background:#FFFFFF;box-shadow:0 0 2px rgba(0,0,0,.12),0 8px 16px rgba(0,0,0,.14)">
+<sc-for list="{{ cbo }}" as="o" hint-placeholder-count="6">
+<div role="option" style="display:flex;align-items:center;gap:10px;min-height:32px;padding:6px 8px;border-radius:4px;cursor:pointer" style-hover="background:#F5F5F5"><span style="flex:none;width:32px;font:12px/16px Consolas,ui-monospace,Menlo,monospace;color:#424242">{{ o.c }}</span><span lang="nb">{{ o.n }}</span></div>
+</sc-for>
+<sc-if value="{{ cboEmpty }}" hint-placeholder-val="{{ false }}"><div style="padding:6px 8px;color:#616161">Ingen treff</div></sc-if>
+</div>
+</div>
+</div>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px 32px">
+<div style="display:flex;flex-direction:column;gap:6px"><span style="font-weight:600">Use in ATLAS</span><span style="color:#424242">Codes show in mono before the Norwegian name. Selected options get a brand checkmark, not a fill.</span></div>
+<div style="display:flex;flex-direction:column;gap:6px"><span style="font-weight:600">ATLAS rule</span><span style="color:#424242">No default selection for clinical fields. Options keep a fixed order, never sorted by what ATLAS considers likely.</span></div>
+</div>
+</section>
+
+<section id="field" style="scroll-margin-top:72px;display:flex;flex-direction:column;gap:20px;padding:40px 0;border-top:1px solid #E0E0E0">
+<div style="display:flex;flex-direction:column;gap:6px;max-width:760px"><div style="display:flex;align-items:center;justify-content:space-between;gap:8px 16px;flex-wrap:wrap"><h2 style="margin:0;font-size:24px;line-height:32px;font-weight:600">Field</h2><dc-import name="ATLAS Feedback Button" section="field" heading="Field" page="Components" hint-size="172px,32px"></dc-import></div><p style="margin:0;font-size:16px;line-height:22px;color:#424242;text-wrap:pretty">Wraps any input with a label, a hint and a validation message.</p></div>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:24px;padding:24px;border:1px solid #E0E0E0;border-radius:8px">
+<div style="display:flex;flex-direction:column;gap:4px"><span>Fødselsnummer <span style="color:#C50F1F" aria-hidden="true">*</span></span><span style="display:flex;align-items:center;height:32px;padding:0 10px;border:1px solid #D1D1D1;border-bottom-color:#616161;border-radius:4px;color:#707070">11 siffer</span><span style="font-size:12px;line-height:16px;color:#616161">Brukes bare til å hente journal.</span></div>
+<div style="display:flex;flex-direction:column;gap:4px"><span>Fødselsnummer <span style="color:#C50F1F" aria-hidden="true">*</span></span><span style="display:flex;align-items:center;height:32px;padding:0 10px;border:1px solid #D13438;border-radius:4px">0102031234</span><span style="display:flex;align-items:center;gap:4px;font-size:12px;line-height:16px;color:#B10E1C"><i style="width:16px;height:16px;flex:none;background:#B10E1C;mask:url(assets/icons/error_circle_20_filled.svg) 0/16px"></i>Skriv inn 11 siffer.</span></div>
+<div style="display:flex;flex-direction:column;gap:4px"><span>Henvisningsdato</span><span style="display:flex;align-items:center;height:32px;padding:0 10px;border:1px solid #D1D1D1;border-bottom-color:#616161;border-radius:4px">2026-10-09</span><span style="display:flex;align-items:center;gap:4px;font-size:12px;line-height:16px;color:#616161"><i style="width:16px;height:16px;flex:none;background:#616161;mask:url(assets/icons/info_16_regular.svg) 0/16px"></i>Fylles ut automatisk ved sending.</span></div>
+</div>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px 32px">
+<div style="display:flex;flex-direction:column;gap:6px"><span style="font-weight:600">Use in ATLAS</span><span style="color:#424242">Labels above the control, Body 1 regular. Hints in Caption 1, Foreground 3. Mark the few required fields; do not mark optional ones except in rationale fields.</span></div>
+<div style="display:flex;flex-direction:column;gap:6px"><span style="font-weight:600">ATLAS rule</span><span style="color:#424242">Error messages say what to enter, not what went wrong. The red asterisk and error state are form mechanics, not clinical warnings.</span></div>
+</div>
+</section>
+
+<section id="checkbox" style="scroll-margin-top:72px;display:flex;flex-direction:column;gap:20px;padding:40px 0;border-top:1px solid #E0E0E0">
+<div style="display:flex;flex-direction:column;gap:6px;max-width:760px"><div style="display:flex;align-items:center;justify-content:space-between;gap:8px 16px;flex-wrap:wrap"><h2 style="margin:0;font-size:24px;line-height:32px;font-weight:600">Checkbox</h2><dc-import name="ATLAS Feedback Button" section="checkbox" heading="Checkbox" page="Components" hint-size="172px,32px"></dc-import></div><p style="margin:0;font-size:16px;line-height:22px;color:#424242;text-wrap:pretty">Turns an option on or off, alone or in a list. 16px box, 2px corners.</p></div>
+<div style="display:flex;flex-wrap:wrap;gap:24px 48px;padding:24px;border:1px solid #E0E0E0;border-radius:8px">
+<div style="display:flex;flex-direction:column;gap:4px">
+<sc-for list="{{ cbs }}" as="c" hint-placeholder-count="3">
+<button onClick="{{ c.on }}" role="checkbox" aria-checked="{{ c.aria }}" style="display:flex;align-items:center;gap:8px;min-height:32px;padding:0 4px;border:0;background:transparent;text-align:left;cursor:pointer"><span style="display:grid;place-items:center;width:16px;height:16px;flex:none;border:1px solid {{ c.bd }};border-radius:2px;background:{{ c.bg }}"><i style="width:12px;height:12px;background:#FFFFFF;mask:url(assets/icons/checkmark_16_regular.svg) center/14px;opacity:{{ c.op }}"></i></span><span lang="nb">{{ c.label }}</span></button>
+</sc-for>
+</div>
+<div style="display:flex;flex-direction:column;gap:4px">
+<span style="display:flex;align-items:center;gap:8px;min-height:32px;padding:0 4px"><span style="display:grid;place-items:center;width:16px;height:16px;border:1px solid #7160E8;border-radius:2px"><span style="width:8px;height:2px;border-radius:1px;background:#7160E8"></span></span>Mixed</span>
+<span style="display:flex;align-items:center;gap:8px;min-height:32px;padding:0 4px;color:#BDBDBD"><span style="width:16px;height:16px;border:1px solid #E0E0E0;border-radius:2px"></span>Disabled</span>
+<span style="display:flex;align-items:center;gap:8px;min-height:32px;padding:0 4px;color:#BDBDBD"><span style="display:grid;place-items:center;width:16px;height:16px;border-radius:2px;background:#E0E0E0"><i style="width:12px;height:12px;background:#BDBDBD;mask:url(assets/icons/checkmark_16_regular.svg) center/14px"></i></span>Disabled, checked</span>
+</div>
+</div>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px 32px">
+<div style="display:flex;flex-direction:column;gap:6px"><span style="font-weight:600">Use in ATLAS</span><span style="color:#424242">Structured return reasons on the DPS side; checklists the clinician fills in themselves.</span></div>
+<div style="display:flex;flex-direction:column;gap:6px"><span style="font-weight:600">ATLAS rule</span><span style="color:#424242">ATLAS never ticks a box for the clinician. The completeness guide reads the note; it does not check boxes.</span></div>
+</div>
+</section>
+
+<section id="radio" style="scroll-margin-top:72px;display:flex;flex-direction:column;gap:20px;padding:40px 0;border-top:1px solid #E0E0E0">
+<div style="display:flex;flex-direction:column;gap:6px;max-width:760px"><div style="display:flex;align-items:center;justify-content:space-between;gap:8px 16px;flex-wrap:wrap"><h2 style="margin:0;font-size:24px;line-height:32px;font-weight:600">Radio group</h2><dc-import name="ATLAS Feedback Button" section="radio" heading="Radio group" page="Components" hint-size="172px,32px"></dc-import></div><p style="margin:0;font-size:16px;line-height:22px;color:#424242;text-wrap:pretty">One choice from two to seven visible options.</p></div>
+<div style="display:flex;flex-wrap:wrap;gap:24px 48px;padding:24px;border:1px solid #E0E0E0;border-radius:8px">
+<div role="radiogroup" aria-label="Kontakttype" style="display:flex;flex-direction:column;gap:2px"><span style="padding:0 4px 6px">Kontakttype</span>
+<sc-for list="{{ radios }}" as="r" hint-placeholder-count="4">
+<button onClick="{{ r.on }}" role="radio" aria-checked="{{ r.aria }}" style="display:flex;align-items:center;gap:8px;min-height:32px;padding:0 4px;border:0;background:transparent;text-align:left;cursor:pointer"><span style="display:grid;place-items:center;width:16px;height:16px;flex:none;border:1px solid {{ r.bd }};border-radius:50%"><span style="width:10px;height:10px;border-radius:50%;background:#7160E8;opacity:{{ r.op }}"></span></span><span lang="nb">{{ r.v }}</span></button>
+</sc-for>
+</div>
+<div style="display:flex;flex-direction:column;gap:2px"><span style="padding:0 4px 6px">Horizontal</span><div style="display:flex;gap:16px"><span style="display:flex;align-items:center;gap:8px;min-height:32px"><span style="display:grid;place-items:center;width:16px;height:16px;border:1px solid #7160E8;border-radius:50%"><span style="width:10px;height:10px;border-radius:50%;background:#7160E8"></span></span>Ja</span><span style="display:flex;align-items:center;gap:8px;min-height:32px"><span style="width:16px;height:16px;border:1px solid #616161;border-radius:50%"></span>Nei</span><span style="display:flex;align-items:center;gap:8px;min-height:32px;color:#BDBDBD"><span style="width:16px;height:16px;border:1px solid #E0E0E0;border-radius:50%"></span>Vet ikke</span></div></div>
+</div>
+<div style="display:flex;flex-direction:column;gap:6px;max-width:760px"><span style="font-weight:600">ATLAS rule</span><span style="color:#424242">Clinical radio groups start with nothing selected.</span></div>
+</section>
+
+<section id="switch" style="scroll-margin-top:72px;display:flex;flex-direction:column;gap:20px;padding:40px 0;border-top:1px solid #E0E0E0">
+<div style="display:flex;flex-direction:column;gap:6px;max-width:760px"><div style="display:flex;align-items:center;justify-content:space-between;gap:8px 16px;flex-wrap:wrap"><h2 style="margin:0;font-size:24px;line-height:32px;font-weight:600">Switch</h2><dc-import name="ATLAS Feedback Button" section="switch" heading="Switch" page="Components" hint-size="172px,32px"></dc-import></div><p style="margin:0;font-size:16px;line-height:22px;color:#424242;text-wrap:pretty">A setting that takes effect immediately.</p></div>
+<div style="display:flex;flex-wrap:wrap;align-items:center;gap:24px 48px;padding:24px;border:1px solid #E0E0E0;border-radius:8px">
+<button onClick="{{ onSw }}" role="switch" aria-checked="{{ sw.aria }}" style="display:flex;align-items:center;gap:10px;border:0;padding:4px;background:transparent;cursor:pointer"><span style="position:relative;width:40px;height:20px;flex:none;border:1px solid {{ sw.bd }};border-radius:10px;background:{{ sw.bg }};transition:background 100ms cubic-bezier(0.33,0,0.67,1)"><span style="position:absolute;top:2px;width:14px;height:14px;border-radius:50%;background:{{ sw.tc }};left:{{ sw.x }};transition:left 100ms cubic-bezier(0.33,0,0.67,1)"></span></span><span lang="nb">Vis engelsk tekst</span><span style="color:#616161">{{ sw.label }}</span></button>
+<span style="display:flex;align-items:center;gap:10px;color:#BDBDBD"><span style="position:relative;width:40px;height:20px;border-radius:10px;background:#E0E0E0"><span style="position:absolute;top:3px;left:23px;width:14px;height:14px;border-radius:50%;background:#BDBDBD"></span></span>Disabled, on</span>
+</div>
+<div style="display:flex;flex-direction:column;gap:6px;max-width:760px"><span style="font-weight:600">Use in ATLAS</span><span style="color:#424242">Settings only: show English, compact rows. Never for a clinical answer; use a radio group or checkbox.</span></div>
+</section>
+
+<section id="slider" style="scroll-margin-top:72px;display:flex;flex-direction:column;gap:20px;padding:40px 0;border-top:1px solid #E0E0E0">
+<div style="display:flex;flex-direction:column;gap:6px;max-width:760px"><div style="display:flex;align-items:center;justify-content:space-between;gap:8px 16px;flex-wrap:wrap"><h2 style="margin:0;font-size:24px;line-height:32px;font-weight:600">Slider</h2><dc-import name="ATLAS Feedback Button" section="slider" heading="Slider" page="Components" hint-size="172px,32px"></dc-import></div><p style="margin:0;font-size:16px;line-height:22px;color:#424242;text-wrap:pretty">Picks a value on a continuous range. 4px rail, 20px thumb with a brand ring.</p></div>
+<div style="display:flex;flex-direction:column;gap:8px;padding:24px;border:1px solid #E0E0E0;border-radius:8px">
+<div style="display:flex;justify-content:space-between;max-width:480px"><span lang="nb">Hvor sikker er du i egen vurdering?</span><span style="font-weight:600;font-variant-numeric:tabular-nums">{{ slider.v }}</span></div>
+<div style="position:relative;max-width:480px;height:32px">
+<span style="position:absolute;left:10px;right:10px;top:14px;height:4px;border-radius:2px;background:#616161"></span>
+<span style="position:absolute;left:10px;top:14px;height:4px;border-radius:2px;background:#7160E8;width:{{ slider.fill }}"></span>
+<span style="position:absolute;top:6px;width:20px;height:20px;margin-left:-10px;border-radius:50%;background:#FFFFFF;box-shadow:inset 0 0 0 4px #7160E8,0 0 0 1px #FFFFFF;left:{{ slider.pos }}"></span>
+<input type="range" min="0" max="100" onInput="{{ onSlider }}" aria-label="Egen sikkerhet" style="position:absolute;inset:0;width:100%;margin:0;opacity:0;cursor:pointer">
+</div>
+<div style="display:flex;justify-content:space-between;max-width:480px;font-size:12px;line-height:16px;color:#616161"><span>Lite sikker</span><span>Svært sikker</span></div>
+</div>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px 32px">
+<div style="display:flex;flex-direction:column;gap:6px"><span style="font-weight:600">Use in ATLAS</span><span style="color:#424242">Only for the clinician’s self-reported confidence. See the pattern in Clinical patterns.</span></div>
+<div style="display:flex;flex-direction:column;gap:6px"><span style="font-weight:600">ATLAS rule</span><span style="color:#424242">A slider never shows a system value, and is never compared with other clinicians.</span></div>
+</div>
+</section>
+
+<section id="tabs" style="scroll-margin-top:72px;display:flex;flex-direction:column;gap:20px;padding:40px 0;border-top:1px solid #E0E0E0">
+<div style="display:flex;flex-direction:column;gap:6px;max-width:760px"><div style="display:flex;align-items:center;justify-content:space-between;gap:8px 16px;flex-wrap:wrap"><h2 style="margin:0;font-size:24px;line-height:32px;font-weight:600">Tabs</h2><dc-import name="ATLAS Feedback Button" section="tabs" heading="Tabs" page="Components" hint-size="172px,32px"></dc-import></div><p style="margin:0;font-size:16px;line-height:22px;color:#424242;text-wrap:pretty">Switches between views of the same object. The selected tab is semibold with a 3px brand indicator; hover shows a grey one.</p></div>
+<div style="display:flex;flex-direction:column;padding:24px;border:1px solid #E0E0E0;border-radius:8px;gap:16px">
+<div role="tablist" style="display:flex;flex-wrap:wrap;gap:4px">
+<sc-for list="{{ tabs }}" as="t" hint-placeholder-count="4">
+<button onClick="{{ t.on }}" role="tab" aria-selected="{{ t.aria }}" style="position:relative;display:flex;align-items:center;gap:6px;height:44px;padding:0 10px;border:0;border-radius:4px;background:transparent;cursor:pointer;font-weight:{{ t.fw }}" style-hover="background:#F5F5F5"><i style="width:20px;height:20px;flex:none;background:{{ t.icc }};mask:url(assets/icons/{{ t.ic }}.svg) 0/20px"></i><span lang="nb">{{ t.label }}</span><span style="position:absolute;left:10px;right:10px;bottom:0;height:3px;border-radius:2px;background:{{ t.ind }}"></span></button>
+</sc-for>
+</div>
+<div style="padding:12px 0 0;color:#424242">{{ tabBody }}</div>
+</div>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px 32px">
+<div style="display:flex;flex-direction:column;gap:6px"><span style="font-weight:600">Use in ATLAS</span><span style="color:#424242">Sections of one patient: note, medication, history, dialogue. Icons optional; when used, the selected icon is filled brand.</span></div>
+<div style="display:flex;flex-direction:column;gap:6px"><span style="font-weight:600">ATLAS rule</span><span style="color:#424242">The ATLAS assessment is never a tab you have to find. It lives in the side panel, beside the note.</span></div>
+</div>
+</section>
+
+<section id="nav" style="scroll-margin-top:72px;display:flex;flex-direction:column;gap:20px;padding:40px 0;border-top:1px solid #E0E0E0">
+<div style="display:flex;flex-direction:column;gap:6px;max-width:760px"><div style="display:flex;align-items:center;justify-content:space-between;gap:8px 16px;flex-wrap:wrap"><h2 style="margin:0;font-size:24px;line-height:32px;font-weight:600">Nav</h2><dc-import name="ATLAS Feedback Button" section="nav" heading="Nav" page="Components" hint-size="172px,32px"></dc-import></div><p style="margin:0;font-size:16px;line-height:22px;color:#424242;text-wrap:pretty">App navigation on the frame. 260px open, 48px as a rail. The selected item gets a 4px brand pill, semibold text and a filled icon.</p></div>
+<div style="display:flex;flex-wrap:wrap;gap:24px;padding:24px;border:1px solid #E0E0E0;border-radius:8px;background:#FAFAFA">
+<nav style="width:260px;display:flex;flex-direction:column;gap:2px;padding:8px;border-radius:8px;background:#F5F5F5;border:1px solid #E0E0E0">
+<span style="padding:8px 10px 4px;font-size:12px;line-height:16px;font-weight:600;color:#616161">Fastlege</span>
+<sc-for list="{{ navItems }}" as="i" hint-placeholder-count="4">
+<button onClick="{{ i.on }}" aria-current="{{ i.cur }}" style="position:relative;display:flex;align-items:center;gap:10px;height:40px;padding:0 10px;border:0;border-radius:4px;text-align:left;cursor:pointer;background:{{ i.bg }};font-weight:{{ i.fw }}" style-hover="background:#EBEBEB"><span style="position:absolute;left:0;top:10px;width:4px;height:20px;border-radius:2px;background:{{ i.ind }}"></span><i style="width:20px;height:20px;flex:none;background:{{ i.icc }};mask:url(assets/icons/{{ i.ic }}.svg) 0/20px"></i><span lang="nb" style="flex:1">{{ i.label }}</span><span style="font-size:12px;line-height:16px;color:#616161">{{ i.count }}</span></button>
+</sc-for>
+<span style="height:1px;margin:6px 10px;background:#E0E0E0"></span>
+<span style="display:flex;align-items:center;gap:10px;height:40px;padding:0 10px;border-radius:4px"><i style="width:20px;height:20px;background:#424242;mask:url(assets/icons/settings_20_regular.svg) 0/20px"></i>Innstillinger</span>
+</nav>
+<nav style="width:48px;display:flex;flex-direction:column;align-items:center;gap:2px;padding:8px 0;border-radius:8px;background:#F5F5F5;border:1px solid #E0E0E0">
+<span title="Timeliste" style="position:relative;display:grid;place-items:center;width:40px;height:40px;border-radius:4px;background:#E6E6E6"><span style="position:absolute;left:-4px;top:10px;width:4px;height:20px;border-radius:2px;background:#7160E8"></span><i style="width:20px;height:20px;background:#7160E8;mask:url(assets/icons/calendar_ltr_20_filled.svg) 0/20px"></i></span>
+<span title="Pasienter" style="display:grid;place-items:center;width:40px;height:40px;border-radius:4px"><i style="width:20px;height:20px;background:#424242;mask:url(assets/icons/people_20_regular.svg) 0/20px"></i></span>
+<span title="Dialog med DPS" style="position:relative;display:grid;place-items:center;width:40px;height:40px;border-radius:4px"><i style="width:20px;height:20px;background:#424242;mask:url(assets/icons/chat_multiple_20_regular.svg) 0/20px"></i><span style="position:absolute;top:5px;right:4px;min-width:16px;height:16px;padding:0 4px;border-radius:8px;background:#7160E8;color:#FFFFFF;font-size:10px;line-height:16px;font-weight:600;text-align:center">2</span></span>
+<span title="Henvisninger" style="display:grid;place-items:center;width:40px;height:40px;border-radius:4px"><i style="width:20px;height:20px;background:#424242;mask:url(assets/icons/document_text_20_regular.svg) 0/20px"></i></span>
+</nav>
+</div>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px 32px">
+<div style="display:flex;flex-direction:column;gap:6px"><span style="font-weight:600">Use in ATLAS</span><span style="color:#424242">Section headers name the role (Fastlege, DPS). Counts are plain numbers for unread dialogue only.</span></div>
+<div style="display:flex;flex-direction:column;gap:6px"><span style="font-weight:600">ATLAS rule</span><span style="color:#424242">No counts of “overdue” or “high-risk” patients in the nav.</span></div>
+</div>
+</section>
+
+<section id="breadcrumb" style="scroll-margin-top:72px;display:flex;flex-direction:column;gap:20px;padding:40px 0;border-top:1px solid #E0E0E0">
+<div style="display:flex;flex-direction:column;gap:6px;max-width:760px"><div style="display:flex;align-items:center;justify-content:space-between;gap:8px 16px;flex-wrap:wrap"><h2 style="margin:0;font-size:24px;line-height:32px;font-weight:600">Breadcrumb</h2><dc-import name="ATLAS Feedback Button" section="breadcrumb" heading="Breadcrumb" page="Components" hint-size="172px,32px"></dc-import></div><p style="margin:0;font-size:16px;line-height:22px;color:#424242;text-wrap:pretty">Shows where a page sits and links back up the path. The current page is semibold and not a link.</p></div>
+<div style="padding:24px;border:1px solid #E0E0E0;border-radius:8px">
+<nav aria-label="Brødsmuler" style="display:flex;flex-wrap:wrap;align-items:center;gap:2px">
+<a href="#breadcrumb" style="display:flex;align-items:center;height:32px;padding:0 6px;border-radius:4px;color:#424242" style-hover="background:#F5F5F5;color:#242424;text-decoration:none">Henvisninger</a>
+<i style="width:16px;height:16px;background:#616161;mask:url(assets/icons/chevron_right_20_regular.svg) center/16px"></i>
+<a href="#breadcrumb" style="display:flex;align-items:center;height:32px;padding:0 6px;border-radius:4px;color:#424242" style-hover="background:#F5F5F5;color:#242424;text-decoration:none">Til vurdering</a>
+<i style="width:16px;height:16px;background:#616161;mask:url(assets/icons/chevron_right_20_regular.svg) center/16px"></i>
+<span aria-current="page" style="display:flex;align-items:center;height:32px;padding:0 6px;font-weight:600">Henvisning 2026-10-07</span>
+</nav>
+</div>
+<div style="display:flex;flex-direction:column;gap:6px;max-width:760px"><span style="font-weight:600">Use in ATLAS</span><span style="color:#424242">DPS side: queue, referral, assessment. On the GP side the workspace is one level deep, so a back link to the timeliste is enough.</span></div>
+</section>
+
+<section id="toolbar" style="scroll-margin-top:72px;display:flex;flex-direction:column;gap:20px;padding:40px 0;border-top:1px solid #E0E0E0">
+<div style="display:flex;flex-direction:column;gap:6px;max-width:760px"><div style="display:flex;align-items:center;justify-content:space-between;gap:8px 16px;flex-wrap:wrap"><h2 style="margin:0;font-size:24px;line-height:32px;font-weight:600">Toolbar</h2><dc-import name="ATLAS Feedback Button" section="toolbar" heading="Toolbar" page="Components" hint-size="172px,32px"></dc-import></div><p style="margin:0;font-size:16px;line-height:22px;color:#424242;text-wrap:pretty">A row of subtle buttons for one surface, grouped with vertical dividers.</p></div>
+<div style="padding:24px;border:1px solid #E0E0E0;border-radius:8px;background:#FAFAFA">
+<div role="toolbar" aria-label="Notat" style="display:flex;flex-wrap:wrap;align-items:center;gap:4px;padding:4px;border-radius:8px;background:#FFFFFF;border:1px solid #E0E0E0">
+<button style="display:inline-flex;align-items:center;gap:6px;height:32px;padding:0 8px;border:0;border-radius:4px;background:transparent;cursor:pointer" style-hover="background:#F5F5F5" style-active="background:#E0E0E0"><i style="width:20px;height:20px;background:#424242;mask:url(assets/icons/save_20_regular.svg) 0/20px"></i>Lagre</button>
+<button style="display:inline-flex;align-items:center;gap:6px;height:32px;padding:0 8px;border:0;border-radius:4px;background:transparent;cursor:pointer" style-hover="background:#F5F5F5" style-active="background:#E0E0E0"><i style="width:20px;height:20px;background:#424242;mask:url(assets/icons/print_20_regular.svg) 0/20px"></i>Skriv ut</button>
+<button style="display:inline-flex;align-items:center;gap:6px;height:32px;padding:0 8px;border:0;border-radius:4px;background:transparent;cursor:pointer" style-hover="background:#F5F5F5" style-active="background:#E0E0E0"><i style="width:20px;height:20px;background:#424242;mask:url(assets/icons/copy_20_regular.svg) 0/20px"></i>Kopier</button>
+<span style="width:1px;height:20px;margin:0 4px;background:#E0E0E0"></span>
+<button style="display:inline-flex;align-items:center;gap:6px;height:32px;padding:0 8px;border:0;border-radius:4px;background:transparent;cursor:pointer" style-hover="background:#F5F5F5" style-active="background:#E0E0E0"><i style="width:20px;height:20px;background:#424242;mask:url(assets/icons/share_20_regular.svg) 0/20px"></i>Del med DPS</button>
+<span style="flex:1"></span>
+<button aria-label="Flere valg" title="Flere valg" style="display:inline-grid;place-items:center;width:32px;height:32px;border:0;border-radius:4px;background:transparent;cursor:pointer" style-hover="background:#F5F5F5"><i style="width:20px;height:20px;background:#424242;mask:url(assets/icons/more_horizontal_20_regular.svg) 0/20px"></i></button>
+</div>
+</div>
+<div style="display:flex;flex-direction:column;gap:6px;max-width:760px"><span style="font-weight:600">Use in ATLAS</span><span style="color:#424242">At the top of the note and of each side panel. Overflow goes into a Mer menu; the order of actions does not change with context.</span></div>
+</section>
+
+<section id="menu" style="scroll-margin-top:72px;display:flex;flex-direction:column;gap:20px;padding:40px 0;border-top:1px solid #E0E0E0">
+<div style="display:flex;flex-direction:column;gap:6px;max-width:760px"><div style="display:flex;align-items:center;justify-content:space-between;gap:8px 16px;flex-wrap:wrap"><h2 style="margin:0;font-size:24px;line-height:32px;font-weight:600">Menu</h2><dc-import name="ATLAS Feedback Button" section="menu" heading="Menu" page="Components" hint-size="172px,32px"></dc-import></div><p style="margin:0;font-size:16px;line-height:22px;color:#424242;text-wrap:pretty">A list of commands opened from a button. 32px items, 4px padding, shadow 16.</p></div>
+<div style="position:relative;min-height:260px;padding:24px;border:1px solid #E0E0E0;border-radius:8px">
+<button onClick="{{ onMenu }}" aria-expanded="{{ menuOpen }}" style="display:inline-flex;align-items:center;gap:6px;height:32px;padding:0 8px 0 12px;border:1px solid #D1D1D1;border-radius:4px;background:#FFFFFF;font-weight:600;cursor:pointer" style-hover="background:#F5F5F5;border-color:#C7C7C7">Mer<i style="width:16px;height:16px;background:#424242;mask:url(assets/icons/chevron_down_16_regular.svg) 0/16px"></i></button>
+<sc-if value="{{ menuOpen }}" hint-placeholder-val="{{ true }}">
+<div role="menu" style="position:absolute;top:64px;left:24px;width:240px;display:flex;flex-direction:column;padding:4px;border-radius:4px;background:#FFFFFF;box-shadow:0 0 2px rgba(0,0,0,.12),0 8px 16px rgba(0,0,0,.14)">
+<button role="menuitem" style="display:flex;align-items:center;gap:8px;height:32px;padding:0 8px;border:0;border-radius:4px;background:transparent;text-align:left;cursor:pointer" style-hover="background:#F5F5F5"><i style="width:20px;height:20px;background:#424242;mask:url(assets/icons/copy_20_regular.svg) 0/20px"></i><span style="flex:1">Kopier notat</span><span style="font-size:12px;line-height:16px;color:#616161">Ctrl+Shift+C</span></button>
+<button role="menuitem" style="display:flex;align-items:center;gap:8px;height:32px;padding:0 8px;border:0;border-radius:4px;background:transparent;text-align:left;cursor:pointer" style-hover="background:#F5F5F5"><i style="width:20px;height:20px;background:#424242;mask:url(assets/icons/print_20_regular.svg) 0/20px"></i><span style="flex:1">Skriv ut</span><span style="font-size:12px;line-height:16px;color:#616161">Ctrl+P</span></button>
+<span style="height:1px;margin:4px -4px;background:#E0E0E0"></span>
+<button role="menuitem" style="display:flex;align-items:center;gap:8px;height:32px;padding:0 8px;border:0;border-radius:4px;background:transparent;text-align:left;cursor:pointer" style-hover="background:#F5F5F5"><i style="width:20px;height:20px;background:#424242;mask:url(assets/icons/history_20_regular.svg) 0/20px"></i><span style="flex:1">Vis tidligere versjoner</span></button>
+<span role="menuitem" aria-disabled="true" style="display:flex;align-items:center;gap:8px;height:32px;padding:0 8px;color:#BDBDBD"><i style="width:20px;height:20px;background:#BDBDBD;mask:url(assets/icons/delete_20_regular.svg) 0/20px"></i>Slett utkast</span>
+</div>
+</sc-if>
+</div>
+<div style="display:flex;flex-direction:column;gap:6px;max-width:760px"><span style="font-weight:600">ATLAS rule</span><span style="color:#424242">Destructive items look like the others; they are confirmed in a dialog only if they lose data. Clinical decisions never live in a menu.</span></div>
+</section>
+
+<section id="avatar" style="scroll-margin-top:72px;display:flex;flex-direction:column;gap:20px;padding:40px 0;border-top:1px solid #E0E0E0">
+<div style="display:flex;flex-direction:column;gap:6px;max-width:760px"><div style="display:flex;align-items:center;justify-content:space-between;gap:8px 16px;flex-wrap:wrap"><h2 style="margin:0;font-size:24px;line-height:32px;font-weight:600">Avatar and Persona</h2><dc-import name="ATLAS Feedback Button" section="avatar" heading="Avatar and Persona" page="Components" hint-size="172px,32px"></dc-import></div><p style="margin:0;font-size:16px;line-height:22px;color:#424242;text-wrap:pretty">Avatar represents a person or a role. Persona pairs it with one or two lines of text.</p></div>
+<div style="display:flex;flex-direction:column;gap:24px;padding:24px;border:1px solid #E0E0E0;border-radius:8px">
+<div style="display:flex;flex-wrap:wrap;align-items:center;gap:16px">
+<span style="display:grid;place-items:center;width:24px;height:24px;border-radius:50%;background:#E6E6E6;color:#616161;font-size:10px;line-height:14px;font-weight:600">K</span>
+<span style="display:grid;place-items:center;width:32px;height:32px;border-radius:50%;background:#E6E6E6;color:#616161;font-size:12px;line-height:16px;font-weight:600">K</span>
+<span style="display:grid;place-items:center;width:40px;height:40px;border-radius:50%;background:#E6E6E6;color:#616161;font-size:16px;line-height:22px;font-weight:600">K</span>
+<span style="display:grid;place-items:center;width:56px;height:56px;border-radius:50%;background:#E6E6E6;color:#616161;font-size:20px;line-height:26px;font-weight:600">K</span>
+<span style="width:1px;height:40px;background:#E0E0E0"></span>
+<span title="Henvisende fastlege" style="display:grid;place-items:center;width:40px;height:40px;border-radius:50%;background:#F9F8FE;box-shadow:inset 0 0 0 1px #DCD8FA"><i style="width:20px;height:20px;background:#6656D1;mask:url(assets/icons/stethoscope_20_regular.svg) 0/20px"></i></span>
+<span title="DPS, inntak" style="display:grid;place-items:center;width:40px;height:40px;border-radius:50%;background:#F9F8FE;box-shadow:inset 0 0 0 1px #DCD8FA"><i style="width:20px;height:20px;background:#6656D1;mask:url(assets/icons/people_20_regular.svg) 0/20px"></i></span>
+</div>
+<div style="display:flex;flex-wrap:wrap;gap:32px">
+<div style="display:flex;align-items:center;gap:10px"><span style="display:grid;place-items:center;width:40px;height:40px;border-radius:50%;background:#E6E6E6;color:#616161;font-size:16px;line-height:22px;font-weight:600">K</span><span style="display:flex;flex-direction:column"><span style="font-weight:600">Kari, 34 år</span><span style="font-size:12px;line-height:16px;color:#616161">Kontroll · kl. 09:30</span></span></div>
+<div style="display:flex;align-items:center;gap:10px"><span style="display:grid;place-items:center;width:40px;height:40px;border-radius:50%;background:#F9F8FE;box-shadow:inset 0 0 0 1px #DCD8FA"><i style="width:20px;height:20px;background:#6656D1;mask:url(assets/icons/stethoscope_20_regular.svg) 0/20px"></i></span><span style="display:flex;flex-direction:column"><span style="font-weight:600">Henvisende fastlege</span><span style="font-size:12px;line-height:16px;color:#616161">Allmennpraksis</span></span></div>
+<div style="display:flex;align-items:center;gap:10px"><span style="display:grid;place-items:center;width:40px;height:40px;border-radius:50%;background:#F9F8FE;box-shadow:inset 0 0 0 1px #DCD8FA"><i style="width:20px;height:20px;background:#6656D1;mask:url(assets/icons/people_20_regular.svg) 0/20px"></i></span><span style="display:flex;flex-direction:column"><span style="font-weight:600">DPS, inntak</span><span style="font-size:12px;line-height:16px;color:#616161">Inntaksteam</span></span></div>
+</div>
+</div>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px 32px">
+<div style="display:flex;flex-direction:column;gap:6px"><span style="font-weight:600">Use in ATLAS</span><span style="color:#424242">Patients get neutral initials; no colours by name, so no patient looks categorised. Roles get an icon on brand tint.</span></div>
+<div style="display:flex;flex-direction:column;gap:6px"><span style="font-weight:600">ATLAS rule</span><span style="color:#424242">The other side is a role, never a name, photo or presence dot. No per-clinician history.</span></div>
+</div>
+</section>
+
+<section id="badge" style="scroll-margin-top:72px;display:flex;flex-direction:column;gap:20px;padding:40px 0;border-top:1px solid #E0E0E0">
+<div style="display:flex;flex-direction:column;gap:6px;max-width:760px"><div style="display:flex;align-items:center;justify-content:space-between;gap:8px 16px;flex-wrap:wrap"><h2 style="margin:0;font-size:24px;line-height:32px;font-weight:600">Badge</h2><dc-import name="ATLAS Feedback Button" section="badge" heading="Badge" page="Components" hint-size="172px,32px"></dc-import></div><p style="margin:0;font-size:16px;line-height:22px;color:#424242;text-wrap:pretty">A short, non-interactive label or count attached to something else.</p></div>
+<div style="display:flex;flex-direction:column;gap:20px;padding:24px;border:1px solid #E0E0E0;border-radius:8px">
+<div style="display:flex;flex-direction:column;gap:10px"><span style="font-size:12px;line-height:16px;font-weight:600;color:#616161">Allowed in clinical views</span>
+<div style="display:flex;flex-wrap:wrap;align-items:center;gap:12px">
+<span style="display:inline-flex;align-items:center;height:20px;padding:0 8px;border-radius:10px;background:#7160E8;color:#FFFFFF;font-size:12px;line-height:16px;font-weight:600">Ny</span>
+<span style="display:inline-flex;align-items:center;height:20px;padding:0 8px;border-radius:10px;background:#F9F8FE;border:1px solid #DCD8FA;color:#6656D1;font-size:12px;line-height:16px;font-weight:600">Utkast</span>
+<span style="display:inline-flex;align-items:center;height:20px;padding:0 8px;border-radius:10px;border:1px solid #D1D1D1;color:#424242;font-size:12px;line-height:16px;font-weight:600">Fra DPS</span>
+<span style="display:inline-flex;align-items:center;height:20px;padding:0 8px;border-radius:10px;background:#F5F5F5;color:#424242;font-size:12px;line-height:16px;font-weight:600">Lest</span>
+<span style="display:inline-flex;align-items:center;height:20px;padding:0 8px;border-radius:10px;background:#242424;color:#FFFFFF;font-size:12px;line-height:16px;font-weight:600">Frist i dag</span>
+<span style="display:inline-grid;place-items:center;min-width:20px;height:20px;padding:0 6px;border-radius:10px;background:#7160E8;color:#FFFFFF;font-size:12px;line-height:16px;font-weight:600">2</span>
+<span style="display:inline-grid;place-items:center;min-width:20px;height:20px;padding:0 6px;border-radius:10px;background:#7160E8;color:#FFFFFF;font-size:12px;line-height:16px;font-weight:600">99+</span>
+<span style="width:10px;height:10px;border-radius:50%;background:#7160E8"></span>
+<span style="width:6px;height:6px;border-radius:50%;background:#7160E8"></span>
+</div></div>
+<div style="display:flex;flex-direction:column;gap:10px"><span style="font-size:12px;line-height:16px;font-weight:600;color:#616161">System states only</span>
+<div style="display:flex;flex-wrap:wrap;align-items:center;gap:12px">
+<span style="display:inline-flex;align-items:center;height:20px;padding:0 8px;border-radius:10px;background:#FDF3F4;border:1px solid #EEACB2;color:#B10E1C;font-size:12px;line-height:16px;font-weight:600">Ikke lagret</span>
+<span style="display:inline-flex;align-items:center;height:20px;padding:0 8px;border-radius:10px;background:#FFF9F5;border:1px solid #FDCFB4;color:#BC4B09;font-size:12px;line-height:16px;font-weight:600">Ikke synkronisert</span>
+<span style="display:inline-flex;align-items:center;height:20px;padding:0 8px;border-radius:10px;background:#F1FAF1;border:1px solid #9FD89F;color:#0E700E;font-size:12px;line-height:16px;font-weight:600">Sendt</span>
+</div></div>
+</div>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px 32px">
+<div style="display:flex;flex-direction:column;gap:6px"><span style="font-weight:600">Use in ATLAS</span><span style="color:#424242">Document state (utkast, sendt, lest), unread counts and the legal deadline. Important (dark) is for deadlines only.</span></div>
+<div style="display:flex;flex-direction:column;gap:6px"><span style="font-weight:600">ATLAS rule</span><span style="color:#424242">No badge for risk, urgency or priority. “Frist i dag” states a legal date; it does not rank the patient.</span></div>
+</div>
+</section>
+
+<section id="tag" style="scroll-margin-top:72px;display:flex;flex-direction:column;gap:20px;padding:40px 0;border-top:1px solid #E0E0E0">
+<div style="display:flex;flex-direction:column;gap:6px;max-width:760px"><div style="display:flex;align-items:center;justify-content:space-between;gap:8px 16px;flex-wrap:wrap"><h2 style="margin:0;font-size:24px;line-height:32px;font-weight:600">Tag</h2><dc-import name="ATLAS Feedback Button" section="tag" heading="Tag" page="Components" hint-size="172px,32px"></dc-import></div><p style="margin:0;font-size:16px;line-height:22px;color:#424242;text-wrap:pretty">Labels a thing with a category. Interaction tags can be selected or dismissed.</p></div>
+<div style="display:flex;flex-direction:column;gap:20px;padding:24px;border:1px solid #E0E0E0;border-radius:8px">
+<div style="display:flex;flex-wrap:wrap;align-items:center;gap:8px">
+<span style="display:inline-flex;align-items:center;gap:6px;height:32px;padding:0 10px;border-radius:4px;background:#F5F5F5">Kontroll</span>
+<span style="display:inline-flex;align-items:center;gap:6px;height:32px;padding:0 10px;border-radius:4px;background:#FFFFFF;border:1px solid #D1D1D1">Selvrapport mottatt</span>
+<span style="display:inline-flex;align-items:center;gap:6px;height:32px;padding:0 10px;border-radius:4px;background:#F9F8FE;border:1px solid #DCD8FA;color:#6656D1">Utkast til henvisning</span>
+<span style="display:inline-flex;align-items:center;gap:6px;height:32px;padding:0 8px;border-radius:4px;background:#F5F5F5"><i style="width:20px;height:20px;background:#424242;mask:url(assets/icons/question_circle_20_regular.svg) 0/20px"></i>Terskel</span>
+<span style="display:inline-flex;align-items:center;gap:4px;height:32px;padding:0 4px 0 10px;border-radius:4px;background:#F5F5F5">P76 Depresjon<button aria-label="Fjern" style="display:grid;place-items:center;width:24px;height:24px;border:0;border-radius:4px;background:transparent;cursor:pointer" style-hover="background:#E0E0E0"><i style="width:16px;height:16px;background:#424242;mask:url(assets/icons/dismiss_16_regular.svg) 0/16px"></i></button></span>
+<span aria-pressed="true" style="display:inline-flex;align-items:center;gap:6px;height:32px;padding:0 10px;border-radius:4px;background:#7160E8;color:#FFFFFF">Valgt</span>
+</div>
+<div style="display:flex;flex-wrap:wrap;align-items:center;gap:8px">
+<span style="display:inline-flex;align-items:center;height:24px;padding:0 8px;border-radius:4px;background:#F5F5F5;font-size:12px;line-height:16px">Small · 24</span>
+<span style="display:inline-flex;align-items:center;height:20px;padding:0 6px;border-radius:2px;background:#F5F5F5;font-size:12px;line-height:16px">Extra small · 20</span>
+</div>
+</div>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px 32px">
+<div style="display:flex;flex-direction:column;gap:6px"><span style="font-weight:600">Use in ATLAS</span><span style="color:#424242">Outcome chips, uncertainty-type tags (diagnostisk, terskel, epistemisk), diagnosis codes and visit types.</span></div>
+<div style="display:flex;flex-direction:column;gap:6px"><span style="font-weight:600">ATLAS rule</span><span style="color:#424242">Outcome and uncertainty tags are always filled neutral. They differ by label and icon, never by colour.</span></div>
+</div>
+</section>
+
+<section id="card" style="scroll-margin-top:72px;display:flex;flex-direction:column;gap:20px;padding:40px 0;border-top:1px solid #E0E0E0">
+<div style="display:flex;flex-direction:column;gap:6px;max-width:760px"><div style="display:flex;align-items:center;justify-content:space-between;gap:8px 16px;flex-wrap:wrap"><h2 style="margin:0;font-size:24px;line-height:32px;font-weight:600">Card</h2><dc-import name="ATLAS Feedback Button" section="card" heading="Card" page="Components" hint-size="172px,32px"></dc-import></div><p style="margin:0;font-size:16px;line-height:22px;color:#424242;text-wrap:pretty">Groups information about one thing. 12px padding, 4px corners. Four appearances.</p></div>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:24px;padding:24px;border-radius:8px;background:#F5F5F5">
+<a href="#card" style="display:flex;flex-direction:column;gap:12px;padding:12px;border-radius:4px;background:#FFFFFF;box-shadow:0 0 2px rgba(0,0,0,.12),0 2px 4px rgba(0,0,0,.14);color:#242424;text-decoration:none" style-hover="box-shadow:0 0 2px rgba(0,0,0,.12),0 4px 8px rgba(0,0,0,.14)">
+<span style="display:flex;align-items:center;justify-content:space-between"><span style="font-size:16px;line-height:22px;font-weight:600;font-variant-numeric:tabular-nums">09:30</span><span style="display:inline-flex;align-items:center;height:24px;padding:0 8px;border-radius:4px;background:#F5F5F5;font-size:12px;line-height:16px">Kontroll</span></span>
+<span style="display:flex;align-items:center;gap:10px"><span style="display:grid;place-items:center;width:32px;height:32px;border-radius:50%;background:#E6E6E6;color:#616161;font-size:12px;line-height:16px;font-weight:600">K</span><span style="display:flex;flex-direction:column"><span style="font-weight:600">Kari, 34 år</span><span style="font-size:12px;line-height:16px;color:#616161">Selvrapport mottatt kl. 08:12</span></span></span>
+<span style="font-size:12px;line-height:16px;color:#616161">Filled · clickable, lifts to shadow 8</span>
+</a>
+<div style="display:flex;flex-direction:column;gap:8px;padding:12px;border-radius:4px;background:#FAFAFA;box-shadow:0 0 2px rgba(0,0,0,.12),0 2px 4px rgba(0,0,0,.14)"><span style="font-weight:600">Legemidler</span><span style="color:#424242">2 aktive, 1 avsluttet</span><span style="font-size:12px;line-height:16px;color:#616161">Filled alternative</span></div>
+<div style="display:flex;flex-direction:column;gap:8px;padding:12px;border-radius:4px;border:1px solid #D1D1D1"><span style="font-weight:600">Tidligere henvisning</span><span style="color:#424242">2024-11-02 · returnert med råd</span><span style="font-size:12px;line-height:16px;color:#616161">Outline · inside panels</span></div>
+<div style="display:flex;flex-direction:column;gap:8px;padding:12px;border-radius:4px"><span style="font-weight:600">Notat</span><span style="color:#424242">Sist endret kl. 09:41</span><span style="font-size:12px;line-height:16px;color:#616161">Subtle</span></div>
+</div>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px 32px">
+<div style="display:flex;flex-direction:column;gap:6px"><span style="font-weight:600">Use in ATLAS</span><span style="color:#424242">Filled cards on the grey frame (the timeliste). Outline cards inside white panels, where shadows would stack.</span></div>
+<div style="display:flex;flex-direction:column;gap:6px"><span style="font-weight:600">ATLAS rule</span><span style="color:#424242">Cards are sorted by time, never by an ATLAS score. No card is highlighted because of its content.</span></div>
+</div>
+</section>
+
+<section id="divider" style="scroll-margin-top:72px;display:flex;flex-direction:column;gap:20px;padding:40px 0;border-top:1px solid #E0E0E0">
+<div style="display:flex;flex-direction:column;gap:6px;max-width:760px"><div style="display:flex;align-items:center;justify-content:space-between;gap:8px 16px;flex-wrap:wrap"><h2 style="margin:0;font-size:24px;line-height:32px;font-weight:600">Divider</h2><dc-import name="ATLAS Feedback Button" section="divider" heading="Divider" page="Components" hint-size="172px,32px"></dc-import></div><p style="margin:0;font-size:16px;line-height:22px;color:#424242;text-wrap:pretty">Separates groups. Default uses Stroke 2; strong and subtle use Stroke 1 and 3.</p></div>
+<div style="display:flex;flex-direction:column;gap:20px;padding:24px;border:1px solid #E0E0E0;border-radius:8px">
+<span style="height:1px;background:#E0E0E0"></span>
+<span style="display:flex;align-items:center;gap:12px;font-size:12px;line-height:16px;color:#616161"><span style="flex:1;height:1px;background:#E0E0E0"></span>I dag<span style="flex:1;height:1px;background:#E0E0E0"></span></span>
+<span style="display:flex;align-items:center;gap:12px;font-size:12px;line-height:16px;color:#616161">Tidligere<span style="flex:1;height:1px;background:#E0E0E0"></span></span>
+<span style="display:flex;gap:24px"><span style="flex:1;display:flex;flex-direction:column;gap:6px"><span style="height:1px;background:#D1D1D1"></span><span style="font-size:12px;line-height:16px;color:#616161">Strong</span></span><span style="flex:1;display:flex;flex-direction:column;gap:6px"><span style="height:1px;background:#F0F0F0"></span><span style="font-size:12px;line-height:16px;color:#616161">Subtle</span></span></span>
+</div>
+</section>
+
+<section id="table" style="scroll-margin-top:72px;display:flex;flex-direction:column;gap:20px;padding:40px 0;border-top:1px solid #E0E0E0">
+<div style="display:flex;flex-direction:column;gap:6px;max-width:760px"><div style="display:flex;align-items:center;justify-content:space-between;gap:8px 16px;flex-wrap:wrap"><h2 style="margin:0;font-size:24px;line-height:32px;font-weight:600">Table</h2><dc-import name="ATLAS Feedback Button" section="table" heading="Table" page="Components" hint-size="172px,32px"></dc-import></div><p style="margin:0;font-size:16px;line-height:22px;color:#424242;text-wrap:pretty">Rows of comparable items. Medium rows are 44px; small rows 32px for dense lists.</p></div>
+<div style="overflow:auto;border:1px solid #E0E0E0;border-radius:8px">
+<div role="table" aria-label="Legemidler" style="min-width:640px;display:flex;flex-direction:column">
+<div role="row" style="display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1.2fr) 112px 112px 112px;align-items:center;height:44px;padding:0 12px;border-bottom:1px solid #E0E0E0;font-weight:600"><span style="display:flex;align-items:center;gap:4px">Legemiddel<i style="width:16px;height:16px;background:#424242;mask:url(assets/icons/arrow_sort_20_regular.svg) center/16px"></i></span><span>Dose</span><span>Startet</span><span>Forskrevet av</span><span>Status</span></div>
+<div role="row" style="display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1.2fr) 112px 112px 112px;align-items:center;height:44px;padding:0 12px;border-bottom:1px solid #E0E0E0" style-hover="background:#F5F5F5"><span>Sertralin 50 mg tablett</span><span>1 daglig</span><span style="font-variant-numeric:tabular-nums">2026-03-02</span><span>Fastlege</span><span><span style="display:inline-flex;align-items:center;height:24px;padding:0 8px;border-radius:4px;background:#F5F5F5;font-size:12px;line-height:16px">Aktiv</span></span></div>
+<div role="row" aria-selected="true" style="display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1.2fr) 112px 112px 112px;align-items:center;height:44px;padding:0 12px;border-bottom:1px solid #E0E0E0;background:#EBEBEB"><span>Zopiklon 3,75 mg tablett</span><span>Ved behov, høyst 1</span><span style="font-variant-numeric:tabular-nums">2026-05-14</span><span>Legevakt</span><span><span style="display:inline-flex;align-items:center;height:24px;padding:0 8px;border-radius:4px;background:#FFFFFF;font-size:12px;line-height:16px">Aktiv</span></span></div>
+<div role="row" style="display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1.2fr) 112px 112px 112px;align-items:center;height:44px;padding:0 12px;color:#616161" style-hover="background:#F5F5F5"><span>Escitalopram 10 mg tablett</span><span>1 daglig</span><span style="font-variant-numeric:tabular-nums">2025-09-10</span><span>Fastlege</span><span><span style="display:inline-flex;align-items:center;height:24px;padding:0 8px;border-radius:4px;background:#F5F5F5;font-size:12px;line-height:16px">Avsluttet</span></span></div>
+</div>
+</div>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px 32px">
+<div style="display:flex;flex-direction:column;gap:6px"><span style="font-weight:600">Use in ATLAS</span><span style="color:#424242">Medication, contact history and the DPS queue. Header row semibold. Dates in ISO format with tabular figures. Ended rows use Foreground 3.</span></div>
+<div style="display:flex;flex-direction:column;gap:6px"><span style="font-weight:600">ATLAS rule</span><span style="color:#424242">The DPS queue sorts by date received or legal deadline. No column for an ATLAS score.</span></div>
+</div>
+</section>
+
+<section id="accordion" style="scroll-margin-top:72px;display:flex;flex-direction:column;gap:20px;padding:40px 0;border-top:1px solid #E0E0E0">
+<div style="display:flex;flex-direction:column;gap:6px;max-width:760px"><div style="display:flex;align-items:center;justify-content:space-between;gap:8px 16px;flex-wrap:wrap"><h2 style="margin:0;font-size:24px;line-height:32px;font-weight:600">Accordion</h2><dc-import name="ATLAS Feedback Button" section="accordion" heading="Accordion" page="Components" hint-size="172px,32px"></dc-import></div><p style="margin:0;font-size:16px;line-height:22px;color:#424242;text-wrap:pretty">Stacked headers that show or hide their content. The chevron turns to point down when open.</p></div>
+<div style="display:flex;flex-direction:column;padding:8px 24px;border:1px solid #E0E0E0;border-radius:8px">
+<sc-for list="{{ accs }}" as="a" hint-placeholder-count="2">
+<div style="display:flex;flex-direction:column;border-bottom:1px solid #F0F0F0">
+<button onClick="{{ a.on }}" aria-expanded="{{ a.aria }}" style="display:flex;align-items:center;gap:8px;height:44px;padding:0 4px;border:0;background:transparent;text-align:left;cursor:pointer;font-weight:600" style-hover="background:#F5F5F5"><i style="width:20px;height:20px;flex:none;background:#424242;mask:url(assets/icons/chevron_right_20_regular.svg) 0/20px;transition:transform 150ms cubic-bezier(0.33,0,0.67,1);transform:{{ a.rot }}"></i><span lang="nb">{{ a.h }}</span></button>
+<sc-if value="{{ a.open }}" hint-placeholder-val="{{ true }}"><div lang="nb" style="padding:0 4px 14px 32px;color:#424242;max-width:640px">{{ a.b }}</div></sc-if>
+</div>
+</sc-for>
+</div>
+<div style="display:flex;flex-direction:column;gap:6px;max-width:760px"><span style="font-weight:600">Use in ATLAS</span><span style="color:#424242">The dual-process disclosure: a short summary first, the reasoning one click away. Profile sections in the patient panel.</span></div>
+</section>
+
+<section id="messagebar" style="scroll-margin-top:72px;display:flex;flex-direction:column;gap:20px;padding:40px 0;border-top:1px solid #E0E0E0">
+<div style="display:flex;flex-direction:column;gap:6px;max-width:760px"><div style="display:flex;align-items:center;justify-content:space-between;gap:8px 16px;flex-wrap:wrap"><h2 style="margin:0;font-size:24px;line-height:32px;font-weight:600">MessageBar</h2><dc-import name="ATLAS Feedback Button" section="messagebar" heading="MessageBar" page="Components" hint-size="172px,32px"></dc-import></div><p style="margin:0;font-size:16px;line-height:22px;color:#424242;text-wrap:pretty">A notice about a page or panel, placed at its top. Four intents.</p></div>
+<div style="display:flex;flex-direction:column;gap:12px;padding:24px;border:1px solid #E0E0E0;border-radius:8px">
+<div style="display:flex;align-items:center;gap:8px;min-height:36px;padding:6px 6px 6px 12px;border-radius:4px;background:#F5F5F5;border:1px solid #E0E0E0"><i style="width:20px;height:20px;flex:none;background:#616161;mask:url(assets/icons/info_20_filled.svg) 0/20px"></i><span style="flex:1" lang="nb"><b style="font-weight:600">Selvrapport</b> Pasienten fylte ut skjemaet før timen.</span><a href="#messagebar">Vis svar</a><button aria-label="Lukk" style="display:grid;place-items:center;width:24px;height:24px;border:0;border-radius:4px;background:transparent;cursor:pointer" style-hover="background:#E0E0E0"><i style="width:16px;height:16px;background:#424242;mask:url(assets/icons/dismiss_16_regular.svg) 0/16px"></i></button></div>
+<div style="display:flex;align-items:center;gap:8px;min-height:36px;padding:6px 6px 6px 12px;border-radius:4px;background:#FFF9F5;border:1px solid #FDCFB4"><i style="width:20px;height:20px;flex:none;background:#BC4B09;mask:url(assets/icons/warning_20_filled.svg) 0/20px"></i><span style="flex:1" lang="nb">Notatet har endringer som ikke er lagret.</span><button style="height:24px;padding:0 8px;border:1px solid #D1D1D1;border-radius:4px;background:#FFFFFF;font-size:12px;line-height:16px;cursor:pointer">Lagre</button></div>
+<div style="display:flex;align-items:center;gap:8px;min-height:36px;padding:6px 12px;border-radius:4px;background:#FDF3F4;border:1px solid #EEACB2"><i style="width:20px;height:20px;flex:none;background:#B10E1C;mask:url(assets/icons/error_circle_20_filled.svg) 0/20px"></i><span style="flex:1" lang="nb">Mistet forbindelsen til journalsystemet. Endringer lagres lokalt til forbindelsen er tilbake.</span></div>
+<div style="display:flex;align-items:center;gap:8px;min-height:36px;padding:6px 12px;border-radius:4px;background:#F1FAF1;border:1px solid #9FD89F"><i style="width:20px;height:20px;flex:none;background:#0E700E;mask:url(assets/icons/checkmark_circle_20_filled.svg) 0/20px"></i><span style="flex:1" lang="nb">Henvisningen er sendt til DPS, inntak.</span></div>
+</div>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px 32px">
+<div style="display:flex;flex-direction:column;gap:6px"><span style="font-weight:600">Use in ATLAS</span><span style="color:#424242">Informative for clinical notices. Warning, error and success for what the software is doing.</span></div>
+<div style="display:flex;flex-direction:column;gap:6px"><span style="font-weight:600">ATLAS rule</span><span style="color:#424242">A red or amber bar never describes a patient, a symptom or a referral outcome.</span></div>
+</div>
+</section>
+
+<section id="toast" style="scroll-margin-top:72px;display:flex;flex-direction:column;gap:20px;padding:40px 0;border-top:1px solid #E0E0E0">
+<div style="display:flex;flex-direction:column;gap:6px;max-width:760px"><div style="display:flex;align-items:center;justify-content:space-between;gap:8px 16px;flex-wrap:wrap"><h2 style="margin:0;font-size:24px;line-height:32px;font-weight:600">Toast</h2><dc-import name="ATLAS Feedback Button" section="toast" heading="Toast" page="Components" hint-size="172px,32px"></dc-import></div><p style="margin:0;font-size:16px;line-height:22px;color:#424242;text-wrap:pretty">Short-lived confirmation of something the user just did. Bottom-end, 16px from the window edge, shadow 8.</p></div>
+<div style="display:flex;flex-wrap:wrap;gap:16px;padding:24px;border-radius:8px;background:#F5F5F5">
+<div role="status" style="width:320px;display:flex;gap:8px;padding:12px;border-radius:4px;background:#FFFFFF;box-shadow:0 0 2px rgba(0,0,0,.12),0 4px 8px rgba(0,0,0,.14)"><i style="width:20px;height:20px;flex:none;background:#0E700E;mask:url(assets/icons/checkmark_circle_20_filled.svg) 0/20px"></i><span style="display:flex;flex-direction:column;gap:2px"><span style="font-weight:600" lang="nb">Notatet er lagret</span><span style="font-size:12px;line-height:16px;color:#616161">kl. 09:42</span></span></div>
+<div role="status" style="width:320px;display:flex;gap:8px;padding:12px;border-radius:4px;background:#FFFFFF;box-shadow:0 0 2px rgba(0,0,0,.12),0 4px 8px rgba(0,0,0,.14)"><i style="width:20px;height:20px;flex:none;background:#B10E1C;mask:url(assets/icons/error_circle_20_filled.svg) 0/20px"></i><span style="display:flex;flex-direction:column;gap:4px"><span style="font-weight:600" lang="nb">Kunne ikke sende</span><span lang="nb" style="color:#424242">Henvisningen er lagret som utkast.</span><a href="#toast">Prøv igjen</a></span></div>
+</div>
+<div style="display:flex;flex-direction:column;gap:6px;max-width:760px"><span style="font-weight:600">ATLAS rule</span><span style="color:#424242">Toasts confirm system events. No praise, streaks or celebration after a clinical decision.</span></div>
+</section>
+
+<section id="tooltip" style="scroll-margin-top:72px;display:flex;flex-direction:column;gap:20px;padding:40px 0;border-top:1px solid #E0E0E0">
+<div style="display:flex;flex-direction:column;gap:6px;max-width:760px"><div style="display:flex;align-items:center;justify-content:space-between;gap:8px 16px;flex-wrap:wrap"><h2 style="margin:0;font-size:24px;line-height:32px;font-weight:600">Tooltip and InfoLabel</h2><dc-import name="ATLAS Feedback Button" section="tooltip" heading="Tooltip and InfoLabel" page="Components" hint-size="172px,32px"></dc-import></div><p style="margin:0;font-size:16px;line-height:22px;color:#424242;text-wrap:pretty">A tooltip names a control on hover or focus. An InfoLabel adds an info button to a label that opens a short explanation.</p></div>
+<div style="display:flex;flex-wrap:wrap;gap:48px;padding:56px 24px 24px;border:1px solid #E0E0E0;border-radius:8px">
+<div style="position:relative;display:flex;flex-direction:column;align-items:center">
+<span style="position:absolute;bottom:44px;white-space:nowrap;padding:4px 11px 6px;border-radius:4px;background:#FFFFFF;box-shadow:0 0 2px rgba(0,0,0,.12),0 8px 16px rgba(0,0,0,.14);font-size:12px;line-height:16px">Kopier fødselsnummer</span>
+<span style="display:grid;place-items:center;width:32px;height:32px;border-radius:4px;background:#F5F5F5"><i style="width:20px;height:20px;background:#424242;mask:url(assets/icons/copy_20_regular.svg) 0/20px"></i></span>
+</div>
+<div style="position:relative;display:flex;flex-direction:column;align-items:center">
+<span style="position:absolute;bottom:44px;white-space:nowrap;padding:4px 11px 6px;border-radius:4px;background:#292929;color:#FFFFFF;font-size:12px;line-height:16px">Skriv ut</span>
+<span style="display:grid;place-items:center;width:32px;height:32px;border-radius:4px;background:#F5F5F5"><i style="width:20px;height:20px;background:#424242;mask:url(assets/icons/print_20_regular.svg) 0/20px"></i></span>
+</div>
+<div style="position:relative;display:flex;flex-direction:column;gap:8px">
+<span style="display:flex;align-items:center;gap:4px"><span lang="nb">Gråsone</span><span style="display:grid;place-items:center;width:20px;height:20px;border-radius:4px;background:#F5F5F5"><i style="width:16px;height:16px;background:#7160E8;mask:url(assets/icons/info_16_regular.svg) 0/16px"></i></span></span>
+<span lang="nb" style="width:264px;padding:12px;border-radius:12px;background:#FFFFFF;box-shadow:0 0 2px rgba(0,0,0,.12),0 8px 16px rgba(0,0,0,.14)">Henvisninger nær midten av båndet blir oftere vurdert ulikt av ulike klinikere.</span>
+</div>
+</div>
+<div style="display:flex;flex-direction:column;gap:6px;max-width:760px"><span style="font-weight:600">ATLAS rule</span><span style="color:#424242">Tooltips never carry information needed to make a decision. That belongs on the page.</span></div>
+</section>
+
+<section id="popover" style="scroll-margin-top:72px;display:flex;flex-direction:column;gap:20px;padding:40px 0;border-top:1px solid #E0E0E0">
+<div style="display:flex;flex-direction:column;gap:6px;max-width:760px"><div style="display:flex;align-items:center;justify-content:space-between;gap:8px 16px;flex-wrap:wrap"><h2 style="margin:0;font-size:24px;line-height:32px;font-weight:600">Popover and Teaching popover</h2><dc-import name="ATLAS Feedback Button" section="popover" heading="Popover and Teaching popover" page="Components" hint-size="172px,32px"></dc-import></div><p style="margin:0;font-size:16px;line-height:22px;color:#424242;text-wrap:pretty">A popover shows extra content next to its trigger. A teaching popover is a brand-coloured popover for guided tours; step through the example.</p></div>
+<div style="display:flex;flex-wrap:wrap;align-items:flex-start;gap:32px;padding:24px;border:1px solid #E0E0E0;border-radius:8px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<span style="display:inline-flex;align-self:flex-start;align-items:center;gap:6px;height:32px;padding:0 12px;border:1px solid #BDBDBD;border-radius:4px;background:#EBEBEB;font-weight:600"><i style="width:20px;height:20px;background:#424242;mask:url(assets/icons/text_bullet_list_ltr_20_regular.svg) 0/20px"></i>Kriterier</span>
+<div style="width:280px;display:flex;flex-direction:column;gap:8px;padding:16px;border-radius:12px;background:#FFFFFF;box-shadow:0 0 2px rgba(0,0,0,.12),0 8px 16px rgba(0,0,0,.14)"><span lang="nb" style="font-weight:600">4 av 7 kriterier er omtalt</span><span lang="nb" style="color:#424242">Rusmiddelbruk, suicidalitet og tidligere behandling er ikke omtalt i notatet.</span><a href="#popover">Vis kriteriene</a></div>
+</div>
+<div style="width:320px;display:flex;flex-direction:column;gap:12px;padding:16px;border-radius:12px;background:#7160E8;color:#FFFFFF;box-shadow:0 0 2px rgba(0,0,0,.30),0 8px 16px rgba(0,0,0,.25)">
+<div style="display:flex;align-items:center;justify-content:space-between"><span style="font-size:12px;line-height:16px;font-weight:600">{{ tp.n }} av {{ tp.total }}</span><span style="display:grid;place-items:center;width:24px;height:24px;border-radius:4px"><i style="width:16px;height:16px;background:#FFFFFF;mask:url(assets/icons/dismiss_16_regular.svg) 0/16px"></i></span></div>
+<span lang="nb" style="font-size:16px;line-height:22px;font-weight:600">{{ tp.title }}</span>
+<span lang="nb">{{ tp.body }}</span>
+<div style="display:flex;align-items:center;gap:8px;margin-top:4px">
+<span style="display:flex;gap:6px;flex:1"><sc-for list="{{ tpDots }}" as="d" hint-placeholder-count="4"><span style="width:6px;height:6px;border-radius:50%;background:{{ d.bg }}"></span></sc-for></span>
+<sc-if value="{{ tp.notFirst }}" hint-placeholder-val="{{ false }}"><button onClick="{{ tpPrev }}" style="height:32px;padding:0 12px;border:1px solid #FFFFFF;border-radius:4px;background:transparent;color:#FFFFFF;font-weight:600;cursor:pointer" style-hover="background:#6656D1">Forrige</button></sc-if>
+<button onClick="{{ tpNext }}" style="height:32px;padding:0 12px;border:0;border-radius:4px;background:#FFFFFF;color:#6656D1;font-weight:600;cursor:pointer" style-hover="background:#F9F8FE">{{ tp.nextLabel }}</button>
+</div>
+</div>
+</div>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px 32px">
+<div style="display:flex;flex-direction:column;gap:6px"><span style="font-weight:600">Use in ATLAS</span><span style="color:#424242">Teaching popovers anchor tour steps to the real interface. Brand shadow on the brand surface.</span></div>
+<div style="display:flex;flex-direction:column;gap:6px"><span style="font-weight:600">ATLAS rule</span><span style="color:#424242">Tours can always be skipped and never block clinical work.</span></div>
+</div>
+</section>
+
+<section id="dialog" style="scroll-margin-top:72px;display:flex;flex-direction:column;gap:20px;padding:40px 0;border-top:1px solid #E0E0E0">
+<div style="display:flex;flex-direction:column;gap:6px;max-width:760px"><div style="display:flex;align-items:center;justify-content:space-between;gap:8px 16px;flex-wrap:wrap"><h2 style="margin:0;font-size:24px;line-height:32px;font-weight:600">Dialog</h2><dc-import name="ATLAS Feedback Button" section="dialog" heading="Dialog" page="Components" hint-size="172px,32px"></dc-import></div><p style="margin:0;font-size:16px;line-height:22px;color:#424242;text-wrap:pretty">A modal window over smoke. 24px padding, 8px corners, shadow 64. At most two buttons. The primary comes first, as Fluent places it to the left of other actions.</p></div>
+<div style="position:relative;height:300px;border-radius:8px;overflow:hidden;background:#FFFFFF;border:1px solid #E0E0E0">
+<div style="padding:24px;display:flex;flex-direction:column;gap:10px"><span style="height:10px;width:40%;border-radius:2px;background:#E0E0E0"></span><span style="height:10px;width:70%;border-radius:2px;background:#E0E0E0"></span><span style="height:10px;width:60%;border-radius:2px;background:#E0E0E0"></span></div>
+<div style="position:absolute;inset:0;background:rgba(0,0,0,.4)"></div>
+<div role="dialog" aria-modal="true" aria-labelledby="dlgT" style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:min(440px,calc(100% - 32px));display:flex;flex-direction:column;gap:8px;padding:24px;border-radius:8px;background:#FFFFFF;box-shadow:0 0 8px rgba(0,0,0,.2),0 32px 64px rgba(0,0,0,.24)">
+<div style="display:flex;align-items:flex-start;gap:8px"><span id="dlgT" lang="nb" style="flex:1;font-size:20px;line-height:26px;font-weight:600">Forkaste endringene i notatet?</span><span style="display:grid;place-items:center;width:32px;height:32px;margin:-6px -6px 0 0;border-radius:4px"><i style="width:20px;height:20px;background:#424242;mask:url(assets/icons/dismiss_20_regular.svg) 0/20px"></i></span></div>
+<span lang="nb" style="color:#424242">Endringer siden kl. 09:41 blir ikke lagret.</span>
+<div style="display:flex;justify-content:flex-end;gap:8px;margin-top:16px"><button style="height:32px;min-width:96px;padding:0 12px;border:0;border-radius:4px;background:#7160E8;color:#FFFFFF;font-weight:600;cursor:pointer" style-hover="background:#6656D1">Forkast</button><button style="height:32px;min-width:96px;padding:0 12px;border:1px solid #D1D1D1;border-radius:4px;background:#FFFFFF;font-weight:600;cursor:pointer" style-hover="background:#F5F5F5">Fortsett å skrive</button></div>
+</div>
+</div>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px 32px">
+<div style="display:flex;flex-direction:column;gap:6px"><span style="font-weight:600">Use in ATLAS</span><span style="color:#424242">Only before losing data or ending a session with unsaved work.</span></div>
+<div style="display:flex;flex-direction:column;gap:6px"><span style="font-weight:600">ATLAS rule</span><span style="color:#424242">Never to confirm a clinical decision, and never “Er du sikker?” on an override.</span></div>
+</div>
+</section>
+
+<section id="drawer" style="scroll-margin-top:72px;display:flex;flex-direction:column;gap:20px;padding:40px 0;border-top:1px solid #E0E0E0">
+<div style="display:flex;flex-direction:column;gap:6px;max-width:760px"><div style="display:flex;align-items:center;justify-content:space-between;gap:8px 16px;flex-wrap:wrap"><h2 style="margin:0;font-size:24px;line-height:32px;font-weight:600">Drawer</h2><dc-import name="ATLAS Feedback Button" section="drawer" heading="Drawer" page="Components" hint-size="172px,32px"></dc-import></div><p style="margin:0;font-size:16px;line-height:22px;color:#424242;text-wrap:pretty">A panel at the window edge. Inline drawers push content aside; overlay drawers sit on top at shadow 28. Widths 320, 592 and 940px.</p></div>
+<div style="position:relative;height:340px;border-radius:8px;overflow:hidden;background:#F5F5F5;border:1px solid #E0E0E0">
+<div style="position:absolute;left:8px;top:8px;bottom:8px;right:8px;border-radius:8px;background:#FFFFFF;padding:20px;display:flex;flex-direction:column;gap:10px"><span style="height:10px;width:30%;border-radius:2px;background:#E0E0E0"></span><span style="height:10px;width:55%;border-radius:2px;background:#E0E0E0"></span><span style="height:10px;width:45%;border-radius:2px;background:#E0E0E0"></span></div>
+<aside aria-label="Dialog med DPS" style="position:absolute;top:0;right:0;bottom:0;width:min(320px,90%);display:flex;flex-direction:column;background:#FFFFFF;box-shadow:0 0 8px rgba(0,0,0,.2),0 14px 28px rgba(0,0,0,.24)">
+<div style="display:flex;align-items:center;gap:8px;padding:16px 16px 12px 20px"><span lang="nb" style="flex:1;font-size:20px;line-height:26px;font-weight:600">Dialog med DPS</span><span style="display:grid;place-items:center;width:32px;height:32px;border-radius:4px"><i style="width:20px;height:20px;background:#424242;mask:url(assets/icons/dismiss_20_regular.svg) 0/20px"></i></span></div>
+<div style="flex:1;display:flex;flex-direction:column;gap:12px;padding:0 20px;overflow:hidden">
+<div style="display:flex;flex-direction:column;gap:4px"><span style="font-size:12px;line-height:16px;color:#616161">DPS, inntak · 2026-10-08 kl. 13:05</span><span lang="nb" style="padding:8px 12px;border-radius:4px;background:#F5F5F5">Er det forsøkt behandling i allmennpraksis?</span></div>
+<div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px"><span style="font-size:12px;line-height:16px;color:#616161">Henvisende fastlege · kl. 15:20</span><span lang="nb" style="padding:8px 12px;border-radius:4px;background:#F9F8FE">Sertralin siden mars, samtaler hver tredje uke.</span></div>
+</div>
+<div style="display:flex;gap:8px;padding:12px 20px 20px"><span style="flex:1;display:flex;align-items:center;height:32px;padding:0 10px;border:1px solid #D1D1D1;border-bottom-color:#616161;border-radius:4px;color:#707070">Skriv en melding</span><span style="display:grid;place-items:center;width:32px;height:32px;border-radius:4px;background:#7160E8"><i style="width:20px;height:20px;background:#FFFFFF;mask:url(assets/icons/send_20_regular.svg) 0/20px"></i></span></div>
+</aside>
+</div>
+<div style="display:flex;flex-direction:column;gap:6px;max-width:760px"><span style="font-weight:600">Use in ATLAS</span><span style="color:#424242">The ATLAS rail and the DPS dialogue are inline drawers from 1024px and overlay drawers below. Overlay drawers on small screens do not use smoke, so the note stays readable.</span></div>
+</section>
+
+<section id="progress" style="scroll-margin-top:72px;display:flex;flex-direction:column;gap:20px;padding:40px 0;border-top:1px solid #E0E0E0">
+<div style="display:flex;flex-direction:column;gap:6px;max-width:760px"><div style="display:flex;align-items:center;justify-content:space-between;gap:8px 16px;flex-wrap:wrap"><h2 style="margin:0;font-size:24px;line-height:32px;font-weight:600">ProgressBar, Spinner, Skeleton</h2><dc-import name="ATLAS Feedback Button" section="progress" heading="ProgressBar, Spinner, Skeleton" page="Components" hint-size="172px,32px"></dc-import></div><p style="margin:0;font-size:16px;line-height:22px;color:#424242;text-wrap:pretty">Loading and progress for system work.</p></div>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:32px;padding:24px;border:1px solid #E0E0E0;border-radius:8px">
+<div style="display:flex;flex-direction:column;gap:16px">
+<div style="display:flex;flex-direction:column;gap:6px"><span style="display:flex;justify-content:space-between"><span lang="nb">Laster opp vedlegg</span><span style="color:#616161;font-variant-numeric:tabular-nums">2 av 3</span></span><span style="position:relative;height:4px;border-radius:2px;background:#E6E6E6;overflow:hidden"><span style="position:absolute;left:0;top:0;bottom:0;width:66%;border-radius:2px;background:#7160E8"></span></span></div>
+<div style="display:flex;flex-direction:column;gap:6px"><span lang="nb">Henter journal …</span><span style="position:relative;height:2px;border-radius:1px;background:#E6E6E6;overflow:hidden">{{ indet }}</span></div>
+</div>
+<div style="display:flex;flex-direction:column;gap:16px">
+<div style="display:flex;align-items:center;gap:20px"><sc-for list="{{ spinners }}" as="sp" hint-placeholder-count="4">{{ sp.el }}</sc-for></div>
+<span style="display:flex;align-items:center;gap:8px">{{ spinInline }}<span lang="nb">Henter timeliste …</span></span>
+</div>
+<div style="display:flex;flex-direction:column;gap:10px" aria-hidden="true">
+<span style="display:flex;align-items:center;gap:10px"><span style="width:32px;height:32px;border-radius:50%;background:#E6E6E6"></span><span style="flex:1;display:flex;flex-direction:column;gap:6px"><span style="height:12px;width:60%;border-radius:2px;background:#E6E6E6"></span><span style="height:12px;width:40%;border-radius:2px;background:#F0F0F0"></span></span></span>
+<span style="height:12px;width:90%;border-radius:2px;background:#E6E6E6"></span>
+<span style="height:12px;width:75%;border-radius:2px;background:#E6E6E6"></span>
+</div>
+</div>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px 32px">
+<div style="display:flex;flex-direction:column;gap:6px"><span style="font-weight:600">Use in ATLAS</span><span style="color:#424242">Spinners under one second of expected wait are skipped. Skeletons are static, without shimmer.</span></div>
+<div style="display:flex;flex-direction:column;gap:6px"><span style="font-weight:600">ATLAS rule</span><span style="color:#424242">Never a progress bar for uncertainty, completeness or how close a referral is to being accepted.</span></div>
+</div>
+</section>
+
+<section id="excluded" style="scroll-margin-top:72px;display:flex;flex-direction:column;gap:20px;padding:40px 0;border-top:1px solid #E0E0E0">
+<div style="display:flex;flex-direction:column;gap:6px;max-width:760px"><div style="display:flex;align-items:center;justify-content:space-between;gap:8px 16px;flex-wrap:wrap"><h2 style="margin:0;font-size:24px;line-height:32px;font-weight:600">Not included yet</h2><dc-import name="ATLAS Feedback Button" section="excluded" heading="Not included yet" page="Components" hint-size="172px,32px"></dc-import></div><p style="margin:0;font-size:16px;line-height:22px;color:#424242;text-wrap:pretty">Fluent 2 components without an ATLAS screen. Add them, unchanged, when a screen needs one.</p></div>
+<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:8px">
+<div style="display:flex;flex-direction:column;gap:2px;padding:12px;border:1px solid #E0E0E0;border-radius:4px"><span style="font-weight:600">DatePicker, Calendar</span><span style="font-size:12px;line-height:16px;color:#616161">Likely for follow-up dates</span></div>
+<div style="display:flex;flex-direction:column;gap:2px;padding:12px;border:1px solid #E0E0E0;border-radius:4px"><span style="font-weight:600">SpinButton</span><span style="font-size:12px;line-height:16px;color:#616161">Possible for doses</span></div>
+<div style="display:flex;flex-direction:column;gap:2px;padding:12px;border:1px solid #E0E0E0;border-radius:4px"><span style="font-weight:600">Tree, List</span><span style="font-size:12px;line-height:16px;color:#616161">No hierarchy yet</span></div>
+<div style="display:flex;flex-direction:column;gap:2px;padding:12px;border:1px solid #E0E0E0;border-radius:4px"><span style="font-weight:600">Carousel</span><span style="font-size:12px;line-height:16px;color:#616161">Tours use teaching popovers</span></div>
+<div style="display:flex;flex-direction:column;gap:2px;padding:12px;border:1px solid #E0E0E0;border-radius:4px"><span style="font-weight:600">Rating</span><span style="font-size:12px;line-height:16px;color:#616161">Conflicts with guardrail 5</span></div>
+<div style="display:flex;flex-direction:column;gap:2px;padding:12px;border:1px solid #E0E0E0;border-radius:4px"><span style="font-weight:600">Image</span><span style="font-size:12px;line-height:16px;color:#616161">ATLAS has no photography</span></div>
+<div style="display:flex;flex-direction:column;gap:2px;padding:12px;border:1px solid #E0E0E0;border-radius:4px"><span style="font-weight:600">SwatchPicker, ColorPicker</span><span style="font-size:12px;line-height:16px;color:#616161">No use case</span></div>
+<div style="display:flex;flex-direction:column;gap:2px;padding:12px;border:1px solid #E0E0E0;border-radius:4px"><span style="font-weight:600">Presence badge</span><span style="font-size:12px;line-height:16px;color:#616161">Conflicts with guardrail 4</span></div>
+</div>
+</section>
+
+</div>
+</main>
+</div>
+<dc-import name="ATLAS Feedback Panel" page="Components" hint-size="1px,1px"></dc-import>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { active: 'overview', tog: false, cb: [true, false, false], radio: 'Kontroll', sw: false, slider: 62, tab: 'notat', navSel: 'timeliste', dd: false, ddVal: 'Konsultasjon', cbo: '', acc: [true, false], menu: false, tp: 0 };
+  nav = [['overview','Overview'],['button','Button'],['link','Link'],['input','Input'],['textarea','Textarea'],['searchbox','SearchBox'],['dropdown','Dropdown and Combobox'],['field','Field'],['checkbox','Checkbox'],['radio','Radio group'],['switch','Switch'],['slider','Slider'],['tabs','Tabs'],['nav','Nav'],['breadcrumb','Breadcrumb'],['toolbar','Toolbar'],['menu','Menu'],['avatar','Avatar and Persona'],['badge','Badge'],['tag','Tag'],['card','Card'],['divider','Divider'],['table','Table'],['accordion','Accordion'],['messagebar','MessageBar'],['toast','Toast'],['tooltip','Tooltip and InfoLabel'],['popover','Popover and Teaching popover'],['dialog','Dialog'],['drawer','Drawer'],['progress','ProgressBar, Spinner, Skeleton'],['excluded','Not included yet']];
+  codes = [['P01','Engstelig, nervøs, anspent'],['P03','Nedstemthet'],['P06','Søvnforstyrrelse'],['P74','Angstlidelse'],['P76','Depresjon'],['P82','Posttraumatisk stresslidelse']];
+  componentDidMount() {
+    this.onScroll = () => {
+      let cur = this.nav[0][0];
+      for (const [id] of this.nav) { const el = document.getElementById(id); if (el && el.getBoundingClientRect().top < 120) cur = id; }
+      if (cur !== this.state.active) this.setState({ active: cur });
+    };
+    document.addEventListener('scroll', this.onScroll, true);
+  }
+  componentWillUnmount() { document.removeEventListener('scroll', this.onScroll, true); }
+  spin(px, w) {
+    return React.createElement('span', { 'aria-hidden': true, style: { display: 'inline-block', flex: 'none', boxSizing: 'border-box', width: px, height: px, borderRadius: '50%', border: w + 'px solid #E0E0E0', borderTopColor: '#7160E8', borderRightColor: '#7160E8', animation: 'atlasSpin 1.5s linear infinite' } });
+  }
+  renderVals() {
+    const s = this.state;
+    const q = s.cbo.trim().toLowerCase();
+    const cbo = this.codes.filter(([c, n]) => !q || c.toLowerCase().includes(q) || n.toLowerCase().includes(q)).map(([c, n]) => ({ c, n }));
+    const tabs = [['notat','Notat','notepad_20_regular','notepad_20_regular'],['legemidler','Legemidler','pill_20_regular','pill_20_regular'],['historikk','Historikk','history_20_regular','history_20_regular'],['dialog','Dialog med DPS','chat_multiple_20_regular','chat_20_filled']];
+    const tabBody = { notat: 'Konsultasjonsnotatet for dagens time.', legemidler: 'Aktive og avsluttede legemidler, med dose og startdato.', historikk: 'Tidligere kontakter og henvisninger for pasienten.', dialog: 'Meldinger mellom henvisende fastlege og DPS, inntak.' };
+    const navItems = [['timeliste','Timeliste','calendar_ltr_20_regular','calendar_ltr_20_filled',''],['pasienter','Pasienter','people_20_regular','people_20_regular',''],['dialog','Dialog med DPS','chat_multiple_20_regular','chat_20_filled','2'],['henvisninger','Henvisninger','document_text_20_regular','document_text_20_filled','']];
+    const tpSteps = [
+      ['Timelisten', 'Dagens pasienter, i rekkefølge. Velg en pasient for å åpne konsultasjonen.'],
+      ['Pasientprofilen', 'Det journalen allerede vet: kontakter, legemidler og tidligere henvisninger.'],
+      ['Gråsonemarkøren', 'Viser hvor saken ligger i forhold til DPS-kriteriene, og hvor usikker plasseringen er.'],
+      ['Beslutningen', 'Du velger selv: henvis eller behold. Begge valg veier like mye.'],
+    ];
+    return {
+      nav: this.nav.map(([id, label]) => { const on = id === s.active; return { id, label, bg: on ? '#EBEBEB' : 'transparent', fw: on ? 600 : 400, ind: on ? '#7160E8' : 'transparent' }; }),
+      index: this.nav.slice(1).map(([id, label]) => ({ id, label })),
+      tog: { bg: s.tog ? '#EBEBEB' : '#FFFFFF', bd: s.tog ? '#BDBDBD' : '#D1D1D1', label: s.tog ? 'Engelsk vises' : 'Vis engelsk', pressed: s.tog ? 'true' : 'false' },
+      onTog: () => this.setState({ tog: !s.tog }),
+      cbs: ['Selvrapport gjennomgått', 'Tidligere behandling omtalt', 'Rusmiddelbruk omtalt'].map((label, i) => { const on = s.cb[i]; return { label, aria: on ? 'true' : 'false', bg: on ? '#7160E8' : '#FFFFFF', bd: on ? '#7160E8' : '#616161', op: on ? 1 : 0, on: () => this.setState(st => { const cb = st.cb.slice(); cb[i] = !cb[i]; return { cb }; }) }; }),
+      radios: ['Konsultasjon', 'Kontroll', 'Telefon', 'Video'].map(v => { const on = s.radio === v; return { v, aria: on ? 'true' : 'false', bd: on ? '#7160E8' : '#616161', op: on ? 1 : 0, on: () => this.setState({ radio: v }) }; }),
+      sw: { aria: s.sw ? 'true' : 'false', bg: s.sw ? '#7160E8' : '#FFFFFF', bd: s.sw ? '#7160E8' : '#616161', tc: s.sw ? '#FFFFFF' : '#616161', x: s.sw ? '22px' : '2px', label: s.sw ? 'På' : 'Av' },
+      onSw: () => this.setState({ sw: !s.sw }),
+      slider: { v: s.slider, fill: 'calc((100% - 20px) * ' + (s.slider / 100) + ')', pos: 'calc(10px + (100% - 20px) * ' + (s.slider / 100) + ')' },
+      onSlider: e => this.setState({ slider: +e.target.value }),
+      tabs: tabs.map(([id, label, ic, icf]) => { const on = s.tab === id; return { label, aria: on ? 'true' : 'false', fw: on ? 600 : 400, ind: on ? '#7160E8' : 'transparent', ic: on ? icf : ic, icc: on ? '#7160E8' : '#424242', on: () => this.setState({ tab: id }) }; }),
+      tabBody: tabBody[s.tab],
+      navItems: navItems.map(([id, label, ic, icf, count]) => { const on = s.navSel === id; return { label, count, cur: on ? 'page' : 'false', bg: on ? '#E6E6E6' : 'transparent', fw: on ? 600 : 400, ind: on ? '#7160E8' : 'transparent', ic: on ? icf : ic, icc: on ? '#7160E8' : '#424242', on: () => this.setState({ navSel: id }) }; }),
+      dd: { open: s.dd, val: s.ddVal, items: ['Konsultasjon', 'Kontroll', 'Telefon', 'Video'].map(v => ({ v, op: v === s.ddVal ? 1 : 0, fw: v === s.ddVal ? 600 : 400, pick: () => this.setState({ ddVal: v, dd: false }) })) },
+      onDd: () => this.setState({ dd: !s.dd }),
+      cbo, cboEmpty: cbo.length === 0,
+      onCbo: e => this.setState({ cbo: e.target.value }),
+      accs: [['Kort oppsummering', 'Nedstemthet i fire måneder, økende funksjonsfall på jobb. Ingen tidligere behandling i spesialisthelsetjenesten.'], ['Begrunnelse', 'Selvrapport og notat omtaler varighet og funksjon. Rusmiddelbruk og suicidalitet er ikke omtalt i notatet.']].map(([h, b], i) => { const on = s.acc[i]; return { h, b, open: on, aria: on ? 'true' : 'false', rot: on ? 'rotate(90deg)' : 'none', on: () => this.setState(st => { const acc = st.acc.slice(); acc[i] = !acc[i]; return { acc }; }) }; }),
+      menuOpen: s.menu,
+      onMenu: () => this.setState({ menu: !s.menu }),
+      tp: { title: tpSteps[s.tp][0], body: tpSteps[s.tp][1], n: s.tp + 1, total: tpSteps.length, first: s.tp === 0, notFirst: s.tp > 0, last: s.tp === tpSteps.length - 1, nextLabel: s.tp === tpSteps.length - 1 ? 'Ferdig' : 'Neste' },
+      tpDots: tpSteps.map((_, i) => ({ bg: i === s.tp ? '#FFFFFF' : 'rgba(255,255,255,.45)' })),
+      tpNext: () => this.setState({ tp: (s.tp + 1) % tpSteps.length }),
+      tpPrev: () => this.setState({ tp: Math.max(0, s.tp - 1) }),
+      spinners: [16, 20, 24, 32].map(px => ({ el: this.spin(px + 'px', px < 24 ? 2 : 3), n: px + 'px' })),
+      spinInline: this.spin('20px', 2),
+      indet: React.createElement('span', { style: { position: 'absolute', top: 0, height: '100%', width: '30%', borderRadius: '2px', background: '#7160E8', animation: 'atlasIndet 2s linear infinite' } }),
+    };
+  }
+}
+</script>
+</body>
+</html>
