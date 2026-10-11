@@ -6,13 +6,19 @@ On an atlas, a meridian is the line that joins the two poles. In ATLAS it joins 
 
 All clinical content in these pages is fictional sample text.
 
-## Pages
+## Prototype
+
+`ATLAS App.dc.html` is the clickable prototype. Pick a role (GP or DPS intake) and work through three vignettes: Kari (grey zone), Erlend (re-referral after a rejection) and Astrid (dialogue after a return). Each role has a short guided tour the first time. The English switch in the header shows English lines under the Norwegian text; Merknader shows design notes. Progress is stored in the browser; the undo button in the header resets it.
+
+Clinical details for Erlend are drafts and must be checked by clinicians.
+
+## Design system pages
 
 - **Design language**: principles, clinical guardrails, colour, typography, layout, shapes, elevation, material, motion, iconography, accessibility, content and tokens.
 - **Components**: the Fluent 2 components ATLAS uses, with the ATLAS rules for each.
 - **Clinical patterns**: ATLAS's own patterns, including the uncertainty band, refer or hold, the completeness guide, dialogue with DPS, tours and briefings.
 
-`index.html` opens Design language.
+`index.html` links to the prototype and the design system.
 
 ## Viewing the pages
 
@@ -60,12 +66,13 @@ Every section has a **Gi tilbakemelding** button. The tab on the right edge of t
 
 ## Files
 
+- `ATLAS App.dc.html`: the prototype
 - `ATLAS DS - Design language.dc.html`, `ATLAS DS - Components.dc.html`, `ATLAS DS - Clinical patterns.dc.html`: the three pages
 - `ATLAS Feedback Button.dc.html`, `ATLAS Feedback Panel.dc.html`: the feedback button and side panel
 - `atlas-feedback-config.js`: Nettskjema address, codebook names, roles and draft questions
 - `support.js`: the runtime that renders the `.dc.html` pages
 - `assets/icons/`: Fluent UI System Icons
-- `index.html`: opens Design language
+- `index.html`: start page
 - `THIRD-PARTY-NOTICES.md`: licence for the icons
 
 ## Credits
