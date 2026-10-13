@@ -1,5 +1,6 @@
 import {
   Button,
+  Checkbox,
   Field,
   Input,
   MessageBar,
@@ -253,6 +254,24 @@ export function PreviewForm({
                       <Radio key={o.nb} value={o.nb} label={t(o)} />
                     ))}
                   </RadioGroup>
+                </Field>
+              </div>
+            );
+          }
+          if (it.type === 'consent' && it.options?.length) {
+            // One required tick box; ticked sends its option's Norwegian text, as Nettskjema sends the option.
+            const yes = it.options[0];
+            return (
+              <div key={it.id} id={idFor(it.codebook)}>
+                <Field label={label} required={it.required} {...fieldState}>
+                  <Checkbox
+                    label={t(yes)}
+                    checked={values[it.codebook] === yes.nb}
+                    onChange={(_, d) => {
+                      setValues({ ...values, [it.codebook]: d.checked === true ? yes.nb : '' });
+                      if (invalid && d.checked === true) setMissing(null);
+                    }}
+                  />
                 </Field>
               </div>
             );

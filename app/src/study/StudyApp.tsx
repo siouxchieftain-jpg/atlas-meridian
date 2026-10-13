@@ -26,7 +26,8 @@ import { StudyWorkProvider } from '../state/work';
 import { NoticeBar, useNotice } from '../patterns/notice';
 import { Silent, focusAfterOverlay } from '../patterns/announce';
 import { AppShell, type NavItem } from '../shell/AppShell';
-import { ConfirmDialog, GlossaryBody, HelpMenu, LanguageToggle, Paragraphs, StepBadge, Wordmark, type HelpItem } from '../shell/HeaderParts';
+import { ConfirmDialog, GlossaryBody, HelpMenu, LanguageToggle, StepBadge, Wordmark, type HelpItem } from '../shell/HeaderParts';
+import { AboutBody, HowItWorksBody } from '../shell/HelpBodies';
 import { CaseRoute, isCaseId } from '../case/CaseRoutes';
 import { ListPage } from '../case/lists';
 import { TourView, type TourPosition } from '../tour/Tour';
@@ -36,6 +37,7 @@ import { FormHostProvider, useFormHost } from './formHost';
 import { FormPanel, formTitle, type FormPanelActions } from './FormPanel';
 import { STEP_PATH, StudyControllerProvider, stepReachable, useStudyController } from './controller';
 import { AvslutningPage, EkstraPage, HelhetPage, OmDegPage, StepperPage, TakkPage, V5Page, VelkommenPage } from './pages';
+import { ListGuide, useCaseTags } from './ListGuide';
 import { SheenButton } from '../patterns/basics';
 import { Actions, Muted } from '../patterns/layout';
 
@@ -142,9 +144,31 @@ function StudyShell() {
 
   const help: HelpItem[] = [];
   if (st.tour.done) help.push({ key: 'tour', label: s('helpTourAgain'), icon: <Map20Regular />, onSelect: () => navigate('/studie/omvisning?igjen') });
-  help.push({ key: 'how', label: s('helpHowItWorks'), icon: <QuestionCircle20Regular />, dialog: { title: s('helpHowItWorks'), body: <Paragraphs items={[s('helpHow1'), s('helpHow2'), s('helpHow3'), s('helpHow4'), s('helpHow5')]} /> } });
+  help.push({
+    key: 'how',
+    label: s('helpHowItWorks'),
+    icon: <QuestionCircle20Regular />,
+    dialog: {
+      title: s('helpHowItWorks'),
+      body: <HowItWorksBody current={furthest === 'takk' ? undefined : furthest} />,
+      extra: st.tour.done
+        ? (close) => (
+            <Button
+              appearance="subtle"
+              icon={<Map20Regular />}
+              onClick={() => {
+                close();
+                navigate('/studie/omvisning?igjen');
+              }}
+            >
+              {s('guideTourAgain')}
+            </Button>
+          )
+        : undefined,
+    },
+  });
   help.push({ key: 'glossary', label: s('helpGlossary'), icon: <BookOpen20Regular />, dialog: { title: s('helpGlossary'), body: <GlossaryBody /> } });
-  help.push({ key: 'about', label: s('helpAboutPrototype'), icon: <Info20Regular />, dialog: { title: s('helpAboutPrototype'), body: <Paragraphs items={[s('helpAbout1'), s('helpAbout2'), s('helpAbout3'), s('helpAbout4')]} /> } });
+  help.push({ key: 'about', label: s('helpAboutPrototype'), icon: <Info20Regular />, dialog: { title: s('helpAboutPrototype'), body: <AboutBody /> } });
   if (stepIndex(furthest) > 0) help.push({ key: 'reset', label: s('helpResetUnsent'), icon: <ArrowCounterclockwise20Regular />, onSelect: () => setConfirmReset(true) });
 
   const form = host.form;
@@ -178,6 +202,12 @@ function StudyShell() {
         nav={nav}
         navExpandedDefault={false}
         formPanel={<FormPanel actions={actions} />}
+        footerExtra={
+          // Velkommen only, once: the credit line and UiA's logo in the bottom corner.
+          route.path[1] === 'velkommen'
+            ? { note: s('footerCredit'), end: <img src="./uia-logo.png" alt={s('uiaLogoAlt')} width={141} height={32} style={{ display: 'block' }} /> }
+            : undefined
+        }
       >
         <StudyRoutes path={route.path} igjen={route.query.has('igjen')} />
       </AppShell>
@@ -277,6 +307,7 @@ function StudyRoutes({ path, igjen }: { path: string[]; igjen: boolean }) {
   const { s } = useLang();
   const study = useStudy();
   const ctl = useStudyController();
+  const caseTag = useCaseTags();
   const st = study.state;
   const furthest = st.furthest;
   const current = ctl.currentPath();
@@ -306,6 +337,8 @@ function StudyRoutes({ path, igjen }: { path: string[]; igjen: boolean }) {
           caseIds={ids}
           openable={(c) => (c === 'torbjorn' ? furthest === 'ekstra' : stepReachable(furthest, c as 'kari'))}
           note={(c) => (c !== 'torbjorn' && !stepReachable(furthest, c as 'kari') ? s('laterInStudy') : undefined)}
+          guide={<ListGuide />}
+          tag={caseTag}
         />
       );
     }

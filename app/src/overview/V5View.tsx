@@ -15,8 +15,18 @@ const useStyles = makeStyles({
     borderRadius: tokens.borderRadiusMedium,
     backgroundColor: tokens.colorNeutralBackground3,
   },
-  cols: { display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 420px), 1fr))', gap: tokens.spacingHorizontalL, rowGap: tokens.spacingVerticalL },
-  col: { display: 'flex', flexDirection: 'column', gap: tokens.spacingVerticalM, minWidth: 0 },
+  cols: { display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 420px), 1fr))', columnGap: tokens.spacingHorizontalL, rowGap: 0 },
+  // Each GP is one column of eight rows on the shared row tracks (subgrid): the name, the two lines about them, the
+  // figures' period, outcomes, reasons, quarters and the footnote line up across the two columns.
+  col: {
+    display: 'grid',
+    gridRow: 'span 8',
+    gridTemplateRows: 'subgrid',
+    rowGap: tokens.spacingVerticalM,
+    alignContent: 'start',
+    minWidth: 0,
+    marginBlockEnd: tokens.spacingVerticalL,
+  },
   h2: { ...typographyStyles.subtitle1, margin: 0 },
   exp: { ...typographyStyles.body1, margin: 0, color: tokens.colorNeutralForeground2 },
   note: { ...typographyStyles.body1, margin: 0 },
@@ -43,13 +53,11 @@ export function V5View({ showPurpose }: { showPurpose?: boolean }) {
       <p className={cls.sideLabel}>{s('v5SideLabel')}</p>
       <div className={cls.cols}>
         {v5.gps.map((g) => (
-          <Panel key={g.id} flat aria-label={t(g.label)}>
-            <div className={cls.col}>
-              <h2 className={cls.h2}>{t(g.label)}</h2>
-              <p className={cls.exp}>{t(g.experience)}</p>
-              <p className={cls.note}>{t(g.note)}</p>
-              <PatternView data={g.pattern} compact />
-            </div>
+          <Panel key={g.id} flat as="article" className={cls.col} aria-label={t(g.label)}>
+            <h2 className={cls.h2}>{t(g.label)}</h2>
+            <p className={cls.exp}>{t(g.experience)}</p>
+            <p className={cls.note}>{t(g.note)}</p>
+            <PatternView data={g.pattern} compact subgrid />
           </Panel>
         ))}
       </div>

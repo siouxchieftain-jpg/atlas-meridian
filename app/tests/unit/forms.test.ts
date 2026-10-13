@@ -29,14 +29,21 @@ describe('form keys', () => {
 });
 
 describe('locked context', () => {
-  it('sends rolle, intervju, steg, vignett and versjon for a case form', () => {
-    expect(studyLocked('S3', 'fastlege', 'Nei', { kari: true })).toEqual({
+  it('sends rolle, intervju, studienavn, steg, vignett and versjon for a case form', () => {
+    expect(studyLocked('S3', 'fastlege', 'Nei', { kari: true }, 'Rolig elg 27')).toEqual({
       rolle: 'Fastlege',
       intervju: 'Nei',
+      studienavn: 'Rolig elg 27',
       steg: 'S3-etter',
       vignett: 'V1',
       versjon: expect.stringMatching(/^3\.0\.0-/),
     });
+  });
+
+  it('sends no study name before one exists, and sends it as typed once it does', () => {
+    expect(buildFormUrl('https://nettskjema.no/a/1', studyLocked('S1', 'fastlege', 'Nei', {}), true)).not.toContain('CBstudienavn');
+    const url = buildFormUrl('https://nettskjema.no/a/1', studyLocked('S1', 'fastlege', 'Nei', {}, 'Stødig ørn 41'), true);
+    expect(url).toContain(`CBstudienavn=${encodeURIComponent('Stødig ørn 41')}&LCKstudienavn=true`);
   });
 
   it('maps both DPS choices to DPS-inntak and a missing interview answer to «Vil ikke svare»', () => {
@@ -59,7 +66,7 @@ describe('locked context', () => {
       const key = formKeyFor(step, role);
       const form = instrument.forms.find((f) => f.key === key);
       expect(form, key).toBeDefined();
-      const sent = Object.keys(studyLocked(step, role === 'gp' ? 'fastlege' : 'dps-kliniker', 'Ja', {}));
+      const sent = Object.keys(studyLocked(step, role === 'gp' ? 'fastlege' : 'dps-kliniker', 'Ja', {}, 'Glad hval 63'));
       expect([...sent].sort(), key).toEqual([...form!.locked].sort());
     }
   });

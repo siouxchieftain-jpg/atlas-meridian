@@ -74,12 +74,12 @@ test('review: «Uten ATLAS» / «Med ATLAS», Merknader and the role switch', as
   await expect(band.first()).toBeVisible();
   await expect(page.locator('[data-note]')).toHaveCount(0);
 
-  await page.getByRole('button', { name: 'Uten ATLAS' }).click();
+  await page.getByRole('button', { name: 'Uten ATLAS', exact: true }).click();
   await expect(band).toHaveCount(0);
   await page.getByRole('switch', { name: 'Merknader' }).click();
   await expect(page.locator('[data-note="uten-atlas"]')).toBeVisible();
 
-  await page.getByRole('button', { name: 'Med ATLAS' }).click();
+  await page.getByRole('button', { name: 'Med ATLAS', exact: true }).click();
   await expect(band.first()).toBeVisible();
   await expect(page.locator('[data-note="uten-atlas"]')).toHaveCount(0);
   await expect(page.locator('[data-note]').first()).toBeVisible();

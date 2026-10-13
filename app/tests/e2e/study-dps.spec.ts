@@ -68,12 +68,16 @@ test('a DPS clinician completes the core study, with the GP marker shown only af
   }
 });
 
-test('«Annen rolle ved DPS-inntak» follows the DPS pages and sends DPS-inntak', async ({ page }) => {
+test('the DPS card covers every role in intake, sends DPS-inntak and the study name shown on Om deg', async ({ page }) => {
   await mockNettskjema(page);
   await recordSubmissions(page);
   await page.goto('/');
-  await page.getByRole('button', { name: 'Start', exact: true }).click();
-  await page.getByLabel('Annen rolle ved DPS-inntak').check({ force: true });
+  const card = page.locator('[data-role-card="dps"]');
+  await expect(card.getByText('Gjelder også andre roller i inntaket.', { exact: false })).toBeVisible();
+  await card.getByRole('button', { name: 'Start i DPS-inntaket' }).click();
+  await expect(page.getByRole('heading', { level: 1, name: 'Om deg' })).toBeVisible();
+  const name = (await page.locator('[data-studienavn] p').first().textContent())?.trim() ?? '';
+  expect(name).toMatch(/^\S+ \S+ \d{2}$/);
   await page.getByLabel('Vil ikke svare').check({ force: true });
   await page.getByRole('button', { name: 'Lagre og åpne skjemaet' }).click();
   await sendForm(page);
@@ -81,6 +85,7 @@ test('«Annen rolle ved DPS-inntak» follows the DPS pages and sends DPS-inntak'
   const s1 = (await submissions(page))[0];
   expect(s1.fields.rolle).toBe('DPS-inntak');
   expect(s1.fields.intervju).toBe('Vil ikke svare');
+  expect(s1.fields.studienavn).toBe(name);
   await page.getByRole('button', { name: 'Gå til omvisningen' }).click();
-  await expect(page.getByText('Omvisning · DPS, inntak', { exact: false })).toBeVisible();
+  await expect(page.getByText('DPS, inntak · punkt 1 av', { exact: false })).toBeVisible();
 });

@@ -1,6 +1,7 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from 'react';
 import type { CaseId, CoreCaseId, Role } from '../content/types';
 import { readJSON, writeJSON } from './persist';
+import { isStudienavn, makeStudienavn } from '../engine/studienavn';
 import {
   STEP_ORDER,
   emptyDps,
@@ -29,6 +30,8 @@ interface KeepRecord {
   visAtlas: StudyState['visAtlas'];
   roleChoice?: RoleChoice;
   intervju?: Intervju;
+  /** Kept like the role: every form after S1 must carry the same study name. */
+  studienavn?: string;
 }
 
 export function initialStudy(): StudyState {
@@ -69,8 +72,11 @@ export function loadStudy(): StudyState {
     if (keep.ledger?.S1) {
       s.roleChoice = s.roleChoice ?? keep.roleChoice;
       s.intervju = s.intervju ?? keep.intervju;
+      s.studienavn = s.studienavn ?? keep.studienavn;
     }
   }
+  // A role chosen before study names existed gets one now, so its next form carries it.
+  if (s.roleChoice && !isStudienavn(s.studienavn)) s = { ...s, studienavn: makeStudienavn() };
   // Every step whose form is in the ledger is behind the participant.
   let minIndex = STEP_ORDER.indexOf(s.furthest);
   STEP_ORDER.forEach((step, i) => {
@@ -106,6 +112,8 @@ export function stepIndex(step: StepId): number {
 export interface StudyApi {
   state: StudyState;
   role: Role | undefined;
+  /** The role card on Velkommen: sets the role and makes the study name. No change once S1 is sent. */
+  chooseRole: (choice: RoleChoice) => void;
   setRole: (choice: RoleChoice, intervju: Intervju) => void;
   advanceTo: (step: StepId) => void;
   isReached: (step: StepId) => boolean;
@@ -138,6 +146,7 @@ export function StudyProvider({ children }: { children: ReactNode }) {
     if (state.ledger.S1) {
       keep.roleChoice = state.roleChoice;
       keep.intervju = state.intervju;
+      keep.studienavn = state.studienavn;
     }
     writeJSON(KEEP_KEY, keep);
   }, [state]);
@@ -149,8 +158,12 @@ export function StudyProvider({ children }: { children: ReactNode }) {
     return {
       state,
       role: roleOf(state.roleChoice),
+      chooseRole: (choice) =>
+        update((s) => (s.ledger.S1 ? s : { ...s, roleChoice: choice, studienavn: isStudienavn(s.studienavn) ? s.studienavn : makeStudienavn() })),
       setRole: (choice, intervju) =>
-        update((s) => (s.ledger.S1 ? s : { ...s, roleChoice: choice, intervju })),
+        update((s) =>
+          s.ledger.S1 ? s : { ...s, roleChoice: choice, intervju, studienavn: isStudienavn(s.studienavn) ? s.studienavn : makeStudienavn() },
+        ),
       advanceTo: (step) =>
         update((s) => (stepIndex(step) > stepIndex(s.furthest) ? { ...s, furthest: step } : s)),
       isReached: (step) => stepIndex(step) <= stepIndex(state.furthest),
@@ -201,6 +214,7 @@ export function StudyProvider({ children }: { children: ReactNode }) {
             visAtlas: s.visAtlas,
             roleChoice: s.ledger.S1 ? s.roleChoice : undefined,
             intervju: s.ledger.S1 ? s.intervju : undefined,
+            studienavn: s.ledger.S1 ? s.studienavn : undefined,
             route: s.ledger.S1 ? s.route : undefined,
             previewRun: s.previewRun,
           };

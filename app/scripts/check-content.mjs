@@ -91,7 +91,7 @@ const item = {
   type: 'object',
   required: ['id', 'type', 'codebook', 'text', 'required'],
   properties: {
-    type: { enum: ['locked', 'agree7', 'confidence7', 'helpful7', 'nps11', 'clarity5', 'importance3', 'choice', 'text', 'longtext', 'stop'] },
+    type: { enum: ['locked', 'agree7', 'confidence7', 'helpful7', 'nps11', 'clarity5', 'importance3', 'choice', 'text', 'longtext', 'stop', 'consent'] },
     codebook: { type: 'string', pattern: '^[a-z0-9_]+$' },
     text: T,
   },
@@ -197,6 +197,7 @@ if (instrument) {
       if (/[æøå]/i.test(it.codebook)) fail(`instrument.json ${f.key}: codebook «${it.codebook}» has æ, ø or å`);
       if ((it.type === 'agree7' || it.type === 'confidence7' || it.type === 'helpful7' || it.type === 'nps11') && !it.anchors) fail(`instrument.json ${f.key} ${it.id}: scale without anchors`);
       if ((it.type === 'choice' || it.type === 'importance3') && !(it.options && it.options.length)) fail(`instrument.json ${f.key} ${it.id}: choice without options`);
+      if (it.type === 'consent' && !(it.required && it.options && it.options.length === 1)) fail(`instrument.json ${f.key} ${it.id}: the consent tick box must be required and have exactly one option`);
     }
     const lockedItems = f.pages.flatMap((p) => p.items).filter((it) => it.type === 'locked').map((it) => it.codebook);
     for (const l of f.locked) if (!lockedItems.includes(l)) fail(`instrument.json ${f.key}: locked field «${l}» has no item`);

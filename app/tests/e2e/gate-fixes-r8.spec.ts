@@ -159,7 +159,7 @@ test('r7F-06: «Om deg» says the role goes with the forms that are sent, not th
   await startStudy(page, 'Fastlege');
   await sendForm(page);
   await go(page, '#/studie/om-deg');
-  await expect(page.getByText('Rollen og svaret følger med skjemaene du sender, og kan ikke endres.')).toBeVisible();
+  await expect(page.getByText('Rollen, svaret og studienavnet følger med skjemaene du sender, og kan ikke endres.')).toBeVisible();
 });
 
 test('r7F-07: Erlend’s quoted rejection is set in curly quotes in English', async ({ page }) => {

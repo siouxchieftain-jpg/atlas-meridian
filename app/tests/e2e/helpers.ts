@@ -30,8 +30,9 @@ export async function toStopPage(page: Page) {
 
 export async function startStudy(page: Page, role: 'Fastlege' | 'DPS-kliniker', intervju: 'Ja' | 'Nei' | 'Vil ikke svare' = 'Nei') {
   await page.goto('/');
-  await page.getByRole('button', { name: 'Start', exact: true }).click();
-  await page.getByLabel(role, { exact: true }).check({ force: true });
+  // The role is chosen on Velkommen, with its card; Om deg asks the one question left.
+  await page.getByRole('button', { name: role === 'Fastlege' ? 'Start som fastlege' : 'Start i DPS-inntaket' }).click();
+  await expect(page.getByRole('heading', { level: 1, name: 'Om deg' })).toBeVisible();
   await page.getByLabel(intervju, { exact: true }).check({ force: true });
   await page.getByRole('button', { name: 'Lagre og åpne skjemaet' }).click();
   await expect(page.locator('iframe[data-form-frame]')).toBeVisible();

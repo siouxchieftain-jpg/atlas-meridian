@@ -25,6 +25,7 @@
       "locked": [
         "rolle",
         "intervju",
+        "studienavn",
         "steg",
         "versjon"
       ],
@@ -52,6 +53,16 @@
               "required": false
             },
             {
+              "id": "studienavn",
+              "type": "locked",
+              "codebook": "studienavn",
+              "text": {
+                "nb": "Studienavn",
+                "en": "Study name"
+              },
+              "required": false
+            },
+            {
               "id": "steg",
               "type": "locked",
               "codebook": "steg",
@@ -70,6 +81,22 @@
                 "en": "Version"
               },
               "required": false
+            },
+            {
+              "id": "SAMTYKKE",
+              "type": "consent",
+              "codebook": "samtykke",
+              "text": {
+                "nb": "Jeg har lest informasjonsskrivet og vil delta.",
+                "en": "I have read the information letter and want to take part."
+              },
+              "options": [
+                {
+                  "nb": "Ja",
+                  "en": "Yes"
+                }
+              ],
+              "required": true
             },
             {
               "id": "A-02",
@@ -183,6 +210,7 @@
       "locked": [
         "rolle",
         "intervju",
+        "studienavn",
         "steg",
         "versjon"
       ],
@@ -206,6 +234,16 @@
               "text": {
                 "nb": "Deltok du i et intervju i dette forskningsprosjektet?",
                 "en": "Did you take part in an interview in this research project?"
+              },
+              "required": false
+            },
+            {
+              "id": "studienavn",
+              "type": "locked",
+              "codebook": "studienavn",
+              "text": {
+                "nb": "Studienavn",
+                "en": "Study name"
               },
               "required": false
             },
@@ -576,6 +614,7 @@
       "locked": [
         "rolle",
         "intervju",
+        "studienavn",
         "steg",
         "versjon"
       ],
@@ -599,6 +638,16 @@
               "text": {
                 "nb": "Deltok du i et intervju i dette forskningsprosjektet?",
                 "en": "Did you take part in an interview in this research project?"
+              },
+              "required": false
+            },
+            {
+              "id": "studienavn",
+              "type": "locked",
+              "codebook": "studienavn",
+              "text": {
+                "nb": "Studienavn",
+                "en": "Study name"
               },
               "required": false
             },
@@ -970,6 +1019,7 @@
       "locked": [
         "rolle",
         "intervju",
+        "studienavn",
         "steg",
         "vignett",
         "versjon"
@@ -1014,6 +1064,16 @@
               "text": {
                 "nb": "Deltok du i et intervju i dette forskningsprosjektet?",
                 "en": "Did you take part in an interview in this research project?"
+              },
+              "required": false
+            },
+            {
+              "id": "studienavn",
+              "type": "locked",
+              "codebook": "studienavn",
+              "text": {
+                "nb": "Studienavn",
+                "en": "Study name"
               },
               "required": false
             },
@@ -1190,6 +1250,7 @@
       "locked": [
         "rolle",
         "intervju",
+        "studienavn",
         "steg",
         "vignett",
         "versjon"
@@ -1234,6 +1295,16 @@
               "text": {
                 "nb": "Deltok du i et intervju i dette forskningsprosjektet?",
                 "en": "Did you take part in an interview in this research project?"
+              },
+              "required": false
+            },
+            {
+              "id": "studienavn",
+              "type": "locked",
+              "codebook": "studienavn",
+              "text": {
+                "nb": "Studienavn",
+                "en": "Study name"
               },
               "required": false
             },
@@ -1388,6 +1459,7 @@
       "locked": [
         "rolle",
         "intervju",
+        "studienavn",
         "steg",
         "vignett",
         "versjon"
@@ -1432,6 +1504,16 @@
               "text": {
                 "nb": "Deltok du i et intervju i dette forskningsprosjektet?",
                 "en": "Did you take part in an interview in this research project?"
+              },
+              "required": false
+            },
+            {
+              "id": "studienavn",
+              "type": "locked",
+              "codebook": "studienavn",
+              "text": {
+                "nb": "Studienavn",
+                "en": "Study name"
               },
               "required": false
             },
@@ -1588,6 +1670,7 @@
       "locked": [
         "rolle",
         "intervju",
+        "studienavn",
         "steg",
         "vignett",
         "versjon"
@@ -1632,6 +1715,16 @@
               "text": {
                 "nb": "Deltok du i et intervju i dette forskningsprosjektet?",
                 "en": "Did you take part in an interview in this research project?"
+              },
+              "required": false
+            },
+            {
+              "id": "studienavn",
+              "type": "locked",
+              "codebook": "studienavn",
+              "text": {
+                "nb": "Studienavn",
+                "en": "Study name"
               },
               "required": false
             },
@@ -1797,6 +1890,7 @@
       "locked": [
         "rolle",
         "intervju",
+        "studienavn",
         "steg",
         "vignett",
         "versjon"
@@ -1841,6 +1935,16 @@
               "text": {
                 "nb": "Deltok du i et intervju i dette forskningsprosjektet?",
                 "en": "Did you take part in an interview in this research project?"
+              },
+              "required": false
+            },
+            {
+              "id": "studienavn",
+              "type": "locked",
+              "codebook": "studienavn",
+              "text": {
+                "nb": "Studienavn",
+                "en": "Study name"
               },
               "required": false
             },
@@ -2008,6 +2112,7 @@
       "locked": [
         "rolle",
         "intervju",
+        "studienavn",
         "steg",
         "versjon"
       ],
@@ -2031,6 +2136,16 @@
               "text": {
                 "nb": "Deltok du i et intervju i dette forskningsprosjektet?",
                 "en": "Did you take part in an interview in this research project?"
+              },
+              "required": false
+            },
+            {
+              "id": "studienavn",
+              "type": "locked",
+              "codebook": "studienavn",
+              "text": {
+                "nb": "Studienavn",
+                "en": "Study name"
               },
               "required": false
             },
@@ -2150,6 +2265,7 @@
       "locked": [
         "rolle",
         "intervju",
+        "studienavn",
         "steg",
         "vignett",
         "versjon"
@@ -2174,6 +2290,16 @@
               "text": {
                 "nb": "Deltok du i et intervju i dette forskningsprosjektet?",
                 "en": "Did you take part in an interview in this research project?"
+              },
+              "required": false
+            },
+            {
+              "id": "studienavn",
+              "type": "locked",
+              "codebook": "studienavn",
+              "text": {
+                "nb": "Studienavn",
+                "en": "Study name"
               },
               "required": false
             },
@@ -2270,6 +2396,7 @@
       "locked": [
         "rolle",
         "intervju",
+        "studienavn",
         "steg",
         "vignett",
         "versjon"
@@ -2294,6 +2421,16 @@
               "text": {
                 "nb": "Deltok du i et intervju i dette forskningsprosjektet?",
                 "en": "Did you take part in an interview in this research project?"
+              },
+              "required": false
+            },
+            {
+              "id": "studienavn",
+              "type": "locked",
+              "codebook": "studienavn",
+              "text": {
+                "nb": "Studienavn",
+                "en": "Study name"
               },
               "required": false
             },

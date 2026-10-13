@@ -159,6 +159,8 @@ export interface StudyState {
   v: 1;
   roleChoice?: RoleChoice;
   intervju?: Intervju;
+  /** The random study name («Rolig elg 27»), made when the role is chosen; a locked field in every study form. */
+  studienavn?: string;
   /** The furthest step reached. Steps before it count as completed. */
   furthest: StepId;
   /** Decided by S1: forms open in the panel, or in a new tab from the start. */

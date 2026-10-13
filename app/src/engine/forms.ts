@@ -80,16 +80,22 @@ export interface LockedFields {
   [codebook: string]: string;
 }
 
-/** The locked context for a study form. Values are Norwegian in both languages. */
+/**
+ * The locked context for a study form. Values are Norwegian in both languages.
+ * `studienavn` (the random study name) sorts one person's forms together; it
+ * is empty only before a role is chosen, and an empty value is never sent.
+ */
 export function studyLocked(
   step: FormStep,
   roleChoice: RoleChoice | undefined,
   intervju: Intervju | undefined,
   visAtlas: Partial<Record<CoreCaseId, boolean>>,
+  studienavn?: string,
 ): LockedFields {
   const fields: LockedFields = {
     rolle: rolleValue(roleChoice),
     intervju: intervju ?? 'Vil ikke svare',
+    studienavn: studienavn ?? '',
     steg: stegValue(step, visAtlas),
   };
   const vignett = STEP_VIGNETT[step];

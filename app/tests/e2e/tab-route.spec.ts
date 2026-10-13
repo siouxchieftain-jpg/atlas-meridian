@@ -9,8 +9,7 @@ test.use({ userAgent: SAFARI });
 test('Safari starts on the new-tab route; sendt.html marks the step as sent', async ({ page, context }) => {
   await mockNettskjema(context);
   await page.goto('/');
-  await page.getByRole('button', { name: 'Start', exact: true }).click();
-  await page.getByLabel('Fastlege', { exact: true }).check({ force: true });
+  await page.getByRole('button', { name: 'Start som fastlege' }).click();
   await page.getByLabel('Nei', { exact: true }).check({ force: true });
   await page.getByRole('button', { name: 'Lagre og åpne skjemaet' }).click();
   await expect(page.locator('iframe[data-form-frame]')).toHaveCount(0);
@@ -31,8 +30,7 @@ test('Safari starts on the new-tab route; sendt.html marks the step as sent', as
 test('on the tab route «Jeg har sendt skjemaet» also marks the step', async ({ page, context }) => {
   await mockNettskjema(context);
   await page.goto('/');
-  await page.getByRole('button', { name: 'Start', exact: true }).click();
-  await page.getByLabel('DPS-kliniker', { exact: true }).check({ force: true });
+  await page.getByRole('button', { name: 'Start i DPS-inntaket' }).click();
   await page.getByLabel('Nei', { exact: true }).check({ force: true });
   await page.getByRole('button', { name: 'Lagre og åpne skjemaet' }).click();
   await panel(page).getByRole('button', { name: 'Jeg har sendt skjemaet' }).click();

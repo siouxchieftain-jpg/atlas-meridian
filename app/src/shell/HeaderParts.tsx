@@ -22,7 +22,8 @@ import { useEffect, useId, useRef, useState, type ReactElement, type ReactNode }
 import { glossary } from '../content';
 import { useLang } from '../i18n/i18n';
 import { RouterLink } from '../router/router';
-import { useSelectedToggle } from '../patterns/basics';
+import { GuideImage, useSelectedToggle } from '../patterns/basics';
+import { guide } from '../theme/constants';
 
 const useStyles = makeStyles({
   wordmark: {
@@ -50,6 +51,43 @@ const useStyles = makeStyles({
   gText: { ...typographyStyles.body1, margin: 0, color: tokens.colorNeutralForeground2 },
   badge: { ...typographyStyles.body1Strong, whiteSpace: 'nowrap' },
   step: { ...typographyStyles.caption1, color: tokens.colorNeutralForeground3, whiteSpace: 'nowrap' },
+  // A help dialog is part of the guide layer: the image in its header, fading into the white body.
+  helpSurface: {
+    padding: 0,
+    width: '100%',
+    maxWidth: 'min(760px, calc(100vw - 32px))',
+    borderRadius: '14px',
+    overflowY: 'auto',
+  },
+  helpHead: {
+    position: 'relative',
+    isolation: 'isolate',
+    overflow: 'hidden',
+    minHeight: '128px',
+    boxSizing: 'border-box',
+    paddingInline: 'clamp(20px, 4vw, 28px)',
+    paddingBlock: '26px',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'flex-end',
+    gap: '4px',
+    borderRadius: '14px 14px 0 0',
+    background: `linear-gradient(180deg,rgba(255,255,255,0) 35%,#FFFFFF 100%), linear-gradient(120deg,#FFF3EC 0%,#FDEDF5 52%,#F1EEFC 100%)`,
+    '@media (forced-colors: active)': { background: 'Canvas' },
+  },
+  helpEyebrow: { ...typographyStyles.caption1Strong, margin: 0, color: guide.ink },
+  helpTitle: { ...typographyStyles.title3, margin: 0 },
+  helpContent: { paddingInline: 'clamp(20px, 4vw, 28px)', paddingBlockStart: tokens.spacingVerticalS, paddingBlockEnd: '24px' },
+  helpActions: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    flexWrap: 'wrap',
+    gap: tokens.spacingHorizontalM,
+    paddingInline: 'clamp(20px, 4vw, 28px)',
+    paddingBlockEnd: '24px',
+  },
+  helpExtra: { minWidth: 0 },
 });
 
 export function Wordmark({ to, extra }: { to: string; extra?: string }) {
@@ -113,7 +151,8 @@ export interface HelpItem {
   icon?: ReactNode;
   onSelect?: () => void;
   href?: string;
-  dialog?: { title: string; body: ReactNode };
+  /** `extra` sits beside «Lukk», for example «Se omvisningen igjen»; it gets the dialog's close. */
+  dialog?: { title: string; body: ReactNode; extra?: (close: () => void) => ReactNode };
 }
 
 /** Hjelp: the tour again, how the evaluation works, the glossary, about the prototype, and mode-specific items. */
@@ -164,22 +203,27 @@ export function HelpMenu({ items }: { items: HelpItem[] }) {
           returnFocusToHelp();
         }}
       >
-        <DialogSurface>
-          <DialogBody>
-            <DialogTitle>{dialog?.title}</DialogTitle>
-            <DialogContent>{dialog?.body}</DialogContent>
-            <DialogActions>
-              <Button
-                appearance="primary"
-                onClick={() => {
-                  setDialog(null);
-                  returnFocusToHelp();
-                }}
-              >
-                {s('close')}
-              </Button>
-            </DialogActions>
-          </DialogBody>
+        <DialogSurface className={cls.helpSurface}>
+          <div className={cls.helpHead}>
+            <GuideImage variant="header" />
+            <p className={cls.helpEyebrow}>{s('helpEyebrow')}</p>
+            <DialogTitle as="h2" className={cls.helpTitle}>
+              {dialog?.title}
+            </DialogTitle>
+          </div>
+          <div className={cls.helpContent}>{dialog?.body}</div>
+          <div className={cls.helpActions}>
+            <div className={cls.helpExtra}>{dialog?.extra?.(() => setDialog(null))}</div>
+            <Button
+              appearance="primary"
+              onClick={() => {
+                setDialog(null);
+                returnFocusToHelp();
+              }}
+            >
+              {s('close')}
+            </Button>
+          </div>
         </DialogSurface>
       </Dialog>
     </>

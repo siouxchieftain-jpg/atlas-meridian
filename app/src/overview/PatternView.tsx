@@ -9,6 +9,8 @@ import { neutralBar } from '../theme/constants';
 
 const useStyles = makeStyles({
   root: { display: 'flex', flexDirection: 'column', gap: tokens.spacingVerticalL, minWidth: 0 },
+  // In V5 the parts become rows of the column's subgrid, so the two GPs' rows line up.
+  contents: { display: 'contents' },
   privacy: {
     ...typographyStyles.body1,
     margin: 0,
@@ -145,12 +147,27 @@ function SessionRows() {
  * («En retur kan ha flere årsaker»), quarters, the privacy line and the
  * fictional-figures label. No score, no colour for outcomes (B1, B5).
  */
-export function PatternView({ data, noData, session, compact, notes }: { data: PatternData; noData?: boolean; session?: boolean; compact?: boolean; notes?: boolean }) {
+export function PatternView({
+  data,
+  noData,
+  session,
+  compact,
+  notes,
+  subgrid,
+}: {
+  data: PatternData;
+  noData?: boolean;
+  session?: boolean;
+  compact?: boolean;
+  notes?: boolean;
+  /** Its parts take part in the parent's grid rows (V5). */
+  subgrid?: boolean;
+}) {
   const cls = useStyles();
   const { s, t, lang } = useLang();
   const sum = data.outcomes.reduce((a, o) => a + o.count, 0) || 1;
   return (
-    <div className={cls.root} data-section="monster">
+    <div className={mergeClasses(cls.root, subgrid && cls.contents)} data-section="monster">
       {!compact && <p className={cls.privacy}>{s('patternPrivacy')}</p>}
       {/* With no data there are no figures: no «Fiktive tall», period or footnote beside «Ingen data ennå» (SV-17). */}
       {!noData && (
@@ -185,7 +202,7 @@ export function PatternView({ data, noData, session, compact, notes }: { data: P
           </div>
         </>
       ) : (
-        <div className={cls.grid}>
+        <div className={mergeClasses(cls.grid, subgrid && cls.contents)}>
           <section className={cls.block} aria-label={s('patternOutcomes')}>
             <h2 className={cls.h2}>{s('patternOutcomes')}</h2>
             <p className={cls.total}>{s('referralsCount', { n: data.total })}</p>

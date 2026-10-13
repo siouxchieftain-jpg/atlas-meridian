@@ -13,20 +13,26 @@ import {
   ArrowRight20Regular,
   CheckmarkCircle20Regular,
   Circle20Regular,
+  Clock20Regular,
   Delete20Regular,
+  DocumentArrowDown20Regular,
   Form20Regular,
+  People20Regular,
   RecordStop20Regular,
+  ShieldCheckmark20Regular,
+  Stethoscope20Regular,
 } from '@fluentui/react-icons';
 import { useEffect, useId, useRef, useState, type ReactNode } from 'react';
 import type { CaseId, CoreCaseId } from '../content/types';
 import { cases, tour, v5 } from '../content';
 import { useLang } from '../i18n/i18n';
 import { getConfig, previewFlag } from '../engine/forms';
-import { navigate } from '../router/router';
+import { Redirect, RouterLink, navigate } from '../router/router';
 import { stepIndex, useStudy } from '../state/study';
 import { STEP_ORDER, type FormStep, type Intervju, type RoleChoice, type StepId } from '../state/types';
 import { ChoiceGroup } from '../patterns/ChoiceGroup';
-import { Panel, SheenButton } from '../patterns/basics';
+import { GuideImage, Panel, SheenButton } from '../patterns/basics';
+import { atlasDawn, size } from '../theme/constants';
 import { focusAfterOverlay, Silent } from '../patterns/announce';
 import { Actions, Body, Card, Eyebrow, GuidePage, Lead, Muted, PageCard } from '../patterns/layout';
 import { FOCUS_HEADING_ON_LOAD, PageHeading } from '../shell/PageHeading';
@@ -160,119 +166,322 @@ function FormWaiting({ step }: { step: FormStep }) {
 
 /* ---------- 1 Velkommen ---------- */
 
+const useVelkommen = makeStyles({
+  wrap: { marginBlockStart: `${size.panelInset}px`, display: 'flex', flexDirection: 'column', gap: tokens.spacingVerticalS },
+  // A guide surface (B6): the dawn, with the guide layer's image on top of it.
+  hero: {
+    position: 'relative',
+    isolation: 'isolate',
+    overflow: 'hidden',
+    background: atlasDawn,
+    borderRadius: tokens.borderRadiusLarge,
+    boxShadow: tokens.shadow2,
+    paddingInline: 'clamp(16px, 4vw, 48px)',
+    paddingBlock: 'clamp(24px, 4vw, 48px)',
+    display: 'flex',
+    flexWrap: 'wrap',
+    alignItems: 'flex-start',
+    columnGap: '56px',
+    rowGap: '40px',
+    boxSizing: 'border-box',
+    // On the guide surface, captions use foreground 2 (WCAG 1.4.3, G-24).
+    '& [data-muted]': { color: tokens.colorNeutralForeground2 },
+    '@media print': { background: '#FFFFFF', boxShadow: 'none' },
+    '@media (forced-colors: active)': { background: 'Canvas', border: '1px solid CanvasText' },
+  },
+  text: { flex: '1 1 420px', minWidth: 0, maxWidth: '620px', display: 'flex', flexDirection: 'column', gap: tokens.spacingVerticalM },
+  roles: {
+    flex: '1 1 480px',
+    minWidth: 0,
+    display: 'flex',
+    flexDirection: 'column',
+    gap: tokens.spacingVerticalM,
+    '@media (min-width: 1024px)': { paddingBlockStart: '32px' },
+  },
+  cards: { display: 'flex', flexWrap: 'wrap', gap: tokens.spacingHorizontalL },
+  card: {
+    flex: '1 1 240px',
+    minWidth: 0,
+    display: 'flex',
+    flexDirection: 'column',
+    gap: tokens.spacingVerticalM,
+    padding: '24px',
+    backgroundColor: tokens.colorNeutralBackground1,
+    border: `1px solid ${tokens.colorNeutralStroke2}`,
+    borderRadius: tokens.borderRadiusLarge,
+    boxShadow: tokens.shadow2,
+    boxSizing: 'border-box',
+    '@media (forced-colors: active)': { border: '1px solid CanvasText' },
+  },
+  // The role already chosen, before S1 is sent: a brand edge, as a selected item has (G-20).
+  cardChosen: { border: `2px solid ${tokens.colorBrandStroke1}`, padding: '23px' },
+  cardIcon: {
+    width: '44px',
+    height: '44px',
+    flexShrink: 0,
+    borderRadius: tokens.borderRadiusCircular,
+    backgroundColor: tokens.colorBrandBackground2,
+    border: `1px solid ${tokens.colorBrandStroke2}`,
+    color: tokens.colorBrandForeground2,
+    display: 'inline-flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    boxSizing: 'border-box',
+  },
+  cardTitle: { ...typographyStyles.subtitle1, margin: 0 },
+  cardText: { ...typographyStyles.body1, margin: 0, color: tokens.colorNeutralForeground2 },
+  cardNote: { ...typographyStyles.caption1, margin: 0, color: tokens.colorNeutralForeground3 },
+  cardStart: { marginBlockStart: 'auto', alignSelf: 'flex-start' },
+  // Over the image: a white backing keeps the caption readable wherever the fabric is darker.
+  caption: {
+    ...typographyStyles.caption1,
+    margin: 0,
+    alignSelf: 'flex-start',
+    paddingInline: tokens.spacingHorizontalS,
+    paddingBlock: '2px',
+    borderRadius: tokens.borderRadiusMedium,
+    backgroundColor: 'rgba(255,255,255,0.88)',
+    color: tokens.colorNeutralForeground2,
+  },
+  good: {
+    backgroundColor: tokens.colorNeutralBackground1,
+    borderRadius: tokens.borderRadiusLarge,
+    boxShadow: tokens.shadow2,
+    paddingInline: 'clamp(16px, 4vw, 48px)',
+    paddingBlock: '28px',
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '20px',
+    '@media (forced-colors: active)': { border: '1px solid CanvasText' },
+  },
+  tiles: { display: 'flex', flexWrap: 'wrap', columnGap: '48px', rowGap: tokens.spacingVerticalXL },
+  tile: { flex: '1 1 260px', minWidth: 0, display: 'flex', gap: '14px', alignItems: 'flex-start' },
+  tileIcon: {
+    flex: '0 0 36px',
+    width: '36px',
+    height: '36px',
+    borderRadius: tokens.borderRadiusCircular,
+    backgroundColor: tokens.colorBrandBackground2,
+    border: `1px solid ${tokens.colorBrandStroke2}`,
+    color: tokens.colorBrandForeground2,
+    display: 'inline-flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    boxSizing: 'border-box',
+  },
+  tileBody: { display: 'flex', flexDirection: 'column', gap: tokens.spacingVerticalXS, minWidth: 0 },
+  tileTitle: { ...typographyStyles.body1Strong, margin: 0 },
+  tileText: { ...typographyStyles.body1, margin: 0, color: tokens.colorNeutralForeground2 },
+  tileNote: { ...typographyStyles.caption1, margin: 0, color: tokens.colorNeutralForeground3 },
+});
+
+function GoodTile({ icon, title, children }: { icon: ReactNode; title: string; children: ReactNode }) {
+  const v = useVelkommen();
+  return (
+    <div className={v.tile}>
+      <span className={v.tileIcon} aria-hidden="true">
+        {icon}
+      </span>
+      <div className={v.tileBody}>
+        <h3 className={v.tileTitle}>{title}</h3>
+        {children}
+      </div>
+    </div>
+  );
+}
+
 export function VelkommenPage() {
   const cls = useStyles();
+  const v = useVelkommen();
   const { s, t } = useLang();
   const study = useStudy();
   const ctl = useStudyController();
   const cfg = getConfig();
-  const started = stepIndex(study.state.furthest) > stepIndex('velkommen');
+  const goodId = useId();
+  const st = study.state;
+  // Once S1 is in the ledger the role is fixed: Velkommen offers the way back instead of the role cards.
+  const roleFixed = !!st.ledger.S1;
+  const roleLabel = study.role === 'gp' ? s('roleGp') : s('roleDps');
+  const roleCards: { choice: RoleChoice; role: 'gp' | 'dps'; title: string; text: string; note: string; start: string }[] = [
+    { choice: 'fastlege', role: 'gp', title: s('velkommenRoleGpTitle'), text: s('velkommenRoleGpText'), note: s('velkommenRoleGpNote'), start: s('velkommenRoleGpStart') },
+    { choice: 'dps-kliniker', role: 'dps', title: s('velkommenRoleDpsTitle'), text: s('velkommenRoleDpsText'), note: s('velkommenRoleDpsNote'), start: s('velkommenRoleDpsStart') },
+  ];
   return (
-    <GuidePage
-      after={
-        <Card aria-label={s('velkommenRightsTitle')}>
-          <h2 className={cls.h2}>{s('velkommenRightsTitle')}</h2>
-          <Body>{s('velkommenVoluntary')}</Body>
-          <Body>{s('velkommenAnon')}</Body>
-          <Body>{s('velkommenConsent')}</Body>
-          <Body>{s('velkommenData')}</Body>
-          <Body>{s('velkommenGithub')}</Body>
-          {/* A missing letter or contact is said, never hidden: the release check (S9) confirms both are set. */}
-          {cfg.informationLetter ? (
-            <p style={{ margin: 0 }}>
-              <Link href={cfg.informationLetter} target="_blank" rel="noopener noreferrer">
-                {s('velkommenLetter')}
-              </Link>
-            </p>
+    <div className={v.wrap}>
+      <section className={v.hero} aria-label={s('velkommenTitle')} data-guide-surface="">
+        <GuideImage variant="hero" />
+        <div className={v.text}>
+          <Eyebrow>{s('velkommenEyebrow')}</Eyebrow>
+          <PageHeading title={s('stepVelkommen')} guide>
+            {s('velkommenTitle')}
+          </PageHeading>
+          <Lead>{s('velkommenStudy')}</Lead>
+          <Body>{s('velkommenPrototype')}</Body>
+          <Body>{s('velkommenImagine')}</Body>
+          <div className={cls.section}>
+            <h2 className={cls.h2}>{s('velkommenHowTitle')}</h2>
+            <ol className={cls.list}>
+              <li>{s('velkommenHow1')}</li>
+              <li>{s('velkommenHow2')}</li>
+              <li>{s('velkommenHow3')}</li>
+              <li>{s('velkommenHow4')}</li>
+            </ol>
+          </div>
+          <Body>
+            <strong>{s('velkommenNoRight')}</strong>
+          </Body>
+        </div>
+        <div className={v.roles}>
+          {roleFixed ? (
+            <>
+              <h2 className={cls.h2}>{s('velkommenResumeTitle')}</h2>
+              <Body>{s('velkommenResumeText', { role: roleLabel })}</Body>
+              <Actions>
+                <SheenButton icon={<ArrowRight20Regular />} iconPosition="after" onClick={() => navigate(ctl.currentPath())}>
+                  {s('velkommenResume')}
+                </SheenButton>
+              </Actions>
+            </>
           ) : (
-            <p className={cls.missing}>{s('velkommenLetterMissing')}</p>
+            <>
+              <h2 className={cls.h2}>{s('velkommenRolesTitle')}</h2>
+              <div className={v.cards}>
+                {roleCards.map((c) => (
+                  <article
+                    key={c.choice}
+                    className={mergeClasses(v.card, study.role === c.role && v.cardChosen)}
+                    aria-labelledby={`rolle-${c.role}`}
+                    data-role-card={c.role}
+                  >
+                    <span className={v.cardIcon} aria-hidden="true">
+                      {c.role === 'gp' ? <Stethoscope20Regular /> : <People20Regular />}
+                    </span>
+                    <h3 id={`rolle-${c.role}`} className={v.cardTitle}>
+                      {c.title}
+                    </h3>
+                    <p className={v.cardText}>{c.text}</p>
+                    <p className={v.cardNote}>{c.note}</p>
+                    <SheenButton
+                      className={v.cardStart}
+                      icon={<ArrowRight20Regular />}
+                      iconPosition="after"
+                      onClick={() => {
+                        study.chooseRole(c.choice);
+                        ctl.goToStep('om-deg');
+                      }}
+                    >
+                      {c.start}
+                    </SheenButton>
+                  </article>
+                ))}
+              </div>
+              <p className={v.caption}>{s('velkommenRoleCaption')}</p>
+            </>
           )}
-          {cfg.contact ? (
-            <Body>
-              <strong>{s('velkommenContact')}:</strong> {t(cfg.contact)}
-            </Body>
-          ) : (
-            <p className={cls.missing}>{s('velkommenContactMissing')}</p>
-          )}
-          {/* «Start» comes after the consent facts, in reading order and on screen. */}
-          <Actions>
-            {started ? (
-              <SheenButton icon={<ArrowRight20Regular />} iconPosition="after" onClick={() => navigate(ctl.currentPath())}>
-                {s('velkommenResume')}
-              </SheenButton>
+        </div>
+      </section>
+      <section className={v.good} aria-labelledby={goodId}>
+        <h2 id={goodId} className={cls.h2}>
+          {s('velkommenGoodTitle')}
+        </h2>
+        <div className={v.tiles}>
+          <GoodTile icon={<Clock20Regular />} title={s('velkommenTimeTitle')}>
+            <p className={v.tileText}>{s('velkommenTimeText')}</p>
+            <p className={v.tileNote}>{s('velkommenDevice')}</p>
+          </GoodTile>
+          <GoodTile icon={<ShieldCheckmark20Regular />} title={s('velkommenAnonTitle')}>
+            <p className={v.tileText}>{s('velkommenAnonText')}</p>
+          </GoodTile>
+          <GoodTile icon={<DocumentArrowDown20Regular />} title={s('velkommenLetterTitle')}>
+            <p className={v.tileText}>{s('velkommenLetterText')}</p>
+            {/* A missing letter or contact is said, never hidden: the release check (S9) confirms both are set. */}
+            {cfg.informationLetter ? (
+              <p style={{ margin: 0 }}>
+                <Link href={cfg.informationLetter} target="_blank" rel="noopener noreferrer">
+                  {s('velkommenLetter')}
+                </Link>
+              </p>
             ) : (
-              <SheenButton icon={<ArrowRight20Regular />} iconPosition="after" onClick={() => ctl.goToStep('om-deg')}>
-                {s('start')}
-              </SheenButton>
+              <p className={cls.missing}>{s('velkommenLetterMissing')}</p>
             )}
-          </Actions>
-        </Card>
-      }
-    >
-      <Eyebrow>{s('velkommenEyebrow')}</Eyebrow>
-      <PageHeading title={s('stepVelkommen')} guide>
-        {s('velkommenTitle')}
-      </PageHeading>
-      <Lead>{s('velkommenStudy')}</Lead>
-      <Body>{s('velkommenPrototype')}</Body>
-      <Body>{s('velkommenImagine')}</Body>
-      <div className={cls.section}>
-        <h2 className={cls.h2}>{s('velkommenHowTitle')}</h2>
-        <ol className={cls.list}>
-          <li>{s('velkommenHow1')}</li>
-          <li>{s('velkommenHow2')}</li>
-          <li>{s('velkommenHow3')}</li>
-          <li>{s('velkommenHow4')}</li>
-        </ol>
-      </div>
-      <Body>{s('velkommenTime')}</Body>
-      <Body>{s('velkommenDevice')}</Body>
-      <Body>
-        <strong>{s('velkommenNoRight')}</strong>
-      </Body>
-    </GuidePage>
+            {cfg.contact ? (
+              <p className={v.tileNote}>
+                {s('velkommenContact')} {t(cfg.contact)}
+              </p>
+            ) : (
+              <p className={cls.missing}>{s('velkommenContactMissing')}</p>
+            )}
+          </GoodTile>
+        </div>
+      </section>
+    </div>
   );
 }
 
 /* ---------- 2 Om deg ---------- */
 
+const useOmDeg = makeStyles({
+  fact: { display: 'flex', flexWrap: 'wrap', alignItems: 'baseline', columnGap: tokens.spacingHorizontalM, rowGap: tokens.spacingVerticalXS },
+  factLabel: { ...typographyStyles.body1Strong, margin: 0 },
+  factValue: { ...typographyStyles.body1, margin: 0 },
+  name: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: tokens.spacingVerticalXS,
+    paddingInline: tokens.spacingHorizontalL,
+    paddingBlock: tokens.spacingVerticalM,
+    borderRadius: tokens.borderRadiusLarge,
+    backgroundColor: tokens.colorBrandBackground2,
+    border: `1px solid ${tokens.colorBrandStroke2}`,
+    '@media (forced-colors: active)': { border: '1px solid CanvasText' },
+  },
+  nameValue: { ...typographyStyles.subtitle1, margin: 0, color: tokens.colorNeutralForeground1 },
+});
+
 export function OmDegPage() {
+  const o = useOmDeg();
   const { s } = useLang();
   const study = useStudy();
   const ctl = useStudyController();
   const reasonId = useId();
+  const nameId = useId();
   const st = study.state;
   const locked = !!st.ledger.S1;
-  const [role, setRole] = useState<RoleChoice | undefined>(st.roleChoice);
+  const role = st.roleChoice;
   const [intervju, setIntervju] = useState<Intervju | undefined>(st.intervju);
   const [pendingOpen, setPendingOpen] = useState(false);
-  const saved = !!st.roleChoice && !!st.intervju;
-  const changed = role !== st.roleChoice || intervju !== st.intervju;
-  // Open (or re-create) S1 once the stored answers carry the new values, so its locked fields are right.
+  const saved = !!role && !!st.intervju;
+  const changed = intervju !== st.intervju;
+  // Open (or re-create) S1 once the stored answer carries the new value, so its locked fields are right.
   useEffect(() => {
-    if (pendingOpen && st.roleChoice === role && st.intervju === intervju) {
+    if (pendingOpen && st.intervju === intervju) {
       setPendingOpen(false);
       ctl.openStepForm('S1', { force: true, show: true });
     }
-  }, [pendingOpen, st.roleChoice, st.intervju, role, intervju, ctl]);
+  }, [pendingOpen, st.intervju, intervju, ctl]);
+  // The role is chosen on Velkommen; without one, that is where the study starts.
+  if (!role) return <Redirect to="/studie/velkommen" />;
   const s1Done = ctl.stepDone('S1');
   return (
     <PageCard narrow>
       <PageHeading title={s('omDegTitle')}>{s('omDegTitle')}</PageHeading>
       <Body>{s('omDegIntro')}</Body>
-      <ChoiceGroup<RoleChoice>
-        legend={s('roleQuestion')}
-        layout="column"
-        value={role}
-        disabled={locked}
-        onChange={setRole}
-        choices={[
-          { value: 'fastlege', label: s('roleOptFastlege') },
-          { value: 'dps-kliniker', label: s('roleOptDps') },
-          { value: 'annen', label: s('roleOptAnnen') },
-        ]}
-      />
-      <Muted>{s('roleLockedNote')}</Muted>
+      <div className={o.fact}>
+        <p className={o.factLabel}>{s('omDegRole')}:</p>
+        <p className={o.factValue}>{role === 'fastlege' ? s('roleGp') : s('roleDps')}</p>
+        {!locked && <RouterLink to="/studie/velkommen">{s('omDegRoleChange')}</RouterLink>}
+      </div>
+      {st.studienavn && (
+        <section className={o.name} aria-labelledby={nameId} data-studienavn="">
+          <h2 id={nameId} className={o.factLabel}>
+            {s('omDegNameTitle')}
+          </h2>
+          <p className={o.nameValue} lang="nb">
+            {st.studienavn}
+          </p>
+          <Muted>{s('omDegNameText')}</Muted>
+        </section>
+      )}
       <ChoiceGroup<Intervju>
         legend={s('interviewQuestion')}
         layout="row"
@@ -291,18 +500,18 @@ export function OmDegPage() {
         (!saved || changed) && (
           <div>
             <Button
-              appearance={role && intervju ? 'primary' : 'secondary'}
-              disabledFocusable={!role || !intervju}
-              aria-describedby={!role || !intervju ? reasonId : undefined}
+              appearance={intervju ? 'primary' : 'secondary'}
+              disabledFocusable={!intervju}
+              aria-describedby={!intervju ? reasonId : undefined}
               onClick={() => {
-                if (!role || !intervju) return;
+                if (!intervju) return;
                 study.setRole(role, intervju);
                 setPendingOpen(true);
               }}
             >
               {s('omDegSave')}
             </Button>
-            {(!role || !intervju) && (
+            {!intervju && (
               <p id={reasonId} style={{ ...typographyStyles.caption1, color: tokens.colorNeutralForeground3, margin: '8px 0 0' }}>
                 {s('omDegSaveReason')}
               </p>
@@ -534,6 +743,8 @@ export function TakkPage() {
         {s('takkTitle')}
       </PageHeading>
       <Lead>{previewFlag() ? s('takkBodyPreview') : s('takkBody')}</Lead>
+      {/* The full name only now, after the last form: it names what the forms ask about. */}
+      <Body>{s('takkAtlasName')}</Body>
       <ClearBrowserData />
     </GuidePage>
   );

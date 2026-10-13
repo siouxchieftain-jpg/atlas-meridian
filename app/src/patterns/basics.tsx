@@ -25,7 +25,8 @@ import { forwardRef, useCallback, useEffect, useLayoutEffect, useRef, type React
 import type { Role, Source } from '../content/types';
 import { notes, vocab } from '../content';
 import { useLang } from '../i18n/i18n';
-import { atlasDawn, atlasSheen } from '../theme/constants';
+import { atlasDawn, atlasSheen, guide, guideImage } from '../theme/constants';
+import { useNotes } from './notesContext';
 
 /* ---------- Provenance label ---------- */
 
@@ -258,6 +259,61 @@ export function GuideSurface({ children, wide, className }: { children: ReactNod
   );
 }
 
+/* ---------- The guide layer's image ---------- */
+
+const useGuideImage = makeStyles({
+  base: {
+    position: 'absolute',
+    top: 0,
+    right: 0,
+    bottom: 0,
+    left: 0,
+    zIndex: -1,
+    pointerEvents: 'none',
+    backgroundRepeat: 'no-repeat',
+    backgroundSize: 'cover',
+    '@media print': { display: 'none' },
+    '@media (forced-colors: active)': { display: 'none' },
+  },
+  // Velkommen: the fabric on the right, white behind the text on the left; on a narrow screen the text runs over it, so a
+  // white wash covers it all.
+  hero: {
+    backgroundImage: `linear-gradient(90deg,#FFFFFF 0%,rgba(255,255,255,0.9) 32%,rgba(255,255,255,0) 60%), ${guideImage}`,
+    backgroundPosition: 'right 40%',
+    opacity: 0.92,
+    '@media (max-width: 1023px)': {
+      backgroundImage: `linear-gradient(180deg,rgba(255,255,255,0.9) 0%,rgba(255,255,255,0.8) 60%,rgba(255,255,255,0.6) 100%), ${guideImage}`,
+    },
+  },
+  // The top band of a guide card: the image fades into the card's own colour, so there is no edge.
+  band: {
+    bottom: 'auto',
+    height: '104px',
+    backgroundImage: `linear-gradient(180deg,rgba(255,244,238,0) 45%,#FFF4EE 100%), ${guideImage}`,
+    backgroundPosition: 'right 38%',
+    opacity: 0.85,
+  },
+  // The tour stage: the whole surface.
+  stage: { backgroundImage: guideImage, backgroundPosition: 'right 40%', opacity: 0.8, '@media (max-width: 1023px)': { opacity: 0.45 } },
+  // A dialog or panel header: white behind the title on the left, and the image fades out at the bottom into the body.
+  header: {
+    backgroundImage: `linear-gradient(90deg,rgba(255,255,255,0.92) 0%,rgba(255,255,255,0.55) 42%,rgba(255,255,255,0) 72%), ${guideImage}`,
+    backgroundPosition: 'right 40%',
+    opacity: 0.9,
+    maskImage: 'linear-gradient(180deg,#000 35%,transparent 100%)',
+    WebkitMaskImage: 'linear-gradient(180deg,#000 35%,transparent 100%)',
+  },
+});
+
+/**
+ * The guide layer's image behind a guide surface. Its parent needs
+ * `position: relative` and `isolation: isolate`. Decoration only.
+ */
+export function GuideImage({ variant, className }: { variant: 'hero' | 'band' | 'stage' | 'header'; className?: string }) {
+  const cls = useGuideImage();
+  return <div aria-hidden="true" className={mergeClasses(cls.base, cls[variant], className)} data-guide-image={variant} />;
+}
+
 /** The one start action on a guide surface (never in clinical views). */
 export function SheenButton(props: ButtonProps) {
   const cls = useGuide();
@@ -281,22 +337,104 @@ const useNote = makeStyles({
   },
   icon: { color: tokens.colorBrandForeground2, flexShrink: 0, marginTop: '1px' },
   title: { ...typographyStyles.caption1Strong, display: 'block' },
+  // The number on the part's corner, centred on the corner of its ring (the ring lies 3 to 5 px outside the
+  // part), so it clears the part's first line of text. It sits outside the flow: turning Merknader on moves nothing.
+  marker: {
+    position: 'absolute',
+    top: '-16px',
+    left: '-16px',
+    zIndex: 2,
+    width: '24px',
+    height: '24px',
+    boxSizing: 'border-box',
+    padding: 0,
+    display: 'inline-flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: tokens.borderRadiusCircular,
+    border: '2px solid #FFFFFF',
+    background: guide.mark,
+    boxShadow: '0 0 2px rgba(0,0,0,0.20), 0 2px 4px rgba(0,0,0,0.20)',
+    color: tokens.colorNeutralForeground1,
+    fontFamily: 'inherit',
+    fontSize: tokens.fontSizeBase200,
+    fontWeight: tokens.fontWeightBold,
+    lineHeight: 1,
+    cursor: 'pointer',
+    transitionProperty: 'transform',
+    transitionDuration: '0.1s',
+    ':hover': { transform: 'scale(1.08)' },
+    ':focus-visible': { outline: `2px solid ${tokens.colorStrokeFocus2}`, outlineOffset: '2px' },
+    '@media (forced-colors: active)': { background: 'ButtonFace', color: 'ButtonText', border: '1px solid ButtonText' },
+    '@media print': { display: 'none' },
+  },
 });
 
+/**
+ * A design note, in review mode with Merknader on: a numbered marker on the
+ * corner of the part it sits in, and a ring round that part. The note itself
+ * opens in the Merknader drawer. Outside review mode it never shows.
+ */
 export function DesignNote({ id, show }: { id: string; show: boolean }) {
   const cls = useNote();
-  const { t } = useLang();
+  const { t, s } = useLang();
+  const api = useNotes();
+  const ref = useRef<HTMLButtonElement | null>(null);
   const note = notes[id];
+  const active = show && !!note && !!api;
+  const register = api?.register;
+  const selected = api?.selected === id;
+  // The part is the element the note sits in: it carries the marker, so it is positioned while the note shows.
+  useLayoutEffect(() => {
+    const el = ref.current?.parentElement;
+    if (!active || !register || !el) return;
+    const prev = el.style.position;
+    if (getComputedStyle(el).position === 'static') el.style.position = 'relative';
+    const unregister = register(id, el);
+    return () => {
+      unregister();
+      el.style.position = prev;
+    };
+  }, [active, register, id]);
+  // The chosen note's part in coral, the others in peach. An outline takes no room, so nothing moves.
+  useLayoutEffect(() => {
+    const el = ref.current?.parentElement;
+    if (!active || !el) return;
+    const prevOutline = el.style.outline;
+    const prevOffset = el.style.outlineOffset;
+    el.style.outline = selected ? `3px solid ${guide.coral}` : `2px solid ${guide.peach}`;
+    el.style.outlineOffset = '3px';
+    return () => {
+      el.style.outline = prevOutline;
+      el.style.outlineOffset = prevOffset;
+    };
+  }, [active, selected]);
   if (!show || !note) return null;
+  if (!api) {
+    // No Merknader drawer here: the note as text beside its part.
+    return (
+      // A note, not a landmark: design notes sit inside <main> beside the parts they explain (1.3.1, AX-12).
+      <div className={cls.note} role="note" aria-label={t(note.title)} data-note={id}>
+        <Lightbulb16Regular className={cls.icon} aria-hidden="true" />
+        <span>
+          <span className={cls.title}>{t(note.title)}</span>
+          {t(note.text)}
+        </span>
+      </div>
+    );
+  }
+  const n = api.entries.findIndex((e) => e.id === id) + 1;
   return (
-    // A note, not a landmark: design notes sit inside <main> beside the parts they explain (1.3.1, AX-12).
-    <div className={cls.note} role="note" aria-label={t(note.title)} data-note={id}>
-      <Lightbulb16Regular className={cls.icon} aria-hidden="true" />
-      <span>
-        <span className={cls.title}>{t(note.title)}</span>
-        {t(note.text)}
-      </span>
-    </div>
+    <button
+      ref={ref}
+      type="button"
+      className={cls.marker}
+      data-note={id}
+      aria-label={s('notesMarker', { n: n || '', title: t(note.title) })}
+      onClick={() => api.select(id, { focusDrawer: true })}
+    >
+      {n > 0 ? n : ''}
+    </button>
   );
 }
 

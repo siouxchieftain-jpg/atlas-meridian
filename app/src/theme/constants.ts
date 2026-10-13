@@ -32,6 +32,32 @@ export const atlasDawn =
   'radial-gradient(50% 65% at 0% 100%,#E7E4FB 0%,rgba(231,228,251,0) 70%),' +
   '#FFFFFF';
 
+/**
+ * The guide layer's image: organza in lavender and coral, Chieftain's own
+ * artwork (public/guide-organza.webp). White on the left, where text sits.
+ * Guide surfaces only, never a clinical view.
+ */
+export const guideImage = 'url(./guide-organza.webp)';
+
+/**
+ * The guide layer's warm colours (tour, help, guide cards, Merknader). Buttons
+ * stay brand everywhere. Small text uses `ink` (6.8:1 on white); `coral` and
+ * the rose are for marks and illustration only, never for text.
+ */
+export const guide = {
+  ink: '#9C3D1F',
+  coral: '#F59E85',
+  peach: '#FDCFB4',
+  rose: '#F6B8DA',
+  /** A guide card: the dawn in a card, with a warm edge. */
+  card: 'linear-gradient(165deg,#FFF4EE 0%,#FDEDF5 52%,#F3F0FD 100%)',
+  cardEdge: '#F6D9CF',
+  /** A number marker or a guide pill. */
+  mark: 'linear-gradient(135deg,#FDCFB4 0%,#FBDDF0 58%,#D2CCF8 100%)',
+  /** A quiet track, as in the tour's progress. */
+  track: 'rgba(156,61,31,0.16)',
+} as const;
+
 /** The app frame behind white content panels (ATLAS's stand-in for Mica). */
 export const atlasFrameWash = 'linear-gradient(90deg,#F5F5F5 0%,#F9F8FE 100%)';
 

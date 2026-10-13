@@ -359,7 +359,8 @@ export type ItemType =
   | 'choice' // single choice with listed options
   | 'text' // short text
   | 'longtext' // 1 to 3 sentences, max 3,800 characters
-  | 'stop'; // the stop page text in a vignette form
+  | 'stop' // the stop page text in a vignette form
+  | 'consent'; // S1: one required tick box (its one option, «Ja»), consent to take part
 
 export interface InstrumentItem {
   /** NSK item ID (for example D-V1-B1) or a new ID (E11-check, R1-clarity). */
@@ -387,7 +388,7 @@ export interface InstrumentForm {
   /** The consent line and the privacy line sit at the top of every form. */
   intro: T;
   /** Locked context fields this form carries, in order. */
-  locked: ('rolle' | 'intervju' | 'steg' | 'vignett' | 'versjon' | 'side' | 'seksjon')[];
+  locked: ('rolle' | 'intervju' | 'studienavn' | 'steg' | 'vignett' | 'versjon' | 'side' | 'seksjon')[];
   pages: InstrumentPage[];
   receipt: T;
 }

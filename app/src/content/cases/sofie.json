@@ -9,7 +9,7 @@
   },
   "gp": {
     "timeliste": {
-      "time": "13:00",
+      "time": "09:30",
       "visit": {
         "nb": "Konsultasjon",
         "en": "Consultation"
@@ -25,8 +25,8 @@
     },
     "briefing": {
       "task": {
-        "nb": "Du er Sofies fastlege. Hun kommer til konsultasjon kl. 13:00 og har fylt ut selvrapporten før timen. Les notatet og bestem om du vil henvise til DPS.",
-        "en": "You are Sofie’s GP. She comes for a consultation at 13:00 and filled in the self-report before the appointment. Read the note and decide whether to refer to DPS."
+        "nb": "Du er Sofies fastlege. Hun kommer til konsultasjon kl. 09:30 og har fylt ut selvrapporten før timen. Les notatet og bestem om du vil henvise til DPS.",
+        "en": "You are Sofie’s GP. She comes for a consultation at 09:30 and filled in the self-report before the appointment. Read the note and decide whether to refer to DPS."
       },
       "rows": [
         {

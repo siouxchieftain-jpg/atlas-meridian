@@ -85,7 +85,7 @@ export function StudyControllerProvider({ children }: { children: ReactNode }) {
       const st = ref.current.state;
       const role = ref.current.role ?? 'gp';
       const caseId = STEP_CASE[step];
-      const locked = studyLocked(step, st.roleChoice, st.intervju, st.visAtlas);
+      const locked = studyLocked(step, st.roleChoice, st.intervju, st.visAtlas, st.studienavn);
       const route = routeFor(step);
       hostRef.current.open({
         step,
@@ -278,7 +278,7 @@ export function StudyControllerProvider({ children }: { children: ReactNode }) {
         const address = getConfig().forms[open.formKey];
         if (!address) return;
         // Built at the click: a case form opened again after «Vis ATLAS» carries its -etter value.
-        const locked = open.caseId ? studyLocked(open.step, st.roleChoice, st.intervju, st.visAtlas) : open.locked;
+        const locked = open.caseId ? studyLocked(open.step, st.roleChoice, st.intervju, st.visAtlas, st.studienavn) : open.locked;
         window.open(buildFormUrl(address, locked, false), '_blank', 'noopener');
         writeJSON(PENDING_KEY, { form: open.step, steg: locked.steg ?? '', at: new Date().toISOString() });
         study.setPendingTab({ form: open.step, steg: locked.steg ?? open.step, at: new Date().toISOString() });

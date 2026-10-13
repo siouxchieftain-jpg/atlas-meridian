@@ -1,6 +1,6 @@
 # Build note
 
-ATLAS v3 is a concept prototype for referrals from GPs (fastleger) to specialist mental health services (DPS) in Norway, built for a formative evaluation. All patients, clinicians and figures in it are fictional. This note says what was built and how. [PLAN.md](PLAN.md) lists the screens, the steps and the forms; [MERIDIAN-1.1.md](MERIDIAN-1.1.md) gives the design rules the build added to Meridian.
+ATLAS v3 is a research prototype for referrals from GPs (fastleger) to specialist mental health services (DPS) in Norway, built for a formative evaluation. All patients, clinicians and figures in it are fictional. This note says what was built and how. [PLAN.md](PLAN.md) lists the screens, the steps and the forms; [MERIDIAN-1.1.md](MERIDIAN-1.1.md) gives the design rules the build added to Meridian.
 
 ## What the site holds
 
@@ -25,7 +25,7 @@ ATLAS v3 is a concept prototype for referrals from GPs (fastleger) to specialist
 | `theme/` | The Meridian theme (Fluent's brand ramp with brand 80 `#7160E8`, and the overrides) and the constants module |
 | `state/` | The stores kept in the browser, one per mode, each with a schema version |
 | `study/` | Study mode: the steps, the stepper, the form panel, the new-tab route and the preview forms |
-| `review/` | Review mode: free navigation, both sides of a case, the design notes («Merknader») and feedback per part of a screen |
+| `review/` | Review mode: free navigation, both sides of a case, the design notes («Merknader»: a pill that slides out a drawer and numbers the parts) and feedback per part of a screen |
 | `case/` | The clinical screens both modes share, for the GP and the DPS side |
 | `patterns/` | Clinical patterns: the uncertainty band and placement, the uncertainty tags, the confidence scale, Informasjonsguiden, choice groups and the announcer |
 | `overview/` | Mitt henvisningsmønster and Delt oversikt |
@@ -42,11 +42,11 @@ ATLAS v3 is a concept prototype for referrals from GPs (fastleger) to specialist
 
 ## Study mode and the forms
 
-- Each study step opens one anonymous Nettskjema form, in a panel beside the case where the window is wide enough (an embedded form, `embed=1`), over the case where it is not, or in a new tab. ATLAS fills and locks the context fields through the form's address (`CB<codebook>=<value>&LCK<codebook>=true`), with every value encoded by `encodeURIComponent`. No participant code, name or free text is ever sent as a locked field.
+- Each study step opens one anonymous Nettskjema form, in a panel beside the case where the window is wide enough (an embedded form, `embed=1`), over the case where it is not, or in a new tab. ATLAS fills and locks the context fields through the form's address (`CB<codebook>=<value>&LCK<codebook>=true`), with every value encoded by `encodeURIComponent`. No name or free text is ever sent as a locked field. The one code is the study name (`studienavn`, for example «Rolig elg 27»): random, made in the browser when the role is chosen, kept only in that browser, and sent locked in every study form so one person's forms can be sorted together. Nobody holds a key to who has which name.
 - From an embedded form, ATLAS acts only on messages from `https://nettskjema.no`: the form's height, `scrollToStart`, `submitFinished` and `submitFailed`. A form answered in a new tab returns through `sendt.html`; where the browser keeps no storage, the participant confirms with «Jeg har sendt skjemaet».
 - A step whose form address is empty shows «Dette skjemaet er ikke klart ennå.», offers no skip and cannot be passed.
 - Preview forms are built from `instrument.json`, so they ask what the Nettskjema forms ask. They keep answers in the browser, say so on screen and export CSV. They run in review mode, and in study mode only when the address carries the preview flag, which no participant link carries.
-- In study mode the browser's storage holds progress, settings and the two «Om deg» answers; these leave the browser only as locked form fields. Nothing else is collected.
+- In study mode the browser's storage holds progress, settings, the role, the «Om deg» answer and the study name; these leave the browser only as locked form fields. Nothing else is collected.
 - The locked field `versjon` carries the package version and the short commit the workflow built (for example `3.0.0-98254ec`), so each answer can be traced to the build that collected it.
 
 ## The guide's reader
@@ -61,7 +61,7 @@ Its tests include phrase sets that agents wrote without seeing the reader. Each 
 |---|---|
 | `npm run check:content` | The content files against their schema; every text in both languages; the copy rules (no em dash, no advice in ATLAS's own voice, no «vi», retired sentences and names); the instrument and the configuration; the reused texts |
 | `npm run typecheck` | TypeScript, strict |
-| `npm test` | 117 unit tests: the reader, the branch rules, the threads, the forms and locked fields, the theme overrides, the clock, placement and the configuration |
+| `npm test` | 122 unit tests: the reader, the branch rules, the threads, the forms and locked fields, the theme overrides, the clock, placement and the configuration |
 | `npm run e2e` | 174 end-to-end tests on the built site in Chromium: both study flows, review mode, keyboard paths, layouts from 320 px to 1920 px wide, forced colours, failure modes, and axe (WCAG 2.0, 2.1 and 2.2, A and AA; no serious or critical violation in ATLAS's own markup). A mock stands in for every form, so Nettskjema is never contacted |
 | `npm run docs` | Writes the build sheet and the traceability table from their sources |
 

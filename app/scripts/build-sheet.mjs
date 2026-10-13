@@ -25,6 +25,7 @@ const TYPE = {
   text: 'Tekstsvar (kort)',
   longtext: 'Tekstsvar (langt), at most 3,800 characters',
   stop: 'Tekst (no question)',
+  consent: 'Avkrysningsbokser, one box',
 };
 
 /** Which step and role use each form, and the vignette it carries. */

@@ -18,55 +18,97 @@ import {
   ChevronRight16Regular,
   Lightbulb20Regular,
   Info16Regular,
+  Map16Regular,
 } from '@fluentui/react-icons';
 import { useId, useState, type ReactNode } from 'react';
 import type { Role, TourStep } from '../content/types';
 import { tour } from '../content';
 import { useLang } from '../i18n/i18n';
-import { SheenButton } from '../patterns/basics';
-import { Actions, Body, Eyebrow, Lead } from '../patterns/layout';
+import { GuideImage, SheenButton } from '../patterns/basics';
+import { Actions, Body, Lead } from '../patterns/layout';
 import { PageHeading } from '../shell/PageHeading';
-import { atlasDawn, size } from '../theme/constants';
+import { atlasDawn, guide, size } from '../theme/constants';
 import { SandboxFrame, useSandbox, type Sandbox } from './frames';
 
 const useStyles = makeStyles({
+  // The guide layer's stage: the dawn and the image, the progress on top, the panel and the live window in the middle.
   surface: {
+    position: 'relative',
+    isolation: 'isolate',
+    overflow: 'hidden',
     marginBlockStart: `${size.panelInset}px`,
     background: atlasDawn,
-    borderRadius: tokens.borderRadiusLarge,
+    borderRadius: '16px',
     boxShadow: tokens.shadow2,
-    paddingInline: 'clamp(16px, 4vw, 48px)',
-    paddingBlock: 'clamp(20px, 4vw, 40px)',
+    paddingInline: 'clamp(16px, 3vw, 36px)',
+    paddingBlockStart: 'clamp(16px, 2vw, 22px)',
+    paddingBlockEnd: 'clamp(20px, 3vw, 32px)',
     minHeight: `calc(100dvh - var(--atlas-header-h, 48px) - ${size.panelInset * 2}px - 64px)`,
     boxSizing: 'border-box',
     display: 'grid',
     gridTemplateColumns: 'minmax(0, 1fr)',
-    gap: 'clamp(20px, 3vw, 40px)',
-    alignItems: 'start',
-    '@media only screen and (min-width: 1024px)': { gridTemplateColumns: 'minmax(280px, 420px) minmax(0, 1fr)' },
+    gridTemplateRows: 'auto',
+    gap: 'clamp(20px, 3vw, 28px)',
+    alignItems: 'center',
+    '@media only screen and (min-width: 1024px)': { gridTemplateColumns: 'minmax(300px, 470px) minmax(0, 1fr)', gridTemplateRows: 'auto minmax(0, 1fr)' },
     '@media (forced-colors: active)': { background: 'Canvas', border: '1px solid CanvasText' },
     '@media print': { background: '#FFFFFF' },
   },
+  top: { gridColumn: '1 / -1', alignSelf: 'start', display: 'flex', alignItems: 'center', flexWrap: 'wrap', columnGap: '16px', rowGap: '10px' },
+  pill: {
+    display: 'inline-flex',
+    alignItems: 'center',
+    gap: '6px',
+    paddingBlock: '4px',
+    paddingInlineStart: '10px',
+    paddingInlineEnd: '12px',
+    borderRadius: tokens.borderRadiusCircular,
+    background: `linear-gradient(90deg,${guide.peach} 0%,${guide.rose} 100%)`,
+    boxShadow: '0 1px 2px rgba(156,61,31,0.18)',
+    color: tokens.colorNeutralForeground1,
+    ...typographyStyles.caption1Strong,
+    '@media (forced-colors: active)': { border: '1px solid CanvasText' },
+  },
+  where: { ...typographyStyles.caption1, color: tokens.colorNeutralForeground2 },
+  progress: { flex: '1 1 280px', maxWidth: '520px', display: 'flex', alignItems: 'center', gap: '10px' },
+  progressPart: { display: 'flex', gap: '4px' },
+  seg: { flex: '1 1 0', height: '6px', borderRadius: '3px', backgroundColor: guide.track, '@media (forced-colors: active)': { border: '1px solid CanvasText' } },
+  segDone: { backgroundColor: guide.coral },
+  segNow: { backgroundColor: guide.ink, '@media (forced-colors: active)': { backgroundColor: 'Highlight' } },
+  // A frosted panel over the image, so the text always reads on white.
   text: {
     display: 'flex',
     flexDirection: 'column',
-    gap: tokens.spacingVerticalM,
+    gap: tokens.spacingVerticalL,
     minWidth: 0,
+    padding: 'clamp(18px, 2.5vw, 28px)',
+    borderRadius: '14px',
+    backgroundColor: 'rgba(255,255,255,0.78)',
+    backdropFilter: 'blur(22px)',
+    WebkitBackdropFilter: 'blur(22px)',
+    boxShadow: '0 0 2px rgba(0,0,0,0.06), 0 10px 30px rgba(63,54,130,0.12)',
+    boxSizing: 'border-box',
     animationName: { from: { opacity: 0 }, to: { opacity: 1 } },
     animationDuration: '400ms',
     animationTimingFunction: tokens.curveEasyEase,
     '@media (prefers-reduced-motion: reduce)': { animationDuration: '0.01ms' },
     '@media only screen and (min-width: 1024px)': { position: 'sticky', top: 'calc(var(--atlas-header-h, 48px) + 24px)' },
+    '@media (forced-colors: active)': { backgroundColor: 'Canvas', border: '1px solid CanvasText' },
   },
-  part: { ...typographyStyles.body1Strong, margin: 0, color: tokens.colorNeutralForeground2 },
+  part: { ...typographyStyles.caption1Strong, margin: 0, color: guide.ink },
   tryIt: {
     display: 'flex',
-    gap: tokens.spacingHorizontalS,
+    gap: '10px',
     alignItems: 'flex-start',
     ...typographyStyles.body1Strong,
     margin: 0,
+    paddingInline: '14px',
+    paddingBlock: '12px',
+    borderRadius: '10px',
+    backgroundColor: '#FFF0E8',
+    border: '1px solid #F8CBB8',
   },
-  tryIcon: { color: tokens.colorBrandForeground1, flexShrink: 0, marginTop: '1px' },
+  tryIcon: { color: guide.ink, flexShrink: 0, marginTop: '1px' },
   bridge: {
     display: 'flex',
     gap: tokens.spacingHorizontalS,
@@ -111,14 +153,16 @@ const useStyles = makeStyles({
     '@media (forced-colors: active)': { '::after': { backgroundColor: 'Highlight', border: '1px solid Highlight' } },
   },
   nav: { display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: tokens.spacingHorizontalM, flexWrap: 'wrap' },
+  // The live window: a thin warm frame round a white window.
   window: {
-    backgroundColor: tokens.colorNeutralBackground1,
-    borderRadius: tokens.borderRadius2XLarge,
-    boxShadow: tokens.shadow16,
-    overflow: 'hidden',
+    padding: '2px',
+    borderRadius: '16px',
+    background: 'linear-gradient(135deg,#F59E85 0%,#F6B8DA 50%,#BCB4F5 100%)',
+    boxShadow: '0 0 2px rgba(0,0,0,0.10), 0 18px 44px rgba(63,54,130,0.20)',
     minWidth: 0,
-    '@media (forced-colors: active)': { border: '1px solid CanvasText' },
+    '@media (forced-colors: active)': { background: 'Canvas', border: '1px solid CanvasText' },
   },
+  windowInner: { backgroundColor: tokens.colorNeutralBackground1, borderRadius: '14px', overflow: 'hidden' },
   // A plain 40 px bar with the frame's title: no browser tab, no favicon, no window buttons (fluent.md 5.2, R2A-10).
   bar: {
     display: 'flex',
@@ -141,7 +185,17 @@ const useStyles = makeStyles({
     overflowY: 'auto',
     ':focus-visible': { outline: `2px solid ${tokens.colorStrokeFocus2}`, outlineOffset: '-2px' },
   },
-  frameNote: { ...typographyStyles.caption1, color: tokens.colorNeutralForeground2, margin: `${tokens.spacingVerticalS} 0 0` },
+  // Over the image: a white backing keeps the line readable.
+  frameNote: {
+    ...typographyStyles.caption1,
+    color: tokens.colorNeutralForeground2,
+    margin: `${tokens.spacingVerticalS} 0 0`,
+    display: 'inline-block',
+    paddingInline: tokens.spacingHorizontalS,
+    paddingBlock: '2px',
+    borderRadius: tokens.borderRadiusMedium,
+    backgroundColor: 'rgba(255,255,255,0.88)',
+  },
   coachReading: {
     '& [data-reading]': { outline: `2px solid ${tokens.colorBrandStroke1}`, outlineOffset: '4px' },
   },
@@ -181,21 +235,23 @@ export function FramedWindow({ title, children, coach }: { title: string; childr
   const { s } = useLang();
   return (
     <section className={cls.window} aria-label={s('tourFrameLabel', { title })} data-tour-frame="">
-      <div className={cls.bar}>
-        <span className={cls.barTitle}>ATLAS · {title}</span>
-      </div>
-      <div
-        className={mergeClasses(
-          cls.winBody,
-          coach === 'reading' && cls.coachReading,
-          coach === 'margin' && cls.coachMargin,
-          coach === 'return' && cls.coachReturn,
-        )}
-        tabIndex={0}
-        role="region"
-        aria-label={title}
-      >
-        {children}
+      <div className={cls.windowInner}>
+        <div className={cls.bar}>
+          <span className={cls.barTitle}>ATLAS · {title}</span>
+        </div>
+        <div
+          className={mergeClasses(
+            cls.winBody,
+            coach === 'reading' && cls.coachReading,
+            coach === 'margin' && cls.coachMargin,
+            coach === 'return' && cls.coachReturn,
+          )}
+          tabIndex={0}
+          role="region"
+          aria-label={title}
+        >
+          {children}
+        </div>
       </div>
     </section>
   );
@@ -203,14 +259,50 @@ export function FramedWindow({ title, children, coach }: { title: string; childr
 
 const COACH: Record<string, string> = { 'gp-lesning': 'reading', 'dps-markorer': 'reading', 'gp-margin': 'margin', 'dps-retur': 'return' };
 
-function StepText({ step, showReason, eyebrow, partLine }: { step: TourStep; showReason: boolean; eyebrow: string; partLine: string }) {
+/** The stage's top row: «Omvisning», where you are, and the progress by part. */
+function StageTop({ role, flatIndex, done }: { role: Role; flatIndex: number; done?: boolean }) {
+  const cls = useStyles();
+  const { s } = useLang();
+  const parts = tour[role].parts;
+  const total = parts.reduce((n, p) => n + p.steps.length, 0);
+  const roleLabel = role === 'gp' ? s('roleGp') : s('roleDps');
+  let k = 0;
+  const partNo = done ? parts.length : (() => {
+    let acc = 0;
+    for (let i = 0; i < parts.length; i++) {
+      acc += parts[i].steps.length;
+      if (flatIndex < acc) return i + 1;
+    }
+    return parts.length;
+  })();
+  return (
+    <div className={cls.top}>
+      <span className={cls.pill}>
+        <Map16Regular aria-hidden="true" />
+        {s('stepOmvisning')}
+      </span>
+      <span className={cls.where}>{s('tourWhere', { role: roleLabel, n: done ? total : flatIndex + 1, total })}</span>
+      <div className={cls.progress} role="img" aria-label={s('tourProgress', { n: done ? total : flatIndex + 1, total, part: partNo, parts: parts.length })}>
+        {parts.map((p, pi) => (
+          <span key={pi} className={cls.progressPart} style={{ flex: `${p.steps.length} 1 0` }}>
+            {p.steps.map((st) => {
+              const i = k++;
+              return <span key={st.id} className={mergeClasses(cls.seg, (done || i < flatIndex) && cls.segDone, !done && i === flatIndex && cls.segNow)} />;
+            })}
+          </span>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function StepText({ step, showReason, partLine }: { step: TourStep; showReason: boolean; partLine: string }) {
   const cls = useStyles();
   const { s, t } = useLang();
   const [why, setWhy] = useState(false);
   const whyId = useId();
   return (
     <>
-      <Eyebrow>{eyebrow}</Eyebrow>
       <p className={cls.part}>{partLine}</p>
       <PageHeading title={s('stepOmvisning')} guide>
         {t(step.title)}
@@ -281,12 +373,12 @@ export function TourView({
   const sandbox = useSandbox(role, notes);
   const parts = tour[role].parts;
   const all = parts.flatMap((p, pi) => p.steps.map((st, si) => ({ st, pi, si })));
-  const roleLabel = role === 'gp' ? s('roleGp') : s('roleDps');
   if (pos === 'end') {
     return (
-      <div className={cls.surface}>
+      <div className={cls.surface} data-tour-stage="">
+        <GuideImage variant="stage" />
+        <StageTop role={role} flatIndex={all.length - 1} done />
         <div className={cls.text}>
-          <Eyebrow>{s('tourEyebrow', { role: roleLabel, n: all.length, total: all.length })}</Eyebrow>
           <PageHeading title={s('stepOmvisning')} guide>
             {t(tour.closing.title)}
           </PageHeading>
@@ -325,14 +417,11 @@ export function TourView({
     else if (pos.part > 0) onPos({ part: pos.part - 1, step: parts[pos.part - 1].steps.length - 1 });
   };
   return (
-    <div className={cls.surface}>
+    <div className={cls.surface} data-tour-stage="">
+      <GuideImage variant="stage" />
+      <StageTop role={role} flatIndex={flatIndex} />
       <div className={cls.text} key={step.id}>
-        <StepText
-          step={step}
-          showReason={showReasons}
-          eyebrow={s('tourEyebrow', { role: roleLabel, n: flatIndex + 1, total: all.length })}
-          partLine={s('tourPart', { n: pos.part + 1, total: parts.length, title: t(part.title) })}
-        />
+        <StepText step={step} showReason={showReasons} partLine={s('tourPart', { n: pos.part + 1, total: parts.length, title: t(part.title) })} />
         <div className={cls.nav}>
           <div className={cls.dots} role="group" aria-label={s('tourStepList')}>
             {part.steps.map((st, i) => (

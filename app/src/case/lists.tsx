@@ -1,6 +1,6 @@
 import { SearchBox, makeStyles, mergeClasses, tokens, typographyStyles } from '@fluentui/react-components';
-import { Circle12Filled } from '@fluentui/react-icons';
-import { useMemo, useState } from 'react';
+import { ArrowRight16Regular, Circle12Filled, Clock16Regular } from '@fluentui/react-icons';
+import { useId, useMemo, useState, type ReactNode } from 'react';
 import type { CaseId, T } from '../content/types';
 import { cases, ordinary, vocab } from '../content';
 import { formatDate, formatDateWithWeekday, useLang } from '../i18n/i18n';
@@ -21,36 +21,66 @@ function summaryKey(total: number, withCase: number): 'timelisteSummaryOne' | 't
 const useStyles = makeStyles({
   head: { display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: tokens.spacingHorizontalL, flexWrap: 'wrap' },
   search: { width: 'min(360px, 100%)' },
-  list: { listStyle: 'none', margin: 0, padding: 0, display: 'flex', flexDirection: 'column', gap: tokens.spacingVerticalS },
-  row: {
+  // The study's guide card beside the cards; below its width it goes on top.
+  body: { display: 'flex', flexWrap: 'wrap', alignItems: 'stretch', gap: '24px' },
+  main: { flex: '999 1 560px', minWidth: 0, display: 'flex', flexDirection: 'column', gap: tokens.spacingVerticalM },
+  // Two tiers in one list: the cases, then the ordinary patients on a row of their own.
+  grid: {
+    listStyle: 'none',
+    margin: 0,
+    padding: 0,
     display: 'grid',
-    gridTemplateColumns: '64px 44px minmax(0, 1fr) auto',
-    alignItems: 'center',
-    columnGap: tokens.spacingHorizontalM,
-    rowGap: tokens.spacingVerticalXS,
-    minHeight: '64px',
-    paddingInline: tokens.spacingHorizontalL,
-    paddingBlock: tokens.spacingVerticalS,
+    gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 220px), 1fr))',
+    gap: '16px',
+  },
+  gridWide: { gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 300px), 1fr))' },
+  tierStart: { gridColumnStart: 1 },
+  card: {
+    height: '100%',
+    boxSizing: 'border-box',
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '10px',
+    paddingInline: '18px',
+    paddingBlockStart: '16px',
+    paddingBlockEnd: '14px',
     borderRadius: tokens.borderRadiusLarge,
     border: `1px solid ${tokens.colorNeutralStroke2}`,
     backgroundColor: tokens.colorNeutralBackground1,
     color: tokens.colorNeutralForeground1,
     textDecoration: 'none',
-    boxSizing: 'border-box',
-    '@media only screen and (max-width: 639px)': {
-      gridTemplateColumns: '52px 40px minmax(0, 1fr)',
-    },
+    textAlign: 'start',
+    font: 'inherit',
+    width: '100%',
     '@media (forced-colors: active)': { border: '1px solid CanvasText' },
   },
   link: {
-    ':hover': { backgroundColor: tokens.colorNeutralBackground1Hover, border: `1px solid ${tokens.colorNeutralStroke1Hover}` },
+    cursor: 'pointer',
+    ':hover': { border: `1px solid ${tokens.colorBrandStroke2}`, boxShadow: tokens.shadow4 },
     ':focus-visible': { outline: `2px solid ${tokens.colorStrokeFocus2}`, outlineOffset: '2px' },
   },
-  muted: { color: tokens.colorNeutralForeground2 },
-  time: { ...typographyStyles.subtitle2, fontVariantNumeric: 'tabular-nums', color: tokens.colorNeutralForeground1 },
+  // The study's current case: a brand edge, as in the guide card's list.
+  current: { border: `1px solid ${tokens.colorBrandStroke2}` },
+  selected: { border: `2px solid ${tokens.colorBrandStroke1}`, backgroundColor: tokens.colorBrandBackground2, paddingInline: '17px', paddingBlockStart: '15px', paddingBlockEnd: '13px' },
+  quiet: { backgroundColor: tokens.colorNeutralBackground2, color: tokens.colorNeutralForeground2 },
+  top: { display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: '4px 8px' },
+  time: { ...typographyStyles.body1Strong, fontVariantNumeric: 'tabular-nums' },
+  received: { ...typographyStyles.caption1, color: tokens.colorNeutralForeground2 },
+  tag: {
+    ...typographyStyles.caption1,
+    paddingInline: tokens.spacingHorizontalS,
+    borderRadius: tokens.borderRadiusMedium,
+    border: `1px solid ${tokens.colorNeutralStroke2}`,
+    color: tokens.colorNeutralForeground2,
+    whiteSpace: 'nowrap',
+  },
+  tagNow: { ...typographyStyles.caption1Strong, color: tokens.colorBrandForeground1, backgroundColor: tokens.colorBrandBackground2, border: `1px solid ${tokens.colorBrandStroke2}` },
+  tagPlain: { border: 'none', paddingInline: 0, color: tokens.colorNeutralForeground3 },
+  who: { display: 'flex', alignItems: 'center', gap: tokens.spacingHorizontalM, minWidth: 0 },
   avatar: {
-    width: '40px',
-    height: '40px',
+    flex: '0 0 36px',
+    width: '36px',
+    height: '36px',
     borderRadius: tokens.borderRadiusCircular,
     backgroundColor: tokens.colorNeutralBackground3,
     color: tokens.colorNeutralForeground2,
@@ -59,68 +89,51 @@ const useStyles = makeStyles({
     justifyContent: 'center',
     ...typographyStyles.caption1Strong,
   },
-  who: { display: 'flex', flexDirection: 'column', minWidth: 0 },
-  name: { ...typographyStyles.body1Strong },
+  whoText: { display: 'flex', flexDirection: 'column', minWidth: 0 },
+  name: { ...typographyStyles.body1Strong, overflowWrap: 'anywhere' },
   visit: { ...typographyStyles.caption1, color: tokens.colorNeutralForeground3 },
-  chips: {
+  summary: {
+    ...typographyStyles.body1,
+    margin: 0,
+    color: tokens.colorNeutralForeground2,
+    display: '-webkit-box',
+    WebkitLineClamp: 3,
+    WebkitBoxOrient: 'vertical',
+    overflow: 'hidden',
+  },
+  chips: { display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: tokens.spacingHorizontalXS },
+  newMark: { color: tokens.colorBrandForeground1, display: 'inline-flex', alignItems: 'center' },
+  foot: {
+    marginBlockStart: 'auto',
+    paddingBlockStart: '10px',
+    borderTop: `1px solid ${tokens.colorNeutralStroke3}`,
     display: 'flex',
-    flexWrap: 'wrap',
-    gap: tokens.spacingHorizontalXS,
-    justifyContent: 'flex-end',
-    '@media only screen and (max-width: 639px)': { gridColumn: '3 / 4', justifyContent: 'flex-start' },
+    alignItems: 'center',
+    gap: '6px',
+    minHeight: '28px',
   },
-  // Below 1024 px the received date, the sender and the deadline stay on the row, under the
-  // patient with their labels, instead of disappearing (WCAG 1.4.10, MF-05).
-  qRow: {
-    gridTemplateColumns: 'minmax(96px, 120px) minmax(0, 1.4fr) minmax(0, 1fr) minmax(110px, 180px) minmax(170px, 260px)',
-    gridTemplateAreas: '"rec pat from dl chips"',
-    '@media only screen and (max-width: 1023px)': {
-      alignItems: 'start',
-      gridTemplateColumns: 'auto auto minmax(0, 1fr) auto',
-      gridTemplateAreas: '"pat pat pat chips" "rec from dl dl"',
-    },
-    '@media only screen and (max-width: 639px)': {
-      gridTemplateColumns: 'minmax(0, 1fr)',
-      gridTemplateAreas: '"pat" "chips" "rec" "from" "dl"',
-    },
-  },
-  qRec: { gridArea: 'rec' },
-  qPat: { gridArea: 'pat' },
-  qFrom: { gridArea: 'from' },
-  qDl: { gridArea: 'dl' },
-  /** The queue's single column below 640: the chips sit under the patient, not in a third column. */
-  // The new-dot stays beside the chips; chips that wrap line up with each other, not under the dot (r5A-07).
-  qChipCell: { flexWrap: 'nowrap', alignItems: 'flex-start' },
-  qChipGroup: { display: 'flex', flexWrap: 'wrap', gap: tokens.spacingHorizontalXS, minWidth: 0 },
-  // As tall as a chip, so the dot sits on the middle of the first chip line (r6A-06).
-  qNewMark: { minHeight: '24px', flexShrink: 0 },
-  qChips: {
-    minWidth: 0,
-    gridArea: 'chips',
-    // Under the «Status» heading, not at the far edge (r4A-07).
-    '@media only screen and (min-width: 1024px)': { justifyContent: 'flex-start' },
-    '@media only screen and (max-width: 639px)': { gridColumn: 'auto' },
-  },
-  qCell: { display: 'flex', flexDirection: 'column', minWidth: 0, ...typographyStyles.body1 },
-  qLabel: {
-    ...typographyStyles.caption1,
-    color: tokens.colorNeutralForeground3,
-    '@media only screen and (min-width: 1024px)': { position: 'absolute', width: '1px', height: '1px', overflow: 'hidden', clip: 'rect(0 0 0 0)', whiteSpace: 'nowrap' },
-  },
-  qHead: {
-    display: 'grid',
-    gridTemplateColumns: 'minmax(96px, 120px) minmax(0, 1.4fr) minmax(0, 1fr) minmax(110px, 180px) minmax(170px, 260px)',
+  footOpen: { ...typographyStyles.body1Strong, color: tokens.colorBrandForegroundLink },
+  footLater: { ...typographyStyles.caption1, color: tokens.colorNeutralForeground3 },
+  footQuiet: { ...typographyStyles.caption1, color: tokens.colorNeutralForeground3, marginBlockStart: 'auto' },
+  caption: { ...typographyStyles.caption1, margin: 0, color: tokens.colorNeutralForeground3 },
+  // Frister: when each referral or message is due, beside the referral cards.
+  deadlines: {
     boxSizing: 'border-box',
-    columnGap: tokens.spacingHorizontalM,
-    paddingInline: `calc(${tokens.spacingHorizontalL} + 1px)`,
-    ...typographyStyles.caption1Strong,
-    color: tokens.colorNeutralForeground3,
-    '@media only screen and (max-width: 1023px)': { display: 'none' },
+    display: 'flex',
+    flexDirection: 'column',
+    gap: tokens.spacingVerticalM,
+    paddingInline: '18px',
+    paddingBlock: '16px',
+    borderRadius: tokens.borderRadiusLarge,
+    border: `1px solid ${tokens.colorNeutralStroke2}`,
+    backgroundColor: tokens.colorNeutralBackground2,
+    '@media (forced-colors: active)': { border: '1px solid CanvasText' },
   },
-  newMark: { color: tokens.colorBrandForeground1, display: 'inline-flex', alignItems: 'center', gap: '4px', ...typographyStyles.caption1Strong },
-  later: { ...typographyStyles.caption1, color: tokens.colorNeutralForeground3 },
-  button: { width: '100%', textAlign: 'start', font: 'inherit', cursor: 'pointer' },
-  selected: { border: `2px solid ${tokens.colorBrandStroke1}`, backgroundColor: tokens.colorBrandBackground2 },
+  deadlinesTitle: { ...typographyStyles.body1Strong, margin: 0, display: 'flex', alignItems: 'center', gap: tokens.spacingHorizontalS },
+  dl: { margin: 0, display: 'flex', flexDirection: 'column', gap: tokens.spacingVerticalM },
+  dt: { ...typographyStyles.body1Strong },
+  dd: { margin: 0, display: 'flex', flexDirection: 'column', gap: '2px', ...typographyStyles.body1 },
+  ddNote: { ...typographyStyles.caption1, color: tokens.colorNeutralForeground3 },
 });
 
 export interface Chip {
@@ -203,34 +216,105 @@ export function dpsChips(
 
 export interface ListEntry {
   caseId: CaseId;
-  /** Where the row leads; omitted when the row cannot be opened. */
+  /** Where the card leads; omitted when it cannot be opened. */
   to?: string;
-  /** The tour's frames open a row in place instead of leaving the tour. */
+  /** The tour's frames open a card in place instead of leaving the tour. */
   onOpen?: () => void;
   selected?: boolean;
   chips: Chip[];
-  /** A quiet line when the row is visible but not yet open in the study. */
+  /** A quiet line when the card is visible but not yet open in the study. */
   note?: string;
+  /** «Sak 1» to «Sak 3» in the study; the current case is marked. */
+  tag?: string;
+  current?: boolean;
 }
 
-/** Timeliste i dag: time, initials, name and age, visit type, neutral status chips (new in brand tint). */
-export function TimelisteView({ entries, notes, title, withSearch = true }: { entries: ListEntry[]; notes?: boolean; title?: boolean; withSearch?: boolean }) {
+/** The first sentence of the briefing's «Hvem» row is the name and age, which the card already shows. */
+function whoSummary(caseId: CaseId, t: (x: T) => string): string | undefined {
+  const row = cases[caseId].gp.briefing.rows.find((r) => r.label.nb === 'Hvem');
+  if (!row) return undefined;
+  const text = t(row.value);
+  const i = text.indexOf('. ');
+  return i > 0 ? text.slice(i + 2) : text;
+}
+
+/** What DPS gets with the referral (the briefing's «Hva du får»). */
+function dpsSummary(caseId: CaseId, t: (x: T) => string): string | undefined {
+  const row = cases[caseId].dps?.briefing.rows.find((r) => r.label.nb === 'Hva du får');
+  return row ? t(row.value) : undefined;
+}
+
+/** The card's outer element: a link, a toggle button in the tour, or a plain card. */
+function CardShell({ entry, className, children }: { entry: ListEntry; className?: string; children: ReactNode }) {
+  const cls = useStyles();
+  if (entry.to) {
+    return (
+      <RouterLink to={entry.to} className={mergeClasses(cls.card, cls.link, entry.current && cls.current, className)}>
+        {children}
+      </RouterLink>
+    );
+  }
+  if (entry.onOpen) {
+    return (
+      <button type="button" className={mergeClasses(cls.card, cls.link, entry.selected && cls.selected, className)} onClick={entry.onOpen} aria-pressed={entry.selected}>
+        {children}
+      </button>
+    );
+  }
+  return <div className={mergeClasses(cls.card, className)}>{children}</div>;
+}
+
+function CardFoot({ entry, openLabel }: { entry: ListEntry; openLabel: string }) {
+  const cls = useStyles();
+  if (entry.to || entry.onOpen) {
+    return (
+      <span className={mergeClasses(cls.foot, cls.footOpen)}>
+        {openLabel}
+        <ArrowRight16Regular aria-hidden="true" />
+      </span>
+    );
+  }
+  return entry.note ? (
+    <span className={mergeClasses(cls.foot, cls.footLater)}>
+      <Clock16Regular aria-hidden="true" />
+      {entry.note}
+    </span>
+  ) : null;
+}
+
+/** Timeliste i dag: the cases first, then the ordinary patients on a row of their own; neutral status chips (new in brand tint). */
+export function TimelisteView({
+  entries,
+  notes,
+  title,
+  withSearch = true,
+  aside,
+}: {
+  entries: ListEntry[];
+  notes?: boolean;
+  title?: boolean;
+  withSearch?: boolean;
+  /** The study's guide card, beside the cards. */
+  aside?: ReactNode;
+}) {
   const cls = useStyles();
   const { s, t, lang } = useLang();
   const [q, setQ] = useState('');
-  const rows = useMemo(() => {
-    const all = [
-      ...entries.map((e) => ({ kind: 'case' as const, e, time: cases[e.caseId].gp.timeliste.time })),
-      ...ordinary.map((o) => ({ kind: 'ordinary' as const, o, time: o.time })),
-    ].sort((a, b) => a.time.localeCompare(b.time));
+  const match = (name: string, fnr: string) => {
     const needle = q.trim().toLowerCase();
-    if (!needle) return all;
-    return all.filter((r) => {
-      const name = r.kind === 'case' ? cases[r.e.caseId].patient.name : r.o.name;
-      const fnr = r.kind === 'case' ? cases[r.e.caseId].patient.fnr : r.o.fnr;
-      return name.toLowerCase().includes(needle) || fnr.replace(/\D/g, '').startsWith(needle.replace(/\D/g, '') || '¤');
-    });
-  }, [entries, q]);
+    if (!needle) return true;
+    return name.toLowerCase().includes(needle) || fnr.replace(/\D/g, '').startsWith(needle.replace(/\D/g, '') || '¤');
+  };
+  const caseRows = useMemo(
+    () => entries.filter((e) => match(cases[e.caseId].patient.name, cases[e.caseId].patient.fnr)).sort((a, b) => cases[a.caseId].gp.timeliste.time.localeCompare(cases[b.caseId].gp.timeliste.time)),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [entries, q],
+  );
+  const routineRows = useMemo(
+    () => ordinary.filter((o) => match(o.name, o.fnr)).sort((a, b) => a.time.localeCompare(b.time)),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [q],
+  );
   const withCase = entries.length;
   const total = entries.length + ordinary.length;
   return (
@@ -257,79 +341,94 @@ export function TimelisteView({ entries, notes, title, withSearch = true }: { en
           />
         )}
       </div>
-      <DesignNote id="timeliste" show={!!notes} />
-      {rows.length === 0 ? (
-        <Muted>{s('noMatches')}</Muted>
-      ) : (
-        <ul className={cls.list} aria-label={s('timelisteTitle')}>
-          {rows.map((r) => {
-            if (r.kind === 'ordinary') {
-              return (
-                <li key={r.o.id}>
-                  <div className={mergeClasses(cls.row, cls.muted)}>
-                    <span className={cls.time}>{r.o.time}</span>
-                    <span className={cls.avatar} aria-hidden="true">
-                      {r.o.initials}
+      <div className={cls.body}>
+        {aside}
+        <div className={cls.main}>
+          <DesignNote id="timeliste" show={!!notes} />
+          {caseRows.length + routineRows.length === 0 ? (
+            <Muted>{s('noMatches')}</Muted>
+          ) : (
+            <ul className={cls.grid} aria-label={s('timelisteTitle')}>
+              {caseRows.map((e) => {
+                const c = cases[e.caseId];
+                const summary = whoSummary(e.caseId, t);
+                return (
+                  <li key={e.caseId}>
+                    <CardShell entry={e}>
+                      <span className={cls.top}>
+                        <span className={cls.time}>{c.gp.timeliste.time}</span>
+                        {e.tag && <span className={mergeClasses(cls.tag, e.current && cls.tagNow)}>{e.tag}</span>}
+                      </span>
+                      <span className={cls.who}>
+                        <span className={cls.avatar} aria-hidden="true">
+                          {c.patient.initials}
+                        </span>
+                        <span className={cls.whoText}>
+                          <span className={cls.name}>{s('patientAge', { name: c.patient.name, age: c.patient.age })}</span>
+                          <span className={cls.visit}>{t(c.gp.timeliste.visit)}</span>
+                        </span>
+                      </span>
+                      {summary && <span className={cls.summary}>{summary}</span>}
+                      {e.chips.length > 0 && (
+                        <span className={cls.chips}>
+                          {e.chips.map((x, i) => (
+                            <StatusChip key={i} isNew={x.isNew}>
+                              {x.label}
+                            </StatusChip>
+                          ))}
+                        </span>
+                      )}
+                      <CardFoot entry={e} openLabel={s('listOpenCase')} />
+                    </CardShell>
+                  </li>
+                );
+              })}
+              {routineRows.map((o, i) => (
+                <li key={o.id} className={i === 0 ? cls.tierStart : undefined}>
+                  <div className={mergeClasses(cls.card, cls.quiet)}>
+                    <span className={cls.top}>
+                      <span className={cls.time}>{o.time}</span>
+                      <span className={mergeClasses(cls.tag, cls.tagPlain)}>{s('listRoutineTag')}</span>
                     </span>
                     <span className={cls.who}>
-                      <span className={cls.name}>{s('patientAge', { name: r.o.name, age: r.o.age })}</span>
-                      <span className={cls.visit}>{t(r.o.visit)}</span>
+                      <span className={cls.avatar} aria-hidden="true">
+                        {o.initials}
+                      </span>
+                      <span className={cls.whoText}>
+                        <span className={cls.name}>{s('patientAge', { name: o.name, age: o.age })}</span>
+                        <span className={cls.visit}>{t(o.visit)}</span>
+                      </span>
                     </span>
+                    <span className={cls.footQuiet}>{s('listRoutineClosed')}</span>
                   </div>
                 </li>
-              );
-            }
-            const c = cases[r.e.caseId];
-            const inner = (
-              <>
-                <span className={cls.time}>{c.gp.timeliste.time}</span>
-                <span className={cls.avatar} aria-hidden="true">
-                  {c.patient.initials}
-                </span>
-                <span className={cls.who}>
-                  <span className={cls.name}>{s('patientAge', { name: c.patient.name, age: c.patient.age })}</span>
-                  <span className={cls.visit}>{t(c.gp.timeliste.visit)}</span>
-                  {r.e.note && <span className={cls.later}>{r.e.note}</span>}
-                </span>
-                {r.e.chips.length > 0 && (
-                  <span className={cls.chips}>
-                    {r.e.chips.map((x, i) => (
-                      <StatusChip key={i} isNew={x.isNew}>
-                        {x.label}
-                      </StatusChip>
-                    ))}
-                  </span>
-                )}
-              </>
-            );
-            return (
-              <li key={r.e.caseId}>
-                {r.e.to ? (
-                  <RouterLink to={r.e.to} className={mergeClasses(cls.row, cls.link)}>
-                    {inner}
-                  </RouterLink>
-                ) : r.e.onOpen ? (
-                  <button type="button" className={mergeClasses(cls.row, cls.link, cls.button, r.e.selected && cls.selected)} onClick={r.e.onOpen} aria-pressed={r.e.selected}>
-                    {inner}
-                  </button>
-                ) : (
-                  <div className={cls.row}>{inner}</div>
-                )}
-              </li>
-            );
-          })}
-        </ul>
-      )}
-      <Muted>{s('ordinaryNote')}</Muted>
+              ))}
+            </ul>
+          )}
+          <p className={cls.caption}>
+            {s('listSortedGp')} {s('ordinaryNote')}
+          </p>
+        </div>
+      </div>
     </>
   );
 }
 
 /* ---------- Mottatte henvisninger (DPS) ---------- */
 
-export function QueueView({ entries, notes, title }: { entries: ListEntry[]; notes?: boolean; title?: boolean }) {
+export function QueueView({ entries, notes, title, aside }: { entries: ListEntry[]; notes?: boolean; title?: boolean; aside?: ReactNode }) {
   const cls = useStyles();
   const { s, t, lang } = useLang();
+  const deadlinesId = useId();
+  // Newest first; the same day keeps the study's order.
+  const rows = [...entries].sort((a, b) => cases[b.caseId].dps!.queue.received.localeCompare(cases[a.caseId].dps!.queue.received));
+  const open = rows.filter((e) => !cases[e.caseId].dps!.returnSent);
+  const answered = rows.filter((e) => !!cases[e.caseId].dps!.returnSent);
+  const byDeadline = new Map<string, string[]>();
+  open.forEach((e) => {
+    const d = cases[e.caseId].dps!.queue.deadline;
+    byDeadline.set(d, [...(byDeadline.get(d) ?? []), cases[e.caseId].patient.name]);
+  });
   return (
     <>
       <div className={cls.head}>
@@ -344,78 +443,92 @@ export function QueueView({ entries, notes, title }: { entries: ListEntry[]; not
           </div>
         )}
       </div>
-      <DesignNote id="dps-ko" show={!!notes} />
-      <div className={cls.qHead} aria-hidden="true">
-        <span>{s('colReceived')}</span>
-        <span>{s('colPatient')}</span>
-        <span>{s('colFrom')}</span>
-        <span>{s('colDeadline')}</span>
-        <span>{s('colStatus')}</span>
+      <div className={cls.body}>
+        {aside}
+        <div className={cls.main}>
+          <DesignNote id="dps-ko" show={!!notes} />
+          <ul className={mergeClasses(cls.grid, cls.gridWide)} aria-label={s('queueTitle')}>
+            {rows.map((e) => {
+              const c = cases[e.caseId];
+              const q = c.dps!.queue;
+              const isNew = e.chips.some((x) => x.isNew);
+              const summary = dpsSummary(e.caseId, t);
+              return (
+                <li key={e.caseId}>
+                  <CardShell entry={e}>
+                    <span className={cls.top}>
+                      <span className={cls.received}>
+                        {s('colReceived')} {formatDate(q.received, lang)}
+                      </span>
+                      {e.tag && <span className={mergeClasses(cls.tag, e.current && cls.tagNow)}>{e.tag}</span>}
+                    </span>
+                    <span className={cls.who}>
+                      <span className={cls.avatar} aria-hidden="true">
+                        {c.patient.initials}
+                      </span>
+                      <span className={cls.whoText}>
+                        <span className={cls.name}>{s('patientAge', { name: c.patient.name, age: c.patient.age })}</span>
+                        <span className={cls.visit}>
+                          {s('colFrom')} {t(vocab.roles.gp).toLowerCase()}
+                        </span>
+                      </span>
+                    </span>
+                    {summary && <span className={cls.summary}>{summary}</span>}
+                    <span className={cls.chips}>
+                      {isNew && (
+                        <span className={cls.newMark}>
+                          <Circle12Filled aria-hidden="true" />
+                        </span>
+                      )}
+                      {e.chips.map((x, i) => (
+                        <StatusChip key={i} isNew={x.isNew}>
+                          {x.label}
+                        </StatusChip>
+                      ))}
+                      {/* A referral DPS has already answered shows when it was assessed, not a deadline that has passed (R3F-07). */}
+                      <StatusChip>
+                        {c.dps!.returnSent ? s('queueAssessedOn', { date: formatDate(c.dps!.returnSent.date, lang) }) : `${s('colDeadline')} ${formatDate(q.deadline, lang)}`}
+                      </StatusChip>
+                    </span>
+                    <CardFoot entry={e} openLabel={s('listOpenReferral')} />
+                  </CardShell>
+                </li>
+              );
+            })}
+            {title !== false && rows.length > 0 && (
+              <li>
+                <section className={cls.deadlines} aria-labelledby={deadlinesId}>
+                  <h2 id={deadlinesId} className={cls.deadlinesTitle}>
+                    <Clock16Regular aria-hidden="true" />
+                    {s('queueDeadlinesTitle')}
+                  </h2>
+                  <dl className={cls.dl}>
+                    {[...byDeadline.entries()].map(([d, names]) => (
+                      <div key={d}>
+                        <dt className={cls.dt}>{formatDate(d, lang)}</dt>
+                        <dd className={cls.dd}>
+                          <span>{names.join(', ')}</span>
+                          <span className={cls.ddNote}>{s('queueDeadlineRule')}</span>
+                        </dd>
+                      </div>
+                    ))}
+                    {answered.length > 0 && (
+                      <div>
+                        <dt className={cls.dt}>{s('queueMessageLabel')}</dt>
+                        <dd className={cls.dd}>
+                          <span>{answered.map((e) => cases[e.caseId].patient.name).join(', ')}</span>
+                          <span className={cls.ddNote}>{s('queueMessageRule')}</span>
+                        </dd>
+                      </div>
+                    )}
+                  </dl>
+                </section>
+              </li>
+            )}
+          </ul>
+          <p className={cls.caption}>{s('listSortedDps')}</p>
+        </div>
       </div>
-      <ul className={cls.list} aria-label={s('queueTitle')}>
-        {entries.map((e) => {
-          const c = cases[e.caseId];
-          const q = c.dps!.queue;
-          const isNew = e.chips.some((x) => x.isNew);
-          const inner = (
-            <>
-              <span className={mergeClasses(cls.qCell, cls.qRec)}>
-                <span className={cls.qLabel}>{s('colReceived')}</span>
-                {formatDate(q.received, lang)}
-              </span>
-              <span className={mergeClasses(cls.qCell, cls.qPat)}>
-                <span className={cls.qLabel}>{s('colPatient')}</span>
-                <span className={cls.name}>{s('patientAge', { name: c.patient.name, age: c.patient.age })}</span>
-                {e.note && <span className={cls.later}>{e.note}</span>}
-              </span>
-              <span className={mergeClasses(cls.qCell, cls.qFrom)}>
-                <span className={cls.qLabel}>{s('colFrom')}</span>
-                {t(vocab.roles.gp)}
-              </span>
-              <span className={mergeClasses(cls.qCell, cls.qDl)}>
-                {/* A referral DPS has already answered shows when it was assessed, not a deadline that has passed (R3F-07). */}
-                {c.dps!.returnSent ? (
-                  s('queueAssessedOn', { date: formatDate(c.dps!.returnSent.date, lang) })
-                ) : (
-                  <>
-                    <span className={cls.qLabel}>{s('colDeadline')}</span>
-                    {formatDate(q.deadline, lang)}
-                  </>
-                )}
-              </span>
-              <span className={mergeClasses(cls.chips, cls.qChips, cls.qChipCell)}>
-                {isNew && (
-                  <span className={mergeClasses(cls.newMark, cls.qNewMark)}>
-                    <Circle12Filled aria-hidden="true" />
-                  </span>
-                )}
-                <span className={cls.qChipGroup}>
-                  {e.chips.map((x, i) => (
-                    <StatusChip key={i} isNew={x.isNew}>
-                      {x.label}
-                    </StatusChip>
-                  ))}
-                </span>
-              </span>
-            </>
-          );
-          return (
-            <li key={e.caseId}>
-              {e.to ? (
-                <RouterLink to={e.to} className={mergeClasses(cls.row, cls.qRow, cls.link)}>
-                  {inner}
-                </RouterLink>
-              ) : e.onOpen ? (
-                <button type="button" className={mergeClasses(cls.row, cls.qRow, cls.link, cls.button, e.selected && cls.selected)} onClick={e.onOpen} aria-pressed={e.selected}>
-                  {inner}
-                </button>
-              ) : (
-                <div className={mergeClasses(cls.row, cls.qRow)}>{inner}</div>
-              )}
-            </li>
-          );
-        })}
-      </ul>
     </>
   );
 }
@@ -425,34 +538,44 @@ function capital(x: string): string {
 }
 
 /** The list page for the viewer's role (Timeliste or Mottatte henvisninger). */
-export function ListPage({ caseIds, openable, note }: { caseIds: CaseId[]; openable: (c: CaseId) => boolean; note?: (c: CaseId) => string | undefined }) {
+export function ListPage({
+  caseIds,
+  openable,
+  note,
+  guide,
+  tag,
+}: {
+  caseIds: CaseId[];
+  openable: (c: CaseId) => boolean;
+  note?: (c: CaseId) => string | undefined;
+  /** Study mode: the guide card beside the cards. */
+  guide?: ReactNode;
+  /** Study mode: «Sak 1» to «Sak 3», and which one is current. */
+  tag?: (c: CaseId) => { label: string; current: boolean } | undefined;
+}) {
   const { s, t } = useLang();
   const work = useWork();
   const S = s as unknown as (k: string) => string;
+  const entry = (caseId: CaseId, chips: Chip[]): ListEntry => ({
+    caseId,
+    to: openable(caseId) ? (work.mode === 'study' ? work.casePath(caseId) : work.casePath(caseId, 'orientering')) : undefined,
+    chips,
+    note: note?.(caseId),
+    tag: tag?.(caseId)?.label,
+    current: tag?.(caseId)?.current,
+  });
   if (work.viewer === 'gp') {
-    const entries: ListEntry[] = caseIds.map((caseId) => ({
-      caseId,
-      to: openable(caseId) ? (work.mode === 'study' ? work.casePath(caseId) : work.casePath(caseId, 'orientering')) : undefined,
-      chips: gpChips(caseId, work, t, S),
-      note: note?.(caseId),
-    }));
+    const entries = caseIds.map((caseId) => entry(caseId, gpChips(caseId, work, t, S)));
     return (
       <PageCard>
-        <TimelisteView entries={entries} notes={work.notes} />
+        <TimelisteView entries={entries} notes={work.notes} aside={guide} />
       </PageCard>
     );
   }
-  const entries: ListEntry[] = caseIds
-    .filter((c) => !!cases[c].dps)
-    .map((caseId) => ({
-      caseId,
-      to: openable(caseId) ? (work.mode === 'study' ? work.casePath(caseId) : work.casePath(caseId, 'orientering')) : undefined,
-      chips: dpsChips(caseId, work, t, S),
-      note: note?.(caseId),
-    }));
+  const entries = caseIds.filter((c) => !!cases[c].dps).map((caseId) => entry(caseId, dpsChips(caseId, work, t, S)));
   return (
     <PageCard>
-      <QueueView entries={entries} notes={work.notes} />
+      <QueueView entries={entries} notes={work.notes} aside={guide} />
     </PageCard>
   );
 }

@@ -1,6 +1,6 @@
 # Plan: screens, steps and forms
 
-ATLAS v3 is a concept prototype for referrals from GPs (fastleger) to specialist mental health services (DPS) in Norway. All patients, clinicians and figures in it are fictional. It runs in two modes:
+ATLAS v3 is a research prototype for referrals from GPs (fastleger) to specialist mental health services (DPS) in Norway. All patients, clinicians and figures in it are fictional. It runs in two modes:
 
 - **Study mode** (the site's address) takes a participant through a fixed sequence: a tour, three cases, an end page and two optional cases. Each step opens one short, anonymous Nettskjema form at its moment.
 - **Review mode** lets supervisors and pilot testers move freely, play both sides of a case, read the design notes («Merknader») and give feedback per part of a screen. Study mode never links to it; its address goes to reviewers directly.
@@ -11,8 +11,8 @@ This plan lists the screens, the steps, the forms and their item IDs. It carries
 
 | Step | When | Form | Items | How |
 |---|---|---|---|---|
-| Velkommen | First screen | none | none | What the project is, that ATLAS is a concept prototype with fictional patients, that taking part is voluntary and anonymous, the time it takes, and the information letter |
-| Om deg | Before any ATLAS screen | S1 «Før du ser ATLAS» | A-01 (locked, from the role chosen in the app), A-02 to A-05 | The app asks the role and «Deltok du i et intervju i dette forskningsprosjektet?»; both arrive in every form as locked fields |
+| Velkommen | First screen | none | none | What the project is, that ATLAS is a research prototype with fictional patients, the steps, and a role card for each role («Start som fastlege», «Start i DPS-inntaket»; the DPS card covers every role in intake). «Godt å vite»: about an hour and voluntary, anonymous with a random study name, the information letter and contact. The credit line and UiA's logo in the footer, here only |
+| Om deg | Before any ATLAS screen | S1 «Før du ser ATLAS» | A-01 (locked, from the role card), SAMTYKKE, A-02 to A-05 | Shows the role and the study name, and asks «Deltok du i et intervju i dette forskningsprosjektet?»; the role, the answer and the study name arrive in every form as locked fields. S1 opens with the consent tick box «Jeg har lest informasjonsskrivet og vil delta.» |
 | Omvisning | After S1 | none | B-01 is the tour | A guided tour with a practice patient (Sofie Lund, 39), in short parts of at most four steps, ending with «Dette har du sett» and a navigation question that is stored nowhere |
 | Helhetsinntrykk | After the tour, before any case | S2, GP or DPS version | B-02; C1-01 to C1-05; C2-01 to C2-03; C3-01 to C3-03; C4-01, C4-02; C5-01 to C5-03; C-CUCF-01, C-CUCF-02 | «Se igjen» reopens any tour step |
 | Kari | Case 1 (V1) | S3, three pages | Page 1: D-V1-B1. Stop page. Last page: the check item, D-V1-B2, D-V1-DS, D-V1-01 to D-V1-04 | See «One case, step by step» |
@@ -20,7 +20,7 @@ This plan lists the screens, the steps, the forms and their item IDs. It carries
 | Astrid | Case 3 (V4) | S5, three pages, GP or DPS version | Page 1: D-V4-B1. Stop page. Last page: the check item, D-V4-B2, D-V4-01 to D-V4-04 | As Kari; the own work ends when the GP has read the return and asked a question or chosen not to, or when DPS has answered |
 | Avslutning | After the three cases | S6 «Avslutning» | E-01 to E-06 | Then «Ekstra (valgfritt)» or «Avslutt» |
 | Ekstra (valgfritt) | After S6 | S7 «Torbjørn» (GPs), S8 «To fastleger» (both roles) | D-V2-01 to D-V2-03; D-V5-01, D-V5-02 | One page each, after the case; no case-only moment |
-| Takk | Last | none | none | The tour's explanations and each case's purpose open here, after every form |
+| Takk | Last | none | none | The tour's explanations and each case's purpose open here, after every form, and ATLAS's full name (Adaptive Trust-calibration and Liaison Architecture for Specialist-referrals), which names what the forms ask about and so waits until they are sent |
 
 GPs meet 47 core items and up to 5 optional ones; DPS participants 46 or 47 core items (depending on C1-04) and up to 2 optional ones. A participant may skip a form with «Hopp over skjemaet»; a skipped case form can be answered later («Svar likevel»).
 
@@ -37,7 +37,7 @@ If a case form has to be opened again after «Vis ATLAS» (a reload, a closed ta
 
 ## Forms
 
-Every form is one anonymous Nettskjema form. Locked fields, filled by ATLAS under «Fylt ut automatisk av ATLAS», in Norwegian whatever language the app shows: `rolle` (Fastlege, DPS-inntak), `intervju` (Ja, Nei, Vil ikke svare), `steg` (S1 to S8, with `-etter`), `vignett` (V1 to V5 on case forms) and `versjon` (the build). The full sheet, with every item's text, type, scale and codebook name, is [NETTSKJEMA-BUILD-SHEET.md](NETTSKJEMA-BUILD-SHEET.md).
+Every form is one anonymous Nettskjema form. Locked fields, filled by ATLAS under «Fylt ut automatisk av ATLAS», in Norwegian whatever language the app shows: `rolle` (Fastlege, DPS-inntak), `intervju` (Ja, Nei, Vil ikke svare), `studienavn` (the random study name, for example «Rolig elg 27»; it sorts one person's forms together), `steg` (S1 to S8, with `-etter`), `vignett` (V1 to V5 on case forms) and `versjon` (the build). The full sheet, with every item's text, type, scale and codebook name, is [NETTSKJEMA-BUILD-SHEET.md](NETTSKJEMA-BUILD-SHEET.md).
 
 | Form | Step | Versions | Pages |
 |---|---|---|---|
@@ -74,7 +74,7 @@ Proposed, for the project owner to rule on. The preview forms and the build shee
 
 ## Screens
 
-**Shell (both modes):** header with the ATLAS wordmark and «Prototype»; the role badge and step counter (study) or the role switch (review); Hjelp; the language toggle «Norsk | English»; Merknader and restart in review mode only. A quiet footer on every screen: «ATLAS er en formativ evalueringsprototype og skal ikke brukes til kliniske beslutninger. Ingen reelle pasientopplysninger eller opplysninger om helsepersonell inngår.»
+**Shell (both modes):** header with the ATLAS wordmark and «Forskningsprototype»; the role badge and step counter (study) or the role switch (review); Hjelp; the language toggle «Norsk | English»; restart in review mode only. A quiet footer on every screen: «ATLAS er en forskningsprototype og skal ikke brukes til kliniske beslutninger. Ingen reelle pasientopplysninger eller opplysninger om helsepersonell inngår.»
 
 **GP:** Timeliste; the briefing; Konsultasjon (profile, note, self-report, medicines, history, and the ATLAS panel: Usikkerhetsvisning with Systemets lesning after the GP's own placement, Hva er uklart, Informasjonsguiden, Din trygghet nå, Din beslutning); Ny henvisning (five sections, each with «Hva DPS ser etter»; «Fra ATLAS-panelet»); Sendt; Dialog; Din plan; Oppsummering; Mitt henvisningsmønster; Delt oversikt (Kalibrering, Dialog).
 
@@ -82,7 +82,7 @@ Proposed, for the project owner to rule on. The preview forms and the build shee
 
 **Study:** Velkommen, Om deg, the stepper, the form panel (inline beside the case where the screen is wide enough, otherwise over it), the case-only state «Uten ATLAS» per case, Ekstra, Takk.
 
-**Review:** the role picker, free navigation, «Se fra den andre siden» on every case, Merknader (off by default), «Gi tilbakemelding» per part of a screen with a tab on the right edge and an overview, and links to the Meridian pages. Where a side has not been played, the scripted reply stands in and says «Eksempel» or «Eksempelsvar».
+**Review:** the role picker, free navigation, «Se fra den andre siden» on every case, Merknader (off by default: a pill in the lower left slides out a drawer over the navigation, numbers the parts on the screen and rings them, so nothing on the screen moves), «Gi tilbakemelding» per part of a screen with a tab on the right edge and an overview, and links to the Meridian pages. Where a side has not been played, the scripted reply stands in and says «Eksempel» or «Eksempelsvar».
 
 ## Cases
 

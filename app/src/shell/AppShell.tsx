@@ -163,6 +163,12 @@ const useStyles = makeStyles({
     display: 'none',
     '@media only screen and (min-width: 1366px)': { display: 'inline-flex', alignSelf: 'flex-start', marginTop: 'auto' },
   },
+  // With tools at its foot, the column is as tall as the window, so they sit at the bottom of it.
+  railFull: { height: 'calc(100dvh - var(--atlas-header-h, 48px))' },
+  // Tools at the foot of the navigation column (review mode: Merknader), above the collapse toggle.
+  navEnd: { marginTop: 'auto', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: tokens.spacingVerticalS, paddingBlockStart: tokens.spacingVerticalM },
+  navEndWide: { '@media only screen and (min-width: 1366px)': { alignItems: 'stretch' } },
+  railToggleAfterEnd: { '@media only screen and (min-width: 1366px)': { marginTop: 0 } },
   // The main landmark and the footer share one column; the footer sits outside <main> (1.3.1).
   mainCol: {
     flexGrow: 1,
@@ -187,10 +193,18 @@ const useStyles = makeStyles({
     paddingInline: tokens.spacingHorizontalL,
     paddingBlock: tokens.spacingVerticalM,
     display: 'flex',
-    flexDirection: 'column',
-    gap: '2px',
-    maxWidth: '960px',
+    flexWrap: 'wrap',
+    alignItems: 'flex-end',
+    justifyContent: 'space-between',
+    columnGap: tokens.spacingHorizontalXXXL,
+    rowGap: tokens.spacingVerticalM,
+    maxWidth: `${size.contentMax}px`,
+    boxSizing: 'border-box',
   },
+  footerText: { display: 'flex', flexDirection: 'column', gap: '2px', maxWidth: '960px', minWidth: 0, flex: '1 1 480px' },
+  footerNote: { color: tokens.colorNeutralForeground2, marginBlockStart: tokens.spacingVerticalXS },
+  // UiA's rule: clear space at least the width of its symbol around the logo (about 28 px at this size).
+  footerEnd: { display: 'flex', alignItems: 'flex-end', paddingInlineEnd: tokens.spacingHorizontalS, paddingBlockEnd: tokens.spacingVerticalL },
   drawerLink: {
     display: 'flex',
     alignItems: 'center',
@@ -218,10 +232,16 @@ export function AppShell({
   navExpandedDefault,
   children,
   formPanel,
+  footerExtra,
+  navEnd,
 }: {
   headerStart: ReactNode;
   headerEnd: ReactNode;
   banner?: ReactNode;
+  /** Velkommen only: the credit line under the disclaimer and the UiA logo in the corner. */
+  footerExtra?: { note?: ReactNode; end?: ReactNode };
+  /** At the foot of the navigation column; told whether the column is wide. */
+  navEnd?: (wide: boolean) => ReactNode;
   /** A confirmation where the action led (G-15): one MessageBar above the page. */
   notice?: ReactNode;
   nav: NavItem[];
@@ -275,8 +295,12 @@ export function AppShell({
 
   const footer = (
     <footer className={cls.footer}>
-      <span lang="nb">{s('footerNb')}</span>
-      <span lang="en">{s('footerEn')}</span>
+      <div className={cls.footerText}>
+        <span lang="nb">{s('footerNb')}</span>
+        <span lang="en">{s('footerEn')}</span>
+        {footerExtra?.note && <span className={cls.footerNote}>{footerExtra.note}</span>}
+      </div>
+      {footerExtra?.end && <div className={cls.footerEnd}>{footerExtra.end}</div>}
     </footer>
   );
 
@@ -305,7 +329,7 @@ export function AppShell({
       </header>
       <div className={cls.body}>
         {nav.length > 0 && (
-          <nav aria-label={s('mainNav')} className={mergeClasses(cls.rail, expanded && cls.navWide)} {...arrowNav}>
+          <nav aria-label={s('mainNav')} className={mergeClasses(cls.rail, expanded && cls.navWide, !!navEnd && cls.railFull)} {...arrowNav}>
             {nav.map((item) => {
               const active = isActive(item);
               const link = (
@@ -331,8 +355,9 @@ export function AppShell({
                 </Tooltip>
               );
             })}
+            {navEnd && <div className={mergeClasses(cls.navEnd, expanded && cls.navEndWide)}>{navEnd(expanded)}</div>}
             <Button
-              className={cls.railToggle}
+              className={mergeClasses(cls.railToggle, !!navEnd && cls.railToggleAfterEnd)}
               appearance="subtle"
               icon={expanded ? <PanelLeftContract20Regular /> : <PanelLeftExpand20Regular />}
               aria-label={expanded ? s('navCollapse') : s('navExpand')}

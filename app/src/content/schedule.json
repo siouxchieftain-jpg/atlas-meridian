@@ -1,15 +1,6 @@
 {
   "ordinary": [
     {
-      "id": "ola",
-      "time": "08:30",
-      "name": "Ola Berg",
-      "age": 61,
-      "initials": "OB",
-      "fnr": "070464 ·····",
-      "visit": { "nb": "Kontroll, hypertensjon", "en": "Check-up, hypertension" }
-    },
-    {
       "id": "ingrid",
       "time": "10:45",
       "name": "Ingrid Myhre",
@@ -26,6 +17,15 @@
       "initials": "JB",
       "fnr": "150502 ·····",
       "visit": { "nb": "Legeattest", "en": "Medical certificate" }
+    },
+    {
+      "id": "ola",
+      "time": "11:30",
+      "name": "Ola Berg",
+      "age": 61,
+      "initials": "OB",
+      "fnr": "070464 ·····",
+      "visit": { "nb": "Kontroll, hypertensjon", "en": "Check-up, hypertension" }
     }
   ]
 }

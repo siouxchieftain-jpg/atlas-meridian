@@ -60,6 +60,7 @@ import { PageHeading } from '../shell/PageHeading';
 import { CaseRoute } from '../case/CaseRoutes';
 import { goToOtherSide, otherSidePath } from '../case/CaseChrome';
 import { ListPage } from '../case/lists';
+import { NotesDrawer, NotesPill, NotesProvider } from '../patterns/notes';
 import { caseStatus } from '../engine/flow';
 import { PatternView } from '../overview/PatternView';
 import { SharedView, type ThreadLink } from '../overview/SharedView';
@@ -72,8 +73,6 @@ import { OVERVIEW_SCREENS, REVIEW_CASES, VIEW_SECTIONS, partOf, pathOfSide, scre
 
 const useStyles = makeStyles({
   roleSwitch: { display: 'inline-flex', gap: '2px', '@media only screen and (max-width: 639px)': { display: 'none' } },
-  notesSwitch: { '@media only screen and (max-width: 639px)': { marginInline: '-4px' } },
-  notesLabel: { whiteSpace: 'nowrap', '@media only screen and (max-width: 639px)': { position: 'absolute', width: '1px', height: '1px', overflow: 'hidden', clip: 'rect(0 0 0 0)' } },
   tab: {
     position: 'fixed',
     // Beside an inline form panel, not under it: the variable is the inline panel's width, else 0 (r5A-01).
@@ -284,7 +283,7 @@ function ReviewShell() {
   }, [form, host, review, s, t, showNotice]);
 
   return (
-    <>
+    <NotesProvider on={review.state.notes}>
       <AppShell
         headerStart={
           <>
@@ -301,13 +300,7 @@ function ReviewShell() {
         }
         headerEnd={
           <>
-            <Switch
-              className={cls.notesSwitch}
-              label={<span className={cls.notesLabel}>{s('notesSwitch')}</span>}
-              aria-label={s('notesSwitch')}
-              checked={review.state.notes}
-              onChange={(_, d) => review.setNotes(d.checked)}
-            />
+            <NotesPill place="header" onToggle={(on) => review.setNotes(on)} />
             <HelpMenu items={help} />
             <LanguageToggle />
             <Button
@@ -323,10 +316,19 @@ function ReviewShell() {
         notice={<NoticeBar notice={notice} onDismiss={clearNotice} onBind={bindNotice} />}
         nav={nav}
         navExpandedDefault
+        navEnd={(wide) => <NotesPill place="rail" wide={wide} onToggle={(on) => review.setNotes(on)} />}
         formPanel={<FormPanel actions={actions} />}
       >
         <ReviewRoutes path={path} />
       </AppShell>
+      {/* Merknader's drawer: it slides in over the navigation column. */}
+      <NotesDrawer
+        onClose={() => {
+          review.setNotes(false);
+          // Back to whichever Merknader switch shows at this width.
+          focusAfterOverlay(() => [...document.querySelectorAll<HTMLElement>('[data-notes-pill]')].find((el) => el.offsetParent !== null) ?? null);
+        }}
+      />
       <FeedbackTab path={path} />
       <ConfirmDialog
         open={confirmRestart}
@@ -348,7 +350,7 @@ function ReviewShell() {
           focusAfterOverlay(() => document.querySelector<HTMLElement>('main h1'));
         }}
       />
-    </>
+    </NotesProvider>
   );
 }
 

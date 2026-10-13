@@ -40,7 +40,7 @@ Each case form has three pages. Page 1 holds B1, marked «Obligatorisk». Page 2
 
 - **Used by:** Step S1, both roles.
 - **Address goes in:** `forms["S1"]` in `app/public/atlas-config.json`.
-- **Locked fields:** `rolle`, `intervju`, `steg`, `versjon`.
+- **Locked fields:** `rolle`, `intervju`, `studienavn`, `steg`, `versjon`.
 - **Intro:** «Dette skjemaet spør om rollen din og arbeidet ditt før du ser ATLAS. Det finnes ingen riktige svar. Ved å sende skjemaet samtykker du i at de anonyme svarene brukes i forskningsprosjektet.» / "This form asks about your role and your work before you see ATLAS. There are no right answers. By sending the form, you consent to the anonymous answers being used in the research project."
 
 **Page**
@@ -49,8 +49,10 @@ Each case form has three pages. Page 1 holds B1, marked «Obligatorisk». Page 2
 |---|---|---|---|---|---|
 | A-01 | `rolle` | Tekstsvar (kort), locked |  | Hva er din rolle? / What is your role? |  |
 | intervju | `intervju` | Tekstsvar (kort), locked |  | Deltok du i et intervju i dette forskningsprosjektet? / Did you take part in an interview in this research project? |  |
+| studienavn | `studienavn` | Tekstsvar (kort), locked |  | Studienavn / Study name |  |
 | steg | `steg` | Tekstsvar (kort), locked |  | Steg / Step |  |
 | versjon | `versjon` | Tekstsvar (kort), locked |  | Versjon / Version |  |
+| SAMTYKKE | `samtykke` | Avkrysningsbokser, one box | Obligatorisk | Jeg har lest informasjonsskrivet og vil delta. / I have read the information letter and want to take part. | Ja / Yes |
 | A-02 | `a_02` | Flervalg (én) | No | Hvor mange år har du arbeidet i denne rollen? / How many years have you worked in this role? | Under 5 år / Under 5 years; 5 til 14 år / 5 to 14 years; 15 år eller mer / 15 years or more |
 | A-03 | `a_03` | Flervalg (én) | No | Omtrent hvor mange henvisninger til DPS (eller fra fastleger, for spesialister) håndterer du per måned? / Approximately how many referrals to DPS (or from GPs, for specialists) do you handle per month? | 0 til 4 / 0 to 4; 5 til 9 / 5 to 9; 10 til 19 / 10 to 19; 20 til 49 / 20 to 49; 50 eller flere / 50 or more |
 | A-04 | `a_04` | Flervalg (én) | No | Har du tidligere brukt elektroniske beslutningsstøtteverktøy i klinisk praksis? / Have you previously used electronic decision support tools in clinical practice? | Ja / Yes; Nei / No; Usikker / Unsure |
@@ -62,7 +64,7 @@ Each case form has three pages. Page 1 holds B1, marked «Obligatorisk». Page 2
 
 - **Used by:** Step S2, GPs.
 - **Address goes in:** `forms["S2.fastlege"]` in `app/public/atlas-config.json`.
-- **Locked fields:** `rolle`, `intervju`, `steg`, `versjon`.
+- **Locked fields:** `rolle`, `intervju`, `studienavn`, `steg`, `versjon`.
 - **Intro:** «Dette skjemaet spør om helhetsinntrykket ditt av ATLAS etter omvisningen. Kritikk er like nyttig som ros. Ved å sende skjemaet samtykker du i at de anonyme svarene brukes i forskningsprosjektet.» / "This form asks about your overall impression of ATLAS after the tour. Criticism is as useful as praise. By sending the form, you consent to the anonymous answers being used in the research project."
 
 **Page**
@@ -71,6 +73,7 @@ Each case form has three pages. Page 1 holds B1, marked «Obligatorisk». Page 2
 |---|---|---|---|---|---|
 | rolle | `rolle` | Tekstsvar (kort), locked |  | Rolle / Role |  |
 | intervju | `intervju` | Tekstsvar (kort), locked |  | Deltok du i et intervju i dette forskningsprosjektet? / Did you take part in an interview in this research project? |  |
+| studienavn | `studienavn` | Tekstsvar (kort), locked |  | Studienavn / Study name |  |
 | steg | `steg` | Tekstsvar (kort), locked |  | Steg / Step |  |
 | versjon | `versjon` | Tekstsvar (kort), locked |  | Versjon / Version |  |
 | B-02 | `b_02` | Flervalg (én) | No | Har du sett gjennom alle skjermbildene i ATLAS-dashbordet? / Have you reviewed all the screens in the ATLAS dashboard? | Ja / Yes; Nei, jeg trenger mer tid / No, I need more time |
@@ -99,7 +102,7 @@ Each case form has three pages. Page 1 holds B1, marked «Obligatorisk». Page 2
 
 - **Used by:** Step S2, DPS participants.
 - **Address goes in:** `forms["S2.dps"]` in `app/public/atlas-config.json`.
-- **Locked fields:** `rolle`, `intervju`, `steg`, `versjon`.
+- **Locked fields:** `rolle`, `intervju`, `studienavn`, `steg`, `versjon`.
 - **Intro:** «Dette skjemaet spør om helhetsinntrykket ditt av ATLAS etter omvisningen. Kritikk er like nyttig som ros. Ved å sende skjemaet samtykker du i at de anonyme svarene brukes i forskningsprosjektet.» / "This form asks about your overall impression of ATLAS after the tour. Criticism is as useful as praise. By sending the form, you consent to the anonymous answers being used in the research project."
 
 **Page**
@@ -108,6 +111,7 @@ Each case form has three pages. Page 1 holds B1, marked «Obligatorisk». Page 2
 |---|---|---|---|---|---|
 | rolle | `rolle` | Tekstsvar (kort), locked |  | Rolle / Role |  |
 | intervju | `intervju` | Tekstsvar (kort), locked |  | Deltok du i et intervju i dette forskningsprosjektet? / Did you take part in an interview in this research project? |  |
+| studienavn | `studienavn` | Tekstsvar (kort), locked |  | Studienavn / Study name |  |
 | steg | `steg` | Tekstsvar (kort), locked |  | Steg / Step |  |
 | versjon | `versjon` | Tekstsvar (kort), locked |  | Versjon / Version |  |
 | B-02 | `b_02` | Flervalg (én) | No | Har du sett gjennom alle skjermbildene i ATLAS-dashbordet? / Have you reviewed all the screens in the ATLAS dashboard? | Ja / Yes; Nei, jeg trenger mer tid / No, I need more time |
@@ -136,7 +140,7 @@ Each case form has three pages. Page 1 holds B1, marked «Obligatorisk». Page 2
 
 - **Used by:** Step S3 (V1 Kari), both roles.
 - **Address goes in:** `forms["S3"]` in `app/public/atlas-config.json`.
-- **Locked fields:** `rolle`, `intervju`, `steg`, `vignett`, `versjon`.
+- **Locked fields:** `rolle`, `intervju`, `studienavn`, `steg`, `vignett`, `versjon`.
 - **Intro:** «Dette skjemaet handler om saken til Kari: første side besvares med bare saken på skjermen, resten når ATLAS ber deg om det. Kritikk er like nyttig som ros. Ved å sende skjemaet samtykker du i at de anonyme svarene brukes i forskningsprosjektet.» / "This form is about Kari's case: the first page is answered with only the case on screen, the rest when ATLAS asks you to. Criticism is as useful as praise. By sending the form, you consent to the anonymous answers being used in the research project."
 
 **Page 1**
@@ -146,6 +150,7 @@ Each case form has three pages. Page 1 holds B1, marked «Obligatorisk». Page 2
 | D-V1-B1 | `d_v1_b1` | Lineær skala 1 to 7 | Obligatorisk | Hvor sikker er du på din beslutning uten ATLAS? / How confident are you in your decision without ATLAS? | 1 to 7: Svært usikker / Very uncertain … Svært sikker / Very confident |
 | rolle | `rolle` | Tekstsvar (kort), locked |  | Rolle / Role |  |
 | intervju | `intervju` | Tekstsvar (kort), locked |  | Deltok du i et intervju i dette forskningsprosjektet? / Did you take part in an interview in this research project? |  |
+| studienavn | `studienavn` | Tekstsvar (kort), locked |  | Studienavn / Study name |  |
 | steg | `steg` | Tekstsvar (kort), locked |  | Steg / Step |  |
 | vignett | `vignett` | Tekstsvar (kort), locked |  | Vignett / Vignette |  |
 | versjon | `versjon` | Tekstsvar (kort), locked |  | Versjon / Version |  |
@@ -174,7 +179,7 @@ Each case form has three pages. Page 1 holds B1, marked «Obligatorisk». Page 2
 
 - **Used by:** Step S4 (V3 Erlend), GPs.
 - **Address goes in:** `forms["S4.fastlege"]` in `app/public/atlas-config.json`.
-- **Locked fields:** `rolle`, `intervju`, `steg`, `vignett`, `versjon`.
+- **Locked fields:** `rolle`, `intervju`, `studienavn`, `steg`, `vignett`, `versjon`.
 - **Intro:** «Dette skjemaet handler om saken til Erlend: første side besvares med bare saken på skjermen, resten når ATLAS ber deg om det. Kritikk er like nyttig som ros. Ved å sende skjemaet samtykker du i at de anonyme svarene brukes i forskningsprosjektet.» / "This form is about Erlend's case: the first page is answered with only the case on screen, the rest when ATLAS asks you to. Criticism is as useful as praise. By sending the form, you consent to the anonymous answers being used in the research project."
 
 **Page 1**
@@ -184,6 +189,7 @@ Each case form has three pages. Page 1 holds B1, marked «Obligatorisk». Page 2
 | D-V3-B1 | `d_v3_b1` | Lineær skala 1 to 7 | Obligatorisk | Hvor sikker er du på din beslutning uten ATLAS? / How confident are you in your decision without ATLAS? | 1 to 7: Svært usikker / Very uncertain … Svært sikker / Very confident |
 | rolle | `rolle` | Tekstsvar (kort), locked |  | Rolle / Role |  |
 | intervju | `intervju` | Tekstsvar (kort), locked |  | Deltok du i et intervju i dette forskningsprosjektet? / Did you take part in an interview in this research project? |  |
+| studienavn | `studienavn` | Tekstsvar (kort), locked |  | Studienavn / Study name |  |
 | steg | `steg` | Tekstsvar (kort), locked |  | Steg / Step |  |
 | vignett | `vignett` | Tekstsvar (kort), locked |  | Vignett / Vignette |  |
 | versjon | `versjon` | Tekstsvar (kort), locked |  | Versjon / Version |  |
@@ -210,7 +216,7 @@ Each case form has three pages. Page 1 holds B1, marked «Obligatorisk». Page 2
 
 - **Used by:** Step S4 (V3 Erlend), DPS participants.
 - **Address goes in:** `forms["S4.dps"]` in `app/public/atlas-config.json`.
-- **Locked fields:** `rolle`, `intervju`, `steg`, `vignett`, `versjon`.
+- **Locked fields:** `rolle`, `intervju`, `studienavn`, `steg`, `vignett`, `versjon`.
 - **Intro:** «Dette skjemaet handler om saken til Erlend: første side besvares med bare saken på skjermen, resten når ATLAS ber deg om det. Kritikk er like nyttig som ros. Ved å sende skjemaet samtykker du i at de anonyme svarene brukes i forskningsprosjektet.» / "This form is about Erlend's case: the first page is answered with only the case on screen, the rest when ATLAS asks you to. Criticism is as useful as praise. By sending the form, you consent to the anonymous answers being used in the research project."
 
 **Page 1**
@@ -220,6 +226,7 @@ Each case form has three pages. Page 1 holds B1, marked «Obligatorisk». Page 2
 | D-V3-B1 | `d_v3_b1` | Lineær skala 1 to 7 | Obligatorisk | Hvor sikker er du på din beslutning uten ATLAS? / How confident are you in your decision without ATLAS? | 1 to 7: Svært usikker / Very uncertain … Svært sikker / Very confident |
 | rolle | `rolle` | Tekstsvar (kort), locked |  | Rolle / Role |  |
 | intervju | `intervju` | Tekstsvar (kort), locked |  | Deltok du i et intervju i dette forskningsprosjektet? / Did you take part in an interview in this research project? |  |
+| studienavn | `studienavn` | Tekstsvar (kort), locked |  | Studienavn / Study name |  |
 | steg | `steg` | Tekstsvar (kort), locked |  | Steg / Step |  |
 | vignett | `vignett` | Tekstsvar (kort), locked |  | Vignett / Vignette |  |
 | versjon | `versjon` | Tekstsvar (kort), locked |  | Versjon / Version |  |
@@ -246,7 +253,7 @@ Each case form has three pages. Page 1 holds B1, marked «Obligatorisk». Page 2
 
 - **Used by:** Step S5 (V4 Astrid), GPs.
 - **Address goes in:** `forms["S5.fastlege"]` in `app/public/atlas-config.json`.
-- **Locked fields:** `rolle`, `intervju`, `steg`, `vignett`, `versjon`.
+- **Locked fields:** `rolle`, `intervju`, `studienavn`, `steg`, `vignett`, `versjon`.
 - **Intro:** «Dette skjemaet handler om saken til Astrid: første side besvares med bare saken på skjermen, resten når ATLAS ber deg om det. Kritikk er like nyttig som ros. Ved å sende skjemaet samtykker du i at de anonyme svarene brukes i forskningsprosjektet.» / "This form is about Astrid's case: the first page is answered with only the case on screen, the rest when ATLAS asks you to. Criticism is as useful as praise. By sending the form, you consent to the anonymous answers being used in the research project."
 
 **Page 1**
@@ -256,6 +263,7 @@ Each case form has three pages. Page 1 holds B1, marked «Obligatorisk». Page 2
 | D-V4-B1 | `d_v4_b1` | Lineær skala 1 to 7 | Obligatorisk | Hvor sikker er du på hva du ville gjort videre uten ATLAS? / How confident are you about what you would do next without ATLAS? | 1 to 7: Svært usikker / Very uncertain … Svært sikker / Very confident |
 | rolle | `rolle` | Tekstsvar (kort), locked |  | Rolle / Role |  |
 | intervju | `intervju` | Tekstsvar (kort), locked |  | Deltok du i et intervju i dette forskningsprosjektet? / Did you take part in an interview in this research project? |  |
+| studienavn | `studienavn` | Tekstsvar (kort), locked |  | Studienavn / Study name |  |
 | steg | `steg` | Tekstsvar (kort), locked |  | Steg / Step |  |
 | vignett | `vignett` | Tekstsvar (kort), locked |  | Vignett / Vignette |  |
 | versjon | `versjon` | Tekstsvar (kort), locked |  | Versjon / Version |  |
@@ -283,7 +291,7 @@ Each case form has three pages. Page 1 holds B1, marked «Obligatorisk». Page 2
 
 - **Used by:** Step S5 (V4 Astrid), DPS participants.
 - **Address goes in:** `forms["S5.dps"]` in `app/public/atlas-config.json`.
-- **Locked fields:** `rolle`, `intervju`, `steg`, `vignett`, `versjon`.
+- **Locked fields:** `rolle`, `intervju`, `studienavn`, `steg`, `vignett`, `versjon`.
 - **Intro:** «Dette skjemaet handler om saken til Astrid: første side besvares med bare saken på skjermen, resten når ATLAS ber deg om det. Kritikk er like nyttig som ros. Ved å sende skjemaet samtykker du i at de anonyme svarene brukes i forskningsprosjektet.» / "This form is about Astrid's case: the first page is answered with only the case on screen, the rest when ATLAS asks you to. Criticism is as useful as praise. By sending the form, you consent to the anonymous answers being used in the research project."
 
 **Page 1**
@@ -293,6 +301,7 @@ Each case form has three pages. Page 1 holds B1, marked «Obligatorisk». Page 2
 | D-V4-B1 | `d_v4_b1` | Lineær skala 1 to 7 | Obligatorisk | Hvor sikker er du på hva du ville gjort videre uten ATLAS? / How confident are you about what you would do next without ATLAS? | 1 to 7: Svært usikker / Very uncertain … Svært sikker / Very confident |
 | rolle | `rolle` | Tekstsvar (kort), locked |  | Rolle / Role |  |
 | intervju | `intervju` | Tekstsvar (kort), locked |  | Deltok du i et intervju i dette forskningsprosjektet? / Did you take part in an interview in this research project? |  |
+| studienavn | `studienavn` | Tekstsvar (kort), locked |  | Studienavn / Study name |  |
 | steg | `steg` | Tekstsvar (kort), locked |  | Steg / Step |  |
 | vignett | `vignett` | Tekstsvar (kort), locked |  | Vignett / Vignette |  |
 | versjon | `versjon` | Tekstsvar (kort), locked |  | Versjon / Version |  |
@@ -320,7 +329,7 @@ Each case form has three pages. Page 1 holds B1, marked «Obligatorisk». Page 2
 
 - **Used by:** Step S6, both roles.
 - **Address goes in:** `forms["S6"]` in `app/public/atlas-config.json`.
-- **Locked fields:** `rolle`, `intervju`, `steg`, `versjon`.
+- **Locked fields:** `rolle`, `intervju`, `studienavn`, `steg`, `versjon`.
 - **Intro:** «Dette skjemaet spør om helhetsvurderingen din av ATLAS etter de tre sakene. Kritikk er like nyttig som ros. Ved å sende skjemaet samtykker du i at de anonyme svarene brukes i forskningsprosjektet.» / "This form asks for your overall assessment of ATLAS after the three cases. Criticism is as useful as praise. By sending the form, you consent to the anonymous answers being used in the research project."
 
 **Page**
@@ -329,6 +338,7 @@ Each case form has three pages. Page 1 holds B1, marked «Obligatorisk». Page 2
 |---|---|---|---|---|---|
 | rolle | `rolle` | Tekstsvar (kort), locked |  | Rolle / Role |  |
 | intervju | `intervju` | Tekstsvar (kort), locked |  | Deltok du i et intervju i dette forskningsprosjektet? / Did you take part in an interview in this research project? |  |
+| studienavn | `studienavn` | Tekstsvar (kort), locked |  | Studienavn / Study name |  |
 | steg | `steg` | Tekstsvar (kort), locked |  | Steg / Step |  |
 | versjon | `versjon` | Tekstsvar (kort), locked |  | Versjon / Version |  |
 | E-01 | `e_01` | Tekstsvar (langt), at most 3,800 characters | Obligatorisk | Hva er den mest verdifulle egenskapen ved ATLAS? (1-3 setninger) / What is the single most valuable feature of ATLAS? (1-3 sentences) |  |
@@ -344,7 +354,7 @@ Each case form has three pages. Page 1 holds B1, marked «Obligatorisk». Page 2
 
 - **Used by:** Step S7 (V2 Torbjørn, optional), GPs.
 - **Address goes in:** `forms["S7.fastlege"]` in `app/public/atlas-config.json`.
-- **Locked fields:** `rolle`, `intervju`, `steg`, `vignett`, `versjon`.
+- **Locked fields:** `rolle`, `intervju`, `studienavn`, `steg`, `vignett`, `versjon`.
 - **Intro:** «Dette skjemaet handler om saken til Torbjørn, en valgfri ekstra sak. Kritikk er like nyttig som ros. Ved å sende skjemaet samtykker du i at de anonyme svarene brukes i forskningsprosjektet.» / "This form is about Torbjørn's case, an optional extra case. Criticism is as useful as praise. By sending the form, you consent to the anonymous answers being used in the research project."
 
 **Page**
@@ -353,6 +363,7 @@ Each case form has three pages. Page 1 holds B1, marked «Obligatorisk». Page 2
 |---|---|---|---|---|---|
 | rolle | `rolle` | Tekstsvar (kort), locked |  | Rolle / Role |  |
 | intervju | `intervju` | Tekstsvar (kort), locked |  | Deltok du i et intervju i dette forskningsprosjektet? / Did you take part in an interview in this research project? |  |
+| studienavn | `studienavn` | Tekstsvar (kort), locked |  | Studienavn / Study name |  |
 | steg | `steg` | Tekstsvar (kort), locked |  | Steg / Step |  |
 | vignett | `vignett` | Tekstsvar (kort), locked |  | Vignett / Vignette |  |
 | versjon | `versjon` | Tekstsvar (kort), locked |  | Versjon / Version |  |
@@ -366,7 +377,7 @@ Each case form has three pages. Page 1 holds B1, marked «Obligatorisk». Page 2
 
 - **Used by:** Step S8 (V5 two GPs, optional), both roles.
 - **Address goes in:** `forms["S8"]` in `app/public/atlas-config.json`.
-- **Locked fields:** `rolle`, `intervju`, `steg`, `vignett`, `versjon`.
+- **Locked fields:** `rolle`, `intervju`, `studienavn`, `steg`, `vignett`, `versjon`.
 - **Intro:** «Dette skjemaet handler om visningen av to fastleger og én pasient, en valgfri ekstra sak. Kritikk er like nyttig som ros. Ved å sende skjemaet samtykker du i at de anonyme svarene brukes i forskningsprosjektet.» / "This form is about the view of two GPs and one patient, an optional extra case. Criticism is as useful as praise. By sending the form, you consent to the anonymous answers being used in the research project."
 
 **Page**
@@ -375,6 +386,7 @@ Each case form has three pages. Page 1 holds B1, marked «Obligatorisk». Page 2
 |---|---|---|---|---|---|
 | rolle | `rolle` | Tekstsvar (kort), locked |  | Rolle / Role |  |
 | intervju | `intervju` | Tekstsvar (kort), locked |  | Deltok du i et intervju i dette forskningsprosjektet? / Did you take part in an interview in this research project? |  |
+| studienavn | `studienavn` | Tekstsvar (kort), locked |  | Studienavn / Study name |  |
 | steg | `steg` | Tekstsvar (kort), locked |  | Steg / Step |  |
 | vignett | `vignett` | Tekstsvar (kort), locked |  | Vignett / Vignette |  |
 | versjon | `versjon` | Tekstsvar (kort), locked |  | Versjon / Version |  |

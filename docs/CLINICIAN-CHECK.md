@@ -166,7 +166,7 @@ How to read the tables:
 
 | Vignette | Role | Branch | Where it shows | Text (Norwegian) | Source (prototype, vault or new) |
 |---|---|---|---|---|---|
-| Practice | GP | Before the case | Briefing (GP), oppgave | Du er Sofies fastlege. Hun kommer til konsultasjon kl. 13:00 og har fylt ut selvrapporten før timen. Les notatet og bestem om du vil henvise til DPS. | new |
+| Practice | GP | Before the case | Briefing (GP), oppgave | Du er Sofies fastlege. Hun kommer til konsultasjon kl. 09:30 og har fylt ut selvrapporten før timen. Les notatet og bestem om du vil henvise til DPS. | new |
 | Practice | GP | Before the case | Briefing (GP), Hvem | Sofie Lund, 39 år. Søvnvansker og stress i tre måneder, etter en omorganisering på jobben. | new |
 | Practice | GP | Before the case | Briefing (GP), Situasjonen | PHQ-9 8 og GAD-7 9. I full stilling. Ingen tidligere behandling. | new |
 | Practice | GP | Before the case | Briefing (GP), Hvorfor denne saken | Sofie er øvingspasient og brukes bare i omvisningen. | new |
