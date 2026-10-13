@@ -1,7 +1,13 @@
 import AxeBuilder from '@axe-core/playwright';
 import { expect, test, type Page } from '@playwright/test';
-import { mockNettskjema } from './mock';
+import { mockNettskjema, configWithoutForms } from './mock';
 import { doTour, panel, place, sendForm, startStudy, toStopPage } from './helpers';
+
+// No check depends on the addresses the site holds: with none, review mode gives feedback in its preview forms.
+// A check that needs forms routes them to the stand-in (mockNettskjema), which takes precedence.
+test.beforeEach(async ({ context }) => {
+  await configWithoutForms(context);
+});
 
 // Scan settled states: a toast caught mid-fade reads as low contrast. Fluent's motion honours reduced motion.
 test.use({ reducedMotion: 'reduce' });

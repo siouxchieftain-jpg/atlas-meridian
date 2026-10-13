@@ -1,5 +1,12 @@
 import { expect, test, type Page } from '@playwright/test';
 import { panel } from './helpers';
+import { configWithoutForms } from './mock';
+
+// No check depends on the addresses the site holds: with none, review mode gives feedback in its preview forms.
+// A check that needs forms routes them to the stand-in (mockNettskjema), which takes precedence.
+test.beforeEach(async ({ context }) => {
+  await configWithoutForms(context);
+});
 
 /**
  * Behaviour fixed after the round-8 gate review (r8F, r8A). Each test names the finding it covers; each one fails on

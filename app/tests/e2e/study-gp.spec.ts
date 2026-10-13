@@ -1,6 +1,12 @@
 import { expect, test } from '@playwright/test';
-import { mockNettskjema, recordSubmissions, submissions } from './mock';
+import { mockNettskjema, recordSubmissions, submissions, configWithoutForms } from './mock';
 import { caseOnlyThenAtlas, doTour, frame, frameSteg, panel, place, sendForm, startStudy } from './helpers';
+
+// No check depends on the addresses the site holds: with none, review mode gives feedback in its preview forms.
+// A check that needs forms routes them to the stand-in (mockNettskjema), which takes precedence.
+test.beforeEach(async ({ context }) => {
+  await configWithoutForms(context);
+});
 
 test('a GP completes the whole study on the panel route, with the right locked values', async ({ page }) => {
   await mockNettskjema(page);

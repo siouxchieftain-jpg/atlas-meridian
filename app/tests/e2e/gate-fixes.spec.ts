@@ -1,6 +1,12 @@
 import { expect, test, type Page } from '@playwright/test';
-import { mockNettskjema } from './mock';
+import { mockNettskjema, configWithoutForms } from './mock';
 import { caseOnlyThenAtlas, doTour, panel, place, sendForm, startStudy, toStopPage } from './helpers';
+
+// No check depends on the addresses the site holds: with none, review mode gives feedback in its preview forms.
+// A check that needs forms routes them to the stand-in (mockNettskjema), which takes precedence.
+test.beforeEach(async ({ context }) => {
+  await configWithoutForms(context);
+});
 
 /**
  * Behaviour added in the S5 to S8 gate fix pass: each test names the finding

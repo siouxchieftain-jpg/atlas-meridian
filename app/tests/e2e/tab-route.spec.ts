@@ -1,6 +1,12 @@
 import { expect, test } from '@playwright/test';
-import { mockNettskjema } from './mock';
+import { mockNettskjema, configWithoutForms } from './mock';
 import { panel } from './helpers';
+
+// No check depends on the addresses the site holds: with none, review mode gives feedback in its preview forms.
+// A check that needs forms routes them to the stand-in (mockNettskjema), which takes precedence.
+test.beforeEach(async ({ context }) => {
+  await configWithoutForms(context);
+});
 
 const SAFARI = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 14_5) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.5 Safari/605.1.15';
 

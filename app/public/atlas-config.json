@@ -1,20 +1,23 @@
 {
   "_comment": "Nettskjema addresses for each form (for example https://nettskjema.no/a/123456). An empty address shows «Dette skjemaet er ikke klart ennå.» in the study. Edit this file only; no code change is needed.",
   "forms": {
-    "S1": "",
-    "S2.fastlege": "",
-    "S2.dps": "",
-    "S3": "",
-    "S4.fastlege": "",
-    "S4.dps": "",
-    "S5.fastlege": "",
-    "S5.dps": "",
-    "S6": "",
-    "S7.fastlege": "",
-    "S8": "",
-    "R1": "",
-    "R2": ""
+    "S1": "https://nettskjema.no/a/661821",
+    "S2.fastlege": "https://nettskjema.no/a/661822",
+    "S2.dps": "https://nettskjema.no/a/661823",
+    "S3": "https://nettskjema.no/a/661824",
+    "S4.fastlege": "https://nettskjema.no/a/661825",
+    "S4.dps": "https://nettskjema.no/a/661826",
+    "S5.fastlege": "https://nettskjema.no/a/661827",
+    "S5.dps": "https://nettskjema.no/a/661828",
+    "S6": "https://nettskjema.no/a/661829",
+    "S7.fastlege": "https://nettskjema.no/a/661830",
+    "S8": "https://nettskjema.no/a/661831",
+    "R1": "https://nettskjema.no/a/661832",
+    "R2": "https://nettskjema.no/a/661833"
   },
   "informationLetter": "",
-  "contact": { "nb": "", "en": "" }
+  "contact": {
+    "nb": "",
+    "en": ""
+  }
 }

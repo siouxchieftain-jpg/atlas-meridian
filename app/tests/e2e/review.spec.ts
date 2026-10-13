@@ -1,6 +1,12 @@
 import { expect, test, type Page } from '@playwright/test';
-import { mockNettskjema, recordSubmissions, submissions } from './mock';
+import { mockNettskjema, recordSubmissions, submissions, configWithoutForms } from './mock';
 import { frame, panel, place, sendForm } from './helpers';
+
+// No check depends on the addresses the site holds: with none, review mode gives feedback in its preview forms.
+// A check that needs forms routes them to the stand-in (mockNettskjema), which takes precedence.
+test.beforeEach(async ({ context }) => {
+  await configWithoutForms(context);
+});
 
 /** Move within the app without a reload, as the in-app links do. */
 async function go(page: Page, hash: string) {

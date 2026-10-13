@@ -1,5 +1,11 @@
 import { expect, test, type Page } from '@playwright/test';
-import { mockNettskjema } from './mock';
+import { mockNettskjema, configWithoutForms } from './mock';
+
+// No check depends on the addresses the site holds: with none, review mode gives feedback in its preview forms.
+// A check that needs forms routes them to the stand-in (mockNettskjema), which takes precedence.
+test.beforeEach(async ({ context }) => {
+  await configWithoutForms(context);
+});
 
 /** A GP participant in the middle of Kari's ATLAS work (seeded, so every width starts from the same state). */
 const KARI_ATLAS = {

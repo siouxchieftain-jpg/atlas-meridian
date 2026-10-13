@@ -67,6 +67,18 @@ export async function mockNettskjema(target: Page | BrowserContext, opts: MockOp
   });
 }
 
+/**
+ * The configuration as it was before any form had an address: every form «ikke klart ennå», so review mode gives
+ * feedback in its preview forms. For the checks that test that flow, whatever addresses the site holds; any
+ * request to nettskjema.no is stopped, so no check ever reaches a live form.
+ */
+export async function configWithoutForms(target: Page | BrowserContext) {
+  const forms: Record<string, string> = {};
+  for (const k of FORM_KEYS) forms[k] = '';
+  await target.route('**/atlas-config.json*', (route) => route.fulfill({ contentType: 'application/json', body: JSON.stringify({ forms }) }));
+  await target.route('https://nettskjema.no/**', (route) => route.abort());
+}
+
 /** Collect the mock's "submitted" messages in the parent page (ATLAS ignores them). */
 export async function recordSubmissions(page: Page) {
   await page.addInitScript(() => {

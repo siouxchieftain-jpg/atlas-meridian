@@ -48,7 +48,16 @@ export function formTitle(form) {
   const role = variant ? ROLE_LABEL[variant] : undefined;
   const nb = role ? `${form.title.nb}, ${role.nb}` : form.title.nb;
   const en = role ? `${form.title.en}, ${role.en}` : form.title.en;
-  return `ATLAS · ${nb === en ? nb : `${nb} / ${en}`}`;
+  return `ATLAS: ${nb === en ? nb : `${nb} / ${en}`}`;
+}
+
+// Nettskjema's rule for a form title (the API schema's pattern, written so a JavaScript expression accepts it):
+// letters, digits, spaces and a short list of signs; «·» and curly quotes are refused. At most 130 characters.
+const TITLE_SIGNS = /^[#`'"=!&+{}[\]*;:()/.,?_«»¿¡€¢–\-@\d\s\p{L}]+$/u;
+export function titleProblem(title) {
+  if (title.length > 130) return `title longer than 130 characters (${title.length})`;
+  const bad = [...new Set([...title].filter((ch) => !TITLE_SIGNS.test(ch)))];
+  return bad.length ? `title has signs Nettskjema refuses: ${bad.join(' ')}` : undefined;
 }
 
 function question(it, type, extra = {}) {
@@ -90,7 +99,8 @@ function itemElement(it) {
     case 'longtext':
       return question(it, 'QUESTION_MULTILINE', { maxNumberOfCharacters: LONG_TEXT_MAX });
     case 'stop':
-      return { elementType: 'TEXT', text: `<p><strong>${esc(it.text.nb)}</strong></p>${para(it.text.en)}` };
+      // A text element's content is its description; Nettskjema keeps «text» for headings (at most 180 characters).
+      return { elementType: 'TEXT', description: `<p><strong>${esc(it.text.nb)}</strong></p>${para(it.text.en)}` };
     case 'locked':
       // Filled and locked by ATLAS from the address: CB<codebook>=<value>&LCK<codebook>=true.
       return question({ ...it, required: false }, 'QUESTION');
@@ -106,7 +116,7 @@ export function formElements(form) {
   const intro = [para(form.intro.nb), para(form.intro.en)];
   if (!form.intro.nb.includes(instrument.consentLine.nb)) intro.push(para(instrument.consentLine.nb), para(instrument.consentLine.en));
   intro.push(`<p><em>${esc(both(instrument.privacyLine))}</em></p>`);
-  out.push({ elementType: 'TEXT', text: intro.join('') });
+  out.push({ elementType: 'TEXT', description: intro.join('') });
   form.pages.forEach((page, pi) => {
     if (pi > 0) out.push({ elementType: 'PAGE_BREAK' });
     const locked = page.items.filter((it) => it.type === 'locked');
@@ -202,9 +212,9 @@ async function verifyForm(c, form, formId) {
   const problems = [];
   if (!Array.isArray(got)) return ['no element list came back'];
   if (got.length !== want.length) problems.push(`${got.length} elements, expected ${want.length}`);
-  const sorted = [...got].sort((a, b) => (a.sequence ?? 0) - (b.sequence ?? 0));
+  // In the form's order, as the list comes back («sequence» starts again on each page).
   want.forEach((w, i) => {
-    const g = sorted[i];
+    const g = got[i];
     const where = `element ${i + 1} (${w.externalElementId ?? w.elementType})`;
     if (!g) return;
     if (g.elementType !== w.elementType) problems.push(`${where}: type ${g.elementType}, expected ${w.elementType}`);
@@ -265,6 +275,12 @@ async function plan() {
     }
     schemaNote = bad.length ? `${bad.length} problems against the API schema` : `${all.length} of ${all.length} match the API schema`;
   }
+  // The schema check leaves out text patterns, so the title rule is checked here.
+  const titles = instrument.forms.map((f) => [f.key, titleProblem(formTitle(f))]).filter(([, p]) => p);
+  if (titles.length) {
+    console.error(titles.map(([k, p]) => `${k}: ${p}`).join('\n'));
+    process.exitCode = 1;
+  }
   const out = flag('out');
   if (out) writeFileSync(out, `${JSON.stringify(all, null, 2)}\n`);
   console.log('Nettskjema plan: nothing is created and nothing is sent.');
@@ -286,6 +302,8 @@ async function create() {
       console.log(`${pad(form.key, 12)} already has an address (form ${existing}); left as it is`);
       continue;
     }
+    const titleBad = titleProblem(formTitle(form));
+    if (titleBad) throw new Error(`${form.key}: ${titleBad}`);
     const { formId } = await api(c, 'POST', '/form', payload(form, editors));
     saveAddress(form.key, formId);
     // The codebook names: set them explicitly if the create call did not keep them.
@@ -293,13 +311,14 @@ async function create() {
     const want = formElements(form);
     const elementMap = {};
     const optionMap = {};
-    [...got].sort((a, b) => (a.sequence ?? 0) - (b.sequence ?? 0)).forEach((g, i) => {
+    // The list comes back in the form's order. («sequence» starts again on each page, and a page break has no id.)
+    got.forEach((g, i) => {
       const w = want[i];
-      if (!w?.externalElementId) return;
+      if (!w?.externalElementId || g.elementId == null) return;
       if (g.externalElementId !== w.externalElementId) elementMap[g.elementId] = w.externalElementId;
       (g.answerOptions ?? []).forEach((o, j) => {
         const code = w.answerOptions?.[j]?.externalAnswerOptionId;
-        if (code && o.externalAnswerOptionId !== code) optionMap[o.answerOptionId] = code;
+        if (code && o.answerOptionId != null && o.externalAnswerOptionId !== code) optionMap[o.answerOptionId] = code;
       });
     });
     if (Object.keys(elementMap).length || Object.keys(optionMap).length) {
