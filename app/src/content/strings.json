@@ -1,0 +1,2594 @@
+{
+  "wordmark": {
+    "nb": "ATLAS",
+    "en": "ATLAS"
+  },
+  "prototype": {
+    "nb": "Prototype",
+    "en": "Prototype"
+  },
+  "skipToContent": {
+    "nb": "Hopp til innholdet",
+    "en": "Skip to content"
+  },
+  "mainNav": {
+    "nb": "Hovednavigasjon",
+    "en": "Main navigation"
+  },
+  "help": {
+    "nb": "Hjelp",
+    "en": "Help"
+  },
+  "helpTourAgain": {
+    "nb": "Omvisningen igjen",
+    "en": "The tour again"
+  },
+  "helpHowItWorks": {
+    "nb": "Slik foregår evalueringen",
+    "en": "How the evaluation works"
+  },
+  "helpGlossary": {
+    "nb": "Ordliste",
+    "en": "Glossary"
+  },
+  "helpAboutPrototype": {
+    "nb": "Om prototypen",
+    "en": "About the prototype"
+  },
+  "helpResetUnsent": {
+    "nb": "Start ufullførte steg på nytt",
+    "en": "Restart unfinished steps"
+  },
+  "helpMeridian": {
+    "nb": "Meridian, designsystemet",
+    "en": "Meridian, the design system"
+  },
+  "language": {
+    "nb": "Språk",
+    "en": "Language"
+  },
+  "langNorsk": {
+    "nb": "Norsk",
+    "en": "Norsk"
+  },
+  "langEnglish": {
+    "nb": "English",
+    "en": "English"
+  },
+  "notesSwitch": {
+    "nb": "Merknader",
+    "en": "Design notes"
+  },
+  "restart": {
+    "nb": "Start på nytt",
+    "en": "Start again"
+  },
+  "restartTitle": {
+    "nb": "Starte gjennomgangen på nytt?",
+    "en": "Start the review again?"
+  },
+  "restartBody": {
+    "nb": "Arbeidet ditt i sakene blir fjernet fra denne nettleseren. Rollen din og listen over tilbakemeldinger du har sendt, blir stående. Skjemaer som er sendt, påvirkes ikke.",
+    "en": "Your work in the cases is removed from this browser. Your role and the list of feedback you have sent stay. Forms that have been sent are not affected."
+  },
+  "resetUnsentTitle": {
+    "nb": "Starte ufullførte steg på nytt?",
+    "en": "Restart unfinished steps?"
+  },
+  "resetUnsentBody": {
+    "nb": "Det du har gjort i steg som ikke er sendt, blir fjernet. Sendte skjemaer, rollen din og hvilke saker du har sett med ATLAS, beholdes.",
+    "en": "Anything you did in steps that have not been sent is removed. Sent forms, your role and which cases you have seen with ATLAS are kept."
+  },
+  "confirm": {
+    "nb": "Ja, start på nytt",
+    "en": "Yes, start again"
+  },
+  "cancel": {
+    "nb": "Avbryt",
+    "en": "Cancel"
+  },
+  "close": {
+    "nb": "Lukk",
+    "en": "Close"
+  },
+  "stepCounter": {
+    "nb": "Steg {{n}} av 9",
+    "en": "Step {{n}} of 9"
+  },
+  "roleGp": {
+    "nb": "Fastlege",
+    "en": "GP"
+  },
+  "roleDps": {
+    "nb": "DPS, inntak",
+    "en": "DPS intake"
+  },
+  "roleSwitch": {
+    "nb": "Rolle",
+    "en": "Role"
+  },
+  "footerNb": {
+    "nb": "ATLAS er en formativ evalueringsprototype og skal ikke brukes til kliniske beslutninger. Ingen reelle pasientopplysninger eller opplysninger om helsepersonell inngår.",
+    "en": "ATLAS er en formativ evalueringsprototype og skal ikke brukes til kliniske beslutninger. Ingen reelle pasientopplysninger eller opplysninger om helsepersonell inngår."
+  },
+  "footerEn": {
+    "nb": "ATLAS is a formative evaluation prototype and must not be used for clinical decision-making. No real patient or clinician data is included.",
+    "en": "ATLAS is a formative evaluation prototype and must not be used for clinical decision-making. No real patient or clinician data is included."
+  },
+  "previewBanner": {
+    "nb": "Forhåndsvisning: skjemaene her sender ingenting til Nettskjema. Svarene blir bare i denne nettleseren.",
+    "en": "Preview: the forms here send nothing to Nettskjema. Answers stay in this browser."
+  },
+  "endPreview": {
+    "nb": "Avslutt forhåndsvisning",
+    "en": "End preview"
+  },
+  "exportCsv": {
+    "nb": "Last ned svarene som CSV",
+    "en": "Download the answers as CSV"
+  },
+  "reviewModeLabel": {
+    "nb": "Gjennomgang",
+    "en": "Review"
+  },
+  "navTimeliste": {
+    "nb": "Timeliste",
+    "en": "Appointments"
+  },
+  "navQueue": {
+    "nb": "Mottatte henvisninger",
+    "en": "Received referrals"
+  },
+  "navPattern": {
+    "nb": "Mitt henvisningsmønster",
+    "en": "My referral pattern"
+  },
+  "navShared": {
+    "nb": "Delt oversikt",
+    "en": "Shared overview"
+  },
+  "navStudy": {
+    "nb": "Studien",
+    "en": "The study"
+  },
+  "navOverview": {
+    "nb": "Oversikt",
+    "en": "Overview"
+  },
+  "navExpand": {
+    "nb": "Vis navigasjonen",
+    "en": "Show navigation"
+  },
+  "navCollapse": {
+    "nb": "Skjul navigasjonen",
+    "en": "Hide navigation"
+  },
+  "navMenu": {
+    "nb": "Meny",
+    "en": "Menu"
+  },
+  "next": {
+    "nb": "Neste",
+    "en": "Next"
+  },
+  "back": {
+    "nb": "Tilbake",
+    "en": "Back"
+  },
+  "previous": {
+    "nb": "Forrige",
+    "en": "Previous"
+  },
+  "done": {
+    "nb": "Ferdig",
+    "en": "Done"
+  },
+  "start": {
+    "nb": "Start",
+    "en": "Start"
+  },
+  "continue": {
+    "nb": "Fortsett",
+    "en": "Continue"
+  },
+  "save": {
+    "nb": "Lagre",
+    "en": "Save"
+  },
+  "saved": {
+    "nb": "Lagret",
+    "en": "Saved"
+  },
+  "send": {
+    "nb": "Send",
+    "en": "Send"
+  },
+  "sentLabel": {
+    "nb": "Sendt",
+    "en": "Sent"
+  },
+  "skippedLabel": {
+    "nb": "Hoppet over",
+    "en": "Skipped"
+  },
+  "showDetails": {
+    "nb": "Vis detaljer",
+    "en": "Show details"
+  },
+  "hideDetails": {
+    "nb": "Skjul detaljer",
+    "en": "Hide details"
+  },
+  "none": {
+    "nb": "Ingen",
+    "en": "None"
+  },
+  "years": {
+    "nb": "{{n}} år",
+    "en": "{{n}}"
+  },
+  "patientAge": {
+    "nb": "{{name}}, {{age}} år",
+    "en": "{{name}}, {{age}}"
+  },
+  "fictionalPatient": {
+    "nb": "Fiktiv pasient",
+    "en": "Fictional patient"
+  },
+  "practicePatient": {
+    "nb": "Øvingspasient",
+    "en": "Practice patient"
+  },
+  "draftFlagLabel": {
+    "nb": "Merk",
+    "en": "Note"
+  },
+  "today": {
+    "nb": "I dag",
+    "en": "Today"
+  },
+  "timeEstimate": {
+    "nb": "Tid",
+    "en": "Time"
+  },
+  "about": {
+    "nb": "Om saken",
+    "en": "About the case"
+  },
+  "bandTitle": {
+    "nb": "Usikkerhetsvisning",
+    "en": "Uncertainty display"
+  },
+  "bandPlace": {
+    "nb": "Plasser saken",
+    "en": "Place the case"
+  },
+  "bandPlaceHint": {
+    "nb": "Velg hvor saken ligger mellom klart utenfor og klart innenfor DPS-kriteriene. Systemets lesning vises etter at du har plassert saken.",
+    "en": "Choose where the case lies between clearly outside and clearly within the DPS criteria. The system’s reading appears after you have placed the case."
+  },
+  "bandNotPlaced": {
+    "nb": "Ikke plassert ennå.",
+    "en": "Not placed yet."
+  },
+  "bandOwnSentence": {
+    "nb": "Du har plassert saken: {{pos}}.",
+    "en": "You placed the case: {{pos}}."
+  },
+  "bandOtherSentenceGp": {
+    "nb": "Henvisende fastlege plasserte saken: {{pos}}.",
+    "en": "The referring GP placed the case: {{pos}}."
+  },
+  "bandOtherSentenceDps": {
+    "nb": "DPS, inntak plasserte saken: {{pos}}.",
+    "en": "DPS intake placed the case: {{pos}}."
+  },
+  "bandSystemSentence": {
+    "nb": "Systemets lesning: {{pos}}.",
+    "en": "The system’s reading: {{pos}}."
+  },
+  "bandChange": {
+    "nb": "Endre plasseringen",
+    "en": "Change the placement"
+  },
+  "pos1": {
+    "nb": "klart utenfor kriteriene",
+    "en": "clearly outside the criteria"
+  },
+  "pos2": {
+    "nb": "utenfor, nær gråsonen",
+    "en": "outside, near the grey zone"
+  },
+  "pos3": {
+    "nb": "i gråsonen, nærmest utenfor",
+    "en": "in the grey zone, closer to outside the criteria"
+  },
+  "pos5": {
+    "nb": "i gråsonen, nærmest innenfor",
+    "en": "in the grey zone, closer to within the criteria"
+  },
+  "pos4": {
+    "nb": "midt i gråsonen",
+    "en": "in the middle of the grey zone"
+  },
+  "pos6": {
+    "nb": "innenfor, nær gråsonen",
+    "en": "within, near the grey zone"
+  },
+  "pos7": {
+    "nb": "klart innenfor kriteriene",
+    "en": "clearly within the criteria"
+  },
+  "readingTitle": {
+    "nb": "Systemets lesning",
+    "en": "The system’s reading"
+  },
+  "illustrationChip": {
+    "nb": "Illustrasjon",
+    "en": "Illustration"
+  },
+  "readingWaits": {
+    "nb": "Vises når du har plassert saken.",
+    "en": "Shown once you have placed the case."
+  },
+  "legend": {
+    "nb": "Markører",
+    "en": "Markers"
+  },
+  "unclearTitle": {
+    "nb": "Hva er uklart",
+    "en": "What is unclear"
+  },
+  "unclearDescribe": {
+    "nb": "Beskriv kort hva som er uklart",
+    "en": "Describe briefly what is unclear"
+  },
+  "unclearGoesWith": {
+    "nb": "Beskrivelsen følger henvisningen til DPS som en egen del hvis du henviser.",
+    "en": "The description goes with the referral to DPS as a separate part if you refer."
+  },
+  "definitionOf": {
+    "nb": "Hva betyr {{tag}}?",
+    "en": "What does {{tag}} mean?"
+  },
+  "confidenceTitle": {
+    "nb": "Din trygghet nå",
+    "en": "Your confidence now"
+  },
+  "confidenceHint": {
+    "nb": "Velg ett av fem trinn.",
+    "en": "Choose one of five steps."
+  },
+  "confidenceNote": {
+    "nb": "DPS ser tryggheten for denne henvisningen i ord, aldri en historikk.",
+    "en": "DPS sees your confidence for this referral in words, never a history."
+  },
+  "guideTitle": {
+    "nb": "Informasjonsguiden",
+    "en": "Information completeness guide"
+  },
+  "guideCount": {
+    "nb": "{{n}} av 5 kriterier omtalt",
+    "en": "{{n}} of 5 criteria mentioned"
+  },
+  "guideReadsNote": {
+    "nb": "Leser notatet og ser etter vanlige ord for kriteriene i prioriteringsveilederen. Guiden kan overse det som er skrevet med andre ord, eller telle ord som står i en annen sammenheng, og den er ikke et krav.",
+    "en": "Reads the note and looks for common words for the criteria in the priority-setting guideline. The guide can miss what is written in other words, or count words used in another context, and it is not a requirement."
+  },
+  "guideReadsDraft": {
+    "nb": "Leser henvisningen del for del mens du skriver. «Omtalt» betyr at delen sier noe om kriteriet, ikke at det som står, er nok. Guiden kan ta feil begge veier, og den er ikke et krav.",
+    "en": "Reads the referral section by section as you write. ‘Mentioned’ means that the section says something about the criterion, not that what is written is enough. The guide can be wrong both ways, and it is not a requirement."
+  },
+  "guideAsReceived": {
+    "nb": "Slik guiden leste henvisningen da fastlegen sendte den. Guiden ser om hver del sier noe om kriteriet, ikke om det er nok, og den kan ta feil.",
+    "en": "How the guide read the referral when the GP sent it. The guide sees whether each section says something about the criterion, not whether it is enough, and it can be wrong."
+  },
+  "guideAsSent": {
+    "nb": "Slik guiden leste henvisningen da du sendte den. Guiden ser om hver del sier noe om kriteriet, ikke om det er nok, og den kan ta feil.",
+    "en": "How the guide read the referral when you sent it. The guide sees whether each section says something about the criterion, not whether it is enough, and it can be wrong."
+  },
+  "mentioned": {
+    "nb": "Omtalt",
+    "en": "Mentioned"
+  },
+  "notMentioned": {
+    "nb": "Ikke funnet",
+    "en": "Not found"
+  },
+  "notMentionedYet": {
+    "nb": "Ikke funnet ennå",
+    "en": "Not found yet"
+  },
+  "partlyMentioned": {
+    "nb": "Delvis omtalt",
+    "en": "Partly mentioned"
+  },
+  "editedByYou": {
+    "nb": "Endret av deg",
+    "en": "Edited by you"
+  },
+  "writtenByYou": {
+    "nb": "Skrevet av deg",
+    "en": "Written by you"
+  },
+  "tourPlaceFirst": {
+    "nb": "Plasser saken på båndet først. Systemets lesning vises når saken er plassert.",
+    "en": "Place the case on the band first. The system’s reading appears once the case is placed."
+  },
+  "tourPlaceFirstDps": {
+    "nb": "Plasser saken på båndet først. Fastlegens markør og systemets lesning vises når saken er plassert.",
+    "en": "Place the case on the band first. The GP’s marker and the system’s reading appear once the case is placed."
+  },
+  "whatDpsLooksFor": {
+    "nb": "Hva DPS ser etter",
+    "en": "What DPS looks for"
+  },
+  "decisionTitle": {
+    "nb": "Din beslutning",
+    "en": "Your decision"
+  },
+  "lockedGp": {
+    "nb": "Valgene dine her kan leses, men ikke endres lenger, fordi henvisningen eller skjemaet for saken er sendt.",
+    "en": "Your choices here can be read but no longer changed, because the referral or the case’s form has been sent."
+  },
+  "lockedPlan": {
+    "nb": "Planen er lagret og kan ikke endres etter oppsummeringen.",
+    "en": "The plan is saved and cannot be changed after the summary."
+  },
+  "lockedPlanSecond": {
+    "nb": "Planen kan ikke endres etter at den nye henvisningen er skrevet.",
+    "en": "The plan can no longer be changed once the new referral has been written."
+  },
+  "decisionHold": {
+    "nb": "Behold",
+    "en": "Keep in general practice"
+  },
+  "decisionRefer": {
+    "nb": "Henvis",
+    "en": "Refer"
+  },
+  "decisionReason": {
+    "nb": "Begrunnelse (valgfritt)",
+    "en": "Reason (optional)"
+  },
+  "referralWord": {
+    "nb": "Henvisning",
+    "en": "Referral"
+  },
+  "decisionReasonHint": {
+    "nb": "Begrunnelsen blir hos deg og følger ikke med henvisningen.",
+    "en": "The reason stays with you and does not go with the referral."
+  },
+  "decisionSave": {
+    "nb": "Lagre beslutning",
+    "en": "Save decision"
+  },
+  "decisionSaveReason": {
+    "nb": "Velg «Behold» eller «Henvis» for å lagre.",
+    "en": "Choose ‘Keep in general practice’ or ‘Refer’ to save."
+  },
+  "decisionSaved": {
+    "nb": "Beslutningen er lagret.",
+    "en": "The decision has been saved."
+  },
+  "decisionSavedAs": {
+    "nb": "Lagret: {{v}}.",
+    "en": "Saved: {{v}}."
+  },
+  "responsibility": {
+    "nb": "Du har det endelige kliniske ansvaret",
+    "en": "You have the final clinical responsibility"
+  },
+  "writeReferral": {
+    "nb": "Skriv henvisningen",
+    "en": "Write the referral"
+  },
+  "consultation": {
+    "nb": "Konsultasjon",
+    "en": "Consultation"
+  },
+  "tabNote": {
+    "nb": "Notat",
+    "en": "Note"
+  },
+  "tabMeds": {
+    "nb": "Legemidler",
+    "en": "Medicines"
+  },
+  "tabHistory": {
+    "nb": "Historikk",
+    "en": "History"
+  },
+  "noteTitle": {
+    "nb": "Konsultasjonsnotat",
+    "en": "Consultation note"
+  },
+  "selfReport": {
+    "nb": "Selvrapport",
+    "en": "Self-report"
+  },
+  "showAnswers": {
+    "nb": "Vis svar",
+    "en": "Show answers"
+  },
+  "hideAnswers": {
+    "nb": "Skjul svar",
+    "en": "Hide answers"
+  },
+  "profile": {
+    "nb": "Profil",
+    "en": "Profile"
+  },
+  "profileContext": {
+    "nb": "Profilen er kontekst. Den rangerer ikke pasienten.",
+    "en": "The profile is context. It does not rank the patient."
+  },
+  "fnr": {
+    "nb": "Fødselsnummer",
+    "en": "National identity number"
+  },
+  "medsColName": {
+    "nb": "Legemiddel",
+    "en": "Medicine"
+  },
+  "medsColDose": {
+    "nb": "Dosering",
+    "en": "Dose"
+  },
+  "medsColPeriod": {
+    "nb": "Periode",
+    "en": "Period"
+  },
+  "medsColStatus": {
+    "nb": "Status",
+    "en": "Status"
+  },
+  "previousReferral": {
+    "nb": "Tidligere henvisning",
+    "en": "Previous referral"
+  },
+  "previousSent": {
+    "nb": "Sendt {{date}}",
+    "en": "Sent {{date}}"
+  },
+  "previousDecided": {
+    "nb": "Svar {{date}}",
+    "en": "Reply {{date}}"
+  },
+  "atlasPanel": {
+    "nb": "ATLAS",
+    "en": "ATLAS"
+  },
+  "atlasPanelOpen": {
+    "nb": "Vis ATLAS-panelet",
+    "en": "Show the ATLAS panel"
+  },
+  "atlasPanelClose": {
+    "nb": "Skjul ATLAS-panelet",
+    "en": "Hide the ATLAS panel"
+  },
+  "utenAtlas": {
+    "nb": "Uten ATLAS",
+    "en": "Without ATLAS"
+  },
+  "atlasState": {
+    "nb": "Visning",
+    "en": "View"
+  },
+  "medAtlas": {
+    "nb": "Med ATLAS",
+    "en": "With ATLAS"
+  },
+  "placeholderHidden": {
+    "nb": "Her vises ATLAS etter at du har svart på side 1.",
+    "en": "ATLAS is shown here after you have answered page 1."
+  },
+  "caseOnlyLine": {
+    "nb": "Saken vises uten ATLAS. Tenk gjennom hva du ville gjort med saken, og svar på side 1 i skjemaet ut fra det du ser her.",
+    "en": "The case is shown without ATLAS. Think through what you would do with the case, and answer page 1 of the form from what you see here."
+  },
+  "caseOnlyLineDps": {
+    "nb": "Saken vises uten ATLAS. Tenk gjennom hvilket utfall du ville valgt, og svar på side 1 i skjemaet ut fra det du ser her.",
+    "en": "The case is shown without ATLAS. Think through which outcome you would choose, and answer page 1 of the form from what you see here."
+  },
+  "caseOnlyLineDpsAstrid": {
+    "nb": "Saken vises uten ATLAS. Tenk gjennom hvordan du ville svart fastlegen, og svar på side 1 i skjemaet ut fra det du ser her.",
+    "en": "The case is shown without ATLAS. Think through how you would answer the GP, and answer page 1 of the form based on what you see here."
+  },
+  "dbDpsAstridSkippedTitle": {
+    "nb": "Et spørsmål som ble stående",
+    "en": "A question left unanswered"
+  },
+  "dbTitlePlacements": {
+    "nb": "Plasseringer og utfall",
+    "en": "Placements and outcome"
+  },
+  "draftMeansSecond": {
+    "nb": "«Lagre utkast» betyr at den nye henvisningen ikke sendes nå. Saken følges da opp i allmennpraksis.",
+    "en": "‘Save draft’ means the new referral is not sent now. The case is then followed up in general practice."
+  },
+  "sentAtlasOne": {
+    "nb": "Fra ATLAS-panelet følger {{list}} med henvisningen.",
+    "en": "From the ATLAS panel, {{list}} goes with the referral."
+  },
+  "sentAtlasMany": {
+    "nb": "Fra ATLAS-panelet følger {{list}} med henvisningen.",
+    "en": "From the ATLAS panel, {{list}} go with the referral."
+  },
+  "sentAtlasNone": {
+    "nb": "Ingenting fra ATLAS-panelet følger med henvisningen, fordi feltene der er tomme.",
+    "en": "Nothing from the ATLAS panel goes with the referral, because its fields are empty."
+  },
+  "sentPlacementLater": {
+    "nb": "DPS ser plasseringen din først etter å ha plassert saken selv.",
+    "en": "DPS sees your placement only after placing the case themselves."
+  },
+  "sentPartUnclear": {
+    "nb": "beskrivelsen av hva som er uklart",
+    "en": "the description of what is unclear"
+  },
+  "sentPartConfidence": {
+    "nb": "tryggheten din",
+    "en": "your confidence"
+  },
+  "sentPartPlacement": {
+    "nb": "plasseringen din",
+    "en": "your placement"
+  },
+  "listAnd": {
+    "nb": "og",
+    "en": "and"
+  },
+  "sentBodyGpSecond": {
+    "nb": "Den nye henvisningen er sendt. Saken slutter her i studien, uten svar fra DPS.",
+    "en": "The new referral has been sent. The case ends here in the study, without a reply from DPS."
+  },
+  "sentBodyGpSecondReview": {
+    "nb": "Den nye henvisningen er sendt. Saken slutter her, uten svar fra DPS.",
+    "en": "The new referral has been sent. The case ends here, without a reply from DPS."
+  },
+  "showAtlasReason": {
+    "nb": "Svar på side 1 og gå videre til «Stopp her» i skjemaet.",
+    "en": "Answer page 1 and go on to the ‘Stop here’ page in the form."
+  },
+  "placeholderHiddenReview": {
+    "nb": "Slik ser deltakeren saken før ATLAS vises.",
+    "en": "This is how the participant sees the case before ATLAS is shown."
+  },
+  "newReferral": {
+    "nb": "Ny henvisning",
+    "en": "New referral"
+  },
+  "referralTo": {
+    "nb": "Til DPS Skjærgården, inntak",
+    "en": "To DPS Skjærgården, intake"
+  },
+  "fromNote": {
+    "nb": "Hentet fra notatet",
+    "en": "Taken from the note"
+  },
+  "fromFirstReferral": {
+    "nb": "Fra den første henvisningen",
+    "en": "From the first referral"
+  },
+  "fromAtlasPanel": {
+    "nb": "Fra ATLAS-panelet",
+    "en": "From the ATLAS panel"
+  },
+  "attachmentNote": {
+    "nb": "Vedlegg: konsultasjonsnotat",
+    "en": "Attachment: consultation note"
+  },
+  "sendReferral": {
+    "nb": "Send henvisning",
+    "en": "Send referral"
+  },
+  "clearDpsTitle": {
+    "nb": "Fjerne DPS-vurderingen?",
+    "en": "Remove the DPS assessment?"
+  },
+  "clearDpsBody": {
+    "nb": "DPS-siden har allerede begynt å vurdere eksempelhenvisningen i denne saken. Sender du din egen henvisning, fjernes den vurderingen, slik at DPS-siden kan vurdere henvisningen du sender.",
+    "en": "The DPS side has already started assessing the example referral in this case. If you send your own referral, that assessment is removed, so the DPS side can assess the referral you send."
+  },
+  "clearDpsConfirm": {
+    "nb": "Fjern vurderingen og send",
+    "en": "Remove the assessment and send"
+  },
+  "saveDraft": {
+    "nb": "Lagre utkast",
+    "en": "Save draft"
+  },
+  "draftMeans": {
+    "nb": "«Lagre utkast» betyr at henvisningen ikke sendes nå. Saken følges da opp i allmennpraksis.",
+    "en": "‘Save draft’ means the referral is not sent now. The case is then followed up in general practice."
+  },
+  "draftMeansShort": {
+    "nb": "«Lagre utkast» betyr at henvisningen ikke sendes nå.",
+    "en": "‘Save draft’ means the referral is not sent now."
+  },
+  "draftSaved": {
+    "nb": "Utkastet er lagret. Ingen henvisning er sendt.",
+    "en": "The draft has been saved. No referral has been sent."
+  },
+  "writeHere": {
+    "nb": "Skriv her",
+    "en": "Write here"
+  },
+  "sectionEmpty": {
+    "nb": "Tom",
+    "en": "Empty"
+  },
+  "previousRefusalLetter": {
+    "nb": "Svar på forrige henvisning",
+    "en": "Reply to the previous referral"
+  },
+  "sentTitleGp": {
+    "nb": "Henvisningen er sendt til DPS Skjærgården",
+    "en": "The referral has been sent to DPS Skjærgården"
+  },
+  "sentBodyGp": {
+    "nb": "Henvisningen, beskrivelsen av hva som er uklart, tryggheten din og plasseringen din følger med. DPS ser plasseringen din først etter å ha plassert saken selv.",
+    "en": "The referral, the description of what is unclear, your confidence and your placement go with it. DPS sees your placement only after placing the case themselves."
+  },
+  "sentTitleDps": {
+    "nb": "Vurderingen er sendt",
+    "en": "The assessment has been sent"
+  },
+  "sentBodyDps": {
+    "nb": "Fastlegen ser utfallet, årsakene og rådene i dialogen for henvisningen.",
+    "en": "The GP sees the outcome, the reasons and the advice in the dialogue for the referral."
+  },
+  "sentBodyDpsInfo": {
+    "nb": "Fastlegen ser spørsmålet ditt i dialogen for henvisningen.",
+    "en": "The GP sees your question in the dialogue for the referral."
+  },
+  "sentBodyDpsRett": {
+    "nb": "Fastlegen ser utfallet i dialogen for henvisningen.",
+    "en": "The GP sees the outcome in the dialogue for the referral."
+  },
+  "heldNoReply": {
+    "nb": "Oppsummeringen vises når du har sendt resten av skjemaet.",
+    "en": "The summary is shown once you have sent the rest of the form."
+  },
+  "heldOnePage": {
+    "nb": "Saken går videre når du har sendt skjemaet.",
+    "en": "The case goes on once you have sent the form."
+  },
+  "formAnswerNow": {
+    "nb": "Svar på skjemaet nå.",
+    "en": "Answer the form now."
+  },
+  "sentTitleQuestion": {
+    "nb": "Spørsmålet er sendt til DPS Skjærgården",
+    "en": "The question has been sent to DPS Skjærgården"
+  },
+  "sentBodyQuestion": {
+    "nb": "Det ligger i tråden for henvisningen, sammen med returen. Det trengs ingen ny henvisning for å spørre.",
+    "en": "It sits in the referral thread, with the return. No new referral is needed to ask."
+  },
+  "sentTitleAnswer": {
+    "nb": "Svaret er sendt til fastlegen",
+    "en": "The reply has been sent to the GP"
+  },
+  "sentBodyAnswer": {
+    "nb": "Fastlegen ser svaret i tråden for henvisningen.",
+    "en": "The GP sees the reply in the referral thread."
+  },
+  "heldReply": {
+    "nb": "Svaret fra den andre siden vises når du har sendt resten av skjemaet.",
+    "en": "The reply from the other side is shown once you have sent the rest of the form."
+  },
+  "newMessageFrom": {
+    "nb": "Ny melding i tråden fra {{who}}.",
+    "en": "New message in the thread from {{who}}."
+  },
+  "dialogWithDps": {
+    "nb": "Dialog med DPS",
+    "en": "Dialogue with DPS"
+  },
+  "dialogWithGp": {
+    "nb": "Dialog med fastlegen",
+    "en": "Dialogue with the GP"
+  },
+  "dialogComposerGp": {
+    "nb": "Skriv til DPS, inntak",
+    "en": "Write to DPS intake"
+  },
+  "dialogComposerDps": {
+    "nb": "Skriv til henvisende fastlege",
+    "en": "Write to the referring GP"
+  },
+  "dialogSkipQuestion": {
+    "nb": "Ikke spør nå",
+    "en": "Do not ask now"
+  },
+  "dialogSkipReply": {
+    "nb": "Ikke svar nå",
+    "en": "Do not reply now"
+  },
+  "scriptedNote": {
+    "nb": "Forhåndsskrevet melding i prototypen",
+    "en": "Message written in advance for the prototype"
+  },
+  "exampleReply": {
+    "nb": "Eksempelsvar",
+    "en": "Example reply"
+  },
+  "daysLater": {
+    "nb": "{{n}} dager senere",
+    "en": "{{n}} days later"
+  },
+  "dayLater": {
+    "nb": "Én dag senere",
+    "en": "One day later"
+  },
+  "you": {
+    "nb": "Du",
+    "en": "You"
+  },
+  "msgQuestion": {
+    "nb": "Spørsmål",
+    "en": "Question"
+  },
+  "msgAnswer": {
+    "nb": "Svar",
+    "en": "Reply"
+  },
+  "msgAck": {
+    "nb": "Kvittering",
+    "en": "Acknowledgement"
+  },
+  "msgReply": {
+    "nb": "Svar på forespørselen",
+    "en": "Reply to the request"
+  },
+  "composerEmpty": {
+    "nb": "Skriv en melding for å sende.",
+    "en": "Write a message to send it."
+  },
+  "referralSentOn": {
+    "nb": "Henvisningen ble sendt {{date}}",
+    "en": "The referral was sent on {{date}}"
+  },
+  "noThreadYet": {
+    "nb": "Ingen åpen tråd.",
+    "en": "No open thread."
+  },
+  "readReturn": {
+    "nb": "Retur med råd fra DPS",
+    "en": "Return with advice from DPS"
+  },
+  "yourQuestion": {
+    "nb": "Ditt spørsmål",
+    "en": "Your question"
+  },
+  "questionSkipped": {
+    "nb": "Ingen spørsmål ble sendt til DPS.",
+    "en": "No question was sent to DPS."
+  },
+  "firstReferralGuide": {
+    "nb": "Den første henvisningen ble sendt {{date}}.",
+    "en": "The first referral was sent on {{date}}."
+  },
+  "erlendDraftLine": {
+    "nb": "Utkastet til ny henvisning ligger klart, med ATLAS-panelet ved siden av.",
+    "en": "The draft of the new referral is ready, with the ATLAS panel beside it."
+  },
+  "openDraft": {
+    "nb": "Åpne utkastet",
+    "en": "Open the draft"
+  },
+  "replyFromDps": {
+    "nb": "Svar fra DPS",
+    "en": "Reply from DPS"
+  },
+  "noteAndRecord": {
+    "nb": "Notat og journal",
+    "en": "Note and record"
+  },
+  "toPlan": {
+    "nb": "Gå til Din plan",
+    "en": "Go to Your plan"
+  },
+  "patientLabel": {
+    "nb": "Pasient",
+    "en": "Patient"
+  },
+  "breadcrumbs": {
+    "nb": "Brødsmulesti",
+    "en": "Breadcrumb"
+  },
+  "criteriaNotMet": {
+    "nb": "Kriterier DPS vurderte som ikke oppfylt",
+    "en": "Criteria DPS judged not met"
+  },
+  "explanation": {
+    "nb": "Forklaring",
+    "en": "Explanation"
+  },
+  "advice": {
+    "nb": "Råd",
+    "en": "Advice"
+  },
+  "reasonsLabel": {
+    "nb": "Årsaker",
+    "en": "Reasons"
+  },
+  "reasonsAtLeastOne": {
+    "nb": "Årsaker (minst én)",
+    "en": "Reasons (at least one)"
+  },
+  "planTitle": {
+    "nb": "Din plan",
+    "en": "Your plan"
+  },
+  "planFollowUp": {
+    "nb": "Følg opp i allmennpraksis",
+    "en": "Follow up in general practice"
+  },
+  "planReferAgain": {
+    "nb": "Henvis på nytt",
+    "en": "Refer again"
+  },
+  "planReason": {
+    "nb": "Begrunnelse (valgfritt)",
+    "en": "Reason (optional)"
+  },
+  "planSave": {
+    "nb": "Lagre plan",
+    "en": "Save plan"
+  },
+  "planSaveReason": {
+    "nb": "Velg en plan for å lagre.",
+    "en": "Choose a plan to save."
+  },
+  "planSaved": {
+    "nb": "Planen er lagret.",
+    "en": "The plan has been saved."
+  },
+  "planGpOnly": {
+    "nb": "Ingen henvisning er sendt. Planen gjelder oppfølging i allmennpraksis.",
+    "en": "No referral has been sent. The plan concerns follow-up in general practice."
+  },
+  "secondDraftIntro": {
+    "nb": "Det nye utkastet tar med den første henvisningen og rådene fra DPS.",
+    "en": "The new draft carries the first referral and the advice from DPS."
+  },
+  "debrief": {
+    "nb": "Oppsummering",
+    "en": "Summary"
+  },
+  "placements": {
+    "nb": "Plasseringer",
+    "en": "Placements"
+  },
+  "gpDecision": {
+    "nb": "Fastlegens beslutning",
+    "en": "The GP’s decision"
+  },
+  "gpConfidence": {
+    "nb": "Fastlegens trygghet",
+    "en": "The GP’s confidence"
+  },
+  "dpsAssessment": {
+    "nb": "DPS-vurdering",
+    "en": "DPS assessment"
+  },
+  "mentionedInReferral": {
+    "nb": "Omtalt i henvisningen",
+    "en": "Mentioned in the referral"
+  },
+  "dbRowGpReply": {
+    "nb": "Svar til DPS",
+    "en": "Reply to DPS"
+  },
+  "dbRowReplied": {
+    "nb": "Svarte i tråden",
+    "en": "Replied in the thread"
+  },
+  "dbRowNotReplied": {
+    "nb": "Svarte ikke",
+    "en": "Did not reply"
+  },
+  "dbRowDpsAnswer": {
+    "nb": "Svar fra DPS",
+    "en": "Answer from DPS"
+  },
+  "dbRowAnswered": {
+    "nb": "Svarte i tråden",
+    "en": "Answered in the thread"
+  },
+  "dbRowNotAnswered": {
+    "nb": "Svarte ikke",
+    "en": "Did not answer"
+  },
+  "dbExample": {
+    "nb": "eksempelsvar",
+    "en": "example reply"
+  },
+  "dbExampleQuestion": {
+    "nb": "eksempelspørsmål",
+    "en": "example question"
+  },
+  "dbRowGpQuestion": {
+    "nb": "Spørsmål fra fastlegen",
+    "en": "Question from the GP"
+  },
+  "dbRowNone": {
+    "nb": "Ingen",
+    "en": "None"
+  },
+  "dbRowAnswerToGp": {
+    "nb": "Svar til fastlegen",
+    "en": "Answer to the GP"
+  },
+  "dbRowNotYet": {
+    "nb": "Ikke besvart ennå",
+    "en": "Not answered yet"
+  },
+  "dbNotYetAnswered": {
+    "nb": "har ikke svart fastlegen ennå",
+    "en": "has not replied to the GP yet"
+  },
+  "dbDpsPendingThread": {
+    "nb": "DPS har ikke svart på spørsmålet ennå.",
+    "en": "DPS has not answered the question yet."
+  },
+  "dbDpsAstridPendingTitle": {
+    "nb": "Et spørsmål som venter på svar",
+    "en": "A question awaiting an answer"
+  },
+  "dbNoReferralYet": {
+    "nb": "ingen henvisning sendt ennå",
+    "en": "no referral sent yet"
+  },
+  "dbRowGpPlan": {
+    "nb": "Fastlegens plan",
+    "en": "The GP’s plan"
+  },
+  "dbGpKeptReferral": {
+    "nb": "Fastlegesiden har ikke sendt henvisningen, så henvisningen og det som står om fastlegen her, er eksempler.",
+    "en": "The GP side has not sent the referral, so the referral and what this says about the GP are examples."
+  },
+  "dbOtherUnplayedDps": {
+    "nb": "DPS-siden er ikke spilt ennå, så det som står om DPS her, er eksempelsvar.",
+    "en": "The DPS side has not been played yet, so what this says about DPS is an example reply."
+  },
+  "dbOtherUnplayedGp": {
+    "nb": "Fastlegesiden er ikke spilt ennå, så det som står om fastlegen her, er eksempelsvar.",
+    "en": "The GP side has not been played yet, so what this says about the GP is an example reply."
+  },
+  "dbNoQuestion": {
+    "nb": "fastlegen spurte ikke om returen",
+    "en": "the GP did not ask about the return"
+  },
+  "dbDpsAstridNoQuestionTitle": {
+    "nb": "En retur uten spørsmål",
+    "en": "A return with no question"
+  },
+  "notSet": {
+    "nb": "Ikke valgt",
+    "en": "Not chosen"
+  },
+  "noReferralSent": {
+    "nb": "Ingen henvisning sendt",
+    "en": "No referral sent"
+  },
+  "goToNextStep": {
+    "nb": "Gå til neste steg",
+    "en": "Go to the next step"
+  },
+  "caseOf": {
+    "nb": "Sak {{n}} av 3",
+    "en": "Case {{n}} of 3"
+  },
+  "extraCase": {
+    "nb": "Ekstra",
+    "en": "Extra"
+  },
+  "startCase": {
+    "nb": "Start saken",
+    "en": "Start the case"
+  },
+  "continueCase": {
+    "nb": "Fortsett saken",
+    "en": "Continue the case"
+  },
+  "sentOn": {
+    "nb": "Sendt {{date}}",
+    "en": "Sent {{date}}"
+  },
+  "writeNewReferral": {
+    "nb": "Skriv den nye henvisningen",
+    "en": "Write the new referral"
+  },
+  "toSummary": {
+    "nb": "Gå til oppsummeringen",
+    "en": "Go to the summary"
+  },
+  "planSavedAs": {
+    "nb": "Lagret plan: {{v}}.",
+    "en": "Saved plan: {{v}}."
+  },
+  "casePurpose": {
+    "nb": "Hva saken er laget for å prøve ut",
+    "en": "What the case was made to try out"
+  },
+  "dbHold": {
+    "nb": "behold",
+    "en": "keep in general practice"
+  },
+  "dbReferSent": {
+    "nb": "henvis, og henvisningen ble sendt",
+    "en": "refer, and the referral was sent"
+  },
+  "dbReferDraft": {
+    "nb": "henvis, men henvisningen ble lagret som utkast og ikke sendt",
+    "en": "refer, but the referral was saved as a draft and not sent"
+  },
+  "dbReferNotSent": {
+    "nb": "henvis, men henvisningen er ikke sendt ennå",
+    "en": "refer, but the referral has not been sent yet"
+  },
+  "dbSent": {
+    "nb": "henvisningen ble sendt",
+    "en": "the referral was sent"
+  },
+  "dbDraft": {
+    "nb": "utkastet ble lagret og ikke sendt",
+    "en": "the draft was saved and not sent"
+  },
+  "dbAsked": {
+    "nb": "spurte DPS om returen",
+    "en": "asked DPS about the return"
+  },
+  "dbNotAsked": {
+    "nb": "spurte ikke DPS om returen",
+    "en": "did not ask DPS about the return"
+  },
+  "dbAnswered": {
+    "nb": "svarte fastlegen i tråden",
+    "en": "replied to the GP in the thread"
+  },
+  "dbNotAnswered": {
+    "nb": "svarte ikke fastlegen",
+    "en": "did not reply to the GP"
+  },
+  "dbNone": {
+    "nb": "ingen beslutning lagret",
+    "en": "no decision saved"
+  },
+  "dbNotChosen": {
+    "nb": "ikke valgt",
+    "en": "not chosen"
+  },
+  "dbPlacedFirst": {
+    "nb": "Fastlegen plasserte saken før systemets lesning ble vist.",
+    "en": "The GP placed the case before the system’s reading was shown."
+  },
+  "dbPlacedMoved": {
+    "nb": "Fastlegen plasserte saken før systemets lesning ble vist, og flyttet markøren etter at lesningen var vist.",
+    "en": "The GP placed the case before the system’s reading was shown, and moved the marker after the reading had been shown."
+  },
+  "dbNotPlaced": {
+    "nb": "Fastlegen plasserte ikke saken på båndet.",
+    "en": "The GP did not place the case on the band."
+  },
+  "dbDpsPlacedFirst": {
+    "nb": "Fastlegen og DPS plasserte saken hver for seg. Systemets lesning ble vist først etter at hver av dem hadde plassert saken.",
+    "en": "The GP and DPS placed the case separately. The system’s reading was shown only after each of them had placed the case."
+  },
+  "dbDpsPlacedMoved": {
+    "nb": "Fastlegen og DPS plasserte saken hver for seg. Systemets lesning ble vist først etter at hver av dem hadde plassert saken. DPS flyttet markøren etter at fastlegens markør og systemets lesning var vist.",
+    "en": "The GP and DPS placed the case separately. The system’s reading was shown only after each of them had placed the case. DPS moved the marker after the GP’s marker and the system’s reading had been shown."
+  },
+  "dbDpsPlacedFirstNoGp": {
+    "nb": "Fastlegen plasserte ikke saken. DPS plasserte den før systemets lesning ble vist.",
+    "en": "The GP did not place the case. DPS placed it before the system’s reading was shown."
+  },
+  "dbDpsPlacedMovedNoGp": {
+    "nb": "Fastlegen plasserte ikke saken. DPS plasserte den før systemets lesning ble vist, og flyttet markøren etter at lesningen var vist.",
+    "en": "The GP did not place the case. DPS placed it before the system’s reading was shown, and moved the marker after the reading had been shown."
+  },
+  "dbDpsNotPlaced": {
+    "nb": "DPS plasserte ikke saken på båndet, så fastlegens markør og systemets lesning ble ikke vist.",
+    "en": "DPS did not place the case on the band, so the GP’s marker and the system’s reading were not shown."
+  },
+  "dbGpAsked": {
+    "nb": "Fastlegen spurte om returen {{date}}.",
+    "en": "The GP asked about the return on {{date}}."
+  },
+  "dbDpsAnsweredThread": {
+    "nb": "DPS svarte i samme tråd.",
+    "en": "DPS answered in the same thread."
+  },
+  "dbDpsNotAnsweredThread": {
+    "nb": "DPS svarte ikke på spørsmålet.",
+    "en": "DPS did not answer the question."
+  },
+  "dbNoReferral": {
+    "nb": "ingen henvisning sendt, plan i allmennpraksis",
+    "en": "no referral sent, a plan in general practice"
+  },
+  "dbAwaiting": {
+    "nb": "venter på svar",
+    "en": "awaiting a reply"
+  },
+  "dbThen": {
+    "nb": "{{a}}, deretter {{b}}",
+    "en": "{{a}}, then {{b}}"
+  },
+  "dbPlanFollow": {
+    "nb": "følg opp i allmennpraksis",
+    "en": "follow up in general practice"
+  },
+  "dbPlanRefer": {
+    "nb": "henvis på nytt",
+    "en": "refer again"
+  },
+  "dbPlanReferSent": {
+    "nb": "henvis på nytt, og den nye henvisningen ble sendt",
+    "en": "refer again, and the new referral was sent"
+  },
+  "dbPlanReferDraft": {
+    "nb": "henvis på nytt, og det nye utkastet ble lagret",
+    "en": "refer again, and the new draft was saved"
+  },
+  "dbNoPlan": {
+    "nb": "ingen plan lagret",
+    "en": "no plan saved"
+  },
+  "backToList": {
+    "nb": "Tilbake til listen",
+    "en": "Back to the list"
+  },
+  "patternTitle": {
+    "nb": "Mitt henvisningsmønster",
+    "en": "My referral pattern"
+  },
+  "patternPrivacy": {
+    "nb": "Disse dataene er kun synlige for deg. De deles ikke med DPS, arbeidsgiver, tilsynsmyndigheter eller andre.",
+    "en": "This data is visible only to you. It is not shared with DPS, your employer, supervisory authorities or anyone else."
+  },
+  "patternReasons": {
+    "nb": "Årsaker til retur",
+    "en": "Reasons for return"
+  },
+  "patternReasonsNote": {
+    "nb": "En retur kan ha flere årsaker.",
+    "en": "A return can have several reasons."
+  },
+  "patternQuarters": {
+    "nb": "Henvisninger per kvartal",
+    "en": "Referrals per quarter"
+  },
+  "patternOutcomes": {
+    "nb": "Utfall",
+    "en": "Outcomes"
+  },
+  "patternSession": {
+    "nb": "Denne økten",
+    "en": "This session"
+  },
+  "asOf": {
+    "nb": "Per {{date}}",
+    "en": "As of {{date}}"
+  },
+  "referralsCount": {
+    "nb": "{{n}} henvisninger",
+    "en": "{{n}} referrals"
+  },
+  "awaitingReply": {
+    "nb": "Venter på svar",
+    "en": "Awaiting reply"
+  },
+  "waitingForDps": {
+    "nb": "DPS har ikke tatt det endelige valget ennå. Svaret vises her når DPS har tatt det.",
+    "en": "DPS has not made the final choice yet. The reply appears here once DPS has made it."
+  },
+  "waitingForGp": {
+    "nb": "Fastlegen har ikke svart ennå. Svaret vises her når fastlegesiden har svart.",
+    "en": "The GP has not replied yet. The reply appears here once the GP side has replied."
+  },
+  "patternSessionNone": {
+    "nb": "Ingen henvisninger i denne økten ennå.",
+    "en": "No referrals in this session yet."
+  },
+  "noDataTitle": {
+    "nb": "Ingen data ennå",
+    "en": "No data yet"
+  },
+  "noDataPattern": {
+    "nb": "Mønsteret vises når det finnes henvisninger med svar. Strukturen er den samme, uten tall.",
+    "en": "The pattern appears once there are referrals with replies. The structure is the same, without figures."
+  },
+  "noDataKalibrering": {
+    "nb": "Tallene for opptaksområdet vises når det finnes nok henvisninger til at ingen kan kjennes igjen.",
+    "en": "The figures for the catchment area appear once there are enough referrals for no one to be recognisable."
+  },
+  "showNoData": {
+    "nb": "Vis tilstanden uten data",
+    "en": "Show the no-data state"
+  },
+  "showData": {
+    "nb": "Vis med data",
+    "en": "Show with data"
+  },
+  "sharedTitle": {
+    "nb": "Delt oversikt",
+    "en": "Shared overview"
+  },
+  "kalibrering": {
+    "nb": "Kalibrering",
+    "en": "Calibration"
+  },
+  "dialogTab": {
+    "nb": "Dialog",
+    "en": "Dialogue"
+  },
+  "catchment": {
+    "nb": "Opptaksområdet",
+    "en": "The catchment area"
+  },
+  "commonReasons": {
+    "nb": "Vanlige årsaker til retur",
+    "en": "Common reasons for return"
+  },
+  "criteriaLog": {
+    "nb": "Endringer i kriteriene",
+    "en": "Changes to the criteria"
+  },
+  "discussion": {
+    "nb": "Anonymisert diskusjon",
+    "en": "Anonymised discussion"
+  },
+  "threads": {
+    "nb": "Tråder",
+    "en": "Threads"
+  },
+  "timelisteTitle": {
+    "nb": "Timeliste i dag",
+    "en": "Today’s appointments"
+  },
+  "timelisteSummary": {
+    "nb": "{{date}} · {{n}} pasienter · {{m}} med henvisningssak",
+    "en": "{{date}} · {{n}} patients · {{m}} referral cases"
+  },
+  "timelisteSummaryOne": {
+    "nb": "{{date}} · 1 pasient · 1 med henvisningssak",
+    "en": "{{date}} · 1 patient · 1 referral case"
+  },
+  "timelisteSummaryOneCase": {
+    "nb": "{{date}} · {{n}} pasienter · 1 med henvisningssak",
+    "en": "{{date}} · {{n}} patients · 1 referral case"
+  },
+  "searchPatients": {
+    "nb": "Søk etter pasient eller fødselsnummer",
+    "en": "Search for a patient or national identity number"
+  },
+  "clearSearch": {
+    "nb": "Tøm søket",
+    "en": "Clear the search"
+  },
+  "loadingReview": {
+    "nb": "Laster gjennomgangen …",
+    "en": "Loading the review …"
+  },
+  "noMatches": {
+    "nb": "Ingen pasienter passer søket.",
+    "en": "No patients match the search."
+  },
+  "ordinaryNote": {
+    "nb": "Pasienter uten henvisningssak er med for å vise en vanlig dag og kan ikke åpnes.",
+    "en": "Patients without a referral question are included to show an ordinary day and cannot be opened."
+  },
+  "laterInStudy": {
+    "nb": "Senere i studien",
+    "en": "Later in the study"
+  },
+  "chipReferred": {
+    "nb": "Henvist",
+    "en": "Referred"
+  },
+  "chipDraft": {
+    "nb": "Utkast lagret",
+    "en": "Draft saved"
+  },
+  "chipHeld": {
+    "nb": "Beholdt",
+    "en": "Kept"
+  },
+  "chipReply": {
+    "nb": "Svar fra DPS",
+    "en": "Reply from DPS"
+  },
+  "chipDone": {
+    "nb": "Ferdig",
+    "en": "Done"
+  },
+  "chipAnswered": {
+    "nb": "Besvart",
+    "en": "Answered"
+  },
+  "chipNewMessage": {
+    "nb": "Ny melding",
+    "en": "New message"
+  },
+  "chipNotAnswered": {
+    "nb": "Ikke besvart",
+    "en": "Not answered"
+  },
+  "chipNoReply": {
+    "nb": "Fastlegen svarte ikke",
+    "en": "The GP did not reply"
+  },
+  "queueAssessedOn": {
+    "nb": "Vurdert {{date}}",
+    "en": "Assessed {{date}}"
+  },
+  "chipAssessed": {
+    "nb": "Vurdert",
+    "en": "Assessed"
+  },
+  "queueTitle": {
+    "nb": "Mottatte henvisninger",
+    "en": "Received referrals"
+  },
+  "queueSummary": {
+    "nb": "{{date}} · {{n}} henvisninger",
+    "en": "{{date}} · {{n}} referrals"
+  },
+  "queueSummaryOne": {
+    "nb": "{{date}} · 1 henvisning",
+    "en": "{{date}} · 1 referral"
+  },
+  "colReceived": {
+    "nb": "Mottatt",
+    "en": "Received"
+  },
+  "colPatient": {
+    "nb": "Pasient",
+    "en": "Patient"
+  },
+  "colFrom": {
+    "nb": "Fra",
+    "en": "From"
+  },
+  "colDeadline": {
+    "nb": "Vurderingsfrist",
+    "en": "Assessment deadline"
+  },
+  "colStatus": {
+    "nb": "Status",
+    "en": "Status"
+  },
+  "newMessage": {
+    "nb": "Ny melding",
+    "en": "New message"
+  },
+  "deadline": {
+    "nb": "Frist {{date}}",
+    "en": "Deadline {{date}}"
+  },
+  "referralAsSent": {
+    "nb": "Henvisning, slik fastlegen sendte den",
+    "en": "Referral, as the GP sent it"
+  },
+  "fromReferringGp": {
+    "nb": "Fra henvisende fastlege · mottatt {{date}}",
+    "en": "From the referring GP · received {{date}}"
+  },
+  "gpUnsure": {
+    "nb": "Hva fastlegen var usikker på",
+    "en": "What the GP was unsure about"
+  },
+  "gpConfidenceWords": {
+    "nb": "Fastlegens trygghet for denne henvisningen: {{v}}.",
+    "en": "The GP’s confidence for this referral: {{v}}."
+  },
+  "noGpHistory": {
+    "nb": "Ingen historikk for den enkelte fastlege vises.",
+    "en": "No history for the individual GP is shown."
+  },
+  "assessmentTitle": {
+    "nb": "Vurdering",
+    "en": "Assessment"
+  },
+  "sendAssessment": {
+    "nb": "Send vurderingen",
+    "en": "Send the assessment"
+  },
+  "sendAssessmentReason": {
+    "nb": "Velg et utfall for å sende.",
+    "en": "Choose an outcome to send."
+  },
+  "returnNeeds": {
+    "nb": "En retur trenger minst én årsak og et råd.",
+    "en": "A return needs at least one reason and some advice."
+  },
+  "requestNeeds": {
+    "nb": "En forespørsel trenger et spørsmål.",
+    "en": "A request needs a question."
+  },
+  "questionToGp": {
+    "nb": "Spørsmål til fastlegen",
+    "en": "Question to the GP"
+  },
+  "adviceToGp": {
+    "nb": "Råd til fastlegen",
+    "en": "Advice to the GP"
+  },
+  "explanationToGp": {
+    "nb": "Forklaring (valgfritt)",
+    "en": "Explanation (optional)"
+  },
+  "finalChoice": {
+    "nb": "Endelig vurdering etter svaret fra fastlegen",
+    "en": "Final assessment after the GP’s reply"
+  },
+  "finalChoiceNoReply": {
+    "nb": "Endelig vurdering",
+    "en": "Final assessment"
+  },
+  "gpDidNotReply": {
+    "nb": "Fastlegen svarte ikke på forespørselen.",
+    "en": "The GP did not reply to the request."
+  },
+  "youDidNotReply": {
+    "nb": "Du svarte ikke på forespørselen.",
+    "en": "You did not reply to the request."
+  },
+  "dpsDidNotAnswer": {
+    "nb": "DPS svarte ikke på spørsmålet.",
+    "en": "DPS did not answer the question."
+  },
+  "answerGp": {
+    "nb": "Svar fastlegen",
+    "en": "Reply to the GP"
+  },
+  "sendAnswer": {
+    "nb": "Send svaret",
+    "en": "Send the reply"
+  },
+  "ownRecord": {
+    "nb": "Fra journalen ved DPS",
+    "en": "From DPS’s own record"
+  },
+  "questionFromGp": {
+    "nb": "Spørsmål fra henvisende fastlege",
+    "en": "Question from the referring GP"
+  },
+  "referralAndReply": {
+    "nb": "Henvisningen og svaret",
+    "en": "The referral and the reply"
+  },
+  "returnTheTeamSent": {
+    "nb": "Svaret inntaksteamet sendte",
+    "en": "The reply the intake team sent"
+  },
+  "yourAnswer": {
+    "nb": "Ditt svar",
+    "en": "Your reply"
+  },
+  "answerSkipped": {
+    "nb": "Ingen svar ble sendt til fastlegen.",
+    "en": "No reply was sent to the GP."
+  },
+  "gpAskedNothing": {
+    "nb": "Fastlegen sendte ikke noe spørsmål om returen.",
+    "en": "The GP sent no question about the return."
+  },
+  "referralOn": {
+    "nb": "Henvisning {{date}}",
+    "en": "Referral {{date}}"
+  },
+  "referralLetter": {
+    "nb": "Henvisning",
+    "en": "Referral"
+  },
+  "letterFrom": {
+    "nb": "Fra",
+    "en": "From"
+  },
+  "letterDate": {
+    "nb": "Dato",
+    "en": "Date"
+  },
+  "referralToDps": {
+    "nb": "Til: DPS Skjærgården, inntak",
+    "en": "To: DPS Skjærgården, intake"
+  },
+  "noTagsChosen": {
+    "nb": "Ingen type usikkerhet er valgt.",
+    "en": "No type of uncertainty has been chosen."
+  },
+  "noDescription": {
+    "nb": "Ingen beskrivelse.",
+    "en": "No description."
+  },
+  "assessmentSentOn": {
+    "nb": "Sendt {{date}}",
+    "en": "Sent {{date}}"
+  },
+  "finalSentOn": {
+    "nb": "Sendt {{date}}, etter svaret fra fastlegen",
+    "en": "Sent {{date}}, after the GP’s reply"
+  },
+  "formPanel": {
+    "nb": "Skjema",
+    "en": "Form"
+  },
+  "formOpenTab": {
+    "nb": "Åpne i egen fane",
+    "en": "Open in a new tab"
+  },
+  "formSentConfirm": {
+    "nb": "Jeg har sendt skjemaet",
+    "en": "I have sent the form"
+  },
+  "formPage1Confirm": {
+    "nb": "Jeg har svart på side 1",
+    "en": "I have answered page 1"
+  },
+  "formPage1ConfirmAgain": {
+    "nb": "Ja, jeg har svart på side 1",
+    "en": "Yes, I have answered page 1"
+  },
+  "formPage1NotMoved": {
+    "nb": "ATLAS kan ikke se at skjemaet har gått videre. Svar på side 1 og trykk Neste i skjemaet. Har du gjort det, trykk på knappen igjen.",
+    "en": "ATLAS cannot see that the form has moved on. Answer page 1 and press Next in the form. If you have done so, press the button again."
+  },
+  "formSkip": {
+    "nb": "Hopp over skjemaet",
+    "en": "Skip the form"
+  },
+  "formAnswerAnyway": {
+    "nb": "Svar likevel",
+    "en": "Answer anyway"
+  },
+  "formNotLoaded": {
+    "nb": "Skjemaet lastet ikke her. Åpne det i en ny fane.",
+    "en": "The form did not load here. Open it in a new tab."
+  },
+  "formFailed": {
+    "nb": "Sendingen feilet. Prøv igjen i skjemaet, eller åpne det i en ny fane.",
+    "en": "Sending failed. Try again in the form, or open it in a new tab."
+  },
+  "formNotReady": {
+    "nb": "Dette skjemaet er ikke klart ennå.",
+    "en": "This form is not ready yet."
+  },
+  "formNotReadyReload": {
+    "nb": "Last inn siden på nytt",
+    "en": "Reload the page"
+  },
+  "formNotReadyContact": {
+    "nb": "Kontakt: {{contact}}",
+    "en": "Contact: {{contact}}"
+  },
+  "formRestLater": {
+    "nb": "Resten av skjemaet åpnes når du har gjort saken ferdig",
+    "en": "The rest of the form opens when you have finished the case"
+  },
+  "formGoOn": {
+    "nb": "Gå videre i skjemaet og svar på resten nå.",
+    "en": "Go on in the form and answer the rest now."
+  },
+  "formOpened": {
+    "nb": "Skjemaet er åpnet i en ny fane.",
+    "en": "The form has been opened in a new tab."
+  },
+  "formNewTabHelp": {
+    "nb": "Svar i fanen, send skjemaet og kom tilbake hit. Trykk på «Jeg har sendt skjemaet» når du er ferdig.",
+    "en": "Answer in the tab, send the form and come back here. Press ‘I have sent the form’ when you are done."
+  },
+  "formHide": {
+    "nb": "Skjul skjemaet",
+    "en": "Hide the form"
+  },
+  "formShow": {
+    "nb": "Vis skjemaet",
+    "en": "Show the form"
+  },
+  "formSentToast": {
+    "nb": "Skjemaet er sendt.",
+    "en": "The form has been sent."
+  },
+  "formLoading": {
+    "nb": "Henter skjemaet …",
+    "en": "Loading the form …"
+  },
+  "formStepDone": {
+    "nb": "Dette steget er sendt.",
+    "en": "This step has been sent."
+  },
+  "formStepSkipped": {
+    "nb": "Dette skjemaet er hoppet over.",
+    "en": "This form has been skipped."
+  },
+  "showAtlas": {
+    "nb": "Vis ATLAS",
+    "en": "Show ATLAS"
+  },
+  "formReopened": {
+    "nb": "Skjemaet er åpnet på nytt. Svar på alle sidene nå.",
+    "en": "The form has been opened again. Answer all its pages now."
+  },
+  "formOpenTabButton": {
+    "nb": "Åpne skjemaet i en ny fane",
+    "en": "Open the form in a new tab"
+  },
+  "formMovedOn": {
+    "nb": "Skjemaet har gått videre. Trykk på knappen når du har svart på side 1.",
+    "en": "The form has moved on. Press the button once you have answered page 1."
+  },
+  "formLockedHeading": {
+    "nb": "Fylt ut automatisk av ATLAS",
+    "en": "Filled in automatically by ATLAS"
+  },
+  "previewForm": {
+    "nb": "Forhåndsvisning av skjemaet",
+    "en": "Preview of the form"
+  },
+  "previewFormNote": {
+    "nb": "Forhåndsvisning av skjemaet. Svarene sendes ikke til Nettskjema, men blir bare i denne nettleseren.",
+    "en": "Preview of the form. The answers are not sent to Nettskjema; they stay in this browser only."
+  },
+  "optionalMark": {
+    "nb": "(valgfritt)",
+    "en": "(optional)"
+  },
+  "previewSend": {
+    "nb": "Send (forhåndsvisning)",
+    "en": "Send (preview)"
+  },
+  "previewPageOf": {
+    "nb": "Side {{n}} av {{total}}",
+    "en": "Page {{n}} of {{total}}"
+  },
+  "required": {
+    "nb": "Må besvares",
+    "en": "Required"
+  },
+  "requiredMissing": {
+    "nb": "Svar på spørsmålet før du går videre.",
+    "en": "Answer the question before going on."
+  },
+  "velkommenEyebrow": {
+    "nb": "Forskningsprosjekt ved Universitetet i Agder",
+    "en": "A research project at the University of Agder"
+  },
+  "velkommenTitle": {
+    "nb": "Velkommen til ATLAS",
+    "en": "Welcome to ATLAS"
+  },
+  "velkommenStudy": {
+    "nb": "Prosjektet studerer hvordan fastleger og DPS-klinikere vurderer henvisninger til psykisk helsevern når saken er usikker.",
+    "en": "The project studies how GPs and DPS clinicians assess referrals to mental health services when a case is uncertain."
+  },
+  "velkommenPrototype": {
+    "nb": "ATLAS er en konseptprototype. Alle pasientene og alle tallene er fiktive.",
+    "en": "ATLAS is a concept prototype. All the patients and all the figures are fictional."
+  },
+  "velkommenImagine": {
+    "nb": "Forestill deg at ATLAS er bygget inn i systemet du bruker til daglig, for eksempel DIPS, med pasientopplysningene ferdig utfylt.",
+    "en": "Imagine that ATLAS is built into the system you use every day, for example DIPS, with the patient information already filled in."
+  },
+  "velkommenNoRight": {
+    "nb": "Det finnes ingen riktige svar. Prosjektet tester ideen, ikke deg.",
+    "en": "There are no right answers. The project tests the idea, not you."
+  },
+  "velkommenHowTitle": {
+    "nb": "Slik foregår det",
+    "en": "How it works"
+  },
+  "velkommenHow1": {
+    "nb": "Du velger rollen din og svarer på noen få spørsmål om deg.",
+    "en": "You choose your role and answer a few questions about yourself."
+  },
+  "velkommenHow2": {
+    "nb": "En kort omvisning viser skjermbildene på en øvingspasient.",
+    "en": "A short tour shows the screens on a practice patient."
+  },
+  "velkommenHow3": {
+    "nb": "Du arbeider med tre saker. I hver sak svarer du først uten ATLAS og deretter med ATLAS.",
+    "en": "You work through three cases. In each case you answer first without ATLAS and then with ATLAS."
+  },
+  "velkommenHow4": {
+    "nb": "Spørsmålene ligger i korte skjemaer fra Nettskjema, ett for hvert steg.",
+    "en": "The questions are in short forms from Nettskjema, one for each step."
+  },
+  "velkommenTime": {
+    "nb": "Det tar omtrent en time. Du kan ta pauser underveis, og framdriften lagres i denne nettleseren.",
+    "en": "It takes about an hour. You can take breaks along the way, and your progress is saved in this browser."
+  },
+  "velkommenDevice": {
+    "nb": "Bruk helst en bærbar eller stasjonær datamaskin.",
+    "en": "A laptop or desktop computer works best."
+  },
+  "velkommenRightsTitle": {
+    "nb": "Frivillig og anonymt",
+    "en": "Voluntary and anonymous"
+  },
+  "velkommenVoluntary": {
+    "nb": "Det er frivillig å delta, og du kan avslutte når du vil.",
+    "en": "Taking part is voluntary, and you can stop at any time."
+  },
+  "velkommenAnon": {
+    "nb": "Svarene er anonyme. Et sendt skjema kan derfor ikke spores til deg og ikke trekkes tilbake.",
+    "en": "The answers are anonymous. A sent form therefore cannot be traced to you and cannot be withdrawn."
+  },
+  "velkommenConsent": {
+    "nb": "Du samtykker til å delta ved å sende skjemaene.",
+    "en": "You consent to take part by sending the forms."
+  },
+  "velkommenData": {
+    "nb": "Svarene går bare til Nettskjema (UiO). ATLAS lagrer framdriften og de to svarene under «Om deg» bare i denne nettleseren.",
+    "en": "The answers go only to Nettskjema (UiO). ATLAS stores your progress and the two answers under ‘About you’ only in this browser."
+  },
+  "velkommenGithub": {
+    "nb": "Nettstedet ligger hos GitHub, som logger besøkendes IP-adresser av sikkerhetshensyn.",
+    "en": "The site is hosted by GitHub, which logs visitors’ IP addresses for security."
+  },
+  "velkommenLetter": {
+    "nb": "Informasjonsskriv om prosjektet",
+    "en": "Information letter about the project"
+  },
+  "velkommenContact": {
+    "nb": "Kontakt",
+    "en": "Contact"
+  },
+  "velkommenLetterMissing": {
+    "nb": "Informasjonsskrivet er ikke lagt inn ennå.",
+    "en": "The information letter has not been added yet."
+  },
+  "velkommenContactMissing": {
+    "nb": "Kontaktinformasjonen er ikke lagt inn ennå.",
+    "en": "The contact details have not been added yet."
+  },
+  "velkommenResume": {
+    "nb": "Fortsett der du slapp",
+    "en": "Continue where you left off"
+  },
+  "omDegTitle": {
+    "nb": "Om deg",
+    "en": "About you"
+  },
+  "omDegIntro": {
+    "nb": "To spørsmål her i ATLAS. Svarene blir låste felt i hvert skjema du sender.",
+    "en": "Two questions here in ATLAS. The answers become locked fields in each form you send."
+  },
+  "roleQuestion": {
+    "nb": "Hva er din rolle?",
+    "en": "What is your role?"
+  },
+  "roleOptFastlege": {
+    "nb": "Fastlege",
+    "en": "GP (fastlege)"
+  },
+  "roleOptDps": {
+    "nb": "DPS-kliniker",
+    "en": "DPS clinician"
+  },
+  "roleOptAnnen": {
+    "nb": "Annen rolle ved DPS-inntak",
+    "en": "Another role in DPS intake"
+  },
+  "roleLockedNote": {
+    "nb": "Rollen sendes som «Fastlege» eller «DPS-inntak». Begge DPS-rollene følger DPS-sidene.",
+    "en": "The role is sent as ‘Fastlege’ or ‘DPS-inntak’. Both DPS roles follow the DPS pages."
+  },
+  "interviewQuestion": {
+    "nb": "Deltok du i et intervju i dette forskningsprosjektet?",
+    "en": "Did you take part in an interview in this research project?"
+  },
+  "intervjuJa": {
+    "nb": "Ja",
+    "en": "Yes"
+  },
+  "intervjuNei": {
+    "nb": "Nei",
+    "en": "No"
+  },
+  "intervjuVilIkke": {
+    "nb": "Vil ikke svare",
+    "en": "Prefer not to say"
+  },
+  "omDegSave": {
+    "nb": "Lagre og åpne skjemaet",
+    "en": "Save and open the form"
+  },
+  "omDegSaveReason": {
+    "nb": "Svar på begge spørsmålene for å gå videre.",
+    "en": "Answer both questions to go on."
+  },
+  "omDegLocked": {
+    "nb": "Rollen og svaret følger med skjemaene du sender, og kan ikke endres.",
+    "en": "The role and the answer go with the forms you send, and cannot be changed."
+  },
+  "s1Intro": {
+    "nb": "Skjemaet «Før du ser ATLAS» åpnes i panelet. Det har noen spørsmål om arbeidet ditt i dag.",
+    "en": "The form ‘Before you see ATLAS’ opens in the panel. It has a few questions about your work today."
+  },
+  "goToTour": {
+    "nb": "Gå til omvisningen",
+    "en": "Go to the tour"
+  },
+  "formWaiting": {
+    "nb": "Send eller hopp over skjemaet for å gå videre.",
+    "en": "Send or skip the form to go on."
+  },
+  "formOpenButton": {
+    "nb": "Åpne skjemaet",
+    "en": "Open the form"
+  },
+  "formIsOpenPanel": {
+    "nb": "Skjemaet er åpent i panelet.",
+    "en": "The form is open in the panel."
+  },
+  "formIsOpenTab": {
+    "nb": "Skjemaet åpnes i en ny fane fra panelet.",
+    "en": "The form opens in a new tab from the panel."
+  },
+  "formStatusTitle": {
+    "nb": "Skjema for dette steget",
+    "en": "The form for this step"
+  },
+  "tourEyebrow": {
+    "nb": "Omvisning · {{role}} · punkt {{n}} av {{total}}",
+    "en": "Tour · {{role}} · stop {{n}} of {{total}}"
+  },
+  "tourPart": {
+    "nb": "Del {{n}} av {{total}}: {{title}}",
+    "en": "Part {{n}} of {{total}}: {{title}}"
+  },
+  "tourNextPart": {
+    "nb": "Neste del",
+    "en": "Next part"
+  },
+  "tourFinish": {
+    "nb": "Se oversikten",
+    "en": "See the overview"
+  },
+  "tourWhy": {
+    "nb": "Hvorfor dette finnes",
+    "en": "Why this exists"
+  },
+  "tourFrameLabel": {
+    "nb": "Levende eksempel: {{title}}",
+    "en": "Live example: {{title}}"
+  },
+  "tourFrameNote": {
+    "nb": "Øvingspasienten Sofie Lund. Det du gjør her, lagres ikke.",
+    "en": "The practice patient Sofie Lund. What you do here is not saved."
+  },
+  "tourSeeAgain": {
+    "nb": "Se igjen",
+    "en": "See again"
+  },
+  "tourOpenedNote": {
+    "nb": "Åpnet. I studien kommer du først til en kort beskrivelse av saken.",
+    "en": "Opened. In the study you first come to a short description of the case."
+  },
+  "tourBackToDialog": {
+    "nb": "Tilbake til Dialog",
+    "en": "Back to Dialogue"
+  },
+  "tourResetFrame": {
+    "nb": "Nullstill eksempelet",
+    "en": "Reset the example"
+  },
+  "tourWindowControls": {
+    "nb": "Vinduskontroller (bare pynt)",
+    "en": "Window controls (decoration only)"
+  },
+  "tourStepDot": {
+    "nb": "Punkt {{n}}",
+    "en": "Stop {{n}}"
+  },
+  "tourDone": {
+    "nb": "Omvisningen er ferdig",
+    "en": "The tour is finished"
+  },
+  "navQuestion": {
+    "nb": "Har du sett gjennom alle skjermbildene?",
+    "en": "Have you looked through all the screens?"
+  },
+  "navYes": {
+    "nb": "Ja, gå videre",
+    "en": "Yes, go on"
+  },
+  "navNo": {
+    "nb": "Nei, jeg trenger mer tid",
+    "en": "No, I need more time"
+  },
+  "navQuestionNote": {
+    "nb": "Svaret her lagres ikke. Spørsmålet kommer igjen i neste skjema.",
+    "en": "The answer here is not stored. The question comes again in the next form."
+  },
+  "tourReplayNote": {
+    "nb": "Omvisningen vises på nytt. Svarene dine påvirkes ikke.",
+    "en": "The tour is shown again. Your answers are not affected."
+  },
+  "tourBackToStudy": {
+    "nb": "Tilbake til studien",
+    "en": "Back to the study"
+  },
+  "tourStepList": {
+    "nb": "Steg i omvisningen",
+    "en": "Steps in the tour"
+  },
+  "helhetTitle": {
+    "nb": "Helhetsinntrykk",
+    "en": "Overall impression"
+  },
+  "helhetIntro": {
+    "nb": "Skjemaet «Helhetsinntrykk» åpnes i panelet. Spørsmålene gjelder skjermbildene fra omvisningen. Med «Se igjen» kan du åpne et steg fra omvisningen på nytt.",
+    "en": "The form ‘Overall impression’ opens in the panel. The questions are about the screens from the tour. With ‘See again’ you can open a step from the tour once more."
+  },
+  "helhetGoOn": {
+    "nb": "Gå til den første saken",
+    "en": "Go to the first case"
+  },
+  "avslutningTitle": {
+    "nb": "Avslutning",
+    "en": "Closing questions"
+  },
+  "avslutningIntro": {
+    "nb": "Det siste skjemaet har noen spørsmål om ATLAS som helhet. Etterpå kan du avslutte, eller se på ekstra saker.",
+    "en": "The last form has a few questions about ATLAS as a whole. Afterwards you can finish, or look at extra cases."
+  },
+  "toExtra": {
+    "nb": "Ekstra (valgfritt)",
+    "en": "Extra (optional)"
+  },
+  "finish": {
+    "nb": "Avslutt",
+    "en": "Finish"
+  },
+  "ekstraTitle": {
+    "nb": "Ekstra (valgfritt)",
+    "en": "Extra (optional)"
+  },
+  "ekstraIntroGp": {
+    "nb": "To korte ekstra saker, hver med ett lite skjema. Begge er frivillige.",
+    "en": "Two short extra cases, each with one small form. Both are optional."
+  },
+  "ekstraIntroDps": {
+    "nb": "Én kort ekstra visning med ett lite skjema. Den er frivillig.",
+    "en": "One short extra view with one small form. It is optional."
+  },
+  "extraTorbjornLine": {
+    "nb": "En klar henvisningssak, med ATLAS fra start.",
+    "en": "A clear-cut referral case, with ATLAS from the start."
+  },
+  "extraV5Line": {
+    "nb": "Samme pasient sett av to fastleger, med hvert sitt henvisningsmønster.",
+    "en": "The same patient seen by two GPs, each with their own referral pattern."
+  },
+  "extraOpen": {
+    "nb": "Åpne",
+    "en": "Open"
+  },
+  "v5AnswerButton": {
+    "nb": "Svar på spørsmålene",
+    "en": "Answer the questions"
+  },
+  "v5SideLabel": {
+    "nb": "Mitt henvisningsmønster, slik hver fastlege ser sitt eget",
+    "en": "My referral pattern, as each GP sees their own"
+  },
+  "takkTitle": {
+    "nb": "Takk for at du deltok",
+    "en": "Thank you for taking part"
+  },
+  "takkBody": {
+    "nb": "Skjemaene du har sendt, er lagret i Nettskjema. Du kan lukke fanen nå.",
+    "en": "The forms you have sent are stored in Nettskjema. You can close the tab now."
+  },
+  "takkBodyPreview": {
+    "nb": "Dette var en forhåndsvisning, så ingenting ble sendt til Nettskjema. Svarene ligger bare i denne nettleseren og kan lastes ned fra banneret øverst.",
+    "en": "This was a preview, so nothing was sent to Nettskjema. The answers stay in this browser only and can be downloaded from the banner at the top."
+  },
+  "takkClearTitle": {
+    "nb": "Delt datamaskin?",
+    "en": "A shared computer?"
+  },
+  "takkClearBody": {
+    "nb": "ATLAS har lagret framdriften og de to svarene under «Om deg» i denne nettleseren. Du kan fjerne dem nå. Skjemaene du har sendt, ligger i Nettskjema og påvirkes ikke.",
+    "en": "ATLAS has stored your progress and the two answers under ‘About you’ in this browser. You can remove them now. The forms you have sent are in Nettskjema and are not affected."
+  },
+  "takkClearButton": {
+    "nb": "Fjern ATLAS-data fra denne nettleseren",
+    "en": "Remove ATLAS data from this browser"
+  },
+  "takkClearConfirmTitle": {
+    "nb": "Fjerne ATLAS-data fra denne nettleseren?",
+    "en": "Remove ATLAS data from this browser?"
+  },
+  "takkClearConfirmBody": {
+    "nb": "Framdriften, språkvalget og svarene under «Om deg» slettes fra denne nettleseren. Studien starter på nytt fra Velkommen hvis noen åpner lenken igjen her.",
+    "en": "Your progress, the language choice and the answers under ‘About you’ are deleted from this browser. The study starts again from ‘Welcome’ if someone opens the link here again."
+  },
+  "takkClearBodyPreview": {
+    "nb": "ATLAS har lagret framdriften, de to svarene under «Om deg» og svarene fra forhåndsvisningen i denne nettleseren. Svarene fra forhåndsvisningen finnes ikke noe annet sted: last dem ned fra banneret øverst før du fjerner dataene.",
+    "en": "ATLAS has stored your progress, the two answers under ‘About you’ and the answers from the preview in this browser. The preview answers exist nowhere else: download them from the banner at the top before you remove the data."
+  },
+  "takkClearConfirmBodyPreview": {
+    "nb": "Framdriften, språkvalget, svarene under «Om deg» og svarene fra forhåndsvisningen slettes fra denne nettleseren, og forhåndsvisningen avsluttes.",
+    "en": "Your progress, the language choice, the answers under ‘About you’ and the preview answers are deleted from this browser, and the preview ends."
+  },
+  "takkClearConfirm": {
+    "nb": "Ja, fjern dataene",
+    "en": "Yes, remove the data"
+  },
+  "takkReasonsTitle": {
+    "nb": "Hvorfor ATLAS ser slik ut",
+    "en": "Why ATLAS looks the way it does"
+  },
+  "takkReasonsIntro": {
+    "nb": "Nå som skjemaene er sendt, kan du lese hva hvert element er ment å gjøre, og hva sakene var laget for å prøve ut.",
+    "en": "Now that the forms are sent, you can read what each element is meant to do, and what the cases were made to try out."
+  },
+  "takkCasesTitle": {
+    "nb": "Sakene",
+    "en": "The cases"
+  },
+  "takkTourTitle": {
+    "nb": "Elementene fra omvisningen",
+    "en": "The elements from the tour"
+  },
+  "stepperTitle": {
+    "nb": "Studien",
+    "en": "The study"
+  },
+  "stepVelkommen": {
+    "nb": "Velkommen",
+    "en": "Welcome"
+  },
+  "stepOmDeg": {
+    "nb": "Om deg",
+    "en": "About you"
+  },
+  "stepOmvisning": {
+    "nb": "Omvisning",
+    "en": "Tour"
+  },
+  "stepHelhet": {
+    "nb": "Helhetsinntrykk",
+    "en": "Overall impression"
+  },
+  "stepKari": {
+    "nb": "Sak 1: Kari",
+    "en": "Case 1: Kari"
+  },
+  "stepErlend": {
+    "nb": "Sak 2: Erlend",
+    "en": "Case 2: Erlend"
+  },
+  "stepAstrid": {
+    "nb": "Sak 3: Astrid",
+    "en": "Case 3: Astrid"
+  },
+  "stepAvslutning": {
+    "nb": "Avslutning",
+    "en": "Closing questions"
+  },
+  "stepEkstra": {
+    "nb": "Ekstra (valgfritt)",
+    "en": "Extra (optional)"
+  },
+  "stepTakk": {
+    "nb": "Takk",
+    "en": "Thank you"
+  },
+  "stepStatusDone": {
+    "nb": "Fullført",
+    "en": "Completed"
+  },
+  "stepStatusNow": {
+    "nb": "Nå",
+    "en": "Now"
+  },
+  "stepStatusLater": {
+    "nb": "Senere",
+    "en": "Later"
+  },
+  "stepOpen": {
+    "nb": "Åpne",
+    "en": "Open"
+  },
+  "stepFormSent": {
+    "nb": "Skjema sendt",
+    "en": "Form sent"
+  },
+  "stepFormSkipped": {
+    "nb": "Skjema hoppet over",
+    "en": "Form skipped"
+  },
+  "helpHow1": {
+    "nb": "Studien har ni steg. Telleren øverst viser hvor du er.",
+    "en": "The study has nine steps. The counter at the top shows where you are."
+  },
+  "helpHow2": {
+    "nb": "Spørsmålene ligger i korte skjemaer fra Nettskjema. Et skjema åpnes i et panel til høyre, eller i en ny fane. Når du har sendt et skjema, går du videre her i ATLAS.",
+    "en": "The questions are in short forms from Nettskjema. A form opens in a panel on the right, or in a new tab. Once you have sent a form, you continue here in ATLAS."
+  },
+  "helpHow3": {
+    "nb": "Hver sak har ett skjema med tre sider. Side 1 besvares mens saken vises uten ATLAS. Deretter kommer en side som sier «Stopp her». Da går du tilbake til ATLAS og trykker på «Vis ATLAS». Når du har gjort saken ferdig, ber ATLAS deg gå videre i skjemaet.",
+    "en": "Each case has one form with three pages. Page 1 is answered while the case is shown without ATLAS. Then comes a page that says ‘Stop here’. You then go back to ATLAS and press ‘Show ATLAS’. Once you have finished the case, ATLAS asks you to go on in the form."
+  },
+  "helpHow4": {
+    "nb": "Du kan hoppe over et skjema. Et skjema du har hoppet over, kan du åpne igjen fra «Studien» med «Svar likevel».",
+    "en": "You can skip a form. A form you have skipped can be opened again from ‘The study’ with ‘Answer anyway’."
+  },
+  "helpHow5": {
+    "nb": "Framdriften lagres i denne nettleseren. Bruk samme nettleser hvis du tar en pause.",
+    "en": "Your progress is saved in this browser. Use the same browser if you take a break."
+  },
+  "helpAbout1": {
+    "nb": "ATLAS er en konseptprototype for henvisninger fra fastleger til DPS. Alle pasienter, klinikere og tall er fiktive.",
+    "en": "ATLAS is a concept prototype for referrals from GPs to DPS. All patients, clinicians and figures are fictional."
+  },
+  "helpAbout2": {
+    "nb": "Usikkerhetsvisningen viser først hvor du selv plasserer saken, og deretter systemets lesning. Lesningen er skrevet for hver sak og er ikke beregnet.",
+    "en": "The uncertainty display first shows where you place the case yourself, and then the system’s reading. The reading is written for each case and is not calculated."
+  },
+  "helpAbout3": {
+    "nb": "Hver blokk er merket med hvor opplysningene kommer fra: journalen, notatet, pasientens selvrapport, din egen vurdering, den andre klinikeren, systemets lesning eller fiktive tall.",
+    "en": "Each block is labelled with where its information comes from: the record, the note, the patient’s self-report, your own assessment, the other clinician, the system’s reading or fictional figures."
+  },
+  "helpAbout4": {
+    "nb": "Ingenting sendes til DPS eller til noen andre. Det eneste som forlater nettleseren, er skjemaene du sender til Nettskjema.",
+    "en": "Nothing is sent to DPS or to anyone else. The only thing that leaves the browser is the forms you send to Nettskjema."
+  },
+  "resetDone": {
+    "nb": "Ufullførte steg er startet på nytt.",
+    "en": "Unfinished steps have been restarted."
+  },
+  "reviewTitle": {
+    "nb": "Gjennomgang av ATLAS",
+    "en": "Review of ATLAS"
+  },
+  "reviewPickRole": {
+    "nb": "Velg hvilken side du vil se fra",
+    "en": "Choose which side to view from"
+  },
+  "reviewYourRole": {
+    "nb": "Din rolle i gjennomgangen",
+    "en": "Your role in the review"
+  },
+  "seeOtherSide": {
+    "nb": "Se fra den andre siden",
+    "en": "See from the other side"
+  },
+  "feedback": {
+    "nb": "Gi tilbakemelding",
+    "en": "Give feedback"
+  },
+  "feedbackOverview": {
+    "nb": "Tilbakemeldinger",
+    "en": "Feedback"
+  },
+  "wrapUp": {
+    "nb": "Samlet inntrykk",
+    "en": "Overall impression"
+  },
+  "showWithoutAtlas": {
+    "nb": "Vis uten ATLAS",
+    "en": "Show without ATLAS"
+  },
+  "showWithAtlas": {
+    "nb": "Vis med ATLAS",
+    "en": "Show with ATLAS"
+  },
+  "meridianLink": {
+    "nb": "Meridian, designsystemet",
+    "en": "Meridian, the design system"
+  },
+  "playedLabel": {
+    "nb": "Spilt i gjennomgangen",
+    "en": "Played in the review"
+  },
+  "reviewIntro1": {
+    "nb": "Gjennomgangen viser hele ATLAS med fri navigasjon. Du kan se sakene fra begge sider, spille begge rollene og slå på Merknader for å se begrunnelsene for designet.",
+    "en": "The review shows all of ATLAS with free navigation. You can see the cases from both sides, play both roles and switch on Design notes to see the reasons behind the design."
+  },
+  "reviewIntro2": {
+    "nb": "Der ingen har spilt den andre siden, brukes et forhåndsskrevet svar merket «Eksempelsvar».",
+    "en": "Where no one has played the other side, a reply written in advance is used, labelled ‘Example reply’."
+  },
+  "reviewIntro3": {
+    "nb": "Gi tilbakemelding per del av et skjermbilde med fanen «Gi tilbakemelding» ved høyre kant, og et samlet inntrykk til slutt under «Tilbakemeldinger».",
+    "en": "Give feedback on each part of a screen with the ‘Give feedback’ tab on the right edge, and an overall impression at the end under ‘Feedback’."
+  },
+  "reviewLookTitle": {
+    "nb": "Se særlig etter",
+    "en": "Look especially for"
+  },
+  "reviewLook1": {
+    "nb": "Hvor opplysningene kommer fra: er det tydelig hva som kommer fra journalen, fra klinikeren selv, fra den andre siden og fra ATLAS?",
+    "en": "Where information comes from: is it clear what comes from the record, from the clinicians themselves, from the other side and from ATLAS?"
+  },
+  "reviewLook2": {
+    "nb": "Egen vurdering og systemets lesning: holdes de fra hverandre, og plasserer klinikeren saken før lesningen vises?",
+    "en": "Own judgement and the system’s reading: are they kept apart, and does the clinician place the case before the reading appears?"
+  },
+  "reviewLook3": {
+    "nb": "Forhåndspåvirkning: sier noe i orienteringen, omvisningen eller hjelpen hva svaret bør være før deltakeren har vurdert saken selv?",
+    "en": "Priming: does anything in the briefing, the tour or the help say what the answer should be before the participant has judged the case?"
+  },
+  "reviewLook4": {
+    "nb": "Realisme: ville sakene, henvisningene og svarene sett slik ut hos en fastlege og ved en DPS?",
+    "en": "Realism: would the cases, referrals and replies look like this at a GP office and at a DPS?"
+  },
+  "reviewLook5": {
+    "nb": "Avgrensning: lover ATLAS noe prototypen ikke gjør? Se «Om prototypen» under Hjelp.",
+    "en": "Scope: does ATLAS promise anything the prototype does not do? See ‘About the prototype’ under Help."
+  },
+  "reviewHow1": {
+    "nb": "Gjennomgangen har ingen steg og ingen teller. Bytt mellom fastlege og DPS øverst, og åpne sakene fra listen.",
+    "en": "The review has no steps and no counter. Switch between GP and DPS at the top, and open the cases from the list."
+  },
+  "reviewHow2": {
+    "nb": "Det du gjør i én rolle, når den andre siden: en henvisning du sender som fastlege, er den DPS mottar. Der ingen har spilt den andre siden, vises et svar merket «Eksempelsvar».",
+    "en": "What you do in one role reaches the other side: a referral you send as a GP is the one DPS receives. Where no one has played the other side, a reply labelled ‘Example reply’ is shown."
+  },
+  "reviewHow3": {
+    "nb": "Merknader viser begrunnelsen for hver del av designet. «Uten ATLAS» og «Med ATLAS» viser saken slik deltakerne ser den før og etter at ATLAS vises.",
+    "en": "Design notes show the reasoning behind each part of the design. ‘Without ATLAS’ and ‘With ATLAS’ show the case as participants see it before and after ATLAS is shown."
+  },
+  "reviewHow4": {
+    "nb": "Gi tilbakemelding med fanen ved høyre kant. Den gjelder skjermbildet og saken du ser på. Til slutt gir du et samlet inntrykk under «Tilbakemeldinger».",
+    "en": "Give feedback with the tab on the right edge. It is about the screen and the case you are looking at. At the end, give an overall impression under ‘Feedback’."
+  },
+  "reviewHow5": {
+    "nb": "«Start på nytt» (pilen øverst) fjerner det du har spilt i gjennomgangen. Tilbakemeldinger du har sendt, blir værende i Nettskjema.",
+    "en": "‘Start again’ (the arrow at the top) removes what you have played in the review. Feedback you have sent stays in Nettskjema."
+  },
+  "helpAboutNotTitle": {
+    "nb": "Dette gjør ikke prototypen",
+    "en": "What the prototype does not do"
+  },
+  "helpAboutNot1": {
+    "nb": "Den henter ingen opplysninger fra et journalsystem. Pasientene, klinikerne, sakene og tallene er skrevet for prototypen.",
+    "en": "It fetches nothing from a record system. The patients, clinicians, cases and figures are written for the prototype."
+  },
+  "helpAboutNot2": {
+    "nb": "Den beregner ikke systemets lesning og lærer ikke av svarene. Lesningen er skrevet for hver sak.",
+    "en": "It does not calculate the system’s reading and does not learn from the answers. The reading is written for each case."
+  },
+  "helpAboutNot3": {
+    "nb": "Den anbefaler ikke et utfall og rangerer ikke henvisninger.",
+    "en": "It does not recommend an outcome or rank referrals."
+  },
+  "helpAboutNot4": {
+    "nb": "Den sender ingen henvisning eller melding. Svarene fra den andre siden er spilt av noen i gjennomgangen eller skrevet på forhånd for prototypen.",
+    "en": "It sends no referral or message. Replies from the other side were played by someone in the review or written in advance for the prototype."
+  },
+  "helpAboutNot5": {
+    "nb": "Den lagrer ingenting på en server. Det du gjør, blir i denne nettleseren; bare skjemaene går til Nettskjema.",
+    "en": "It stores nothing on a server. What you do stays in this browser; only the forms go to Nettskjema."
+  },
+  "helpAboutNot6": {
+    "nb": "Den viser ikke DPS fastlegens navn eller hvordan fastlegen har henvist før.",
+    "en": "It does not show DPS the GP’s name or how the GP has referred before."
+  },
+  "feedbackPartsTitle": {
+    "nb": "Deler med tilbakemelding",
+    "en": "Parts with feedback"
+  },
+  "feedbackNoneYet": {
+    "nb": "Ingen ennå. Bruk fanen «Gi tilbakemelding» ved høyre kant av et skjermbilde.",
+    "en": "None yet. Use the ‘Give feedback’ tab on the right edge of a screen."
+  },
+  "feedbackScreensTitle": {
+    "nb": "Skjermbilder",
+    "en": "Screens"
+  },
+  "feedbackScreensIntro": {
+    "nb": "Tallene viser hvor mange deler av hvert skjermbilde du har gitt tilbakemelding på. Velg en sak for å åpne skjermbildet.",
+    "en": "The numbers show how many parts of each screen you have given feedback on. Choose a case to open the screen."
+  },
+  "partsGiven": {
+    "nb": "{{n}} av {{m}}",
+    "en": "{{n}} of {{m}}"
+  },
+  "partsGivenLabel": {
+    "nb": "{{screen}}: tilbakemelding på {{n}} av {{m}} deler",
+    "en": "{{screen}}: feedback on {{n}} of {{m}} parts"
+  },
+  "openScreen": {
+    "nb": "Åpne",
+    "en": "Open"
+  },
+  "reviewPreviewNote": {
+    "nb": "Tilbakemeldingsskjemaene vises som forhåndsvisning fordi ingen Nettskjema-adresse er satt for gjennomgangen. Svarene blir i denne nettleseren til du laster dem ned.",
+    "en": "The feedback forms show as previews because no Nettskjema address is set for the review. The answers stay in this browser until you download them."
+  },
+  "reviewerFastlege": {
+    "nb": "Fastlege",
+    "en": "GP"
+  },
+  "reviewerDps": {
+    "nb": "DPS-kliniker",
+    "en": "DPS clinician"
+  },
+  "reviewerVeileder": {
+    "nb": "Veileder",
+    "en": "Supervisor"
+  },
+  "reviewerEkstern": {
+    "nb": "Ekstern fagperson",
+    "en": "External expert"
+  },
+  "reviewerLocked": {
+    "nb": "Rollen er sendt med tilbakemeldingene og kan ikke endres.",
+    "en": "The role has been sent with the feedback and cannot be changed."
+  },
+  "reviewStartGp": {
+    "nb": "Se som fastlege",
+    "en": "View as GP"
+  },
+  "reviewStartDps": {
+    "nb": "Se som DPS, inntak",
+    "en": "View as DPS intake"
+  },
+  "reviewTryStudy": {
+    "nb": "Prøv studien med forhåndsvisning",
+    "en": "Try the study with preview forms"
+  },
+  "reviewTryStudyNote": {
+    "nb": "Åpner studien slik en deltaker ser den, med forhåndsvisning av skjemaene. Ingenting sendes til Nettskjema.",
+    "en": "Opens the study as a participant sees it, with previews of the forms. Nothing is sent to Nettskjema."
+  },
+  "reviewTour": {
+    "nb": "Omvisning",
+    "en": "Tour"
+  },
+  "reviewV5": {
+    "nb": "To fastleger",
+    "en": "Two GPs"
+  },
+  "reviewBack": {
+    "nb": "Tilbake til gjennomgangen",
+    "en": "Back to the review"
+  },
+  "feedbackPick": {
+    "nb": "Hvilken del gjelder tilbakemeldingen?",
+    "en": "Which part is the feedback about?"
+  },
+  "feedbackOpenNow": {
+    "nb": "Åpent nå",
+    "en": "Open now"
+  },
+  "feedbackSwitchTitle": {
+    "nb": "Bytte skjema?",
+    "en": "Switch form?"
+  },
+  "feedbackSwitchBody": {
+    "nb": "Skjemaet om «{{open}}» er åpent og ikke sendt. Åpner du skjemaet om «{{next}}», forsvinner det du har skrevet i det åpne skjemaet.",
+    "en": "The form about ‘{{open}}’ is open and has not been sent. If you open the form about ‘{{next}}’, what you have written in the open form is lost."
+  },
+  "feedbackSwitchConfirm": {
+    "nb": "Åpne det nye skjemaet",
+    "en": "Open the new form"
+  },
+  "feedbackRoleFirst": {
+    "nb": "Velg rollen din i gjennomgangen først.",
+    "en": "Choose your role in the review first."
+  },
+  "useThisRole": {
+    "nb": "Bruk denne rollen",
+    "en": "Use this role"
+  },
+  "feedbackOverviewIntro": {
+    "nb": "Her ser du hvilke deler du har gitt tilbakemelding på. Tilbakemeldingene går til Nettskjema, eller blir i nettleseren når skjemaet vises som forhåndsvisning.",
+    "en": "Here you can see which parts you have given feedback on. Feedback goes to Nettskjema, or stays in the browser when the form is shown as a preview."
+  },
+  "feedbackGiven": {
+    "nb": "Tilbakemelding gitt",
+    "en": "Feedback given"
+  },
+  "feedbackThanks": {
+    "nb": "Takk. Tilbakemeldingen er registrert.",
+    "en": "Thank you. The feedback has been recorded."
+  },
+  "wrapUpButton": {
+    "nb": "Gi et samlet inntrykk",
+    "en": "Give an overall impression"
+  },
+  "wrapUpDone": {
+    "nb": "Det samlede inntrykket er sendt.",
+    "en": "The overall impression has been sent."
+  },
+  "restartDone": {
+    "nb": "Gjennomgangen er startet på nytt.",
+    "en": "The review has been started again."
+  },
+  "secWhole": {
+    "nb": "Hele skjermbildet",
+    "en": "The whole screen"
+  },
+  "secRecord": {
+    "nb": "Journalen: notat, legemidler, historikk",
+    "en": "The record: note, medicines, history"
+  },
+  "secReferral": {
+    "nb": "Henvisningen",
+    "en": "The referral"
+  },
+  "secMargin": {
+    "nb": "Margen «Hva DPS ser etter»",
+    "en": "The margin ‘What DPS looks for’"
+  },
+  "secBriefing": {
+    "nb": "Beskrivelsen av saken",
+    "en": "The description of the case"
+  },
+  "secAnswer": {
+    "nb": "Svaret til fastlegen",
+    "en": "The reply to the GP"
+  },
+  "sideGp": {
+    "nb": "Fastlegesiden",
+    "en": "The GP side"
+  },
+  "sideDps": {
+    "nb": "DPS-siden",
+    "en": "The DPS side"
+  },
+  "viewTimeliste": {
+    "nb": "Timeliste",
+    "en": "Appointments"
+  },
+  "exampleBadge": {
+    "nb": "Eksempel",
+    "en": "Example"
+  },
+  "secondSentIntro": {
+    "nb": "Den nye henvisningen bygde på den første henvisningen og rådene fra DPS.",
+    "en": "The new referral built on the first referral and the advice from DPS."
+  },
+  "newReferralDivider": {
+    "nb": "Fastlegen sendte en ny henvisning {{date}}. Prototypen følger ikke den nye henvisningen videre.",
+    "en": "The GP sent a new referral on {{date}}. The prototype does not follow the new referral any further."
+  },
+  "dbMentionedFirst": {
+    "nb": "Omtalt i den første henvisningen",
+    "en": "Mentioned in the first referral"
+  },
+  "dbMentionedNew": {
+    "nb": "Omtalt i den nye henvisningen",
+    "en": "Mentioned in the new referral"
+  },
+  "dbExampleMark": {
+    "nb": "eksempel",
+    "en": "example"
+  },
+  "dbAfterExampleReply": {
+    "nb": "etter fastlegens eksempelsvar",
+    "en": "after the GP’s example reply"
+  },
+  "secAdvice": {
+    "nb": "Råd fra DPS",
+    "en": "Advice from DPS"
+  },
+  "clearAnswerTitle": {
+    "nb": "Fjerne DPS-svaret?",
+    "en": "Remove the DPS answer?"
+  },
+  "clearAnswerBody": {
+    "nb": "DPS-siden har allerede tatt stilling til eksempelspørsmålet i denne saken. Spørsmålet ditt, eller valget om ikke å spørre, er nytt for DPS, så det DPS-siden gjorde, fjernes, slik at DPS-siden kan ta stilling på nytt.",
+    "en": "The DPS side has already dealt with the example question in this case. Your question, or the choice not to ask, is new to DPS, so what the DPS side did is removed, and the DPS side can deal with it again."
+  },
+  "clearFinalBody": {
+    "nb": "DPS-siden har allerede gjort sitt endelige valg etter eksempelsvaret i denne saken. Svaret ditt, eller valget om ikke å svare, er nytt for DPS, så det valget fjernes, slik at DPS-siden kan velge på nytt.",
+    "en": "The DPS side has already made its final choice after the example reply in this case. Your reply, or the choice not to reply, is new to DPS, so that choice is removed, and the DPS side can choose again."
+  },
+  "clearAndContinue": {
+    "nb": "Fjern og fortsett",
+    "en": "Remove and continue"
+  }
+}

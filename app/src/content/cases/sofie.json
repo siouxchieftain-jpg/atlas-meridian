@@ -1,0 +1,464 @@
+{
+  "id": "sofie",
+  "vignette": "practice",
+  "patient": {
+    "name": "Sofie Lund",
+    "age": 39,
+    "initials": "SL",
+    "fnr": "041186 ·····"
+  },
+  "gp": {
+    "timeliste": {
+      "time": "13:00",
+      "visit": {
+        "nb": "Konsultasjon",
+        "en": "Consultation"
+      },
+      "chips": [
+        {
+          "label": {
+            "nb": "Selvrapport mottatt",
+            "en": "Self-report received"
+          }
+        }
+      ]
+    },
+    "briefing": {
+      "task": {
+        "nb": "Du er Sofies fastlege. Hun kommer til konsultasjon kl. 13:00 og har fylt ut selvrapporten før timen. Les notatet og bestem om du vil henvise til DPS.",
+        "en": "You are Sofie’s GP. She comes for a consultation at 13:00 and filled in the self-report before the appointment. Read the note and decide whether to refer to DPS."
+      },
+      "rows": [
+        {
+          "label": {
+            "nb": "Hvem",
+            "en": "Who"
+          },
+          "value": {
+            "nb": "Sofie Lund, 39 år. Søvnvansker og stress i tre måneder, etter en omorganisering på jobben.",
+            "en": "Sofie Lund, 39. Sleep problems and stress for three months, after a reorganisation at work."
+          }
+        },
+        {
+          "label": {
+            "nb": "Situasjonen",
+            "en": "Situation"
+          },
+          "value": {
+            "nb": "PHQ-9 8 og GAD-7 9. I full stilling. Ingen tidligere behandling.",
+            "en": "PHQ-9 of 8 and GAD-7 of 9. Working full time. No previous treatment."
+          }
+        },
+        {
+          "label": {
+            "nb": "Hvorfor denne saken",
+            "en": "Why this case"
+          },
+          "value": {
+            "nb": "Sofie er øvingspasient og brukes bare i omvisningen.",
+            "en": "Sofie is a practice patient and is used only in the tour."
+          }
+        },
+        {
+          "label": {
+            "nb": "Utgangspunkt",
+            "en": "Starting point"
+          },
+          "value": {
+            "nb": "Sofie fylte ut selvrapporten før timen.",
+            "en": "Sofie filled in the self-report before the appointment."
+          }
+        }
+      ],
+      "time": {
+        "nb": "Omtrent 5 minutter",
+        "en": "About 5 minutes"
+      }
+    },
+    "atlasTask": {
+      "nb": "Plasser saken på båndet før du ser systemets lesning. Bestem deretter om du vil henvise.",
+      "en": "Place the case on the band before you see the system’s reading. Then decide whether to refer."
+    },
+    "profile": [
+      {
+        "label": {
+          "nb": "Tidligere behandling",
+          "en": "Previous treatment"
+        },
+        "value": {
+          "nb": "Ingen",
+          "en": "None"
+        },
+        "source": "record"
+      },
+      {
+        "label": {
+          "nb": "Legemidler",
+          "en": "Medicines"
+        },
+        "value": {
+          "nb": "Ingen",
+          "en": "None"
+        },
+        "source": "record"
+      },
+      {
+        "label": {
+          "nb": "Henvisninger",
+          "en": "Referrals"
+        },
+        "value": {
+          "nb": "Ingen tidligere",
+          "en": "None before"
+        },
+        "source": "record"
+      }
+    ],
+    "note": {
+      "date": "2026-03-17",
+      "text": {
+        "nb": "Konsultasjon. Sofie beskriver innsovningsvansker og oppvåkninger om natten i tre måneder, etter en omorganisering på jobben i desember. Hun kjenner seg stresset og anspent og grubler over arbeidsoppgavene om kvelden. PHQ-9 i dag: 8, GAD-7: 9.\n\nI full stilling. Har sluttet å trene og orker mindre sammen med familien om kveldene.\n\nIngen tidligere psykiske plager eller behandling. Bruker ingen legemidler.",
+        "en": "Consultation. Sofie describes difficulty falling asleep and waking at night for three months, after a reorganisation at work in December. She feels stressed and tense and ruminates about her work tasks in the evening. PHQ-9 today: 8, GAD-7: 9.\n\nWorking full time. Has stopped exercising and has less energy for her family in the evenings.\n\nNo previous mental health problems or treatment. Takes no medicines."
+      }
+    },
+    "selfReport": {
+      "date": "2026-03-17",
+      "intro": {
+        "nb": "Sofie fylte ut skjemaet før timen.",
+        "en": "Sofie filled in the form before the appointment."
+      },
+      "rows": [
+        {
+          "q": {
+            "nb": "PHQ-9, sum",
+            "en": "PHQ-9, total"
+          },
+          "a": {
+            "nb": "8",
+            "en": "8"
+          }
+        },
+        {
+          "q": {
+            "nb": "GAD-7, sum",
+            "en": "GAD-7, total"
+          },
+          "a": {
+            "nb": "9",
+            "en": "9"
+          }
+        },
+        {
+          "q": {
+            "nb": "Hvor lenge har du hatt det slik?",
+            "en": "How long have you felt like this?"
+          },
+          "a": {
+            "nb": "Omtrent tre måneder",
+            "en": "About three months"
+          }
+        },
+        {
+          "q": {
+            "nb": "Klarer du arbeidet som før?",
+            "en": "Can you manage your work as before?"
+          },
+          "a": {
+            "nb": "Ja, men det koster mer enn før",
+            "en": "Yes, but it takes more out of me than before"
+          }
+        },
+        {
+          "q": {
+            "nb": "Har du hatt tanker om å skade deg selv?",
+            "en": "Have you had thoughts of harming yourself?"
+          },
+          "a": {
+            "nb": "Nei",
+            "en": "No"
+          }
+        },
+        {
+          "q": {
+            "nb": "Hva ønsker du hjelp til?",
+            "en": "What would you like help with?"
+          },
+          "a": {
+            "nb": "Å sove bedre",
+            "en": "To sleep better"
+          }
+        }
+      ]
+    },
+    "meds": {
+      "rows": [],
+      "note": {
+        "nb": "Ingen legemidler.",
+        "en": "No medicines."
+      }
+    },
+    "history": [
+      {
+        "date": "2026-03-17",
+        "text": {
+          "nb": "Selvrapport mottatt før konsultasjon (PHQ-9 8, GAD-7 9)",
+          "en": "Self-report received before the consultation (PHQ-9 8, GAD-7 9)"
+        }
+      }
+    ],
+    "systemReading": {
+      "placement": 46,
+      "summary": {
+        "nb": "Til venstre for midten. Liknende henvisninger er oftere returnert med råd.",
+        "en": "Left of the middle. Similar referrals have more often been returned with advice."
+      },
+      "reasoning": {
+        "nb": "Kilder: notat, selvrapport, legemiddelliste. Plager i tre måneder ligger nær kriteriet for varighet. Lette plager (PHQ-9 8, GAD-7 9), full stilling og ingen behandlingsforsøk ligger lenger fra kriteriene. Setningen om liknende henvisninger er også skrevet for saken. Det finnes ingen ekte tall bak den.",
+        "en": "Sources: note, self-report, medication list. Symptoms for three months lie close to the duration criterion. Mild symptoms (PHQ-9 8, GAD-7 9), full-time work and no treatment attempts lie further from the criteria. The sentence about similar referrals is also written for the case. There are no real figures behind it."
+      }
+    },
+    "referralDraft": {
+      "aktuelt": {
+        "text": {
+          "nb": "Innsovningsvansker og oppvåkninger om natten i tre måneder, etter en omorganisering på jobben. Stress, anspenthet og grubling om kvelden. PHQ-9: 8, GAD-7: 9.",
+          "en": "Difficulty falling asleep and waking at night for three months, after a reorganisation at work. Stress, tension and rumination in the evening. PHQ-9: 8, GAD-7: 9."
+        },
+        "fromNote": true
+      },
+      "tidligere": {
+        "text": {
+          "nb": "Ingen tidligere psykiske plager eller behandling.",
+          "en": "No previous mental health problems or treatment."
+        },
+        "fromNote": true
+      },
+      "funksjon": {
+        "text": {
+          "nb": "I full stilling. Har sluttet å trene og orker mindre sammen med familien om kveldene.",
+          "en": "Working full time. Has stopped exercising and has less energy for her family in the evenings."
+        },
+        "fromNote": true
+      },
+      "risiko": {
+        "text": {
+          "nb": "",
+          "en": ""
+        },
+        "fromNote": false
+      },
+      "sporsmal": {
+        "text": {
+          "nb": "",
+          "en": ""
+        },
+        "fromNote": false
+      }
+    },
+    "dpsScript": {
+      "return": {
+        "date": "2026-03-24",
+        "reasons": [
+          "kommunaltIkkeProvd",
+          "annen"
+        ],
+        "explanation": {
+          "nb": "Plagene er lette (PHQ-9 8, GAD-7 9), og Sofie er i full stilling. Ingen behandling er prøvd hos fastlegen eller i kommunen.",
+          "en": "The symptoms are mild (PHQ-9 8, GAD-7 9), and Sofie is working full time. No treatment has been tried with the GP or in the municipality."
+        },
+        "advice": {
+          "nb": "Det kan være nyttig å prøve Rask psykisk helsehjelp, med vekt på søvn og stressmestring. En ny henvisning kan vurderes hvis plagene vedvarer etter et behandlingsforsøk.",
+          "en": "It can be useful to try Rask psykisk helsehjelp, with a focus on sleep and stress management. A new referral can be considered if the symptoms persist after a treatment attempt."
+        },
+        "unmet": [
+          {
+            "criterion": {
+              "nb": "Symptomenes alvorlighetsgrad",
+              "en": "Severity of symptoms"
+            },
+            "text": {
+              "nb": "PHQ-9 8 og GAD-7 9 tilsvarer lette plager.",
+              "en": "PHQ-9 of 8 and GAD-7 of 9 correspond to mild symptoms."
+            }
+          },
+          {
+            "criterion": {
+              "nb": "Tidligere behandling",
+              "en": "Previous treatment"
+            },
+            "text": {
+              "nb": "Ingen behandlingsforsøk hos fastlegen eller i kommunen.",
+              "en": "No treatment attempts with the GP or in the municipality."
+            }
+          }
+        ]
+      }
+    }
+  },
+  "dps": {
+    "queue": {
+      "received": "2026-03-17",
+      "deadline": "2026-03-31",
+      "chips": [
+        {
+          "label": {
+            "nb": "Ny henvisning",
+            "en": "New referral"
+          },
+          "isNew": true
+        }
+      ]
+    },
+    "briefing": {
+      "task": {
+        "nb": "Du er i inntaksteamet ved DPS Skjærgården. Henvisningen for Sofie har kommet inn. Les den og velg et utfall.",
+        "en": "You are on the intake team at DPS Skjærgården. Sofie’s referral has arrived. Read it and choose an outcome."
+      },
+      "rows": [
+        {
+          "label": {
+            "nb": "Hva du får",
+            "en": "What you get"
+          },
+          "value": {
+            "nb": "Henvisningen fra fastlegen, med konsultasjonsnotatet som vedlegg.",
+            "en": "The referral from the GP, with the consultation note attached."
+          }
+        },
+        {
+          "label": {
+            "nb": "Hva du ikke får",
+            "en": "What you don’t get"
+          },
+          "value": {
+            "nb": "Fastlegens navn eller andre henvisninger fra samme lege.",
+            "en": "The GP’s name or other referrals from the same doctor."
+          }
+        },
+        {
+          "label": {
+            "nb": "Frist",
+            "en": "Deadline"
+          },
+          "value": {
+            "nb": "Vurderingsfristen er ti virkedager etter mottak: 31. mars 2026.",
+            "en": "The legal assessment deadline is ten working days after receipt: 31 March 2026."
+          }
+        }
+      ],
+      "time": {
+        "nb": "Omtrent 5 minutter",
+        "en": "About 5 minutes"
+      }
+    },
+    "atlasTask": {
+      "nb": "Med ATLAS ser du også fastlegens beskrivelse av hva som er uklart, og fastlegens trygghet i ord. Plasser saken på båndet før du ser fastlegens plassering og systemets lesning. Velg deretter et utfall.",
+      "en": "With ATLAS you also see the GP’s description of what is unclear, and the GP’s confidence in words. Place the case on the band before you see the GP’s placement and the system’s reading. Then choose an outcome."
+    },
+    "referral": {
+      "sent": "2026-03-17",
+      "received": "2026-03-17",
+      "deadline": "2026-03-31",
+      "sections": {
+        "aktuelt": {
+          "nb": "Innsovningsvansker og oppvåkninger om natten i tre måneder, etter en omorganisering på jobben. Stress, anspenthet og grubling om kvelden. PHQ-9: 8, GAD-7: 9.",
+          "en": "Difficulty falling asleep and waking at night for three months, after a reorganisation at work. Stress, tension and rumination in the evening. PHQ-9: 8, GAD-7: 9."
+        },
+        "tidligere": {
+          "nb": "Ingen tidligere psykiske plager eller behandling.",
+          "en": "No previous mental health problems or treatment."
+        },
+        "funksjon": {
+          "nb": "I full stilling. Har sluttet å trene og orker mindre sammen med familien om kveldene.",
+          "en": "Working full time. Has stopped exercising and has less energy for her family in the evenings."
+        },
+        "risiko": {
+          "nb": "Spurt om selvmordstanker: ingen. Selvmordsrisiko vurdert som lav.",
+          "en": "Asked about suicidal thoughts: none. Suicide risk assessed as low."
+        },
+        "sporsmal": {
+          "nb": "Ønsker vurdering av om plagene gir rett til helsehjelp i spesialisthelsetjenesten, eller om videre oppfølging hos fastlegen er tilstrekkelig.",
+          "en": "Requests an assessment of whether the symptoms give a right to health care in specialist health services, or whether further follow-up by the GP is enough."
+        }
+      },
+      "noteAttachment": {
+        "nb": "Konsultasjon. Sofie beskriver innsovningsvansker og oppvåkninger om natten i tre måneder, etter en omorganisering på jobben i desember. Hun kjenner seg stresset og anspent og grubler over arbeidsoppgavene om kvelden. PHQ-9 i dag: 8, GAD-7: 9.\n\nI full stilling. Har sluttet å trene og orker mindre sammen med familien om kveldene.\n\nIngen tidligere psykiske plager eller behandling. Bruker ingen legemidler.",
+        "en": "Consultation. Sofie describes difficulty falling asleep and waking at night for three months, after a reorganisation at work in December. She feels stressed and tense and ruminates about her work tasks in the evening. PHQ-9 today: 8, GAD-7: 9.\n\nWorking full time. Has stopped exercising and has less energy for her family in the evenings.\n\nNo previous mental health problems or treatment. Takes no medicines."
+      }
+    },
+    "gpUncertainty": {
+      "tags": [
+        "terskel"
+      ],
+      "description": {
+        "nb": "Usikker på om plagene når terskelen for spesialistvurdering. Plagene har vart i tre måneder, men symptomtrykket er lett, og ingen behandling er prøvd.",
+        "en": "Unsure whether the symptoms reach the threshold for specialist assessment. They have lasted three months, but the symptom burden is mild, and no treatment has been tried."
+      },
+      "confidence": "nokssaLav",
+      "placement": 41
+    },
+    "guideAsReceived": [
+      "alvorlighet",
+      "funksjon",
+      "varighet",
+      "behandling",
+      "risiko"
+    ],
+    "systemReading": {
+      "placement": 46,
+      "summary": {
+        "nb": "Til venstre for midten. Liknende henvisninger er oftere returnert med råd.",
+        "en": "Left of the middle. Similar referrals have more often been returned with advice."
+      },
+      "reasoning": {
+        "nb": "Kilder: henvisningen og det vedlagte notatet. Plager i tre måneder ligger nær kriteriet for varighet. Lette plager (PHQ-9 8, GAD-7 9), full stilling og ingen behandlingsforsøk ligger lenger fra kriteriene. Setningen om liknende henvisninger er også skrevet for saken. Det finnes ingen ekte tall bak den.",
+        "en": "Sources: the referral and the attached note. Symptoms for three months lie close to the duration criterion. Mild symptoms (PHQ-9 8, GAD-7 9), full-time work and no treatment attempts lie further from the criteria. The sentence about similar referrals is also written for the case. There are no real figures behind it."
+      }
+    },
+    "gpScript": {
+      "replyToRequest": {
+        "date": "2026-03-20",
+        "text": {
+          "nb": "Sofie sover i snitt fem timer per natt og har ingen selvmordstanker. Hun har ikke prøvd sovemedisiner eller kommunale tilbud.",
+          "en": "Sofie sleeps five hours a night on average and has no suicidal thoughts. She has not tried sleeping medicines or municipal services."
+        }
+      },
+      "ackOfReturn": {
+        "date": "2026-03-20",
+        "text": {
+          "nb": "Takk for tilbakemeldingen. Sofie følges opp videre hos fastlegen.",
+          "en": "Thank you for the feedback. Sofie will be followed up further by her GP."
+        }
+      }
+    }
+  },
+  "debrief": {
+    "gp": {
+      "title": {
+        "nb": "Øvingspasienten",
+        "en": "The practice patient"
+      },
+      "whatHappened": {
+        "nb": "Sofie Lund er en øvingspasient. Fastlegens beslutning i øvingen: {{beslutning}}.",
+        "en": "Sofie Lund is a practice patient. The GP’s decision in the practice run: {{beslutning}}."
+      },
+      "purpose": {
+        "nb": "Øvingspasienten er laget for at alle deltakere skal ha sett de samme delene av ATLAS før sakene, uten at noen av sakene vises på forhånd.",
+        "en": "The practice patient was built so that every participant sees the same parts of ATLAS before the cases, without any of the cases being shown in advance."
+      }
+    },
+    "dps": {
+      "title": {
+        "nb": "Øvingspasienten",
+        "en": "The practice patient"
+      },
+      "whatHappened": {
+        "nb": "Sofie Lund er en øvingspasient. Utfallet i øvingen: {{utfall}}.",
+        "en": "Sofie Lund is a practice patient. The outcome in the practice run: {{utfall}}."
+      },
+      "purpose": {
+        "nb": "Øvingspasienten er laget for at alle deltakere skal ha sett de samme delene av ATLAS før sakene, uten at noen av sakene vises på forhånd.",
+        "en": "The practice patient was built so that every participant sees the same parts of ATLAS before the cases, without any of the cases being shown in advance."
+      }
+    }
+  }
+}

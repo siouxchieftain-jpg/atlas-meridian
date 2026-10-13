@@ -1,80 +1,62 @@
-# Meridian
+# ATLAS v3 on Meridian
 
-The design language for ATLAS (Adaptive Trust-calibration and Liaison Architecture for Specialist-referrals), built on Fluent 2. Version 1.0, for review.
+ATLAS is a concept prototype of decision support for referrals from GPs (fastleger) to specialist mental health services (DPS) in Norway. Version 3 is built on Meridian, ATLAS's design language on Fluent 2, for a formative evaluation with GPs and DPS clinicians in a PhD project at the University of Agder.
 
-On an atlas, a meridian is the line that joins the two poles. In ATLAS it joins the GP and the DPS clinician on one record.
+All patients, clinicians and figures in ATLAS are fictional. ATLAS is an evaluation prototype and must not be used for clinical decisions.
 
-All clinical content in these pages is fictional sample text.
+## The study
 
-## Prototype
+The study starts at **https://siouxchieftain-jpg.github.io/atlas-meridian/**. It runs in Norwegian, with English one click away, and works best on a laptop. Taking part is voluntary and anonymous: the answers go to anonymous Nettskjema forms, and ATLAS keeps only the participant's progress, in their own browser.
 
-`ATLAS App.dc.html` is the clickable prototype. Pick a role (GP or DPS intake) and work through three vignettes: Kari (grey zone), Erlend (re-referral after a rejection) and Astrid (dialogue after a return). Each role has a short guided tour the first time. The English switch in the header shows English lines under the Norwegian text; Merknader shows design notes. Progress is stored in the browser; the undo button in the header resets it.
+Review mode, for supervisors and pilot testers, has its own address, which goes to reviewers directly while data collection runs.
 
-Clinical details for Erlend are drafts and must be checked by clinicians.
+## What is here
 
-## Design system pages
+| Path | What it holds |
+|---|---|
+| `app/` | The app: Vite, React 19, TypeScript and Fluent UI React v9 (`src/`, `public/`, `tests/`, `scripts/`) |
+| `app/public/atlas-config.json` | The Nettskjema addresses, the information letter's address and the contact lines |
+| `app/src/content/` | Every text, case and form, in Norwegian and English |
+| `meridian/` | The Meridian design language as exported from the design tool, unchanged; on the site at `meridian/` |
+| `docs/` | [Build note](docs/BUILD-NOTE.md), [plan](docs/PLAN.md), [Nettskjema build sheet](docs/NETTSKJEMA-BUILD-SHEET.md), [Meridian 1.1](docs/MERIDIAN-1.1.md), [clinician check](docs/CLINICIAN-CHECK.md) and [traceability](docs/TRACEABILITY.md) |
+| `.github/workflows/pages.yml` | Runs every check, builds the site and publishes it |
 
-- **Design language**: principles, clinical guardrails, colour, typography, layout, shapes, elevation, material, motion, iconography, accessibility, content and tokens.
-- **Components**: the Fluent 2 components ATLAS uses, with the ATLAS rules for each.
-- **Clinical patterns**: ATLAS's own patterns, including the uncertainty band, refer or hold, the completeness guide, dialogue with DPS, tours and briefings.
+## Run it
 
-`index.html` links to the prototype and the design system.
+With Node.js 22 or later:
 
-## Viewing the pages
-
-The pages load their sibling files, so they have to be served over http(s). Opening them straight from disk does not work. Use GitHub Pages (below), or start a local server in this folder:
-
+```sh
+cd app
+npm ci
+npm run dev                         # the app at http://localhost:5173
+npm run build                       # content checks, type check, build into app/dist
+npm test                            # unit tests
+npx playwright install chromium     # once, for the end-to-end tests
+npm run e2e                         # end-to-end and accessibility tests on the built site
+npm run docs                        # write the build sheet and the traceability table again
+npm run site                        # assemble the site in site/ (after npm run build)
 ```
-python -m http.server 8000
-```
 
-Then open http://localhost:8000.
+The end-to-end tests never contact Nettskjema: a mock stands in for every form.
 
-## Publishing with GitHub Pages
+## Connect the Nettskjema forms
 
-1. Create a new repository on github.com, for example `atlas-meridian`. On a free account, GitHub Pages needs a public repository.
-2. Unzip this folder. In the new repository, select **uploading an existing file** (or **Add file → Upload files**). GitHub takes up to 100 files per upload, so upload the `assets` folder first and the remaining files second. GitHub Desktop has no such limit.
-3. Open **Settings → Pages**. Under **Build and deployment**, choose **Deploy from a branch**, then branch `main` and folder `/ (root)`, and save.
-4. After a minute or two the site is at `https://<username>.github.io/atlas-meridian/`.
+1. Make the 13 forms in Nettskjema from [docs/NETTSKJEMA-BUILD-SHEET.md](docs/NETTSKJEMA-BUILD-SHEET.md): S1 to S8, with a GP and a DPS version of S2, S4 and S5, and R1 and R2 for review mode. The sheet gives each form's settings, pages, items, codebook names, locked fields and receipt text.
+2. When a form is open for answers, copy its address from «Innhent svar» (it looks like `https://nettskjema.no/a/123456`) into `app/public/atlas-config.json` under the form's key. Put the information letter's address in `informationLetter` and the contact lines in `contact`.
+3. Commit the file to `main`, or edit it on GitHub. The workflow runs every check and publishes the site again. No code changes.
 
-## Feedback
+Until a study form has an address, its step shows «Dette skjemaet er ikke klart ennå.» and cannot be passed.
 
-Every section has a **Gi tilbakemelding** button. The tab on the right edge of the window shows how many sections on the page have been reviewed. It opens an overview with a link to each section and the wrap-up questions.
+## Release check, before the first invitation
 
-- The first time, reviewers enter their name and role. Both are kept in their browser and sent with every answer.
-- Until a Nettskjema address is added, the panel shows a preview form. Answers stay in the reviewer's browser and can be downloaded as CSV from the overview.
-- Once a Nettskjema address is added, the form opens inside the panel with name, role, page, section and version filled in and locked. After sending, the reviewer selects **Jeg har sendt skjemaet** to mark the section as reviewed.
+1. On the live site, open each form's step in the panel and in a new tab, without sending. Confirm that every study address is set and that every locked field shows its value.
+2. Send one test answer per form through the panel and one through a new tab. In «Se resultater», check that each locked value sits in its own column.
+3. Delete every test answer with «Slett alle svar». Anonymous answers cannot be told apart later.
+4. Invite participants with the study link above, and nothing else.
 
-### Connecting Nettskjema
+## Privacy
 
-1. Create a new form for the design review.
-2. Under **Rettigheter**, set **Hvem kan svare** to **Alle – uten innlogging**. Embedding and pre-filling need this setting; invite-only forms cannot be pre-filled.
-3. Turn on the codebook.
-4. Add five short text questions with these codebook names: `navn`, `rolle`, `side`, `seksjon`, `versjon`. Pre-filling works only for text and number questions.
-5. Add the review questions. The drafts in `atlas-feedback-config.js` are a starting point. Once Nettskjema is connected, reviewers answer the questions in Nettskjema; the questions in the config file are used only by the preview form.
-6. Add a short note saying why names are collected, who can read the answers and how long they are kept.
-7. Open the form for answers. Copy its address from **Innhent svar** (it looks like `https://nettskjema.no/a/123456`) and paste it into `nettskjemaUrl` in `atlas-feedback-config.js`. On GitHub: open the file, select the pencil icon, paste the address and commit.
-8. Optional: put the address of a separate wrap-up form in `wrapupUrl`.
-
-| Codebook name | Filled with |
-| --- | --- |
-| `navn` | The name the reviewer entered |
-| `rolle` | Fastlege, DPS-kliniker, Veileder or Ekstern fagperson |
-| `side` | Design language, Components or Clinical patterns |
-| `seksjon` | The section's id, for example `band` or `decision`; `avslutning` for the wrap-up |
-| `versjon` | `1.0` |
-
-## Files
-
-- `ATLAS App.dc.html`: the prototype
-- `ATLAS DS - Design language.dc.html`, `ATLAS DS - Components.dc.html`, `ATLAS DS - Clinical patterns.dc.html`: the three pages
-- `ATLAS Feedback Button.dc.html`, `ATLAS Feedback Panel.dc.html`: the feedback button and side panel
-- `atlas-feedback-config.js`: Nettskjema address, codebook names, roles and draft questions
-- `support.js`: the runtime that renders the `.dc.html` pages
-- `assets/icons/`: Fluent UI System Icons
-- `index.html`: start page
-- `THIRD-PARTY-NOTICES.md`: licence for the icons
-
-## Credits
-
-Built on Fluent 2 by Microsoft. Icons are Fluent UI System Icons, MIT licence. Segoe UI is not included: Windows provides it, and other systems fall back to their own system font.
+- ATLAS collects nothing itself. Answers go only to anonymous Nettskjema forms; there is no participant code, login or name.
+- The browser keeps the participant's progress, settings and the two «Om deg» answers. These leave the browser only as locked fields in the forms.
+- The site loads no analytics, trackers, fonts or scripts from third parties.
+- This repository holds no participant data.

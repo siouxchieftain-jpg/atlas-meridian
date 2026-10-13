@@ -1,0 +1,302 @@
+{
+  "title": {
+    "nb": "To fastleger, én pasient",
+    "en": "Two GPs, one patient"
+  },
+  "intro": {
+    "nb": "Samme pasient som i saken med Kari Nordli, sett av to fastleger med ulik erfaring. Under vises hva hver av dem ser i sitt eget Mitt henvisningsmønster. Visningen er fra fastlegesiden: i ATLAS ser bare fastlegen sitt eget mønster. Spørsmålene kaller tallene her for «kalibreringsdata».",
+    "en": "The same patient as in Kari Nordli’s case, seen by two GPs with different experience. Below is what each of them sees on their own My referral pattern screen. The view is from the GP side: in ATLAS, only the GP sees their own pattern. The questions call the figures here ‘calibration data’."
+  },
+  "patientLine": {
+    "nb": "Kari Nordli, 34 år. Nedstemt i fire måneder, PHQ-9 14. Gjennomgår skilsmisse og har nylig flyttet.",
+    "en": "Kari Nordli, 34. Low mood for four months, PHQ-9 of 14. Going through a divorce and recently moved."
+  },
+  "gps": [
+    {
+      "id": "a",
+      "label": {
+        "nb": "Fastlege A",
+        "en": "GP A"
+      },
+      "experience": {
+        "nb": "To års erfaring som fastlege.",
+        "en": "Two years as a GP."
+      },
+      "pattern": {
+        "asOf": "2026-03-17",
+        "period": {
+          "nb": "1. april 2024 til 17. mars 2026",
+          "en": "1 April 2024 to 17 March 2026"
+        },
+        "total": 8,
+        "outcomes": [
+          {
+            "key": "rett",
+            "label": {
+              "nb": "Rett til helsehjelp",
+              "en": "Right to health care"
+            },
+            "count": 5
+          },
+          {
+            "key": "retur",
+            "label": {
+              "nb": "Retur med råd",
+              "en": "Return with advice"
+            },
+            "count": 3
+          },
+          {
+            "key": "avslatt",
+            "label": {
+              "nb": "Avslått uten begrunnelse",
+              "en": "Rejected without explanation"
+            },
+            "count": 0
+          },
+          {
+            "key": "venter",
+            "label": {
+              "nb": "Venter på svar",
+              "en": "Awaiting reply"
+            },
+            "count": 0
+          }
+        ],
+        "returnReasons": [
+          {
+            "reason": "situasjonellKrise",
+            "count": 0
+          },
+          {
+            "reason": "kortVarighet",
+            "count": 2
+          },
+          {
+            "reason": "kommunaltIkkeProvd",
+            "count": 2
+          },
+          {
+            "reason": "utilstrekkeligInfo",
+            "count": 1
+          },
+          {
+            "reason": "annen",
+            "count": 0
+          }
+        ],
+        "quarters": [
+          {
+            "label": {
+              "nb": "April til juni 2024",
+              "en": "April to June 2024"
+            },
+            "count": 1
+          },
+          {
+            "label": {
+              "nb": "Juli til september 2024",
+              "en": "July to September 2024"
+            },
+            "count": 0
+          },
+          {
+            "label": {
+              "nb": "Oktober til desember 2024",
+              "en": "October to December 2024"
+            },
+            "count": 1
+          },
+          {
+            "label": {
+              "nb": "Januar til mars 2025",
+              "en": "January to March 2025"
+            },
+            "count": 1
+          },
+          {
+            "label": {
+              "nb": "April til juni 2025",
+              "en": "April to June 2025"
+            },
+            "count": 1
+          },
+          {
+            "label": {
+              "nb": "Juli til september 2025",
+              "en": "July to September 2025"
+            },
+            "count": 2
+          },
+          {
+            "label": {
+              "nb": "Oktober til desember 2025",
+              "en": "October to December 2025"
+            },
+            "count": 1
+          },
+          {
+            "label": {
+              "nb": "1. januar til 17. mars 2026",
+              "en": "1 January to 17 March 2026"
+            },
+            "count": 1
+          }
+        ],
+        "footnote": {
+          "nb": "Fiktive tall for prototypen.",
+          "en": "Fictional figures for the prototype."
+        }
+      },
+      "note": {
+        "nb": "Begrenset erfaring med gråsonesaker. Henviser for å være på den sikre siden når hun er usikker på egen vurdering.",
+        "en": "Limited experience with grey-zone cases. Refers to be on the safe side when she is unsure of her own assessment."
+      }
+    },
+    {
+      "id": "b",
+      "label": {
+        "nb": "Fastlege B",
+        "en": "GP B"
+      },
+      "experience": {
+        "nb": "22 års erfaring som fastlege, 15 av dem i samme kommune. Over 200 henvisninger til DPS i alt.",
+        "en": "22 years as a GP, 15 of them in the same municipality. Over 200 referrals to DPS in total."
+      },
+      "pattern": {
+        "asOf": "2026-03-17",
+        "period": {
+          "nb": "1. april 2024 til 17. mars 2026",
+          "en": "1 April 2024 to 17 March 2026"
+        },
+        "total": 14,
+        "outcomes": [
+          {
+            "key": "rett",
+            "label": {
+              "nb": "Rett til helsehjelp",
+              "en": "Right to health care"
+            },
+            "count": 12
+          },
+          {
+            "key": "retur",
+            "label": {
+              "nb": "Retur med råd",
+              "en": "Return with advice"
+            },
+            "count": 1
+          },
+          {
+            "key": "avslatt",
+            "label": {
+              "nb": "Avslått uten begrunnelse",
+              "en": "Rejected without explanation"
+            },
+            "count": 0
+          },
+          {
+            "key": "venter",
+            "label": {
+              "nb": "Venter på svar",
+              "en": "Awaiting reply"
+            },
+            "count": 1
+          }
+        ],
+        "returnReasons": [
+          {
+            "reason": "situasjonellKrise",
+            "count": 0
+          },
+          {
+            "reason": "kortVarighet",
+            "count": 0
+          },
+          {
+            "reason": "kommunaltIkkeProvd",
+            "count": 0
+          },
+          {
+            "reason": "utilstrekkeligInfo",
+            "count": 1
+          },
+          {
+            "reason": "annen",
+            "count": 0
+          }
+        ],
+        "quarters": [
+          {
+            "label": {
+              "nb": "April til juni 2024",
+              "en": "April to June 2024"
+            },
+            "count": 3
+          },
+          {
+            "label": {
+              "nb": "Juli til september 2024",
+              "en": "July to September 2024"
+            },
+            "count": 2
+          },
+          {
+            "label": {
+              "nb": "Oktober til desember 2024",
+              "en": "October to December 2024"
+            },
+            "count": 2
+          },
+          {
+            "label": {
+              "nb": "Januar til mars 2025",
+              "en": "January to March 2025"
+            },
+            "count": 2
+          },
+          {
+            "label": {
+              "nb": "April til juni 2025",
+              "en": "April to June 2025"
+            },
+            "count": 2
+          },
+          {
+            "label": {
+              "nb": "Juli til september 2025",
+              "en": "July to September 2025"
+            },
+            "count": 1
+          },
+          {
+            "label": {
+              "nb": "Oktober til desember 2025",
+              "en": "October to December 2025"
+            },
+            "count": 1
+          },
+          {
+            "label": {
+              "nb": "1. januar til 17. mars 2026",
+              "en": "1 January to 17 March 2026"
+            },
+            "count": 1
+          }
+        ],
+        "footnote": {
+          "nb": "Fiktive tall for prototypen.",
+          "en": "Fictional figures for the prototype."
+        }
+      },
+      "note": {
+        "nb": "Kjenner flere spesialister personlig. Har blitt mer frustrert over systemet, har redusert henvisningsraten de siste fem årene og behandler oftere pasientene selv.",
+        "en": "Knows several specialists personally. Has become more frustrated with the system, has reduced their referral rate over the last five years and more often treats patients themselves."
+      }
+    }
+  ],
+  "purpose": {
+    "nb": "Saken er laget for å prøve om en ny og en erfaren fastlege ville brukt ATLAS ulikt, og om kalibreringsdata kan virke demotiverende for en erfaren fastlege med synkende henvisningsrate.",
+    "en": "The case was built to test whether a new and an experienced GP would use ATLAS differently, and whether calibration data could be discouraging for an experienced GP with a declining referral rate."
+  }
+}

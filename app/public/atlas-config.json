@@ -1,0 +1,20 @@
+{
+  "_comment": "Nettskjema addresses for each form (for example https://nettskjema.no/a/123456). An empty address shows «Dette skjemaet er ikke klart ennå.» in the study. Edit this file only; no code change is needed.",
+  "forms": {
+    "S1": "",
+    "S2.fastlege": "",
+    "S2.dps": "",
+    "S3": "",
+    "S4.fastlege": "",
+    "S4.dps": "",
+    "S5.fastlege": "",
+    "S5.dps": "",
+    "S6": "",
+    "S7.fastlege": "",
+    "S8": "",
+    "R1": "",
+    "R2": ""
+  },
+  "informationLetter": "",
+  "contact": { "nb": "", "en": "" }
+}

@@ -1,0 +1,152 @@
+[
+  {
+    "term": {
+      "nb": "Fastlege",
+      "en": "GP (fastlege)"
+    },
+    "text": {
+      "nb": "Allmennlegen som har pasienten på listen sin i fastlegeordningen. Fastlegen kan henvise pasienten til spesialisthelsetjenesten, for eksempel til et DPS.",
+      "en": "The general practitioner who has the patient on their list under the regular GP scheme (fastlegeordningen). The GP can refer the patient to specialist services, for example to a DPS."
+    }
+  },
+  {
+    "term": {
+      "nb": "DPS",
+      "en": "DPS"
+    },
+    "text": {
+      "nb": "Distriktspsykiatrisk senter, den delen av spesialisthelsetjenesten som gir psykisk helsevern for voksne i et opptaksområde. DPS Skjærgården i ATLAS er fiktivt.",
+      "en": "District psychiatric centre (distriktspsykiatrisk senter), the part of specialist services that provides adult mental health care for a catchment area. DPS Skjærgården in ATLAS is fictional."
+    }
+  },
+  {
+    "term": {
+      "nb": "Henvisning",
+      "en": "Referral (henvisning)"
+    },
+    "text": {
+      "nb": "Brevet der fastlegen ber spesialisthelsetjenesten vurdere en pasient. I ATLAS har henvisningen fem deler: Aktuelt og problemstilling, Tidligere behandling, Funksjonsfall, Risikovurdering og Spørsmål til DPS.",
+      "en": "The letter in which the GP asks specialist services to assess a patient. In ATLAS a referral has five sections: Presenting problem, Previous treatment, Functional decline, Risk assessment and Question for DPS."
+    }
+  },
+  {
+    "term": {
+      "nb": "Vurderingsfrist",
+      "en": "Assessment deadline (vurderingsfrist)"
+    },
+    "text": {
+      "nb": "Fristen for å vurdere en henvisning: ti virkedager etter at den er mottatt. ATLAS viser fristen som en dato.",
+      "en": "The deadline for assessing a referral: ten working days after it is received. ATLAS shows the deadline as a date."
+    }
+  },
+  {
+    "term": {
+      "nb": "Rett til nødvendig helsehjelp",
+      "en": "Right to necessary health care"
+    },
+    "text": {
+      "nb": "Utfallet når spesialisthelsetjenesten vurderer at pasienten har rett til nødvendig helsehjelp der. Pasienten får da en frist for når helsehjelpen senest skal starte. I ATLAS heter utfallet «Rett til helsehjelp».",
+      "en": "The outcome when specialist services assess that the patient has the right to necessary health care there. The patient then gets a deadline by which care is to start at the latest. In ATLAS the outcome is called ‘Right to health care’."
+    }
+  },
+  {
+    "term": {
+      "nb": "Prioriteringsveileder",
+      "en": "Priority-setting guideline (prioriteringsveileder)"
+    },
+    "text": {
+      "nb": "Helsedirektoratets veileder for hvordan spesialisthelsetjenesten vurderer rett til nødvendig helsehjelp. Det finnes én veileder per fagområde; kriteriene i Informasjonsguiden og «Hva DPS ser etter» bygger på veilederen for psykisk helsevern for voksne.",
+      "en": "The Norwegian Directorate of Health’s guideline for how specialist services assess the right to necessary health care. There is one guideline per specialty; the criteria in the information completeness guide and ‘What DPS looks for’ draw on the one for adult mental health care."
+    }
+  },
+  {
+    "term": {
+      "nb": "Rask psykisk helsehjelp",
+      "en": "Rask psykisk helsehjelp (rapid mental health care)"
+    },
+    "text": {
+      "nb": "Et kommunalt lavterskeltilbud med kortvarig behandling, ofte kognitiv terapi, for lette til moderate angst- og depresjonsplager. Tilbudet krever ikke henvisning.",
+      "en": "A low-threshold municipal service with short-term treatment, often cognitive therapy, for mild to moderate anxiety and depression. No referral is needed."
+    }
+  },
+  {
+    "term": {
+      "nb": "Gråsone",
+      "en": "Grey zone (gråsone)"
+    },
+    "text": {
+      "nb": "Saker der det er uklart om plagene når terskelen for spesialisthelsetjenesten. På båndet i Usikkerhetsvisning ligger gråsonen i midten, mellom «Klart utenfor» og «Klart innenfor».",
+      "en": "Cases where it is unclear whether the problems reach the threshold for specialist services. On the band in the uncertainty display the grey zone lies in the middle, between ‘Clearly outside’ and ‘Clearly within’."
+    }
+  },
+  {
+    "term": {
+      "nb": "Usikkerhetsvisning",
+      "en": "Uncertainty display"
+    },
+    "text": {
+      "nb": "Panelet i ATLAS med et bånd fra klart utenfor til klart innenfor DPS-kriteriene, der klinikeren plasserer saken selv. Båndet viser ingen tall. Etter egen plassering viser det systemets lesning, og for DPS også fastlegens markør.",
+      "en": "The ATLAS panel with a band from clearly outside to clearly within the DPS criteria, where clinicians place the case themselves. The band shows no number. After one’s own placement it shows the system’s reading, and for DPS also the GP’s marker."
+    }
+  },
+  {
+    "term": {
+      "nb": "Systemets lesning",
+      "en": "The system’s reading"
+    },
+    "text": {
+      "nb": "En lilla markør på båndet og én setning om hvor saken ligger, med et resonnement som sier hvilke kilder den bygger på. I prototypen er lesningen skrevet for hver sak, ikke beregnet. Den vises etter klinikerens egen plassering.",
+      "en": "A lavender marker on the band and one sentence about where the case lies, with a reasoning that names the sources it draws on. In the prototype the reading is written for each case, not calculated. It appears after the clinician’s own placement."
+    }
+  },
+  {
+    "term": {
+      "nb": "Informasjonsguiden",
+      "en": "The information completeness guide (Informasjonsguiden)"
+    },
+    "text": {
+      "nb": "Viser hvor mange av fem kriterier fra prioriteringsveilederen et notat eller en henvisning omtaler, for eksempel «3 av 5 kriterier omtalt». Behandlingsnytte er merket «Vurderes av DPS». Guiden ser om teksten sier noe om hvert kriterium, ikke om det er nok, og den kan ta feil begge veier. Den er ikke et krav for å henvise.",
+      "en": "Shows how many of five criteria from the priority-setting guideline a note or a referral mentions, for example ‘3 of 5 criteria mentioned’. Benefit of treatment is marked ‘Assessed by DPS’. The guide sees whether the text says something about each criterion, not whether it is enough, and it can be wrong both ways. It is not a requirement for referring."
+    }
+  },
+  {
+    "term": {
+      "nb": "Delt oversikt",
+      "en": "Shared overview"
+    },
+    "text": {
+      "nb": "Skjermbildet med to deler: Kalibrering, med anonymiserte tall for opptaksområdet, vanlige returårsaker og en logg over kriterieendringer, og Dialog, med trådene for henvisninger og en anonymisert fagdiskusjon. Tallene er fiktive.",
+      "en": "The screen with two sections: Calibration, with anonymised figures for the catchment area, common return reasons and a log of criteria changes, and Dialogue, with the threads for referrals and an anonymised professional discussion. The figures are fictional."
+    }
+  },
+  {
+    "term": {
+      "nb": "Mitt henvisningsmønster",
+      "en": "My referral pattern"
+    },
+    "text": {
+      "nb": "Fastlegens egne henvisninger over tid: utfall, returårsaker og antall per kvartal. Bare fastlegen selv ser visningen, og tallene er fiktive for prototypen.",
+      "en": "The GP’s own referrals over time: outcomes, return reasons and the number per quarter. Only the GP sees the view, and the figures are fictional for the prototype."
+    }
+  },
+  {
+    "term": {
+      "nb": "Retur med råd",
+      "en": "Return with advice (Retur med råd)"
+    },
+    "text": {
+      "nb": "Utfallet når DPS ikke gir rett til helsehjelp og sender henvisningen tilbake til fastlegen. En retur har minst én årsak, en forklaring og råd om videre oppfølging, og kan vise kriteriene DPS vurderte som ikke oppfylt.",
+      "en": "The outcome when DPS does not grant the right to health care and sends the referral back to the GP. A return has at least one reason, an explanation and advice on follow-up, and can show the criteria DPS assessed as not met."
+    }
+  },
+  {
+    "term": {
+      "nb": "Øvingspasient",
+      "en": "Practice patient (øvingspasient)"
+    },
+    "text": {
+      "nb": "Sofie Lund, en fiktiv pasient som bare brukes i omvisningen. Hun er ikke en av sakene i evalueringen.",
+      "en": "Sofie Lund, a fictional patient used only in the tour. She is not one of the cases in the evaluation."
+    }
+  }
+]

@@ -1,0 +1,168 @@
+{
+  "kalibrering": {
+    "intro": {
+      "nb": "Anonymiserte tall for henvisninger fra fastleger i opptaksområdet til DPS Skjærgården, siste 12 måneder. Ingen enkelt fastlege eller kliniker kan identifiseres. Andelene for utfall gjelder henvisninger som er ferdig vurdert. Årsakene til retur er telt hver gang de er oppgitt, og en retur kan ha flere årsaker. Fiktive tall for prototypen.",
+      "en": "Anonymised figures for referrals from GPs in the catchment area to DPS Skjærgården, last 12 months. No individual GP or clinician can be identified. The outcome shares apply to referrals that have been fully assessed. Return reasons are counted each time they are given, and a return can have several reasons. Fictional figures for the prototype."
+    },
+    "catchment": [
+      {
+        "label": {
+          "nb": "Mottatte henvisninger",
+          "en": "Referrals received"
+        },
+        "value": {
+          "nb": "1 182",
+          "en": "1,182"
+        }
+      },
+      {
+        "label": {
+          "nb": "Rett til helsehjelp",
+          "en": "Right to health care"
+        },
+        "value": {
+          "nb": "64 %",
+          "en": "64%"
+        }
+      },
+      {
+        "label": {
+          "nb": "Retur med råd",
+          "en": "Return with advice"
+        },
+        "value": {
+          "nb": "36 %",
+          "en": "36%"
+        }
+      },
+      {
+        "label": {
+          "nb": "Henvisninger der DPS ba om mer informasjon",
+          "en": "Referrals where DPS asked for more information"
+        },
+        "value": {
+          "nb": "14 %",
+          "en": "14%"
+        }
+      },
+      {
+        "label": {
+          "nb": "Tid fra mottak til vurdering, median",
+          "en": "Time from receipt to assessment, median"
+        },
+        "value": {
+          "nb": "8 virkedager",
+          "en": "8 working days"
+        }
+      },
+      {
+        "label": {
+          "nb": "Fastlegekontor i opptaksområdet",
+          "en": "GP practices in the catchment area"
+        },
+        "value": {
+          "nb": "27",
+          "en": "27"
+        }
+      }
+    ],
+    "commonReasons": [
+      {
+        "reason": "utilstrekkeligInfo",
+        "share": {
+          "nb": "29 %",
+          "en": "29%"
+        }
+      },
+      {
+        "reason": "kommunaltIkkeProvd",
+        "share": {
+          "nb": "26 %",
+          "en": "26%"
+        }
+      },
+      {
+        "reason": "kortVarighet",
+        "share": {
+          "nb": "21 %",
+          "en": "21%"
+        }
+      },
+      {
+        "reason": "situasjonellKrise",
+        "share": {
+          "nb": "14 %",
+          "en": "14%"
+        }
+      },
+      {
+        "reason": "annen",
+        "share": {
+          "nb": "10 %",
+          "en": "10%"
+        }
+      }
+    ],
+    "criteriaLog": [
+      {
+        "date": "2026-02-16",
+        "text": {
+          "nb": "Ved spørsmål om ADHD hos voksne ser inntaket nå etter opplysninger om symptomer før 12 års alder. Henvisninger uten slike opplysninger får oftere en forespørsel om mer informasjon.",
+          "en": "For questions about ADHD in adults, intake now looks for information about symptoms before the age of 12. Referrals without such information more often get a request for more information."
+        }
+      },
+      {
+        "date": "2025-11-03",
+        "text": {
+          "nb": "Pasienter over 65 år med nyoppståtte psykiske plager vurderes etter de samme kriteriene som andre, i samarbeid med alderspsykiatrisk poliklinikk.",
+          "en": "Patients over 65 with newly arisen mental health problems are assessed by the same criteria as others, together with the old-age psychiatry outpatient clinic."
+        }
+      },
+      {
+        "date": "2025-06-10",
+        "text": {
+          "nb": "Ingen endringer i kriteriene. Inntaksteamet oppgir nå hvilket punkt i prioriteringsveilederen en retur bygger på.",
+          "en": "No changes to the criteria. The intake team now states which point in the priority-setting guideline a return is based on."
+        }
+      }
+    ]
+  },
+  "dialog": {
+    "intro": {
+      "nb": "Anonymiserte diskusjoner mellom fastleger i opptaksområdet og inntaksteamet ved DPS Skjærgården. Innleggene er ikke knyttet til enkeltpasienter eller navngitte klinikere.",
+      "en": "Anonymised discussions between GPs in the catchment area and the intake team at DPS Skjærgården. The posts are not linked to individual patients or named clinicians."
+    },
+    "discussion": {
+      "title": {
+        "nb": "ADHD hos voksne: opplysninger om barndommen",
+        "en": "ADHD in adults: information about childhood"
+      },
+      "posts": [
+        {
+          "role": "dps",
+          "date": "2026-02-18",
+          "text": {
+            "nb": "Etter endringen 16. februar 2026 får inntaksteamet fortsatt mange henvisninger om ADHD hos voksne som beskriver dagens vansker godt, men sier lite om barndommen. Opplysninger om symptomer før 12 års alder gjør vurderingen tryggere.",
+            "en": "Since the change on 16 February 2026, the intake team still receives many referrals about ADHD in adults that describe current difficulties well but say little about childhood. Information about symptoms before the age of 12 makes the assessment more reliable."
+          }
+        },
+        {
+          "role": "gp",
+          "date": "2026-02-20",
+          "text": {
+            "nb": "Holder det med pasientens egen beskrivelse av barndommen, eller trengs opplysninger fra foreldre eller skole? Slike opplysninger er ofte vanskelige å skaffe.",
+            "en": "Is the patient’s own description of childhood enough, or is information from parents or school needed? Such information is often hard to obtain."
+          }
+        },
+        {
+          "role": "dps",
+          "date": "2026-02-25",
+          "text": {
+            "nb": "Pasientens egen beskrivelse er et godt utgangspunkt. Opplysninger fra andre gjør bildet tydeligere, men henvisningen vurderes også uten dem. Det kan være nyttig å legge ved et utfylt ASRS-skjema.",
+            "en": "The patient’s own description is a good starting point. Information from others makes the picture clearer, but the referral is also assessed without it. It can be useful to attach a completed ASRS form."
+          }
+        }
+      ]
+    }
+  }
+}

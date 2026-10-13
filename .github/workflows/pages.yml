@@ -1,0 +1,115 @@
+# Test, check, build and publish ATLAS v3 with its Meridian pages to GitHub Pages.
+# The site changes only when every check passes. While the repository is private the
+# publish job is skipped: GitHub Pages on a free plan needs a public repository.
+name: Test and publish
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+# One publish at a time; a run in progress is never cancelled.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    name: Check, test and build
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    defaults:
+      run:
+        working-directory: app
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: app/package-lock.json
+
+      - name: Install
+        run: npm ci
+
+      - name: Content checks
+        run: npm run check:content
+
+      - name: Type check
+        run: npm run typecheck
+
+      - name: Unit tests
+        run: npm test
+
+      - name: Generated documents are up to date
+        run: |
+          npm run docs
+          git diff --exit-code -- ../docs
+
+      - name: Build
+        run: npm run build
+
+      - name: Test browser
+        run: npx playwright install --with-deps chromium
+
+      # Segoe UI is not available on Linux. The tests were written with Inter in its place,
+      # which sets a little wider, so the layout checks run with the same font here.
+      - name: Fonts
+        run: |
+          sudo apt-get install -y --no-install-recommends fonts-inter
+          sudo tee /etc/fonts/conf.d/56-prefer-inter.conf > /dev/null <<'EOF'
+          <?xml version="1.0"?>
+          <!DOCTYPE fontconfig SYSTEM "urn:fontconfig:fonts.dtd">
+          <fontconfig>
+            <alias><family>system-ui</family><prefer><family>Inter</family></prefer></alias>
+            <alias><family>-apple-system</family><prefer><family>Inter</family></prefer></alias>
+            <alias><family>BlinkMacSystemFont</family><prefer><family>Inter</family></prefer></alias>
+            <alias><family>Segoe UI</family><prefer><family>Inter</family></prefer></alias>
+            <alias><family>Helvetica Neue</family><prefer><family>Inter</family></prefer></alias>
+            <alias><family>sans-serif</family><prefer><family>Inter</family></prefer></alias>
+          </fontconfig>
+          EOF
+          fc-cache -f
+          test "$(fc-match -f '%{family[0]}' 'Segoe UI')" = Inter
+
+      # End-to-end and accessibility tests (axe) on the built site. A mock stands in for
+      # every Nettskjema form, so no request reaches Nettskjema.
+      - name: End-to-end tests
+        run: npx playwright test
+
+      - name: Keep the test report
+        if: failure()
+        uses: actions/upload-artifact@v7
+        with:
+          name: playwright-report
+          path: |
+            app/playwright-report
+            app/test-results
+          retention-days: 7
+
+      # The app at the root and meridian/ beside it, with React served from the site.
+      - name: Assemble the site
+        run: npm run site
+
+      - uses: actions/upload-pages-artifact@v5
+        with:
+          path: site
+
+  publish:
+    name: Publish
+    needs: build
+    if: ${{ !github.event.repository.private }}
+    runs-on: ubuntu-24.04
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v5

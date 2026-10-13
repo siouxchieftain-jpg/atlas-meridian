@@ -1,0 +1,473 @@
+{
+  "id": "kari",
+  "vignette": "V1",
+  "patient": {
+    "name": "Kari Nordli",
+    "age": 34,
+    "initials": "KN",
+    "fnr": "120392 ·····"
+  },
+  "gp": {
+    "timeliste": {
+      "time": "09:00",
+      "visit": {
+        "nb": "Kontroll",
+        "en": "Follow-up"
+      },
+      "chips": [
+        {
+          "label": {
+            "nb": "Selvrapport mottatt",
+            "en": "Self-report received"
+          }
+        }
+      ]
+    },
+    "briefing": {
+      "task": {
+        "nb": "Du er Karis fastlege. Hun kommer til kontroll kl. 09:00 og har fylt ut selvrapporten før timen. Les notatet og bestem om du vil henvise til DPS.",
+        "en": "You are Kari’s GP. She comes for a follow-up at 09:00 and filled in the self-report before the appointment. Read the note and decide whether to refer to DPS."
+      },
+      "rows": [
+        {
+          "label": {
+            "nb": "Hvem",
+            "en": "Who"
+          },
+          "value": {
+            "nb": "Kari Nordli, 34 år. Nedstemt i fire måneder, PHQ-9 14. Gjennomgår skilsmisse og har nylig flyttet.",
+            "en": "Kari Nordli, 34. Low mood for four months, PHQ-9 of 14. Going through a divorce and recently moved."
+          }
+        },
+        {
+          "label": {
+            "nb": "Situasjonen",
+            "en": "Situation"
+          },
+          "value": {
+            "nb": "50 % sykemeldt i to uker. Rask psykisk helsehjelp i seks uker uten bedring. God effekt av sertralin for fem år siden.",
+            "en": "50% sick leave for two weeks. Six weeks of municipal mental health care without improvement. Sertraline worked well five years ago."
+          }
+        },
+        {
+          "label": {
+            "nb": "Hvorfor denne saken",
+            "en": "Why this case"
+          },
+          "value": {
+            "nb": "Kari har en tydelig utløsende hendelse, og plagene har vart i fire måneder uten bedring i det kommunale tilbudet.",
+            "en": "Kari has a clear trigger, and the symptoms have lasted four months without improvement in municipal care."
+          }
+        },
+        {
+          "label": {
+            "nb": "Utgangspunkt",
+            "en": "Starting point"
+          },
+          "value": {
+            "nb": "Kari fylte ut selvrapporten før timen.",
+            "en": "Kari filled in the self-report before the appointment."
+          }
+        }
+      ],
+      "time": {
+        "nb": "Omtrent 10 minutter",
+        "en": "About 10 minutes"
+      }
+    },
+    "atlasTask": {
+      "nb": "Plasser saken på båndet før du ser systemets lesning. Bestem deretter om du vil henvise.",
+      "en": "Place the case on the band before you see the system’s reading. Then decide whether to refer."
+    },
+    "profile": [
+      {
+        "label": {
+          "nb": "Tidligere behandling",
+          "en": "Previous treatment"
+        },
+        "value": {
+          "nb": "Rask psykisk helsehjelp, 6 uker, uten bedring. Sertralin 2020 til 2021.",
+          "en": "Rask psykisk helsehjelp, 6 weeks, no improvement. Sertraline 2020 to 2021."
+        },
+        "source": "record"
+      },
+      {
+        "label": {
+          "nb": "Legemidler",
+          "en": "Medicines"
+        },
+        "value": {
+          "nb": "Ingen aktive",
+          "en": "None active"
+        },
+        "source": "record"
+      },
+      {
+        "label": {
+          "nb": "Henvisninger",
+          "en": "Referrals"
+        },
+        "value": {
+          "nb": "Ingen tidligere",
+          "en": "None before"
+        },
+        "source": "record"
+      }
+    ],
+    "note": {
+      "date": "2026-03-17",
+      "text": {
+        "nb": "Kontroll. Kari beskriver nedstemthet, tidlig morgenoppvåkning, tap av glede og konsentrasjonsvansker i fire måneder, med gradvis forverring. PHQ-9 i dag: 14.\n\nGjennomgår skilsmisse, har nylig flyttet til ny kommune og mistet sosialt nettverk. 50 % sykemeldt siste to uker. Fortsatt i arbeid, men har trukket seg tilbake sosialt og sluttet med fritidsaktiviteter.\n\nTidligere behandling: Rask psykisk helsehjelp i seks uker, uten bedring. Sertralin 50 mg for fem år siden med god effekt, seponert.",
+        "en": "Follow-up. Kari describes low mood, early morning waking, loss of pleasure and difficulty concentrating for four months, gradually worsening. PHQ-9 today: 14.\n\nGoing through a divorce, has recently moved to a new municipality and lost her social network. 50% sick leave for the last two weeks. Still working, but has withdrawn socially and stopped her leisure activities.\n\nPrevious treatment: Rask psykisk helsehjelp for six weeks, without improvement. Sertraline 50 mg five years ago with good effect, discontinued."
+      }
+    },
+    "selfReport": {
+      "date": "2026-03-17",
+      "intro": {
+        "nb": "Kari fylte ut skjemaet før timen.",
+        "en": "Kari filled in the form before the appointment."
+      },
+      "rows": [
+        {
+          "q": {
+            "nb": "PHQ-9, sum",
+            "en": "PHQ-9, total"
+          },
+          "a": {
+            "nb": "14",
+            "en": "14"
+          }
+        },
+        {
+          "q": {
+            "nb": "Hvor lenge har du hatt det slik?",
+            "en": "How long have you felt like this?"
+          },
+          "a": {
+            "nb": "Omtrent 4 måneder",
+            "en": "About 4 months"
+          }
+        },
+        {
+          "q": {
+            "nb": "Klarer du arbeidet som før?",
+            "en": "Can you manage your work as before?"
+          },
+          "a": {
+            "nb": "Delvis, 50 % sykemeldt",
+            "en": "Partly, 50% sick leave"
+          }
+        },
+        {
+          "q": {
+            "nb": "Har du hatt tanker om å skade deg selv?",
+            "en": "Have you had thoughts of harming yourself?"
+          },
+          "a": {
+            "nb": "Nei",
+            "en": "No"
+          }
+        },
+        {
+          "q": {
+            "nb": "Hva ønsker du hjelp til?",
+            "en": "What would you like help with?"
+          },
+          "a": {
+            "nb": "Få tilbake energien",
+            "en": "Getting my energy back"
+          }
+        }
+      ]
+    },
+    "meds": {
+      "rows": [
+        {
+          "name": {
+            "nb": "Sertralin 50 mg tablett",
+            "en": "Sertraline 50 mg tablet"
+          },
+          "dose": {
+            "nb": "1 daglig",
+            "en": "1 daily"
+          },
+          "period": {
+            "nb": "2020 til 2021",
+            "en": "2020 to 2021"
+          },
+          "status": {
+            "nb": "Avsluttet",
+            "en": "Discontinued"
+          }
+        }
+      ],
+      "note": {
+        "nb": "Ingen aktive legemidler. Sertralin ga god effekt for fem år siden og ble seponert.",
+        "en": "No active medicines. Sertraline worked well five years ago and was discontinued."
+      }
+    },
+    "history": [
+      {
+        "date": "2026-03-17",
+        "text": {
+          "nb": "Selvrapport mottatt før kontroll (PHQ-9 14)",
+          "en": "Self-report received before the follow-up (PHQ-9 14)"
+        }
+      },
+      {
+        "date": "2026-01-20",
+        "text": {
+          "nb": "Rask psykisk helsehjelp avsluttet etter seks uker, uten bedring",
+          "en": "Rask psykisk helsehjelp ended after six weeks, without improvement"
+        }
+      },
+      {
+        "date": "2025-12-02",
+        "text": {
+          "nb": "Konsultasjon: nedstemthet etter samlivsbrudd. Henvist til Rask psykisk helsehjelp",
+          "en": "Consultation: low mood after a separation. Referred to Rask psykisk helsehjelp"
+        }
+      },
+      {
+        "date": "2021-02-15",
+        "text": {
+          "nb": "Sertralin seponert etter god effekt",
+          "en": "Sertraline discontinued after good effect"
+        }
+      }
+    ],
+    "systemReading": {
+      "placement": 50,
+      "summary": {
+        "nb": "Nær midten. Liknende henvisninger er vurdert ulikt.",
+        "en": "Near the middle. Similar referrals have been assessed differently."
+      },
+      "reasoning": {
+        "nb": "Kilder: notat, selvrapport, legemiddelliste. Varighet over tre måneder og manglende effekt av kommunalt tilbud ligger nær kriteriene. Mildt funksjonsfall og en tydelig utløsende hendelse ligger lenger fra. Risikovurdering er ikke omtalt i notatet. Setningen om liknende henvisninger er også skrevet for saken. Det finnes ingen ekte tall bak den.",
+        "en": "Sources: note, self-report, medication list. Duration over three months and no effect from municipal care lie close to the criteria. Mild functional decline and a clear trigger lie further away. Risk assessment is not mentioned in the note. The sentence about similar referrals is also written for the case. There are no real figures behind it."
+      }
+    },
+    "referralDraft": {
+      "aktuelt": {
+        "text": {
+          "nb": "Nedstemthet, tidlig morgenoppvåkning, tap av glede og konsentrasjonsvansker i fire måneder, med gradvis forverring. PHQ-9: 14. Gjennomgår skilsmisse og har nylig flyttet.",
+          "en": "Low mood, early morning waking, loss of pleasure and difficulty concentrating for four months, gradually worsening. PHQ-9: 14. Going through a divorce and has recently moved."
+        },
+        "fromNote": true
+      },
+      "tidligere": {
+        "text": {
+          "nb": "Rask psykisk helsehjelp i seks uker, uten bedring. Sertralin 50 mg for fem år siden, god effekt, seponert.",
+          "en": "Rask psykisk helsehjelp for six weeks, without improvement. Sertraline 50 mg five years ago, good effect, discontinued."
+        },
+        "fromNote": true
+      },
+      "funksjon": {
+        "text": {
+          "nb": "50 % sykemeldt i to uker. Sosial tilbaketrekning, har sluttet med fritidsaktiviteter.",
+          "en": "50% sick leave for two weeks. Social withdrawal, has stopped leisure activities."
+        },
+        "fromNote": true
+      },
+      "risiko": {
+        "text": {
+          "nb": "",
+          "en": ""
+        },
+        "fromNote": false
+      },
+      "sporsmal": {
+        "text": {
+          "nb": "",
+          "en": ""
+        },
+        "fromNote": false
+      }
+    },
+    "dpsScript": {
+      "placement": 44,
+      "request": {
+        "date": "2026-03-23",
+        "text": {
+          "nb": "Inntaksteamet ber om mer informasjon før henvisningen vurderes. Har Kari hatt depressive episoder tidligere? Hvordan er søvn og matlyst nå?",
+          "en": "The intake team asks for more information before the referral is assessed. Has Kari had depressive episodes before? How are her sleep and appetite now?"
+        }
+      },
+      "grant": {
+        "date": "2026-03-26",
+        "text": {
+          "nb": "Henvisningen er vurdert. Kari har rett til nødvendig helsehjelp og blir kalt inn til første samtale innen fristen.",
+          "en": "The referral has been assessed. Kari has the right to necessary health care and will be called in for a first appointment within the deadline."
+        }
+      }
+    }
+  },
+  "dps": {
+    "queue": {
+      "received": "2026-03-17",
+      "deadline": "2026-03-31",
+      "chips": [
+        {
+          "label": {
+            "nb": "Ny henvisning",
+            "en": "New referral"
+          },
+          "isNew": true
+        }
+      ]
+    },
+    "briefing": {
+      "task": {
+        "nb": "Du er i inntaksteamet ved DPS Skjærgården. Henvisningen for Kari har kommet inn. Les den og velg et utfall.",
+        "en": "You are on the intake team at DPS Skjærgården. Kari’s referral has arrived. Read it and choose an outcome."
+      },
+      "rows": [
+        {
+          "label": {
+            "nb": "Hva du får",
+            "en": "What you get"
+          },
+          "value": {
+            "nb": "Henvisningen fra fastlegen, med konsultasjonsnotatet som vedlegg.",
+            "en": "The referral from the GP, with the consultation note attached."
+          }
+        },
+        {
+          "label": {
+            "nb": "Hva du ikke får",
+            "en": "What you don’t get"
+          },
+          "value": {
+            "nb": "Fastlegens navn eller andre henvisninger fra samme lege.",
+            "en": "The GP’s name or other referrals from the same doctor."
+          }
+        },
+        {
+          "label": {
+            "nb": "Frist",
+            "en": "Deadline"
+          },
+          "value": {
+            "nb": "Vurderingsfristen er ti virkedager etter mottak: 31. mars 2026.",
+            "en": "The legal assessment deadline is ten working days after receipt: 31 March 2026."
+          }
+        }
+      ],
+      "time": {
+        "nb": "Omtrent 8 minutter",
+        "en": "About 8 minutes"
+      }
+    },
+    "atlasTask": {
+      "nb": "Med ATLAS ser du også fastlegens beskrivelse av hva som er uklart, og fastlegens trygghet i ord. Plasser saken på båndet før du ser fastlegens plassering og systemets lesning. Velg deretter et utfall.",
+      "en": "With ATLAS you also see the GP’s description of what is unclear, and the GP’s confidence in words. Place the case on the band before you see the GP’s placement and the system’s reading. Then choose an outcome."
+    },
+    "referral": {
+      "sent": "2026-03-17",
+      "received": "2026-03-17",
+      "deadline": "2026-03-31",
+      "sections": {
+        "aktuelt": {
+          "nb": "Nedstemthet, tidlig morgenoppvåkning, tap av glede og konsentrasjonsvansker i fire måneder, med gradvis forverring. PHQ-9: 14. Gjennomgår skilsmisse og har nylig flyttet.",
+          "en": "Low mood, early morning waking, loss of pleasure and difficulty concentrating for four months, gradually worsening. PHQ-9: 14. Going through a divorce and has recently moved."
+        },
+        "tidligere": {
+          "nb": "Rask psykisk helsehjelp i seks uker, uten bedring. Sertralin 50 mg for fem år siden, god effekt, seponert.",
+          "en": "Rask psykisk helsehjelp for six weeks, without improvement. Sertraline 50 mg five years ago, good effect, discontinued."
+        },
+        "funksjon": {
+          "nb": "50 % sykemeldt i to uker. Sosial tilbaketrekning, har sluttet med fritidsaktiviteter.",
+          "en": "50% sick leave for two weeks. Social withdrawal, has stopped leisure activities."
+        },
+        "risiko": {
+          "nb": "Selvmordsrisikovurdering gjennomført. Ingen akutt selvmordsfare. Ingen voldsrisiko identifisert.",
+          "en": "Suicide risk assessment completed. No acute suicide danger. No violence risk identified."
+        },
+        "sporsmal": {
+          "nb": "Ønsker spesialistvurdering for å avklare diagnostisk bilde og behandlingsbehov.",
+          "en": "Requesting specialist assessment to clarify diagnostic picture and treatment needs."
+        }
+      },
+      "noteAttachment": {
+        "nb": "Kontroll. Kari beskriver nedstemthet, tidlig morgenoppvåkning, tap av glede og konsentrasjonsvansker i fire måneder, med gradvis forverring. PHQ-9 i dag: 14.\n\nGjennomgår skilsmisse, har nylig flyttet til ny kommune og mistet sosialt nettverk. 50 % sykemeldt siste to uker. Fortsatt i arbeid, men har trukket seg tilbake sosialt og sluttet med fritidsaktiviteter.\n\nTidligere behandling: Rask psykisk helsehjelp i seks uker, uten bedring. Sertralin 50 mg for fem år siden med god effekt, seponert.",
+        "en": "Follow-up. Kari describes low mood, early morning waking, loss of pleasure and difficulty concentrating for four months, gradually worsening. PHQ-9 today: 14.\n\nGoing through a divorce, has recently moved to a new municipality and lost her social network. 50% sick leave for the last two weeks. Still working, but has withdrawn socially and stopped her leisure activities.\n\nPrevious treatment: Rask psykisk helsehjelp for six weeks, without improvement. Sertraline 50 mg five years ago with good effect, discontinued."
+      }
+    },
+    "gpUncertainty": {
+      "tags": [
+        "diagnostisk",
+        "terskel"
+      ],
+      "description": {
+        "nb": "Usikker på om dette er en reaktiv tilpasningsforstyrrelse eller en begynnende moderat depressiv episode. Funksjonsfallet er til stede, men mildt. Manglende respons på kommunalt tilbud taler for spesialistvurdering, men kort varighet og tydelig reaktiv komponent taler mot.",
+        "en": "Uncertain whether this is a reactive adjustment disorder or an emerging moderate depressive episode. Functional decline is present but mild. Lack of response to municipal services argues for specialist assessment, but short duration and clear reactive component argue against."
+      },
+      "confidence": "middels",
+      "placement": 46
+    },
+    "guideAsReceived": [
+      "alvorlighet",
+      "funksjon",
+      "varighet",
+      "behandling",
+      "risiko"
+    ],
+    "systemReading": {
+      "placement": 50,
+      "summary": {
+        "nb": "Nær midten. Liknende henvisninger er vurdert ulikt.",
+        "en": "Near the middle. Similar referrals have been assessed differently."
+      },
+      "reasoning": {
+        "nb": "Kilder: henvisningen og det vedlagte notatet. Varighet over tre måneder og manglende effekt av kommunalt tilbud ligger nær kriteriene. Mildt funksjonsfall og en tydelig utløsende hendelse ligger lenger fra. Setningen om liknende henvisninger er også skrevet for saken. Det finnes ingen ekte tall bak den.",
+        "en": "Sources: the referral and the attached note. Duration over three months and no effect from municipal care lie close to the criteria. Mild functional decline and a clear trigger lie further away. The sentence about similar referrals is also written for the case. There are no real figures behind it."
+      }
+    },
+    "gpScript": {
+      "replyToRequest": {
+        "date": "2026-03-20",
+        "text": {
+          "nb": "Kari hadde en depressiv episode i 2020, behandlet med sertralin 50 mg hos tidligere fastlege, med god effekt. Nå våkner hun tidlig, ofte rundt klokka fire, og har mindre matlyst enn vanlig. Hun er fortsatt 50 % sykemeldt og har ikke selvmordstanker.",
+          "en": "Kari had a depressive episode in 2020, treated with sertraline 50 mg by her previous GP, with good effect. Now she wakes early, often around four o’clock, and has less appetite than usual. She is still on 50% sick leave and has no suicidal thoughts."
+        }
+      },
+      "ackOfReturn": {
+        "date": "2026-03-20",
+        "text": {
+          "nb": "Takk for tilbakemeldingen. Rådene er notert, og Kari følges opp videre hos fastlegen.",
+          "en": "Thank you for the feedback. The advice is noted, and Kari will be followed up further by her GP."
+        }
+      }
+    }
+  },
+  "debrief": {
+    "gp": {
+      "title": {
+        "nb": "Plasseringer og utfall",
+        "en": "Placements and outcome"
+      },
+      "whatHappened": {
+        "nb": "{{plassering}} Systemets lesning lå nær midten. Fastlegens beslutning: {{beslutning}}. Fastlegens trygghet: {{trygghet}}. Utfall: {{utfall}}.",
+        "en": "{{plassering}} The system’s reading was near the middle. The GP’s decision: {{beslutning}}. The GP’s confidence: {{trygghet}}. Outcome: {{utfall}}."
+      },
+      "purpose": {
+        "nb": "Saken er laget for å prøve om ATLAS kan vise usikkerheten i en gråsonesak uten å tvinge fram et ja eller nei, og om det er tydelig hva som er fastlegens egen vurdering og hva systemet viser.",
+        "en": "The case was built to test whether ATLAS can show the uncertainty in a grey-zone case without forcing a yes or no, and whether it is clear what is the GP’s own assessment and what the system shows."
+      }
+    },
+    "dps": {
+      "title": {
+        "nb": "Tre plasseringer av samme sak",
+        "en": "Three placements of the same case"
+      },
+      "whatHappened": {
+        "nb": "{{plassering}} Fastlegens trygghet for henvisningen var {{trygghet}}. Utfall: {{utfall}}.",
+        "en": "{{plassering}} The GP’s confidence for the referral was {{trygghet}}. Outcome: {{utfall}}."
+      },
+      "purpose": {
+        "nb": "Saken er laget for å prøve om fastlegens egen beskrivelse av hva som er uklart, sendt med henvisningen, endrer hvordan inntaksteamet leser en gråsonesak, og om det er tydelig hva som er egen vurdering og hva systemet viser.",
+        "en": "The case was built to test whether the GP’s own description of what is unclear, sent with the referral, changes how the intake team reads a grey-zone case, and whether it is clear what is one’s own assessment and what the system shows."
+      }
+    }
+  }
+}

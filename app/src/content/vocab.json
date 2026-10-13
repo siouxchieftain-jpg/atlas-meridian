@@ -1,0 +1,345 @@
+{
+  "tags": {
+    "diagnostisk": {
+      "label": {
+        "nb": "Diagnostisk",
+        "en": "Diagnostic"
+      },
+      "definition": {
+        "nb": "Det er uklart hvilken tilstand det er.",
+        "en": "It is unclear which condition this is."
+      }
+    },
+    "terskel": {
+      "label": {
+        "nb": "Terskel",
+        "en": "Threshold"
+      },
+      "definition": {
+        "nb": "Tilstanden er kjent, men det er uklart om den når terskelen.",
+        "en": "The condition is known, but it is unclear whether it reaches the threshold."
+      }
+    },
+    "epistemisk": {
+      "label": {
+        "nb": "Epistemisk",
+        "en": "Epistemic"
+      },
+      "definition": {
+        "nb": "Opplysningene er for tynne til å vurdere saken.",
+        "en": "The information is too thin to assess the case."
+      }
+    }
+  },
+  "confidence": {
+    "lav": {
+      "nb": "Lav",
+      "en": "Low"
+    },
+    "nokssaLav": {
+      "nb": "Nokså lav",
+      "en": "Fairly low"
+    },
+    "middels": {
+      "nb": "Middels",
+      "en": "Medium"
+    },
+    "nokssaHoy": {
+      "nb": "Nokså høy",
+      "en": "Fairly high"
+    },
+    "hoy": {
+      "nb": "Høy",
+      "en": "High"
+    }
+  },
+  "confidenceOrder": [
+    "lav",
+    "nokssaLav",
+    "middels",
+    "nokssaHoy",
+    "hoy"
+  ],
+  "criteria": {
+    "alvorlighet": {
+      "label": {
+        "nb": "Symptomenes alvorlighetsgrad",
+        "en": "Severity of symptoms"
+      },
+      "dpsLooksFor": {
+        "nb": "DPS ser etter hvor alvorlige plagene er.",
+        "en": "DPS looks for how severe the symptoms are."
+      }
+    },
+    "funksjon": {
+      "label": {
+        "nb": "Funksjonsnivå",
+        "en": "Level of functioning"
+      },
+      "dpsLooksFor": {
+        "nb": "DPS ser etter funksjon i arbeid, sosialt og i hverdagen.",
+        "en": "DPS looks for functioning at work, socially and in daily life."
+      }
+    },
+    "varighet": {
+      "label": {
+        "nb": "Varighet",
+        "en": "Duration"
+      },
+      "dpsLooksFor": {
+        "nb": "DPS ser etter hvor lenge plagene har vart.",
+        "en": "DPS looks for how long the symptoms have lasted."
+      }
+    },
+    "behandling": {
+      "label": {
+        "nb": "Tidligere behandling",
+        "en": "Previous treatment"
+      },
+      "dpsLooksFor": {
+        "nb": "DPS ser ofte etter behandlingsforsøk hos fastlegen eller i kommunen.",
+        "en": "DPS often looks for treatment tried by the GP or the municipality."
+      }
+    },
+    "risiko": {
+      "label": {
+        "nb": "Risikovurdering",
+        "en": "Risk assessment"
+      },
+      "dpsLooksFor": {
+        "nb": "DPS ser etter om selvmordsrisiko er vurdert, også når den er lav.",
+        "en": "DPS looks for whether suicide risk has been assessed, even when it is low."
+      }
+    }
+  },
+  "behandlingsnytte": {
+    "label": {
+      "nb": "Behandlingsnytte",
+      "en": "Benefit of treatment"
+    },
+    "text": {
+      "nb": "Vurderes av DPS",
+      "en": "Assessed by DPS"
+    }
+  },
+  "sections": {
+    "aktuelt": {
+      "label": {
+        "nb": "Aktuelt og problemstilling",
+        "en": "Presenting problem"
+      },
+      "guide": {
+        "nb": "DPS ser etter hvor lenge plagene har vart og hvor alvorlige de er.",
+        "en": "DPS looks for how long the symptoms have lasted and how severe they are."
+      },
+      "criterion": "alvorlighet"
+    },
+    "tidligere": {
+      "label": {
+        "nb": "Tidligere behandling",
+        "en": "Previous treatment"
+      },
+      "guide": {
+        "nb": "DPS ser ofte etter behandlingsforsøk hos fastlegen eller i kommunen.",
+        "en": "DPS often looks for treatment tried by the GP or the municipality."
+      },
+      "criterion": "behandling"
+    },
+    "funksjon": {
+      "label": {
+        "nb": "Funksjonsfall",
+        "en": "Functional decline"
+      },
+      "guide": {
+        "nb": "DPS ser etter funksjon i arbeid, sosialt og i hverdagen.",
+        "en": "DPS looks for functioning at work, socially and in daily life."
+      },
+      "criterion": "funksjon"
+    },
+    "risiko": {
+      "label": {
+        "nb": "Risikovurdering",
+        "en": "Risk assessment"
+      },
+      "guide": {
+        "nb": "DPS ser etter om selvmordsrisiko er vurdert, også når den er lav.",
+        "en": "DPS looks for whether suicide risk has been assessed, even when it is low."
+      },
+      "criterion": "risiko"
+    },
+    "sporsmal": {
+      "label": {
+        "nb": "Spørsmål til DPS",
+        "en": "Question for DPS"
+      },
+      "guide": {
+        "nb": "Spørsmålet sier hva DPS skal ta stilling til.",
+        "en": "The question says what DPS is asked to decide on."
+      }
+    }
+  },
+  "sectionOrder": [
+    "aktuelt",
+    "tidligere",
+    "funksjon",
+    "risiko",
+    "sporsmal"
+  ],
+  "reasons": {
+    "situasjonellKrise": {
+      "nb": "Situasjonell krise",
+      "en": "Situational crisis"
+    },
+    "kortVarighet": {
+      "nb": "Funksjonsnedgang for kort varighet",
+      "en": "Functional decline of short duration"
+    },
+    "kommunaltIkkeProvd": {
+      "nb": "Kommunalt tilbud ikke utprøvd",
+      "en": "Municipal services not tried"
+    },
+    "utilstrekkeligInfo": {
+      "nb": "Utilstrekkelig informasjon",
+      "en": "Insufficient information"
+    },
+    "annen": {
+      "nb": "Annen årsak",
+      "en": "Other reason"
+    }
+  },
+  "reasonOrder": [
+    "situasjonellKrise",
+    "kortVarighet",
+    "kommunaltIkkeProvd",
+    "utilstrekkeligInfo",
+    "annen"
+  ],
+  "outcomes": {
+    "info": {
+      "label": {
+        "nb": "Be om mer informasjon",
+        "en": "Request more information"
+      },
+      "icon": "question"
+    },
+    "rett": {
+      "label": {
+        "nb": "Rett til helsehjelp",
+        "en": "Right to health care"
+      },
+      "icon": "enter"
+    },
+    "retur": {
+      "label": {
+        "nb": "Retur med råd",
+        "en": "Return with advice"
+      },
+      "icon": "reply"
+    }
+  },
+  "outcomeOrder": [
+    "info",
+    "rett",
+    "retur"
+  ],
+  "sources": {
+    "record": {
+      "nb": "Fra journalen",
+      "en": "From the record"
+    },
+    "note": {
+      "nb": "Fra notatet",
+      "en": "From the note"
+    },
+    "selfReport": {
+      "nb": "Pasientens selvrapport",
+      "en": "The patient’s self-report"
+    },
+    "own": {
+      "nb": "Din vurdering",
+      "en": "Your assessment"
+    },
+    "gp": {
+      "nb": "Fra henvisende fastlege",
+      "en": "From the referring GP"
+    },
+    "dps": {
+      "nb": "Fra DPS, inntak",
+      "en": "From DPS intake"
+    },
+    "dpsRecord": {
+      "nb": "Fra journalen ved DPS",
+      "en": "From DPS’s own record"
+    },
+    "system": {
+      "nb": "Systemets lesning",
+      "en": "The system’s reading"
+    },
+    "fictional": {
+      "nb": "Fiktive tall for prototypen",
+      "en": "Fictional figures for the prototype"
+    }
+  },
+  "roles": {
+    "gp": {
+      "nb": "Henvisende fastlege",
+      "en": "Referring GP"
+    },
+    "dps": {
+      "nb": "DPS, inntak",
+      "en": "DPS intake"
+    },
+    "gpTeam": {
+      "nb": "Fastlege",
+      "en": "GP"
+    },
+    "dpsTeam": {
+      "nb": "DPS Skjærgården, inntaksteamet",
+      "en": "DPS Skjærgården, intake team"
+    }
+  },
+  "band": {
+    "caption": {
+      "nb": "Viser usikkerhet, anbefaler ikke",
+      "en": "Shows uncertainty, does not recommend"
+    },
+    "left": {
+      "nb": "Klart utenfor",
+      "en": "Clearly outside"
+    },
+    "middle": {
+      "nb": "Gråsone",
+      "en": "Grey zone"
+    },
+    "right": {
+      "nb": "Klart innenfor",
+      "en": "Clearly within"
+    },
+    "own": {
+      "nb": "Din plassering",
+      "en": "Your placement"
+    },
+    "other": {
+      "gp": {
+        "nb": "Henvisende fastlege",
+        "en": "Referring GP"
+      },
+      "dps": {
+        "nb": "DPS, inntak",
+        "en": "DPS intake"
+      }
+    },
+    "system": {
+      "nb": "Systemets lesning",
+      "en": "The system’s reading"
+    },
+    "illustration": {
+      "nb": "Illustrasjon: lesningen er skrevet for saken, ikke beregnet",
+      "en": "Illustration: the reading is written for the case, not calculated"
+    },
+    "reasoningLabel": {
+      "nb": "Resonnement",
+      "en": "Reasoning"
+    }
+  }
+}

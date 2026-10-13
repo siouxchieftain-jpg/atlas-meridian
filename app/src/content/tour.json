@@ -1,0 +1,560 @@
+{
+  "gp": {
+    "parts": [
+      {
+        "title": {
+          "nb": "Timeliste og konsultasjon",
+          "en": "Appointments and consultation"
+        },
+        "steps": [
+          {
+            "id": "gp-timeliste",
+            "title": {
+              "nb": "Timeliste",
+              "en": "Appointments"
+            },
+            "body": {
+              "nb": "Timelisten viser dagens pasienter etter klokkeslett, med navn, alder og type time. Merkelappene viser bare status for en henvisningssak, aldri hast eller risiko. Sofie Lund er øvingspasienten; de andre pasientene kan ikke åpnes.",
+              "en": "The appointment list shows today’s patients by time, with name, age and type of visit. The tags show only the status of a referral case, never urgency or risk. Sofie Lund is the practice patient; the other patients cannot be opened."
+            },
+            "tryIt": {
+              "nb": "Prøv: åpne Sofie Lund.",
+              "en": "Try: open Sofie Lund."
+            },
+            "reason": {
+              "nb": "En liste sortert etter en score ville ført blikket dit systemet mener det haster. Klokkeslettet holder rekkefølgen din.",
+              "en": "A list sorted by a score would draw the eye to where the system thinks it is urgent. The time of day keeps your own order."
+            },
+            "frame": "timeliste",
+            "bridge": {
+              "nb": "Spørsmålene i skjemaene kaller ATLAS for «dashbordet» eller «ATLAS-dashbordet».",
+              "en": "The questions in the forms call ATLAS ‘the dashboard’ or ‘the ATLAS dashboard’."
+            }
+          },
+          {
+            "id": "gp-profil",
+            "title": {
+              "nb": "Pasientprofil og journal",
+              "en": "Patient profile and record"
+            },
+            "body": {
+              "nb": "Konsultasjonen viser profilen i en egen kolonne og notatet, legemidlene og historikken i faner. Selvrapporten viser pasientens egne svar fra før timen. Hver del er merket med kilden: journalen, notatet eller pasientens selvrapport. Profilen rangerer ikke pasienten.",
+              "en": "The consultation shows the profile in its own column and the note, medicines and history in tabs. The self-report shows the patient’s own answers from before the visit. Each part is labelled with its source: the record, the note or the patient’s self-report. The profile does not rank the patient."
+            },
+            "tryIt": {
+              "nb": "Prøv: åpne selvrapporten.",
+              "en": "Try: open the self-report."
+            },
+            "reason": {
+              "nb": "Opplysningene i en sak kommer fra ulike kilder. Når kilden står ved hver del, er det tydelig hva som står i journalen, hva pasienten selv har svart og hva som er din egen vurdering.",
+              "en": "The information in a case comes from different sources. With the source beside each part, it is clear what the record holds, what the patient answered and what is your own assessment."
+            },
+            "frame": "profil"
+          }
+        ]
+      },
+      {
+        "title": {
+          "nb": "ATLAS-panelet",
+          "en": "The ATLAS panel"
+        },
+        "steps": [
+          {
+            "id": "gp-band",
+            "title": {
+              "nb": "Usikkerhetsvisning",
+              "en": "Uncertainty display"
+            },
+            "body": {
+              "nb": "Panelet ved siden av journalen er ATLAS, med teksten «Viser usikkerhet, anbefaler ikke». Usikkerhetsvisningen er et bånd fra «Klart utenfor» via «Gråsone» til «Klart innenfor» DPS-kriteriene. Du plasserer saken selv, og båndet viser ingen tall.",
+              "en": "The panel beside the record is ATLAS, with the caption ‘Shows uncertainty, does not recommend’. The uncertainty display is a band from ‘Clearly outside’ through ‘Grey zone’ to ‘Clearly within’ the DPS criteria. You place the case yourself, and the band shows no number."
+            },
+            "tryIt": {
+              "nb": "Prøv: plasser saken på båndet.",
+              "en": "Try: place the case on the band."
+            },
+            "reason": {
+              "nb": "Klinikere vurderer gråsonesaker ulikt. Et bånd viser hvor saken ligger, uten å gjøre den til et ja eller nei.",
+              "en": "Clinicians assess grey-zone cases differently. A band shows where the case lies without turning it into a yes or no."
+            },
+            "frame": "band"
+          },
+          {
+            "id": "gp-lesning",
+            "title": {
+              "nb": "Systemets lesning",
+              "en": "The system’s reading"
+            },
+            "body": {
+              "nb": "Når du har plassert saken, viser båndet systemets lesning: en lilla markør og én setning, med et resonnement som sier hvilke kilder lesningen bygger på. Lesningen er merket som en illustrasjon: den er skrevet for saken, ikke beregnet. Det du legger inn selv, er merket «Din vurdering».",
+              "en": "When you have placed the case, the band shows the system’s reading: a lavender marker and one sentence, with a reasoning that names the sources the reading draws on. The reading is labelled as an illustration: it is written for the case, not calculated. What you enter yourself is labelled ‘Your assessment’."
+            },
+            "tryIt": {
+              "nb": "Prøv: plasser saken hvis du ikke har gjort det, og åpne Resonnement.",
+              "en": "Try: place the case if you have not done so, and open Reasoning."
+            },
+            "reason": {
+              "nb": "Lesningen kommer etter din egen plassering, så den blir noe å sammenlikne med, ikke noe å følge. Merkingen sier rett ut at den ikke er en beregning.",
+              "en": "The reading comes after your own placement, so it becomes something to compare with, not something to follow. The label says plainly that it is not a calculation."
+            },
+            "frame": "bandReading",
+            "bridge": {
+              "nb": "Spørsmålene kaller systemets lesning for «dashbordets indikasjon».",
+              "en": "The questions call the system’s reading ‘the dashboard’s indication’."
+            }
+          },
+          {
+            "id": "gp-tags",
+            "title": {
+              "nb": "Hva er uklart",
+              "en": "What is unclear"
+            },
+            "body": {
+              "nb": "Tre merkelapper beskriver hva usikkerheten gjelder: Diagnostisk, Terskel og Epistemisk, hver med en kort definisjon. Under dem er et felt der du beskriver usikkerheten med egne ord. Alt starter tomt, og det du fyller inn, følger med en henvisning som en egen del.",
+              "en": "Three tags describe what the uncertainty concerns: Diagnostic, Threshold and Epistemic, each with a short definition. Below them is a field where you describe the uncertainty in your own words. Everything starts empty, and what you fill in goes with a referral as a separate part."
+            },
+            "tryIt": {
+              "nb": "Prøv: velg en merkelapp.",
+              "en": "Try: choose a tag."
+            },
+            "reason": {
+              "nb": "Usikkerhet kan gjelde diagnosen, terskelen eller om opplysningene er nok. Som en egen del må den ikke leses mellom linjene.",
+              "en": "Uncertainty can concern the diagnosis, the threshold or whether the information is enough. As a separate part, it does not have to be read between the lines."
+            },
+            "frame": "tags"
+          },
+          {
+            "id": "gp-guide",
+            "title": {
+              "nb": "Informasjonsguiden",
+              "en": "The information completeness guide"
+            },
+            "body": {
+              "nb": "Informasjonsguiden leser notatet og viser hvor mange av fem kriterier fra prioriteringsveilederen det omtaler: symptomenes alvorlighetsgrad, funksjonsnivå, varighet, tidligere behandling og risikovurdering. Behandlingsnytte står for seg, merket «Vurderes av DPS». Guiden ser etter vanlige ord for hvert kriterium og kan ta feil begge veier: overse det som er skrevet med andre ord, eller telle ord som står i en annen sammenheng. Den er ikke et krav, og du kan henvise uansett hva den viser.",
+              "en": "The information completeness guide reads the note and shows how many of five criteria from the priority-setting guideline it mentions: severity of symptoms, level of functioning, duration, previous treatment and risk assessment. Benefit of treatment stands apart, marked ‘Assessed by DPS’. The guide looks for common words for each criterion and can be wrong both ways: miss what is written in other words, or count words used in another context. It is not a requirement, and you can refer whatever it shows."
+            },
+            "reason": {
+              "nb": "Returer skyldes ofte manglende opplysninger. Guiden viser hva den finner omtalt før DPS må spørre, uten å stoppe noen henvisning.",
+              "en": "Returns are often due to missing information. The guide shows what it finds mentioned before DPS has to ask, without stopping any referral."
+            },
+            "frame": "guide"
+          }
+        ]
+      },
+      {
+        "title": {
+          "nb": "Trygghet, beslutning og henvisning",
+          "en": "Confidence, decision and referral"
+        },
+        "steps": [
+          {
+            "id": "gp-trygghet",
+            "title": {
+              "nb": "Din trygghet nå",
+              "en": "Your confidence now"
+            },
+            "body": {
+              "nb": "Her velger du hvor trygg du er på vurderingen, i fem trinn med ord: Lav, Nokså lav, Middels, Nokså høy og Høy. Feltet starter tomt og viser aldri et tall. Henviser du, ser DPS tryggheten for denne henvisningen, ikke historikken din.",
+              "en": "Here you choose how confident you are in the assessment, in five steps in words: Low, Fairly low, Medium, Fairly high and High. The field starts empty and never shows a number. If you refer, DPS sees your confidence for this referral, not your history."
+            },
+            "tryIt": {
+              "nb": "Prøv: velg et trinn.",
+              "en": "Try: choose a step."
+            },
+            "reason": {
+              "nb": "Lav trygghet betyr ikke feil vurdering. Ord i stedet for tall gjør tryggheten til en opplysning, ikke en score.",
+              "en": "Low confidence does not mean a wrong assessment. Words instead of numbers make confidence a piece of information, not a score."
+            },
+            "frame": "confidence"
+          },
+          {
+            "id": "gp-beslutning",
+            "title": {
+              "nb": "Din beslutning",
+              "en": "Your decision"
+            },
+            "body": {
+              "nb": "Behold og Henvis står side om side, med lik vekt og uten forhåndsvalg. Du kan skrive en kort begrunnelse om du vil, og ingen dialog spør om du er sikker. Ved beslutningen står «Du har det endelige kliniske ansvaret».",
+              "en": "‘Keep in general practice’ and ‘Refer’ sit side by side, with equal weight and nothing pre-selected. You can write a short reason if you wish, and no dialogue asks whether you are sure. Beside the decision is the line ‘You have the final clinical responsibility’."
+            },
+            "tryIt": {
+              "nb": "Prøv: velg Behold eller Henvis.",
+              "en": "Try: choose ‘Keep in general practice’ or ‘Refer’."
+            },
+            "reason": {
+              "nb": "En ekstra bekreftelse ved det ene valget gjør det andre til standard. Like valg holder beslutningen hos deg.",
+              "en": "An extra confirmation on one choice makes the other the default. Equal choices keep the decision with you."
+            },
+            "frame": "decision"
+          },
+          {
+            "id": "gp-margin",
+            "title": {
+              "nb": "Hva DPS ser etter",
+              "en": "What DPS looks for"
+            },
+            "body": {
+              "nb": "Ny henvisning har fem deler. I margen ved hver del står hva DPS ser etter, hentet fra prioriteringsveilederen, og om ATLAS finner det i delen. I Tidligere behandling, Funksjonsfall og Risikovurdering teller det du skriver om temaet. ATLAS prøver å hoppe over setninger som sier at noe ikke er vurdert, er ukjent eller overlates til DPS, men kan likevel telle dem. I Aktuelt og problemstilling ser ATLAS etter vanlige ord for alvorlighet og varighet og kan overse egne formuleringer. «Omtalt» betyr ikke at det som står, er nok, og «Ikke funnet ennå» betyr ikke alltid at noe mangler. Tekst fra notatet er merket «Hentet fra notatet» og kan endres, «Spørsmål til DPS» starter tomt, og «Fra ATLAS-panelet» viser usikkerheten og tryggheten din i ord.",
+              "en": "The new referral has five sections. In the margin by each section is what DPS looks for, taken from the priority-setting guideline, and whether ATLAS finds it in the section. In Previous treatment, Functional decline and Risk assessment, what you write about the topic counts. ATLAS tries to skip sentences that say something was not assessed, is unknown or is left to DPS, but it can still count them. In Presenting problem, ATLAS looks for common words for severity and duration and can miss your own wording. ‘Mentioned’ does not mean that what is written is enough, and ‘Not found yet’ does not always mean that something is missing. Text from the note is marked ‘Taken from the note’ and can be edited, ‘Question for DPS’ starts empty, and ‘From the ATLAS panel’ shows your uncertainty and confidence in words."
+            },
+            "tryIt": {
+              "nb": "Prøv: skriv noe i Risikovurdering, som er tom.",
+              "en": "Try: write something in Risk assessment, which is empty."
+            },
+            "reason": {
+              "nb": "Kriteriene DPS bruker, er sjelden synlige for den som skriver henvisningen. I margen står de der teksten skrives, uten å bli et skjema som må fylles ut.",
+              "en": "The criteria DPS uses are rarely visible to whoever writes the referral. In the margin they sit where the text is written, without becoming a form to fill in."
+            },
+            "frame": "referral",
+            "bridge": {
+              "nb": "Spørsmålene kaller det som Informasjonsguiden og margen viser, for «kriteriesynlighet» og «synlige kriterier». Det å skrive en henvisning med tanke på hvordan den blir vurdert, kaller spørsmålene «strategisk dokumentasjon» og «dokumentasjonsstrategi».",
+              "en": "The questions call what the information completeness guide and the margin show ‘the criteria visibility’ and ‘visible criteria’. The questions call this ‘strategic documentation’ or ‘documentation strategy’: writing a referral with an eye to how it will be assessed."
+            }
+          }
+        ]
+      },
+      {
+        "title": {
+          "nb": "Svar og oversikter",
+          "en": "Replies and overviews"
+        },
+        "steps": [
+          {
+            "id": "gp-retur",
+            "title": {
+              "nb": "Tilbakemelding om henvisningsutfall",
+              "en": "Feedback on referral outcome"
+            },
+            "body": {
+              "nb": "Svaret fra DPS kommer i tråden for henvisningen. Eksempelet er en strukturert retur for øvingspasienten: utfallet «Retur med råd», årsakene som merkelapper, en forklaring, råd om videre oppfølging og kriteriene DPS vurderte som ikke oppfylt. Utfallene skilles med ord og ikon, ikke med farge.",
+              "en": "The reply from DPS arrives in the thread for the referral. The example is a structured return for the practice patient: the outcome ‘Return with advice’, the reasons as tags, an explanation, advice on follow-up and the criteria DPS assessed as not met. Outcomes differ by word and icon, not by colour."
+            },
+            "tryIt": {
+              "nb": "Prøv: åpne kriteriene som ikke er oppfylt.",
+              "en": "Try: open the criteria not met."
+            },
+            "reason": {
+              "nb": "Et avslag uten begrunnelse gir lite å bygge på neste gang. Årsaker, kriterier og råd i samme svar gir noe å spørre om og noe å bruke.",
+              "en": "A rejection without reasons gives little to build on next time. Reasons, criteria and advice in one reply give something to ask about and something to use."
+            },
+            "frame": "return",
+            "bridge": {
+              "nb": "Spørsmålene kaller utfall og returer i Dialog og returårsakene i Mitt henvisningsmønster for «tilbakemeldingene om henvisningsutfall». En retur med årsaker og råd kaller spørsmålene «den strukturerte tilbakemeldingen».",
+              "en": "The questions call outcomes and returns in Dialogue and the return reasons in My referral pattern ‘the feedback on referral outcomes’. The questions call a return with reasons and advice ‘the structured feedback’."
+            }
+          },
+          {
+            "id": "gp-monster",
+            "title": {
+              "nb": "Mitt henvisningsmønster",
+              "en": "My referral pattern"
+            },
+            "body": {
+              "nb": "Mitt henvisningsmønster viser dine egne henvisninger over tid: hvor mange som fikk rett til helsehjelp, ble returnert med råd, ble avslått eller venter på svar, de vanligste returårsakene og antallet per kvartal. Tallene er fiktive for prototypen. Visningen er bare synlig for deg og deles ikke med DPS, arbeidsgiver, tilsynsmyndigheter eller andre.",
+              "en": "My referral pattern shows your own referrals over time: how many were granted the right to health care, returned with advice, rejected, or are awaiting a reply, the most common return reasons and the number per quarter. The figures are fictional for the prototype. The view is visible only to you and is not shared with DPS, employers, supervisory authorities or others."
+            },
+            "reason": {
+              "nb": "Uten tilbakemelding over tid er det vanskelig å se sitt eget mønster. Visningen er privat, så den er til egen læring og ikke til kontroll.",
+              "en": "Without feedback over time it is hard to see one’s own pattern. The view is private, so it is for your own learning and not for control."
+            },
+            "frame": "pattern",
+            "bridge": {
+              "nb": "Spørsmålene kaller denne visningen for «oversikten over mine tidligere henvisningsmønstre».",
+              "en": "The questions call this view ‘the overview of my previous referral patterns’."
+            }
+          },
+          {
+            "id": "gp-kalibrering",
+            "title": {
+              "nb": "Delt oversikt: Kalibrering",
+              "en": "Shared overview: Calibration"
+            },
+            "body": {
+              "nb": "Delt oversikt har to deler. Kalibrering viser anonymiserte tall for opptaksområdet til DPS Skjærgården, de vanligste returårsakene og en logg over endringer i kriteriene. Ingen enkeltklinikere vises, og tallene er fiktive.",
+              "en": "The shared overview has two sections. Calibration shows anonymised figures for the catchment area of DPS Skjærgården, the most common return reasons and a log of changes to the criteria. No individual clinicians are shown, and the figures are fictional."
+            },
+            "reason": {
+              "nb": "Kriterier som endres uten at det synes, blir et mål som flytter seg. Felles tall og en felles logg gir begge sider samme bilde, uten å vise enkeltpersoner.",
+              "en": "Criteria that change without it showing become a moving target. Shared figures and a shared log give both sides the same picture, without showing individuals."
+            },
+            "frame": "kalibrering",
+            "bridge": {
+              "nb": "Spørsmålene kaller tallene her og i Mitt henvisningsmønster for «kalibreringsdata».",
+              "en": "The questions call the figures here and in My referral pattern ‘calibration data’."
+            }
+          },
+          {
+            "id": "gp-dialog",
+            "title": {
+              "nb": "Delt oversikt: Dialog",
+              "en": "Shared overview: Dialogue"
+            },
+            "body": {
+              "nb": "Dialog samler trådene for henvisningene dine og en anonymisert fagdiskusjon mellom fastleger og DPS. I trådene står partene som roller, ikke navn, og egne meldinger står til høyre. Fagdiskusjonen er ikke knyttet til enkeltpasienter.",
+              "en": "Dialogue gathers the threads for your referrals and an anonymised professional discussion between GPs and DPS. In the threads the parties appear as roles, not names, and your own messages sit on the right. The discussion is not linked to individual patients."
+            },
+            "tryIt": {
+              "nb": "Prøv: åpne en tråd.",
+              "en": "Try: open a thread."
+            },
+            "reason": {
+              "nb": "Et spørsmål om en retur hører hjemme i tråden for henvisningen, ikke i en ny henvisning. Fagdiskusjonen gir plass til spørsmål om kriterier som gjelder mange saker.",
+              "en": "A question about a return belongs in the thread for the referral, not in a new referral. The discussion makes room for questions about criteria that apply to many cases."
+            },
+            "frame": "dialog",
+            "bridge": {
+              "nb": "Spørsmålene kaller Delt oversikt, med Kalibrering og Dialog, for «den delte oversikten».",
+              "en": "The questions call this screen, with Calibration and Dialogue, ‘the shared overview’."
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "dps": {
+    "parts": [
+      {
+        "title": {
+          "nb": "Køen og henvisningen",
+          "en": "The queue and the referral"
+        },
+        "steps": [
+          {
+            "id": "dps-ko",
+            "title": {
+              "nb": "Mottatte henvisninger",
+              "en": "Received referrals"
+            },
+            "body": {
+              "nb": "Køen viser henvisningene i den rekkefølgen de kom inn, med pasient, avsender som rolle og vurderingsfristen som dato. Det finnes ingen kolonne for risiko eller score. Nye meldinger fra fastlegen er merket.",
+              "en": "The queue shows the referrals in the order they arrived, with the patient, the sender as a role and the assessment deadline as a date. There is no column for risk or score. New messages from the GP are marked."
+            },
+            "tryIt": {
+              "nb": "Prøv: åpne henvisningen for Sofie Lund.",
+              "en": "Try: open the referral for Sofie Lund."
+            },
+            "reason": {
+              "nb": "Sortering etter systemets vurdering ville gjort ATLAS til portvakt. Rekkefølgen og fristen er de samme som uten ATLAS.",
+              "en": "Sorting by the system’s assessment would make ATLAS a gatekeeper. The order and the deadline are the same as without ATLAS."
+            },
+            "frame": "queue",
+            "bridge": {
+              "nb": "Spørsmålene i skjemaene kaller ATLAS for «dashbordet» eller «ATLAS-dashbordet».",
+              "en": "The questions in the forms call ATLAS ‘the dashboard’ or ‘the ATLAS dashboard’."
+            }
+          },
+          {
+            "id": "dps-usikkerhet",
+            "title": {
+              "nb": "Hva fastlegen var usikker på",
+              "en": "What the GP was unsure about"
+            },
+            "body": {
+              "nb": "Henvisningen står slik fastlegen sendte den, med notatet som vedlegg. Sammen med den kommer det fastlegen selv skrev om usikkerheten: merkelappene, beskrivelsen som sitat og fastlegens trygghet for denne henvisningen, i ord og uten tall. Ingen historikk for den enkelte fastlege vises.",
+              "en": "The referral appears as the GP sent it, with the note attached. With it comes what the GP wrote about the uncertainty: the tags, the description as a quotation and the GP’s confidence for this referral, in words and with no number. No history for the individual GP is shown."
+            },
+            "reason": {
+              "nb": "Usikkerheten står for seg selv, så du slipper å lete etter den i notatet. Tryggheten gjelder bare denne henvisningen, så ingen fastlege får et rykte i systemet.",
+              "en": "The uncertainty stands on its own, so you do not have to search for it in the note. The confidence applies to this referral only, so no GP gets a reputation in the system."
+            },
+            "frame": "gpUncertainty",
+            "bridge": {
+              "nb": "Det å skrive en henvisning med tanke på hvordan den blir vurdert, kaller spørsmålene «strategisk dokumentasjon».",
+              "en": "The questions call this ‘strategic documentation’: writing a referral with an eye to how it will be assessed."
+            }
+          }
+        ]
+      },
+      {
+        "title": {
+          "nb": "Usikkerhetsvisning",
+          "en": "Uncertainty display"
+        },
+        "steps": [
+          {
+            "id": "dps-band",
+            "title": {
+              "nb": "Usikkerhetsvisning",
+              "en": "Uncertainty display"
+            },
+            "body": {
+              "nb": "ATLAS-panelet har teksten «Viser usikkerhet, anbefaler ikke». Du plasserer saken selv på båndet fra «Klart utenfor» via «Gråsone» til «Klart innenfor» DPS-kriteriene. Båndet viser ingen tall, og fastlegens plassering og systemets lesning er skjult til du har plassert saken.",
+              "en": "The ATLAS panel carries the caption ‘Shows uncertainty, does not recommend’. You place the case yourself on the band from ‘Clearly outside’ through ‘Grey zone’ to ‘Clearly within’ the DPS criteria. The band shows no number, and the GP’s placement and the system’s reading stay hidden until you have placed the case."
+            },
+            "tryIt": {
+              "nb": "Prøv: plasser saken på båndet.",
+              "en": "Try: place the case on the band."
+            },
+            "reason": {
+              "nb": "Det du ser først, påvirker det du ser etterpå. Derfor kommer din egen vurdering før de andre.",
+              "en": "What you see first shapes what you see afterwards. That is why your own assessment comes before the others."
+            },
+            "frame": "dpsBand"
+          },
+          {
+            "id": "dps-markorer",
+            "title": {
+              "nb": "Fastlegens markør og systemets lesning",
+              "en": "The GP’s marker and the system’s reading"
+            },
+            "body": {
+              "nb": "Etter din plassering viser båndet tre markører med forklaring: din egen, fastlegens (hvit) og systemets lesning (lilla). Systemets lesning har én setning og et resonnement med kildene, og er merket som en illustrasjon: den er skrevet for saken, ikke beregnet.",
+              "en": "After your placement the band shows three markers with a legend: your own, the GP’s (white) and the system’s reading (lavender). The system’s reading has one sentence and a reasoning with its sources, and is labelled as an illustration: it is written for the case, not calculated."
+            },
+            "tryIt": {
+              "nb": "Prøv: plasser saken hvis du ikke har gjort det, og åpne Resonnement.",
+              "en": "Try: place the case if you have not done so, and open Reasoning."
+            },
+            "reason": {
+              "nb": "Avstanden mellom markørene viser hvor vurderingene skiller seg, uten at noen av dem er fasiten.",
+              "en": "The distance between the markers shows where the assessments differ, without any of them being the right answer."
+            },
+            "frame": "dpsBandReading",
+            "bridge": {
+              "nb": "Spørsmålene kaller systemets lesning for «dashbordets indikasjon».",
+              "en": "The questions call the system’s reading ‘the dashboard’s indication’."
+            }
+          },
+          {
+            "id": "dps-guide",
+            "title": {
+              "nb": "Informasjonsguiden",
+              "en": "The information completeness guide"
+            },
+            "body": {
+              "nb": "Informasjonsguiden viser hvilke av de fem kriteriene den fant i henvisningen da den ble sendt, slik fastlegen så det. Guiden ser om hver del sier noe om kriteriet, ikke om det er nok, og den kan ta feil. Behandlingsnytte er merket «Vurderes av DPS».",
+              "en": "The information completeness guide shows which of the five criteria it found in the referral when it was sent, as the GP saw it. The guide sees whether each section says something about the criterion, not whether it is enough, and it can be wrong. Benefit of treatment is marked ‘Assessed by DPS’."
+            },
+            "reason": {
+              "nb": "Når begge sider ser de samme kriteriene, er det lettere å se om noe mangler i saken eller bare i teksten.",
+              "en": "When both sides see the same criteria, it is easier to tell whether something is missing in the case or only in the text."
+            },
+            "frame": "dpsGuide",
+            "bridge": {
+              "nb": "Spørsmålene kaller det som Informasjonsguiden viser, for «kriteriesynlighet» og «synlige kriterier».",
+              "en": "The questions call what the information completeness guide shows ‘the criteria visibility’ and ‘visible criteria’."
+            }
+          }
+        ]
+      },
+      {
+        "title": {
+          "nb": "Vurdering",
+          "en": "Assessment"
+        },
+        "steps": [
+          {
+            "id": "dps-vurdering",
+            "title": {
+              "nb": "Vurdering",
+              "en": "Assessment"
+            },
+            "body": {
+              "nb": "Vurderingen har tre utfall i fast rekkefølge og samme farge: «Be om mer informasjon», «Rett til helsehjelp» og «Retur med råd». Ingen er forhåndsvalgt. Ved vurderingen står «Du har det endelige kliniske ansvaret».",
+              "en": "The assessment has three outcomes in a fixed order and the same colour: ‘Request more information’, ‘Right to health care’ and ‘Return with advice’. None is pre-selected. Beside the assessment is the line ‘You have the final clinical responsibility’."
+            },
+            "tryIt": {
+              "nb": "Prøv: velg et utfall.",
+              "en": "Try: choose an outcome."
+            },
+            "reason": {
+              "nb": "Utfall som skiller seg i ord og ikon, ikke i farge, legger ikke mer vekt på ett av dem. «Rett til helsehjelp» krever ikke flere felt.",
+              "en": "Outcomes that differ in word and icon, not colour, put no extra weight on any one of them. ‘Right to health care’ needs no extra fields."
+            },
+            "frame": "outcome"
+          },
+          {
+            "id": "dps-retur",
+            "title": {
+              "nb": "Den strukturerte tilbakemeldingen",
+              "en": "The structured feedback"
+            },
+            "body": {
+              "nb": "En retur består av minst én årsak fra en fast liste og et råd til fastlegen. Årsakene er Situasjonell krise, Funksjonsnedgang for kort varighet, Kommunalt tilbud ikke utprøvd, Utilstrekkelig informasjon og Annen årsak. Fastlegen ser utfallet, årsakene og rådet i tråden for henvisningen.",
+              "en": "A return consists of at least one reason from a fixed list and advice for the GP. The reasons are Situational crisis, Functional decline of short duration, Municipal services not tried, Insufficient information and Other reason. The GP sees the outcome, the reasons and the advice in the thread for the referral."
+            },
+            "tryIt": {
+              "nb": "Prøv: velg Retur med råd og én årsak.",
+              "en": "Try: choose Return with advice and one reason."
+            },
+            "reason": {
+              "nb": "Et avslag uten begrunnelse gir fastlegen ingenting å bygge på neste gang. En fast liste med årsaker gjør en begrunnelse rask å gi.",
+              "en": "A rejection without reasons gives the GP nothing to build on next time. A fixed list of reasons makes a reason quick to give."
+            },
+            "frame": "outcomeReturn",
+            "bridge": {
+              "nb": "Spørsmålene kaller utfall og returer i Dialog for «tilbakemeldingene om henvisningsutfall». En retur med årsaker og råd kaller spørsmålene «den strukturerte tilbakemeldingen».",
+              "en": "The questions call outcomes and returns in Dialogue ‘the feedback on referral outcomes’. The questions call a return with reasons and advice ‘the structured feedback’."
+            }
+          }
+        ]
+      },
+      {
+        "title": {
+          "nb": "Delt oversikt",
+          "en": "Shared overview"
+        },
+        "steps": [
+          {
+            "id": "dps-kalibrering",
+            "title": {
+              "nb": "Delt oversikt: Kalibrering",
+              "en": "Shared overview: Calibration"
+            },
+            "body": {
+              "nb": "Delt oversikt har to deler. Kalibrering viser anonymiserte tall for opptaksområdet til DPS Skjærgården, de vanligste returårsakene og en logg over endringer i kriteriene. Ingen enkeltfastlege vises, og tallene er fiktive.",
+              "en": "The shared overview has two sections. Calibration shows anonymised figures for the catchment area of DPS Skjærgården, the most common return reasons and a log of changes to the criteria. No individual GP is shown, and the figures are fictional."
+            },
+            "reason": {
+              "nb": "Tall for hele området gir et felles bilde uten å gjøre enkeltfastleger synlige. Loggen viser når kriteriene er endret.",
+              "en": "Figures for the whole area give a shared picture without making individual GPs visible. The log shows when the criteria have changed."
+            },
+            "frame": "kalibrering",
+            "bridge": {
+              "nb": "Spørsmålene kaller tallene her for «kalibreringsdata» og oversikten for «henvisningsmønstrene i opptaksområdet».",
+              "en": "The questions call the figures here ‘calibration data’ and the overview ‘the referral patterns in the catchment area’."
+            }
+          },
+          {
+            "id": "dps-dialog",
+            "title": {
+              "nb": "Delt oversikt: Dialog",
+              "en": "Shared overview: Dialogue"
+            },
+            "body": {
+              "nb": "Dialog samler trådene for henvisningene og en anonymisert fagdiskusjon mellom fastleger og DPS. I trådene står partene som roller, ikke navn. Fagdiskusjonen er ikke knyttet til enkeltpasienter.",
+              "en": "Dialogue gathers the threads for the referrals and an anonymised professional discussion between GPs and DPS. In the threads the parties appear as roles, not names. The discussion is not linked to individual patients."
+            },
+            "tryIt": {
+              "nb": "Prøv: åpne en tråd.",
+              "en": "Try: open a thread."
+            },
+            "reason": {
+              "nb": "En tråd per henvisning gir plass til et spørsmål og et svar uten en ny henvisning. Fagdiskusjonen gir plass til det som gjelder mange saker.",
+              "en": "One thread per referral makes room for a question and an answer without a new referral. The discussion makes room for what applies to many cases."
+            },
+            "frame": "dialog",
+            "bridge": {
+              "nb": "Spørsmålene kaller Delt oversikt, med Kalibrering og Dialog, for «den delte oversikten».",
+              "en": "The questions call this screen, with Calibration and Dialogue, ‘the shared overview’."
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "closing": {
+    "title": {
+      "nb": "Omvisningen er ferdig",
+      "en": "The tour is finished"
+    },
+    "body": {
+      "nb": "Du har sett ATLAS på øvingspasienten Sofie Lund. Hvert steg kan åpnes igjen med «Se igjen».",
+      "en": "You have seen ATLAS on the practice patient Sofie Lund. Each step can be opened again with ‘See again’."
+    },
+    "seenTitle": {
+      "nb": "Dette har du sett",
+      "en": "What you have seen"
+    }
+  }
+}

@@ -1,0 +1,98 @@
+{
+  "asOf": "2026-03-17",
+  "period": {
+    "nb": "1. april 2025 til 17. mars 2026",
+    "en": "1 April 2025 to 17 March 2026"
+  },
+  "total": 24,
+  "outcomes": [
+    {
+      "key": "rett",
+      "label": {
+        "nb": "Rett til helsehjelp",
+        "en": "Right to health care"
+      },
+      "count": 15
+    },
+    {
+      "key": "retur",
+      "label": {
+        "nb": "Retur med råd",
+        "en": "Return with advice"
+      },
+      "count": 5
+    },
+    {
+      "key": "avslatt",
+      "label": {
+        "nb": "Avslått uten begrunnelse",
+        "en": "Rejected without explanation"
+      },
+      "count": 1
+    },
+    {
+      "key": "venter",
+      "label": {
+        "nb": "Venter på svar",
+        "en": "Awaiting reply"
+      },
+      "count": 3
+    }
+  ],
+  "returnReasons": [
+    {
+      "reason": "kortVarighet",
+      "count": 3
+    },
+    {
+      "reason": "utilstrekkeligInfo",
+      "count": 3
+    },
+    {
+      "reason": "kommunaltIkkeProvd",
+      "count": 2
+    },
+    {
+      "reason": "situasjonellKrise",
+      "count": 1
+    },
+    {
+      "reason": "annen",
+      "count": 1
+    }
+  ],
+  "quarters": [
+    {
+      "label": {
+        "nb": "April til juni 2025",
+        "en": "April to June 2025"
+      },
+      "count": 6
+    },
+    {
+      "label": {
+        "nb": "Juli til september 2025",
+        "en": "July to September 2025"
+      },
+      "count": 5
+    },
+    {
+      "label": {
+        "nb": "Oktober til desember 2025",
+        "en": "October to December 2025"
+      },
+      "count": 7
+    },
+    {
+      "label": {
+        "nb": "1. januar til 17. mars 2026",
+        "en": "1 January to 17 March 2026"
+      },
+      "count": 6
+    }
+  ],
+  "footnote": {
+    "nb": "Fiktive tall for prototypen. Én av de tre henvisningene som venter på svar, har fått en forespørsel om mer informasjon.",
+    "en": "Fictional figures for the prototype. One of the three referrals awaiting a reply has received a request for more information."
+  }
+}

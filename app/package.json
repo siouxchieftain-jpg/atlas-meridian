@@ -1,0 +1,40 @@
+{
+  "name": "atlas-meridian-app",
+  "private": true,
+  "version": "3.0.0",
+  "description": "ATLAS v3 on Meridian: a formative evaluation prototype (fictional patients only).",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "check:content": "node scripts/check-content.mjs",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "vitest run",
+    "build": "npm run check:content && tsc -p tsconfig.json --noEmit && vite build",
+    "preview": "vite preview --port 4173 --strictPort",
+    "e2e": "playwright test",
+    "docs": "node scripts/build-sheet.mjs && node scripts/traceability.mjs",
+    "site": "node scripts/assemble-site.mjs"
+  },
+  "dependencies": {
+    "@fluentui/react-components": "9.74.9",
+    "@fluentui/react-icons": "2.0.344",
+    "react": "19.2.8",
+    "react-dom": "19.2.8"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "4.11.3",
+    "@playwright/test": "1.56.0",
+    "@types/node": "22.20.5",
+    "@types/react": "19.2.17",
+    "@types/react-dom": "19.2.7",
+    "@vitejs/plugin-react": "5.1.4",
+    "ajv": "8.20.0",
+    "jsdom": "26.1.0",
+    "typescript": "5.9.3",
+    "vite": "7.3.7",
+    "vitest": "4.1.11"
+  },
+  "overrides": {
+    "vite": "7.3.7"
+  }
+}

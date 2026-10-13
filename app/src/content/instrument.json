@@ -1,0 +1,2627 @@
+{
+  "consentLine": {
+    "nb": "Ved å sende skjemaet samtykker du i at de anonyme svarene brukes i forskningsprosjektet.",
+    "en": "By sending the form, you consent to the anonymous answers being used in the research project."
+  },
+  "privacyLine": {
+    "nb": "Ikke skriv opplysninger om pasienter eller andre personer.",
+    "en": "Do not write any information about patients or other people."
+  },
+  "lockedHeading": {
+    "nb": "Fylt ut automatisk av ATLAS",
+    "en": "Filled in automatically by ATLAS"
+  },
+  "forms": [
+    {
+      "key": "S1",
+      "title": {
+        "nb": "Før du ser ATLAS",
+        "en": "Before you see ATLAS"
+      },
+      "intro": {
+        "nb": "Dette skjemaet spør om rollen din og arbeidet ditt før du ser ATLAS. Det finnes ingen riktige svar. Ved å sende skjemaet samtykker du i at de anonyme svarene brukes i forskningsprosjektet.",
+        "en": "This form asks about your role and your work before you see ATLAS. There are no right answers. By sending the form, you consent to the anonymous answers being used in the research project."
+      },
+      "locked": [
+        "rolle",
+        "intervju",
+        "steg",
+        "versjon"
+      ],
+      "pages": [
+        {
+          "items": [
+            {
+              "id": "A-01",
+              "type": "locked",
+              "codebook": "rolle",
+              "text": {
+                "nb": "Hva er din rolle?",
+                "en": "What is your role?"
+              },
+              "required": false
+            },
+            {
+              "id": "intervju",
+              "type": "locked",
+              "codebook": "intervju",
+              "text": {
+                "nb": "Deltok du i et intervju i dette forskningsprosjektet?",
+                "en": "Did you take part in an interview in this research project?"
+              },
+              "required": false
+            },
+            {
+              "id": "steg",
+              "type": "locked",
+              "codebook": "steg",
+              "text": {
+                "nb": "Steg",
+                "en": "Step"
+              },
+              "required": false
+            },
+            {
+              "id": "versjon",
+              "type": "locked",
+              "codebook": "versjon",
+              "text": {
+                "nb": "Versjon",
+                "en": "Version"
+              },
+              "required": false
+            },
+            {
+              "id": "A-02",
+              "type": "choice",
+              "codebook": "a_02",
+              "text": {
+                "nb": "Hvor mange år har du arbeidet i denne rollen?",
+                "en": "How many years have you worked in this role?"
+              },
+              "options": [
+                {
+                  "nb": "Under 5 år",
+                  "en": "Under 5 years"
+                },
+                {
+                  "nb": "5 til 14 år",
+                  "en": "5 to 14 years"
+                },
+                {
+                  "nb": "15 år eller mer",
+                  "en": "15 years or more"
+                }
+              ],
+              "required": false
+            },
+            {
+              "id": "A-03",
+              "type": "choice",
+              "codebook": "a_03",
+              "text": {
+                "nb": "Omtrent hvor mange henvisninger til DPS (eller fra fastleger, for spesialister) håndterer du per måned?",
+                "en": "Approximately how many referrals to DPS (or from GPs, for specialists) do you handle per month?"
+              },
+              "options": [
+                {
+                  "nb": "0 til 4",
+                  "en": "0 to 4"
+                },
+                {
+                  "nb": "5 til 9",
+                  "en": "5 to 9"
+                },
+                {
+                  "nb": "10 til 19",
+                  "en": "10 to 19"
+                },
+                {
+                  "nb": "20 til 49",
+                  "en": "20 to 49"
+                },
+                {
+                  "nb": "50 eller flere",
+                  "en": "50 or more"
+                }
+              ],
+              "required": false
+            },
+            {
+              "id": "A-04",
+              "type": "choice",
+              "codebook": "a_04",
+              "text": {
+                "nb": "Har du tidligere brukt elektroniske beslutningsstøtteverktøy i klinisk praksis?",
+                "en": "Have you previously used electronic decision support tools in clinical practice?"
+              },
+              "options": [
+                {
+                  "nb": "Ja",
+                  "en": "Yes"
+                },
+                {
+                  "nb": "Nei",
+                  "en": "No"
+                },
+                {
+                  "nb": "Usikker",
+                  "en": "Unsure"
+                }
+              ],
+              "required": false
+            },
+            {
+              "id": "A-05",
+              "type": "longtext",
+              "codebook": "a_05",
+              "text": {
+                "nb": "Beskriv kort din vanlige arbeidsflyt når du vurderer en psykisk helsehenvisning (1-3 setninger).",
+                "en": "Briefly describe your usual workflow when assessing a mental health referral (1-3 sentences)."
+              },
+              "required": true,
+              "privacyLine": true
+            }
+          ]
+        }
+      ],
+      "receipt": {
+        "nb": "Takk, svarene er sendt. Gå tilbake til ATLAS for å fortsette.",
+        "en": "Thank you, the answers have been sent. Go back to ATLAS to continue."
+      }
+    },
+    {
+      "key": "S2.fastlege",
+      "title": {
+        "nb": "Helhetsinntrykk",
+        "en": "Overall impression"
+      },
+      "intro": {
+        "nb": "Dette skjemaet spør om helhetsinntrykket ditt av ATLAS etter omvisningen. Kritikk er like nyttig som ros. Ved å sende skjemaet samtykker du i at de anonyme svarene brukes i forskningsprosjektet.",
+        "en": "This form asks about your overall impression of ATLAS after the tour. Criticism is as useful as praise. By sending the form, you consent to the anonymous answers being used in the research project."
+      },
+      "locked": [
+        "rolle",
+        "intervju",
+        "steg",
+        "versjon"
+      ],
+      "pages": [
+        {
+          "items": [
+            {
+              "id": "rolle",
+              "type": "locked",
+              "codebook": "rolle",
+              "text": {
+                "nb": "Rolle",
+                "en": "Role"
+              },
+              "required": false
+            },
+            {
+              "id": "intervju",
+              "type": "locked",
+              "codebook": "intervju",
+              "text": {
+                "nb": "Deltok du i et intervju i dette forskningsprosjektet?",
+                "en": "Did you take part in an interview in this research project?"
+              },
+              "required": false
+            },
+            {
+              "id": "steg",
+              "type": "locked",
+              "codebook": "steg",
+              "text": {
+                "nb": "Steg",
+                "en": "Step"
+              },
+              "required": false
+            },
+            {
+              "id": "versjon",
+              "type": "locked",
+              "codebook": "versjon",
+              "text": {
+                "nb": "Versjon",
+                "en": "Version"
+              },
+              "required": false
+            },
+            {
+              "id": "B-02",
+              "type": "choice",
+              "codebook": "b_02",
+              "text": {
+                "nb": "Har du sett gjennom alle skjermbildene i ATLAS-dashbordet?",
+                "en": "Have you reviewed all the screens in the ATLAS dashboard?"
+              },
+              "options": [
+                {
+                  "nb": "Ja",
+                  "en": "Yes"
+                },
+                {
+                  "nb": "Nei, jeg trenger mer tid",
+                  "en": "No, I need more time"
+                }
+              ],
+              "required": false
+            },
+            {
+              "id": "C1-01",
+              "type": "agree7",
+              "codebook": "c1_01",
+              "text": {
+                "nb": "Dashbordet gir meg informasjon som kan hjelpe meg å ta mer kalibrerte henvisningsbeslutninger over tid.",
+                "en": "The dashboard provides information that could help me make more calibrated referral decisions over time."
+              },
+              "anchors": {
+                "low": {
+                  "nb": "Helt uenig",
+                  "en": "Strongly disagree"
+                },
+                "high": {
+                  "nb": "Helt enig",
+                  "en": "Strongly agree"
+                }
+              },
+              "required": false
+            },
+            {
+              "id": "C1-02",
+              "type": "agree7",
+              "codebook": "c1_02",
+              "text": {
+                "nb": "Usikkerheten i en klinisk situasjon er tydelig kommunisert i dashbordet.",
+                "en": "The uncertainty in a clinical situation is clearly communicated in the dashboard."
+              },
+              "anchors": {
+                "low": {
+                  "nb": "Helt uenig",
+                  "en": "Strongly disagree"
+                },
+                "high": {
+                  "nb": "Helt enig",
+                  "en": "Strongly agree"
+                }
+              },
+              "required": false
+            },
+            {
+              "id": "C1-03",
+              "type": "agree7",
+              "codebook": "c1_03",
+              "text": {
+                "nb": "Informasjonen om usikkerhet hjelper meg å ta bedre beslutninger.",
+                "en": "The uncertainty information helps me make better decisions."
+              },
+              "anchors": {
+                "low": {
+                  "nb": "Helt uenig",
+                  "en": "Strongly disagree"
+                },
+                "high": {
+                  "nb": "Helt enig",
+                  "en": "Strongly agree"
+                }
+              },
+              "required": false
+            },
+            {
+              "id": "C1-04",
+              "type": "agree7",
+              "codebook": "c1_04",
+              "text": {
+                "nb": "Oversikten over mine tidligere henvisningsmønstre er nyttig.",
+                "en": "The overview of my previous referral patterns is useful."
+              },
+              "anchors": {
+                "low": {
+                  "nb": "Helt uenig",
+                  "en": "Strongly disagree"
+                },
+                "high": {
+                  "nb": "Helt enig",
+                  "en": "Strongly agree"
+                }
+              },
+              "required": false
+            },
+            {
+              "id": "C1-05",
+              "type": "longtext",
+              "codebook": "c1_05",
+              "text": {
+                "nb": "Forklar vurderingen din (1-3 setninger). Hva fungerer? Hva fungerer ikke? Hva mangler?",
+                "en": "Please explain your rating (1-3 sentences). What works? What does not work? What is missing?"
+              },
+              "required": true,
+              "privacyLine": true
+            },
+            {
+              "id": "C2-01",
+              "type": "agree7",
+              "codebook": "c2_01",
+              "text": {
+                "nb": "Dashbordet gjør det tydeligere for meg hva spesialisten (eller fastlegen) vurderer når de håndterer en henvisning.",
+                "en": "The dashboard makes it clearer to me what the specialist (or GP) considers when handling a referral."
+              },
+              "anchors": {
+                "low": {
+                  "nb": "Helt uenig",
+                  "en": "Strongly disagree"
+                },
+                "high": {
+                  "nb": "Helt enig",
+                  "en": "Strongly agree"
+                }
+              },
+              "required": false
+            },
+            {
+              "id": "C2-02",
+              "type": "agree7",
+              "codebook": "c2_02",
+              "text": {
+                "nb": "Informasjonsguiden ville redusere behovet for strategisk dokumentasjon.",
+                "en": "The information completeness guide would reduce the need for strategic documentation."
+              },
+              "anchors": {
+                "low": {
+                  "nb": "Helt uenig",
+                  "en": "Strongly disagree"
+                },
+                "high": {
+                  "nb": "Helt enig",
+                  "en": "Strongly agree"
+                }
+              },
+              "required": false
+            },
+            {
+              "id": "C2-03",
+              "type": "longtext",
+              "codebook": "c2_03",
+              "text": {
+                "nb": "Forklar vurderingen din (1-3 setninger). Ville synlige kriterier endre hvordan du skriver eller vurderer henvisninger?",
+                "en": "Please explain your rating (1-3 sentences). Would visible criteria change how you write or assess referrals?"
+              },
+              "required": true,
+              "privacyLine": true
+            },
+            {
+              "id": "C3-01",
+              "type": "agree7",
+              "codebook": "c3_01",
+              "text": {
+                "nb": "Dashbordet ivaretar behovene til både fastleger og spesialister.",
+                "en": "The dashboard serves the needs of both GPs and specialists."
+              },
+              "anchors": {
+                "low": {
+                  "nb": "Helt uenig",
+                  "en": "Strongly disagree"
+                },
+                "high": {
+                  "nb": "Helt enig",
+                  "en": "Strongly agree"
+                }
+              },
+              "required": false
+            },
+            {
+              "id": "C3-02",
+              "type": "agree7",
+              "codebook": "c3_02",
+              "text": {
+                "nb": "Den delte oversikten (kalibrering, dialog) ville forbedre samhandlingen mellom fastleger og DPS.",
+                "en": "The shared overview (calibration, dialogue) would improve the interaction between GPs and DPS."
+              },
+              "anchors": {
+                "low": {
+                  "nb": "Helt uenig",
+                  "en": "Strongly disagree"
+                },
+                "high": {
+                  "nb": "Helt enig",
+                  "en": "Strongly agree"
+                }
+              },
+              "required": false
+            },
+            {
+              "id": "C3-03",
+              "type": "longtext",
+              "codebook": "c3_03",
+              "text": {
+                "nb": "Hvordan vurderer du dashbordets evne til å ivareta behovene til den andre siden (fastleger eller spesialister)? Hva fungerer? Hva mangler? (1-3 setninger)",
+                "en": "How do you assess the dashboard's ability to serve the needs of the other side (GPs or specialists)? What works? What is missing? (1-3 sentences)"
+              },
+              "required": true,
+              "privacyLine": true
+            },
+            {
+              "id": "C4-01",
+              "type": "agree7",
+              "codebook": "c4_01",
+              "text": {
+                "nb": "Jeg kunne brukt dette dashbordet innenfor mine vanlige arbeidsrutiner uten vesentlig ekstra tidsbruk.",
+                "en": "I could use this dashboard within my usual work routines without significant additional time."
+              },
+              "anchors": {
+                "low": {
+                  "nb": "Helt uenig",
+                  "en": "Strongly disagree"
+                },
+                "high": {
+                  "nb": "Helt enig",
+                  "en": "Strongly agree"
+                }
+              },
+              "required": false
+            },
+            {
+              "id": "C4-02",
+              "type": "longtext",
+              "codebook": "c4_02",
+              "text": {
+                "nb": "Forklar vurderingen din (1-3 setninger). Hva ville gjøre det lettere eller vanskeligere å bruke dette i din hverdag?",
+                "en": "Please explain your rating (1-3 sentences). What would make it easier or harder to use this in your daily practice?"
+              },
+              "required": false,
+              "privacyLine": true
+            },
+            {
+              "id": "C5-01",
+              "type": "agree7",
+              "codebook": "c5_01",
+              "text": {
+                "nb": "Dashbordet gjør det tydelig at jeg fortsatt har det endelige kliniske ansvaret.",
+                "en": "The dashboard makes it clear that I still have the final clinical responsibility."
+              },
+              "anchors": {
+                "low": {
+                  "nb": "Helt uenig",
+                  "en": "Strongly disagree"
+                },
+                "high": {
+                  "nb": "Helt enig",
+                  "en": "Strongly agree"
+                }
+              },
+              "required": false
+            },
+            {
+              "id": "C5-02",
+              "type": "agree7",
+              "codebook": "c5_02",
+              "text": {
+                "nb": "Jeg ville følt meg presset til å følge dashbordets indikasjon.",
+                "en": "I would feel pressured to follow the dashboard's indication."
+              },
+              "anchors": {
+                "low": {
+                  "nb": "Helt uenig",
+                  "en": "Strongly disagree"
+                },
+                "high": {
+                  "nb": "Helt enig",
+                  "en": "Strongly agree"
+                }
+              },
+              "required": false
+            },
+            {
+              "id": "C5-03",
+              "type": "longtext",
+              "codebook": "c5_03",
+              "text": {
+                "nb": "Ser du noen risiko for at dette verktøyet kan påvirke din vurdering på uønskede måter? (1-3 setninger)",
+                "en": "Do you see any risk that this tool could influence your judgement in undesirable ways? (1-3 sentences)"
+              },
+              "required": true,
+              "privacyLine": true
+            },
+            {
+              "id": "C-CUCF-01",
+              "type": "agree7",
+              "codebook": "c_cucf_01",
+              "text": {
+                "nb": "Tilbakemeldingene om henvisningsutfall ville hjelpe meg å kalibrere mine fremtidige beslutninger.",
+                "en": "The feedback on referral outcomes would help me calibrate my future decisions."
+              },
+              "anchors": {
+                "low": {
+                  "nb": "Helt uenig",
+                  "en": "Strongly disagree"
+                },
+                "high": {
+                  "nb": "Helt enig",
+                  "en": "Strongly agree"
+                }
+              },
+              "required": false
+            },
+            {
+              "id": "C-CUCF-02",
+              "type": "longtext",
+              "codebook": "c_cucf_02",
+              "text": {
+                "nb": "Hva ville denne tilbakemeldingen bety for din praksis over tid? (1-3 setninger)",
+                "en": "What would this feedback mean for your practice over time? (1-3 sentences)"
+              },
+              "required": false,
+              "privacyLine": true
+            }
+          ]
+        }
+      ],
+      "receipt": {
+        "nb": "Takk, svarene er sendt. Gå tilbake til ATLAS for å fortsette.",
+        "en": "Thank you, the answers have been sent. Go back to ATLAS to continue."
+      }
+    },
+    {
+      "key": "S2.dps",
+      "title": {
+        "nb": "Helhetsinntrykk",
+        "en": "Overall impression"
+      },
+      "intro": {
+        "nb": "Dette skjemaet spør om helhetsinntrykket ditt av ATLAS etter omvisningen. Kritikk er like nyttig som ros. Ved å sende skjemaet samtykker du i at de anonyme svarene brukes i forskningsprosjektet.",
+        "en": "This form asks about your overall impression of ATLAS after the tour. Criticism is as useful as praise. By sending the form, you consent to the anonymous answers being used in the research project."
+      },
+      "locked": [
+        "rolle",
+        "intervju",
+        "steg",
+        "versjon"
+      ],
+      "pages": [
+        {
+          "items": [
+            {
+              "id": "rolle",
+              "type": "locked",
+              "codebook": "rolle",
+              "text": {
+                "nb": "Rolle",
+                "en": "Role"
+              },
+              "required": false
+            },
+            {
+              "id": "intervju",
+              "type": "locked",
+              "codebook": "intervju",
+              "text": {
+                "nb": "Deltok du i et intervju i dette forskningsprosjektet?",
+                "en": "Did you take part in an interview in this research project?"
+              },
+              "required": false
+            },
+            {
+              "id": "steg",
+              "type": "locked",
+              "codebook": "steg",
+              "text": {
+                "nb": "Steg",
+                "en": "Step"
+              },
+              "required": false
+            },
+            {
+              "id": "versjon",
+              "type": "locked",
+              "codebook": "versjon",
+              "text": {
+                "nb": "Versjon",
+                "en": "Version"
+              },
+              "required": false
+            },
+            {
+              "id": "B-02",
+              "type": "choice",
+              "codebook": "b_02",
+              "text": {
+                "nb": "Har du sett gjennom alle skjermbildene i ATLAS-dashbordet?",
+                "en": "Have you reviewed all the screens in the ATLAS dashboard?"
+              },
+              "options": [
+                {
+                  "nb": "Ja",
+                  "en": "Yes"
+                },
+                {
+                  "nb": "Nei, jeg trenger mer tid",
+                  "en": "No, I need more time"
+                }
+              ],
+              "required": false
+            },
+            {
+              "id": "C1-01",
+              "type": "agree7",
+              "codebook": "c1_01",
+              "text": {
+                "nb": "Dashbordet gir meg informasjon som kan hjelpe meg å ta mer kalibrerte henvisningsbeslutninger over tid.",
+                "en": "The dashboard provides information that could help me make more calibrated referral decisions over time."
+              },
+              "anchors": {
+                "low": {
+                  "nb": "Helt uenig",
+                  "en": "Strongly disagree"
+                },
+                "high": {
+                  "nb": "Helt enig",
+                  "en": "Strongly agree"
+                }
+              },
+              "required": false
+            },
+            {
+              "id": "C1-02",
+              "type": "agree7",
+              "codebook": "c1_02",
+              "text": {
+                "nb": "Usikkerheten i en klinisk situasjon er tydelig kommunisert i dashbordet.",
+                "en": "The uncertainty in a clinical situation is clearly communicated in the dashboard."
+              },
+              "anchors": {
+                "low": {
+                  "nb": "Helt uenig",
+                  "en": "Strongly disagree"
+                },
+                "high": {
+                  "nb": "Helt enig",
+                  "en": "Strongly agree"
+                }
+              },
+              "required": false
+            },
+            {
+              "id": "C1-03",
+              "type": "agree7",
+              "codebook": "c1_03",
+              "text": {
+                "nb": "Informasjonen om usikkerhet hjelper meg å ta bedre beslutninger.",
+                "en": "The uncertainty information helps me make better decisions."
+              },
+              "anchors": {
+                "low": {
+                  "nb": "Helt uenig",
+                  "en": "Strongly disagree"
+                },
+                "high": {
+                  "nb": "Helt enig",
+                  "en": "Strongly agree"
+                }
+              },
+              "required": false
+            },
+            {
+              "id": "C1-04",
+              "type": "agree7",
+              "codebook": "c1_04",
+              "text": {
+                "nb": "Oversikten over henvisningsmønstrene i opptaksområdet (kalibrering) er nyttig.",
+                "en": "The overview of the referral patterns in the catchment area (calibration) is useful."
+              },
+              "anchors": {
+                "low": {
+                  "nb": "Helt uenig",
+                  "en": "Strongly disagree"
+                },
+                "high": {
+                  "nb": "Helt enig",
+                  "en": "Strongly agree"
+                }
+              },
+              "required": false,
+              "draft": true
+            },
+            {
+              "id": "C1-05",
+              "type": "longtext",
+              "codebook": "c1_05",
+              "text": {
+                "nb": "Forklar vurderingen din (1-3 setninger). Hva fungerer? Hva fungerer ikke? Hva mangler?",
+                "en": "Please explain your rating (1-3 sentences). What works? What does not work? What is missing?"
+              },
+              "required": true,
+              "privacyLine": true
+            },
+            {
+              "id": "C2-01",
+              "type": "agree7",
+              "codebook": "c2_01",
+              "text": {
+                "nb": "Dashbordet gjør det tydeligere for meg hva spesialisten (eller fastlegen) vurderer når de håndterer en henvisning.",
+                "en": "The dashboard makes it clearer to me what the specialist (or GP) considers when handling a referral."
+              },
+              "anchors": {
+                "low": {
+                  "nb": "Helt uenig",
+                  "en": "Strongly disagree"
+                },
+                "high": {
+                  "nb": "Helt enig",
+                  "en": "Strongly agree"
+                }
+              },
+              "required": false
+            },
+            {
+              "id": "C2-02",
+              "type": "agree7",
+              "codebook": "c2_02",
+              "text": {
+                "nb": "Informasjonsguiden ville redusere behovet for strategisk dokumentasjon.",
+                "en": "The information completeness guide would reduce the need for strategic documentation."
+              },
+              "anchors": {
+                "low": {
+                  "nb": "Helt uenig",
+                  "en": "Strongly disagree"
+                },
+                "high": {
+                  "nb": "Helt enig",
+                  "en": "Strongly agree"
+                }
+              },
+              "required": false
+            },
+            {
+              "id": "C2-03",
+              "type": "longtext",
+              "codebook": "c2_03",
+              "text": {
+                "nb": "Forklar vurderingen din (1-3 setninger). Ville synlige kriterier endre hvordan du skriver eller vurderer henvisninger?",
+                "en": "Please explain your rating (1-3 sentences). Would visible criteria change how you write or assess referrals?"
+              },
+              "required": true,
+              "privacyLine": true
+            },
+            {
+              "id": "C3-01",
+              "type": "agree7",
+              "codebook": "c3_01",
+              "text": {
+                "nb": "Dashbordet ivaretar behovene til både fastleger og spesialister.",
+                "en": "The dashboard serves the needs of both GPs and specialists."
+              },
+              "anchors": {
+                "low": {
+                  "nb": "Helt uenig",
+                  "en": "Strongly disagree"
+                },
+                "high": {
+                  "nb": "Helt enig",
+                  "en": "Strongly agree"
+                }
+              },
+              "required": false
+            },
+            {
+              "id": "C3-02",
+              "type": "agree7",
+              "codebook": "c3_02",
+              "text": {
+                "nb": "Den delte oversikten (kalibrering, dialog) ville forbedre samhandlingen mellom fastleger og DPS.",
+                "en": "The shared overview (calibration, dialogue) would improve the interaction between GPs and DPS."
+              },
+              "anchors": {
+                "low": {
+                  "nb": "Helt uenig",
+                  "en": "Strongly disagree"
+                },
+                "high": {
+                  "nb": "Helt enig",
+                  "en": "Strongly agree"
+                }
+              },
+              "required": false
+            },
+            {
+              "id": "C3-03",
+              "type": "longtext",
+              "codebook": "c3_03",
+              "text": {
+                "nb": "Hvordan vurderer du dashbordets evne til å ivareta behovene til den andre siden (fastleger eller spesialister)? Hva fungerer? Hva mangler? (1-3 setninger)",
+                "en": "How do you assess the dashboard's ability to serve the needs of the other side (GPs or specialists)? What works? What is missing? (1-3 sentences)"
+              },
+              "required": true,
+              "privacyLine": true
+            },
+            {
+              "id": "C4-01",
+              "type": "agree7",
+              "codebook": "c4_01",
+              "text": {
+                "nb": "Jeg kunne brukt dette dashbordet innenfor mine vanlige arbeidsrutiner uten vesentlig ekstra tidsbruk.",
+                "en": "I could use this dashboard within my usual work routines without significant additional time."
+              },
+              "anchors": {
+                "low": {
+                  "nb": "Helt uenig",
+                  "en": "Strongly disagree"
+                },
+                "high": {
+                  "nb": "Helt enig",
+                  "en": "Strongly agree"
+                }
+              },
+              "required": false
+            },
+            {
+              "id": "C4-02",
+              "type": "longtext",
+              "codebook": "c4_02",
+              "text": {
+                "nb": "Forklar vurderingen din (1-3 setninger). Hva ville gjøre det lettere eller vanskeligere å bruke dette i din hverdag?",
+                "en": "Please explain your rating (1-3 sentences). What would make it easier or harder to use this in your daily practice?"
+              },
+              "required": false,
+              "privacyLine": true
+            },
+            {
+              "id": "C5-01",
+              "type": "agree7",
+              "codebook": "c5_01",
+              "text": {
+                "nb": "Dashbordet gjør det tydelig at jeg fortsatt har det endelige kliniske ansvaret.",
+                "en": "The dashboard makes it clear that I still have the final clinical responsibility."
+              },
+              "anchors": {
+                "low": {
+                  "nb": "Helt uenig",
+                  "en": "Strongly disagree"
+                },
+                "high": {
+                  "nb": "Helt enig",
+                  "en": "Strongly agree"
+                }
+              },
+              "required": false
+            },
+            {
+              "id": "C5-02",
+              "type": "agree7",
+              "codebook": "c5_02",
+              "text": {
+                "nb": "Jeg ville følt meg presset til å følge dashbordets indikasjon.",
+                "en": "I would feel pressured to follow the dashboard's indication."
+              },
+              "anchors": {
+                "low": {
+                  "nb": "Helt uenig",
+                  "en": "Strongly disagree"
+                },
+                "high": {
+                  "nb": "Helt enig",
+                  "en": "Strongly agree"
+                }
+              },
+              "required": false
+            },
+            {
+              "id": "C5-03",
+              "type": "longtext",
+              "codebook": "c5_03",
+              "text": {
+                "nb": "Ser du noen risiko for at dette verktøyet kan påvirke din vurdering på uønskede måter? (1-3 setninger)",
+                "en": "Do you see any risk that this tool could influence your judgement in undesirable ways? (1-3 sentences)"
+              },
+              "required": true,
+              "privacyLine": true
+            },
+            {
+              "id": "C-CUCF-01",
+              "type": "agree7",
+              "codebook": "c_cucf_01",
+              "text": {
+                "nb": "Tilbakemeldingene om henvisningsutfall ville hjelpe meg å kalibrere mine fremtidige beslutninger.",
+                "en": "The feedback on referral outcomes would help me calibrate my future decisions."
+              },
+              "anchors": {
+                "low": {
+                  "nb": "Helt uenig",
+                  "en": "Strongly disagree"
+                },
+                "high": {
+                  "nb": "Helt enig",
+                  "en": "Strongly agree"
+                }
+              },
+              "required": false
+            },
+            {
+              "id": "C-CUCF-02",
+              "type": "longtext",
+              "codebook": "c_cucf_02",
+              "text": {
+                "nb": "Hva ville denne tilbakemeldingen bety for din praksis over tid? (1-3 setninger)",
+                "en": "What would this feedback mean for your practice over time? (1-3 sentences)"
+              },
+              "required": false,
+              "privacyLine": true
+            }
+          ]
+        }
+      ],
+      "receipt": {
+        "nb": "Takk, svarene er sendt. Gå tilbake til ATLAS for å fortsette.",
+        "en": "Thank you, the answers have been sent. Go back to ATLAS to continue."
+      }
+    },
+    {
+      "key": "S3",
+      "title": {
+        "nb": "Kari",
+        "en": "Kari"
+      },
+      "intro": {
+        "nb": "Dette skjemaet handler om saken til Kari: første side besvares med bare saken på skjermen, resten når ATLAS ber deg om det. Kritikk er like nyttig som ros. Ved å sende skjemaet samtykker du i at de anonyme svarene brukes i forskningsprosjektet.",
+        "en": "This form is about Kari's case: the first page is answered with only the case on screen, the rest when ATLAS asks you to. Criticism is as useful as praise. By sending the form, you consent to the anonymous answers being used in the research project."
+      },
+      "locked": [
+        "rolle",
+        "intervju",
+        "steg",
+        "vignett",
+        "versjon"
+      ],
+      "pages": [
+        {
+          "items": [
+            {
+              "id": "D-V1-B1",
+              "type": "confidence7",
+              "codebook": "d_v1_b1",
+              "text": {
+                "nb": "Hvor sikker er du på din beslutning uten ATLAS?",
+                "en": "How confident are you in your decision without ATLAS?"
+              },
+              "anchors": {
+                "low": {
+                  "nb": "Svært usikker",
+                  "en": "Very uncertain"
+                },
+                "high": {
+                  "nb": "Svært sikker",
+                  "en": "Very confident"
+                }
+              },
+              "required": true
+            },
+            {
+              "id": "rolle",
+              "type": "locked",
+              "codebook": "rolle",
+              "text": {
+                "nb": "Rolle",
+                "en": "Role"
+              },
+              "required": false
+            },
+            {
+              "id": "intervju",
+              "type": "locked",
+              "codebook": "intervju",
+              "text": {
+                "nb": "Deltok du i et intervju i dette forskningsprosjektet?",
+                "en": "Did you take part in an interview in this research project?"
+              },
+              "required": false
+            },
+            {
+              "id": "steg",
+              "type": "locked",
+              "codebook": "steg",
+              "text": {
+                "nb": "Steg",
+                "en": "Step"
+              },
+              "required": false
+            },
+            {
+              "id": "vignett",
+              "type": "locked",
+              "codebook": "vignett",
+              "text": {
+                "nb": "Vignett",
+                "en": "Vignette"
+              },
+              "required": false
+            },
+            {
+              "id": "versjon",
+              "type": "locked",
+              "codebook": "versjon",
+              "text": {
+                "nb": "Versjon",
+                "en": "Version"
+              },
+              "required": false
+            }
+          ]
+        },
+        {
+          "items": [
+            {
+              "id": "STOPP-V1",
+              "type": "stop",
+              "codebook": "stopp",
+              "text": {
+                "nb": "Stopp her. Gå tilbake til ATLAS og trykk på Vis ATLAS. Gå videre først når ATLAS ber deg om det. Ikke gå tilbake og endre side 1.",
+                "en": "Stop here. Go back to ATLAS and press Show ATLAS. Continue only when ATLAS asks you to. Do not go back and change page 1."
+              },
+              "required": false
+            }
+          ]
+        },
+        {
+          "items": [
+            {
+              "id": "E11-V1",
+              "type": "choice",
+              "codebook": "kontroll",
+              "text": {
+                "nb": "Har du arbeidet med denne saken i ATLAS før du svarer på denne siden?",
+                "en": "Have you worked on this case in ATLAS before answering this page?"
+              },
+              "options": [
+                {
+                  "nb": "Ja",
+                  "en": "Yes"
+                },
+                {
+                  "nb": "Nei",
+                  "en": "No"
+                }
+              ],
+              "required": true
+            },
+            {
+              "id": "D-V1-B2",
+              "type": "confidence7",
+              "codebook": "d_v1_b2",
+              "text": {
+                "nb": "Hvor sikker er du på din beslutning med ATLAS?",
+                "en": "How confident are you in your decision with ATLAS?"
+              },
+              "anchors": {
+                "low": {
+                  "nb": "Svært usikker",
+                  "en": "Very uncertain"
+                },
+                "high": {
+                  "nb": "Svært sikker",
+                  "en": "Very confident"
+                }
+              },
+              "required": true
+            },
+            {
+              "id": "D-V1-DS",
+              "type": "longtext",
+              "codebook": "d_v1_ds",
+              "text": {
+                "nb": "Var det tydelig for deg hva som er dine egne vurderinger versus hva systemet viser?",
+                "en": "Was it clear to you what are your own assessments versus what the system displays?"
+              },
+              "required": false,
+              "privacyLine": true
+            },
+            {
+              "id": "D-V1-01",
+              "type": "longtext",
+              "codebook": "d_v1_01",
+              "text": {
+                "nb": "Ville ATLAS endre din beslutning, din sikkerhet, eller dine informasjonsbehov sammenlignet med dagens praksis? (1-3 setninger)",
+                "en": "Would ATLAS change your decision, confidence, or information needs compared to current practice? (1-3 sentences)"
+              },
+              "required": true,
+              "privacyLine": true
+            },
+            {
+              "id": "D-V1-02",
+              "type": "longtext",
+              "codebook": "d_v1_02",
+              "text": {
+                "nb": "Hva konkret ved ATLAS utgjorde forskjellen (eller mislyktes)? Hva mangler? (1-3 setninger)",
+                "en": "What specifically about ATLAS made the difference (or failed)? What is missing? (1-3 sentences)"
+              },
+              "required": true,
+              "privacyLine": true
+            },
+            {
+              "id": "D-V1-03",
+              "type": "longtext",
+              "codebook": "d_v1_03",
+              "text": {
+                "nb": "Ville usikkerhetsvisningen endre hvordan du håndterer denne pasienten?",
+                "en": "Would the uncertainty display change how you handle this patient?"
+              },
+              "required": false,
+              "privacyLine": true
+            },
+            {
+              "id": "D-V1-04",
+              "type": "helpful7",
+              "codebook": "d_v1_04",
+              "text": {
+                "nb": "Samlet nytteverdi av ATLAS for dette scenariet.",
+                "en": "Overall helpfulness of ATLAS for this scenario."
+              },
+              "anchors": {
+                "low": {
+                  "nb": "Ikke nyttig",
+                  "en": "Not helpful"
+                },
+                "high": {
+                  "nb": "Svært nyttig",
+                  "en": "Very helpful"
+                }
+              },
+              "required": false
+            }
+          ]
+        }
+      ],
+      "receipt": {
+        "nb": "Takk, svarene er sendt. Gå tilbake til ATLAS for å fortsette.",
+        "en": "Thank you, the answers have been sent. Go back to ATLAS to continue."
+      }
+    },
+    {
+      "key": "S4.fastlege",
+      "title": {
+        "nb": "Erlend",
+        "en": "Erlend"
+      },
+      "intro": {
+        "nb": "Dette skjemaet handler om saken til Erlend: første side besvares med bare saken på skjermen, resten når ATLAS ber deg om det. Kritikk er like nyttig som ros. Ved å sende skjemaet samtykker du i at de anonyme svarene brukes i forskningsprosjektet.",
+        "en": "This form is about Erlend's case: the first page is answered with only the case on screen, the rest when ATLAS asks you to. Criticism is as useful as praise. By sending the form, you consent to the anonymous answers being used in the research project."
+      },
+      "locked": [
+        "rolle",
+        "intervju",
+        "steg",
+        "vignett",
+        "versjon"
+      ],
+      "pages": [
+        {
+          "items": [
+            {
+              "id": "D-V3-B1",
+              "type": "confidence7",
+              "codebook": "d_v3_b1",
+              "text": {
+                "nb": "Hvor sikker er du på din beslutning uten ATLAS?",
+                "en": "How confident are you in your decision without ATLAS?"
+              },
+              "anchors": {
+                "low": {
+                  "nb": "Svært usikker",
+                  "en": "Very uncertain"
+                },
+                "high": {
+                  "nb": "Svært sikker",
+                  "en": "Very confident"
+                }
+              },
+              "required": true
+            },
+            {
+              "id": "rolle",
+              "type": "locked",
+              "codebook": "rolle",
+              "text": {
+                "nb": "Rolle",
+                "en": "Role"
+              },
+              "required": false
+            },
+            {
+              "id": "intervju",
+              "type": "locked",
+              "codebook": "intervju",
+              "text": {
+                "nb": "Deltok du i et intervju i dette forskningsprosjektet?",
+                "en": "Did you take part in an interview in this research project?"
+              },
+              "required": false
+            },
+            {
+              "id": "steg",
+              "type": "locked",
+              "codebook": "steg",
+              "text": {
+                "nb": "Steg",
+                "en": "Step"
+              },
+              "required": false
+            },
+            {
+              "id": "vignett",
+              "type": "locked",
+              "codebook": "vignett",
+              "text": {
+                "nb": "Vignett",
+                "en": "Vignette"
+              },
+              "required": false
+            },
+            {
+              "id": "versjon",
+              "type": "locked",
+              "codebook": "versjon",
+              "text": {
+                "nb": "Versjon",
+                "en": "Version"
+              },
+              "required": false
+            }
+          ]
+        },
+        {
+          "items": [
+            {
+              "id": "STOPP-V3",
+              "type": "stop",
+              "codebook": "stopp",
+              "text": {
+                "nb": "Stopp her. Gå tilbake til ATLAS og trykk på Vis ATLAS. Gå videre først når ATLAS ber deg om det. Ikke gå tilbake og endre side 1.",
+                "en": "Stop here. Go back to ATLAS and press Show ATLAS. Continue only when ATLAS asks you to. Do not go back and change page 1."
+              },
+              "required": false
+            }
+          ]
+        },
+        {
+          "items": [
+            {
+              "id": "E11-V3",
+              "type": "choice",
+              "codebook": "kontroll",
+              "text": {
+                "nb": "Har du arbeidet med denne saken i ATLAS før du svarer på denne siden?",
+                "en": "Have you worked on this case in ATLAS before answering this page?"
+              },
+              "options": [
+                {
+                  "nb": "Ja",
+                  "en": "Yes"
+                },
+                {
+                  "nb": "Nei",
+                  "en": "No"
+                }
+              ],
+              "required": true
+            },
+            {
+              "id": "D-V3-B2",
+              "type": "confidence7",
+              "codebook": "d_v3_b2",
+              "text": {
+                "nb": "Hvor sikker er du på din beslutning med ATLAS?",
+                "en": "How confident are you in your decision with ATLAS?"
+              },
+              "anchors": {
+                "low": {
+                  "nb": "Svært usikker",
+                  "en": "Very uncertain"
+                },
+                "high": {
+                  "nb": "Svært sikker",
+                  "en": "Very confident"
+                }
+              },
+              "required": true
+            },
+            {
+              "id": "D-V3-01",
+              "type": "longtext",
+              "codebook": "d_v3_01",
+              "text": {
+                "nb": "Endrer kriteriesynligheten din dokumentasjonsstrategi? Gjør den deg mer ærlig, mer strategisk, eller ingen forskjell? (1-3 setninger)",
+                "en": "Does the criteria visibility change your documentation strategy? More honest, more strategic, or no difference? (1-3 sentences)"
+              },
+              "required": true,
+              "privacyLine": true
+            },
+            {
+              "id": "D-V3-02",
+              "type": "longtext",
+              "codebook": "d_v3_02",
+              "text": {
+                "nb": "Hva konkret ved ATLAS utgjorde forskjellen (eller mislyktes)? Hvis du fortsatt ville tilpasset dokumentasjonen, hvorfor? (1-3 setninger)",
+                "en": "What specifically about ATLAS made the difference (or failed)? If you would still adjust the documentation, why? (1-3 sentences)"
+              },
+              "required": true,
+              "privacyLine": true
+            },
+            {
+              "id": "D-V3-03",
+              "type": "helpful7",
+              "codebook": "d_v3_03",
+              "text": {
+                "nb": "Samlet nytteverdi av ATLAS for dette scenariet.",
+                "en": "Overall helpfulness of ATLAS for this scenario."
+              },
+              "anchors": {
+                "low": {
+                  "nb": "Ikke nyttig",
+                  "en": "Not helpful"
+                },
+                "high": {
+                  "nb": "Svært nyttig",
+                  "en": "Very helpful"
+                }
+              },
+              "required": false
+            }
+          ]
+        }
+      ],
+      "receipt": {
+        "nb": "Takk, svarene er sendt. Gå tilbake til ATLAS for å fortsette.",
+        "en": "Thank you, the answers have been sent. Go back to ATLAS to continue."
+      }
+    },
+    {
+      "key": "S4.dps",
+      "title": {
+        "nb": "Erlend",
+        "en": "Erlend"
+      },
+      "intro": {
+        "nb": "Dette skjemaet handler om saken til Erlend: første side besvares med bare saken på skjermen, resten når ATLAS ber deg om det. Kritikk er like nyttig som ros. Ved å sende skjemaet samtykker du i at de anonyme svarene brukes i forskningsprosjektet.",
+        "en": "This form is about Erlend's case: the first page is answered with only the case on screen, the rest when ATLAS asks you to. Criticism is as useful as praise. By sending the form, you consent to the anonymous answers being used in the research project."
+      },
+      "locked": [
+        "rolle",
+        "intervju",
+        "steg",
+        "vignett",
+        "versjon"
+      ],
+      "pages": [
+        {
+          "items": [
+            {
+              "id": "D-V3-B1",
+              "type": "confidence7",
+              "codebook": "d_v3_b1",
+              "text": {
+                "nb": "Hvor sikker er du på din beslutning uten ATLAS?",
+                "en": "How confident are you in your decision without ATLAS?"
+              },
+              "anchors": {
+                "low": {
+                  "nb": "Svært usikker",
+                  "en": "Very uncertain"
+                },
+                "high": {
+                  "nb": "Svært sikker",
+                  "en": "Very confident"
+                }
+              },
+              "required": true
+            },
+            {
+              "id": "rolle",
+              "type": "locked",
+              "codebook": "rolle",
+              "text": {
+                "nb": "Rolle",
+                "en": "Role"
+              },
+              "required": false
+            },
+            {
+              "id": "intervju",
+              "type": "locked",
+              "codebook": "intervju",
+              "text": {
+                "nb": "Deltok du i et intervju i dette forskningsprosjektet?",
+                "en": "Did you take part in an interview in this research project?"
+              },
+              "required": false
+            },
+            {
+              "id": "steg",
+              "type": "locked",
+              "codebook": "steg",
+              "text": {
+                "nb": "Steg",
+                "en": "Step"
+              },
+              "required": false
+            },
+            {
+              "id": "vignett",
+              "type": "locked",
+              "codebook": "vignett",
+              "text": {
+                "nb": "Vignett",
+                "en": "Vignette"
+              },
+              "required": false
+            },
+            {
+              "id": "versjon",
+              "type": "locked",
+              "codebook": "versjon",
+              "text": {
+                "nb": "Versjon",
+                "en": "Version"
+              },
+              "required": false
+            }
+          ]
+        },
+        {
+          "items": [
+            {
+              "id": "STOPP-V3",
+              "type": "stop",
+              "codebook": "stopp",
+              "text": {
+                "nb": "Stopp her. Gå tilbake til ATLAS og trykk på Vis ATLAS. Gå videre først når ATLAS ber deg om det. Ikke gå tilbake og endre side 1.",
+                "en": "Stop here. Go back to ATLAS and press Show ATLAS. Continue only when ATLAS asks you to. Do not go back and change page 1."
+              },
+              "required": false
+            }
+          ]
+        },
+        {
+          "items": [
+            {
+              "id": "E11-V3",
+              "type": "choice",
+              "codebook": "kontroll",
+              "text": {
+                "nb": "Har du arbeidet med denne saken i ATLAS før du svarer på denne siden?",
+                "en": "Have you worked on this case in ATLAS before answering this page?"
+              },
+              "options": [
+                {
+                  "nb": "Ja",
+                  "en": "Yes"
+                },
+                {
+                  "nb": "Nei",
+                  "en": "No"
+                }
+              ],
+              "required": true
+            },
+            {
+              "id": "D-V3-B2",
+              "type": "confidence7",
+              "codebook": "d_v3_b2",
+              "text": {
+                "nb": "Hvor sikker er du på din beslutning med ATLAS?",
+                "en": "How confident are you in your decision with ATLAS?"
+              },
+              "anchors": {
+                "low": {
+                  "nb": "Svært usikker",
+                  "en": "Very uncertain"
+                },
+                "high": {
+                  "nb": "Svært sikker",
+                  "en": "Very confident"
+                }
+              },
+              "required": true
+            },
+            {
+              "id": "D-V3-01",
+              "type": "longtext",
+              "codebook": "d_v3_01",
+              "text": {
+                "nb": "Endrer kriteriesynligheten hvordan du leser fastlegens dokumentasjon? Leser du henvisningen som mer ærlig, mer strategisk, eller ingen forskjell? (1-3 setninger)",
+                "en": "Does the criteria visibility change how you read the GP's documentation? Do you read the referral as more honest, more strategic, or no difference? (1-3 sentences)"
+              },
+              "required": true,
+              "privacyLine": true,
+              "draft": true
+            },
+            {
+              "id": "D-V3-02",
+              "type": "longtext",
+              "codebook": "d_v3_02",
+              "text": {
+                "nb": "Hva konkret ved ATLAS utgjorde forskjellen (eller mislyktes)? Hvis du fortsatt ville lest henvisningen med forbehold, hvorfor? (1-3 setninger)",
+                "en": "What specifically about ATLAS made the difference (or failed)? If you would still read the referral with reservations, why? (1-3 sentences)"
+              },
+              "required": true,
+              "privacyLine": true,
+              "draft": true
+            },
+            {
+              "id": "D-V3-03",
+              "type": "helpful7",
+              "codebook": "d_v3_03",
+              "text": {
+                "nb": "Samlet nytteverdi av ATLAS for dette scenariet.",
+                "en": "Overall helpfulness of ATLAS for this scenario."
+              },
+              "anchors": {
+                "low": {
+                  "nb": "Ikke nyttig",
+                  "en": "Not helpful"
+                },
+                "high": {
+                  "nb": "Svært nyttig",
+                  "en": "Very helpful"
+                }
+              },
+              "required": false
+            }
+          ]
+        }
+      ],
+      "receipt": {
+        "nb": "Takk, svarene er sendt. Gå tilbake til ATLAS for å fortsette.",
+        "en": "Thank you, the answers have been sent. Go back to ATLAS to continue."
+      }
+    },
+    {
+      "key": "S5.fastlege",
+      "title": {
+        "nb": "Astrid",
+        "en": "Astrid"
+      },
+      "intro": {
+        "nb": "Dette skjemaet handler om saken til Astrid: første side besvares med bare saken på skjermen, resten når ATLAS ber deg om det. Kritikk er like nyttig som ros. Ved å sende skjemaet samtykker du i at de anonyme svarene brukes i forskningsprosjektet.",
+        "en": "This form is about Astrid's case: the first page is answered with only the case on screen, the rest when ATLAS asks you to. Criticism is as useful as praise. By sending the form, you consent to the anonymous answers being used in the research project."
+      },
+      "locked": [
+        "rolle",
+        "intervju",
+        "steg",
+        "vignett",
+        "versjon"
+      ],
+      "pages": [
+        {
+          "items": [
+            {
+              "id": "D-V4-B1",
+              "type": "confidence7",
+              "codebook": "d_v4_b1",
+              "text": {
+                "nb": "Hvor sikker er du på hva du ville gjort videre uten ATLAS?",
+                "en": "How confident are you about what you would do next without ATLAS?"
+              },
+              "anchors": {
+                "low": {
+                  "nb": "Svært usikker",
+                  "en": "Very uncertain"
+                },
+                "high": {
+                  "nb": "Svært sikker",
+                  "en": "Very confident"
+                }
+              },
+              "required": true
+            },
+            {
+              "id": "rolle",
+              "type": "locked",
+              "codebook": "rolle",
+              "text": {
+                "nb": "Rolle",
+                "en": "Role"
+              },
+              "required": false
+            },
+            {
+              "id": "intervju",
+              "type": "locked",
+              "codebook": "intervju",
+              "text": {
+                "nb": "Deltok du i et intervju i dette forskningsprosjektet?",
+                "en": "Did you take part in an interview in this research project?"
+              },
+              "required": false
+            },
+            {
+              "id": "steg",
+              "type": "locked",
+              "codebook": "steg",
+              "text": {
+                "nb": "Steg",
+                "en": "Step"
+              },
+              "required": false
+            },
+            {
+              "id": "vignett",
+              "type": "locked",
+              "codebook": "vignett",
+              "text": {
+                "nb": "Vignett",
+                "en": "Vignette"
+              },
+              "required": false
+            },
+            {
+              "id": "versjon",
+              "type": "locked",
+              "codebook": "versjon",
+              "text": {
+                "nb": "Versjon",
+                "en": "Version"
+              },
+              "required": false
+            }
+          ]
+        },
+        {
+          "items": [
+            {
+              "id": "STOPP-V4",
+              "type": "stop",
+              "codebook": "stopp",
+              "text": {
+                "nb": "Stopp her. Gå tilbake til ATLAS og trykk på Vis ATLAS. Gå videre først når ATLAS ber deg om det. Ikke gå tilbake og endre side 1.",
+                "en": "Stop here. Go back to ATLAS and press Show ATLAS. Continue only when ATLAS asks you to. Do not go back and change page 1."
+              },
+              "required": false
+            }
+          ]
+        },
+        {
+          "items": [
+            {
+              "id": "E11-V4",
+              "type": "choice",
+              "codebook": "kontroll",
+              "text": {
+                "nb": "Har du arbeidet med denne saken i ATLAS før du svarer på denne siden?",
+                "en": "Have you worked on this case in ATLAS before answering this page?"
+              },
+              "options": [
+                {
+                  "nb": "Ja",
+                  "en": "Yes"
+                },
+                {
+                  "nb": "Nei",
+                  "en": "No"
+                }
+              ],
+              "required": true
+            },
+            {
+              "id": "D-V4-B2",
+              "type": "confidence7",
+              "codebook": "d_v4_b2",
+              "text": {
+                "nb": "Hvor sikker er du på hva du ville gjort videre med ATLAS?",
+                "en": "How confident are you about what you would do next with ATLAS?"
+              },
+              "anchors": {
+                "low": {
+                  "nb": "Svært usikker",
+                  "en": "Very uncertain"
+                },
+                "high": {
+                  "nb": "Svært sikker",
+                  "en": "Very confident"
+                }
+              },
+              "required": true
+            },
+            {
+              "id": "D-V4-01",
+              "type": "longtext",
+              "codebook": "d_v4_01",
+              "text": {
+                "nb": "Endrer den strukturerte tilbakemeldingen din følelsesmessige respons på avslaget? Endrer den hva du gjør videre for pasienten? (1-3 setninger)",
+                "en": "Does the structured feedback change your emotional response to the rejection? Does it change what you do next for the patient? (1-3 sentences)"
+              },
+              "required": true,
+              "privacyLine": true
+            },
+            {
+              "id": "D-V4-02",
+              "type": "longtext",
+              "codebook": "d_v4_02",
+              "text": {
+                "nb": "Ville strukturert tilbakemelding på avslag endre hvordan du skriver neste henvisning?",
+                "en": "Would structured feedback on rejections change how you write your next referral?"
+              },
+              "required": false,
+              "privacyLine": true
+            },
+            {
+              "id": "D-V4-03",
+              "type": "longtext",
+              "codebook": "d_v4_03",
+              "text": {
+                "nb": "Hva konkret ved ATLAS utgjorde forskjellen (eller mislyktes)? Hva mangler? (1-3 setninger)",
+                "en": "What specifically about ATLAS made the difference (or failed)? What is missing? (1-3 sentences)"
+              },
+              "required": true,
+              "privacyLine": true
+            },
+            {
+              "id": "D-V4-04",
+              "type": "helpful7",
+              "codebook": "d_v4_04",
+              "text": {
+                "nb": "Samlet nytteverdi av ATLAS for dette scenariet.",
+                "en": "Overall helpfulness of ATLAS for this scenario."
+              },
+              "anchors": {
+                "low": {
+                  "nb": "Ikke nyttig",
+                  "en": "Not helpful"
+                },
+                "high": {
+                  "nb": "Svært nyttig",
+                  "en": "Very helpful"
+                }
+              },
+              "required": false
+            }
+          ]
+        }
+      ],
+      "receipt": {
+        "nb": "Takk, svarene er sendt. Gå tilbake til ATLAS for å fortsette.",
+        "en": "Thank you, the answers have been sent. Go back to ATLAS to continue."
+      }
+    },
+    {
+      "key": "S5.dps",
+      "title": {
+        "nb": "Astrid",
+        "en": "Astrid"
+      },
+      "intro": {
+        "nb": "Dette skjemaet handler om saken til Astrid: første side besvares med bare saken på skjermen, resten når ATLAS ber deg om det. Kritikk er like nyttig som ros. Ved å sende skjemaet samtykker du i at de anonyme svarene brukes i forskningsprosjektet.",
+        "en": "This form is about Astrid's case: the first page is answered with only the case on screen, the rest when ATLAS asks you to. Criticism is as useful as praise. By sending the form, you consent to the anonymous answers being used in the research project."
+      },
+      "locked": [
+        "rolle",
+        "intervju",
+        "steg",
+        "vignett",
+        "versjon"
+      ],
+      "pages": [
+        {
+          "items": [
+            {
+              "id": "D-V4-B1",
+              "type": "confidence7",
+              "codebook": "d_v4_b1",
+              "text": {
+                "nb": "Hvor sikker er du på hva du ville gjort videre uten ATLAS?",
+                "en": "How confident are you about what you would do next without ATLAS?"
+              },
+              "anchors": {
+                "low": {
+                  "nb": "Svært usikker",
+                  "en": "Very uncertain"
+                },
+                "high": {
+                  "nb": "Svært sikker",
+                  "en": "Very confident"
+                }
+              },
+              "required": true
+            },
+            {
+              "id": "rolle",
+              "type": "locked",
+              "codebook": "rolle",
+              "text": {
+                "nb": "Rolle",
+                "en": "Role"
+              },
+              "required": false
+            },
+            {
+              "id": "intervju",
+              "type": "locked",
+              "codebook": "intervju",
+              "text": {
+                "nb": "Deltok du i et intervju i dette forskningsprosjektet?",
+                "en": "Did you take part in an interview in this research project?"
+              },
+              "required": false
+            },
+            {
+              "id": "steg",
+              "type": "locked",
+              "codebook": "steg",
+              "text": {
+                "nb": "Steg",
+                "en": "Step"
+              },
+              "required": false
+            },
+            {
+              "id": "vignett",
+              "type": "locked",
+              "codebook": "vignett",
+              "text": {
+                "nb": "Vignett",
+                "en": "Vignette"
+              },
+              "required": false
+            },
+            {
+              "id": "versjon",
+              "type": "locked",
+              "codebook": "versjon",
+              "text": {
+                "nb": "Versjon",
+                "en": "Version"
+              },
+              "required": false
+            }
+          ]
+        },
+        {
+          "items": [
+            {
+              "id": "STOPP-V4",
+              "type": "stop",
+              "codebook": "stopp",
+              "text": {
+                "nb": "Stopp her. Gå tilbake til ATLAS og trykk på Vis ATLAS. Gå videre først når ATLAS ber deg om det. Ikke gå tilbake og endre side 1.",
+                "en": "Stop here. Go back to ATLAS and press Show ATLAS. Continue only when ATLAS asks you to. Do not go back and change page 1."
+              },
+              "required": false
+            }
+          ]
+        },
+        {
+          "items": [
+            {
+              "id": "E11-V4",
+              "type": "choice",
+              "codebook": "kontroll",
+              "text": {
+                "nb": "Har du arbeidet med denne saken i ATLAS før du svarer på denne siden?",
+                "en": "Have you worked on this case in ATLAS before answering this page?"
+              },
+              "options": [
+                {
+                  "nb": "Ja",
+                  "en": "Yes"
+                },
+                {
+                  "nb": "Nei",
+                  "en": "No"
+                }
+              ],
+              "required": true
+            },
+            {
+              "id": "D-V4-B2",
+              "type": "confidence7",
+              "codebook": "d_v4_b2",
+              "text": {
+                "nb": "Hvor sikker er du på hva du ville gjort videre med ATLAS?",
+                "en": "How confident are you about what you would do next with ATLAS?"
+              },
+              "anchors": {
+                "low": {
+                  "nb": "Svært usikker",
+                  "en": "Very uncertain"
+                },
+                "high": {
+                  "nb": "Svært sikker",
+                  "en": "Very confident"
+                }
+              },
+              "required": true
+            },
+            {
+              "id": "D-V4-01",
+              "type": "longtext",
+              "codebook": "d_v4_01",
+              "text": {
+                "nb": "Endrer den strukturerte tilbakemeldingen din følelsesmessige respons på avslaget? Endrer den hvordan du svarer fastlegen? (1-3 setninger)",
+                "en": "Does the structured feedback change your emotional response to the rejection? Does it change how you answer the GP? (1-3 sentences)"
+              },
+              "required": true,
+              "privacyLine": true,
+              "draft": true
+            },
+            {
+              "id": "D-V4-02",
+              "type": "longtext",
+              "codebook": "d_v4_02",
+              "text": {
+                "nb": "Ville strukturert tilbakemelding på avslag endre hvordan du skriver neste avslag?",
+                "en": "Would structured feedback on rejections change how you write your next rejection?"
+              },
+              "required": false,
+              "privacyLine": true,
+              "draft": true
+            },
+            {
+              "id": "D-V4-03",
+              "type": "longtext",
+              "codebook": "d_v4_03",
+              "text": {
+                "nb": "Hva konkret ved ATLAS utgjorde forskjellen (eller mislyktes)? Hva mangler? (1-3 setninger)",
+                "en": "What specifically about ATLAS made the difference (or failed)? What is missing? (1-3 sentences)"
+              },
+              "required": true,
+              "privacyLine": true
+            },
+            {
+              "id": "D-V4-04",
+              "type": "helpful7",
+              "codebook": "d_v4_04",
+              "text": {
+                "nb": "Samlet nytteverdi av ATLAS for dette scenariet.",
+                "en": "Overall helpfulness of ATLAS for this scenario."
+              },
+              "anchors": {
+                "low": {
+                  "nb": "Ikke nyttig",
+                  "en": "Not helpful"
+                },
+                "high": {
+                  "nb": "Svært nyttig",
+                  "en": "Very helpful"
+                }
+              },
+              "required": false
+            }
+          ]
+        }
+      ],
+      "receipt": {
+        "nb": "Takk, svarene er sendt. Gå tilbake til ATLAS for å fortsette.",
+        "en": "Thank you, the answers have been sent. Go back to ATLAS to continue."
+      }
+    },
+    {
+      "key": "S6",
+      "title": {
+        "nb": "Avslutning",
+        "en": "Closing"
+      },
+      "intro": {
+        "nb": "Dette skjemaet spør om helhetsvurderingen din av ATLAS etter de tre sakene. Kritikk er like nyttig som ros. Ved å sende skjemaet samtykker du i at de anonyme svarene brukes i forskningsprosjektet.",
+        "en": "This form asks for your overall assessment of ATLAS after the three cases. Criticism is as useful as praise. By sending the form, you consent to the anonymous answers being used in the research project."
+      },
+      "locked": [
+        "rolle",
+        "intervju",
+        "steg",
+        "versjon"
+      ],
+      "pages": [
+        {
+          "items": [
+            {
+              "id": "rolle",
+              "type": "locked",
+              "codebook": "rolle",
+              "text": {
+                "nb": "Rolle",
+                "en": "Role"
+              },
+              "required": false
+            },
+            {
+              "id": "intervju",
+              "type": "locked",
+              "codebook": "intervju",
+              "text": {
+                "nb": "Deltok du i et intervju i dette forskningsprosjektet?",
+                "en": "Did you take part in an interview in this research project?"
+              },
+              "required": false
+            },
+            {
+              "id": "steg",
+              "type": "locked",
+              "codebook": "steg",
+              "text": {
+                "nb": "Steg",
+                "en": "Step"
+              },
+              "required": false
+            },
+            {
+              "id": "versjon",
+              "type": "locked",
+              "codebook": "versjon",
+              "text": {
+                "nb": "Versjon",
+                "en": "Version"
+              },
+              "required": false
+            },
+            {
+              "id": "E-01",
+              "type": "longtext",
+              "codebook": "e_01",
+              "text": {
+                "nb": "Hva er den mest verdifulle egenskapen ved ATLAS? (1-3 setninger)",
+                "en": "What is the single most valuable feature of ATLAS? (1-3 sentences)"
+              },
+              "required": true,
+              "privacyLine": true
+            },
+            {
+              "id": "E-02",
+              "type": "longtext",
+              "codebook": "e_02",
+              "text": {
+                "nb": "Hva er din største bekymring med ATLAS? (1-3 setninger)",
+                "en": "What is your single biggest concern about ATLAS? (1-3 sentences)"
+              },
+              "required": true,
+              "privacyLine": true
+            },
+            {
+              "id": "E-03",
+              "type": "longtext",
+              "codebook": "e_03",
+              "text": {
+                "nb": "Ville du brukt ATLAS i din nåværende praksis? Hvorfor / hvorfor ikke? (1-3 setninger)",
+                "en": "Would you use ATLAS in your current practice? Why / why not? (1-3 sentences)"
+              },
+              "required": true,
+              "privacyLine": true
+            },
+            {
+              "id": "E-04",
+              "type": "longtext",
+              "codebook": "e_04",
+              "text": {
+                "nb": "Hva måtte endres for at du skulle ta i bruk ATLAS? (1-3 setninger)",
+                "en": "What would need to change for you to adopt ATLAS? (1-3 sentences)"
+              },
+              "required": true,
+              "privacyLine": true
+            },
+            {
+              "id": "E-05",
+              "type": "nps11",
+              "codebook": "e_05",
+              "text": {
+                "nb": "På en skala fra 0 til 10, hvor sannsynlig er det at du ville anbefalt ATLAS til en kollega?",
+                "en": "On a scale from 0 to 10, how likely are you to recommend ATLAS to a colleague?"
+              },
+              "anchors": {
+                "low": {
+                  "nb": "Svært lite sannsynlig",
+                  "en": "Very unlikely"
+                },
+                "high": {
+                  "nb": "Svært sannsynlig",
+                  "en": "Very likely"
+                }
+              },
+              "required": false
+            },
+            {
+              "id": "E-06",
+              "type": "longtext",
+              "codebook": "e_06",
+              "text": {
+                "nb": "Er det noe annet du ønsker å legge til?",
+                "en": "Is there anything else you would like to add?"
+              },
+              "required": false,
+              "privacyLine": true
+            }
+          ]
+        }
+      ],
+      "receipt": {
+        "nb": "Takk, svarene er sendt. Gå tilbake til ATLAS for å fortsette.",
+        "en": "Thank you, the answers have been sent. Go back to ATLAS to continue."
+      }
+    },
+    {
+      "key": "S7.fastlege",
+      "title": {
+        "nb": "Torbjørn",
+        "en": "Torbjørn"
+      },
+      "intro": {
+        "nb": "Dette skjemaet handler om saken til Torbjørn, en valgfri ekstra sak. Kritikk er like nyttig som ros. Ved å sende skjemaet samtykker du i at de anonyme svarene brukes i forskningsprosjektet.",
+        "en": "This form is about Torbjørn's case, an optional extra case. Criticism is as useful as praise. By sending the form, you consent to the anonymous answers being used in the research project."
+      },
+      "locked": [
+        "rolle",
+        "intervju",
+        "steg",
+        "vignett",
+        "versjon"
+      ],
+      "pages": [
+        {
+          "items": [
+            {
+              "id": "rolle",
+              "type": "locked",
+              "codebook": "rolle",
+              "text": {
+                "nb": "Rolle",
+                "en": "Role"
+              },
+              "required": false
+            },
+            {
+              "id": "intervju",
+              "type": "locked",
+              "codebook": "intervju",
+              "text": {
+                "nb": "Deltok du i et intervju i dette forskningsprosjektet?",
+                "en": "Did you take part in an interview in this research project?"
+              },
+              "required": false
+            },
+            {
+              "id": "steg",
+              "type": "locked",
+              "codebook": "steg",
+              "text": {
+                "nb": "Steg",
+                "en": "Step"
+              },
+              "required": false
+            },
+            {
+              "id": "vignett",
+              "type": "locked",
+              "codebook": "vignett",
+              "text": {
+                "nb": "Vignett",
+                "en": "Vignette"
+              },
+              "required": false
+            },
+            {
+              "id": "versjon",
+              "type": "locked",
+              "codebook": "versjon",
+              "text": {
+                "nb": "Versjon",
+                "en": "Version"
+              },
+              "required": false
+            },
+            {
+              "id": "D-V2-01",
+              "type": "longtext",
+              "codebook": "d_v2_01",
+              "text": {
+                "nb": "Er ATLAS raskere, tregere, eller likt med dagens praksis for denne typen henvisning?",
+                "en": "Is ATLAS faster, slower, or the same as current practice for this type of referral?"
+              },
+              "required": false,
+              "privacyLine": true
+            },
+            {
+              "id": "D-V2-02",
+              "type": "longtext",
+              "codebook": "d_v2_02",
+              "text": {
+                "nb": "Tilfører ATLAS nytteverdi for klare saker, eller er det primært designet for gråsonesituasjoner? Er det akseptabelt?",
+                "en": "Does ATLAS add value for clear-cut cases, or is it primarily designed for grey-zone situations? Is that acceptable?"
+              },
+              "required": false,
+              "privacyLine": true
+            },
+            {
+              "id": "D-V2-03",
+              "type": "helpful7",
+              "codebook": "d_v2_03",
+              "text": {
+                "nb": "Samlet nytteverdi av ATLAS for dette scenariet.",
+                "en": "Overall helpfulness of ATLAS for this scenario."
+              },
+              "anchors": {
+                "low": {
+                  "nb": "Ikke nyttig",
+                  "en": "Not helpful"
+                },
+                "high": {
+                  "nb": "Svært nyttig",
+                  "en": "Very helpful"
+                }
+              },
+              "required": false
+            }
+          ]
+        }
+      ],
+      "receipt": {
+        "nb": "Takk, svarene er sendt. Gå tilbake til ATLAS for å fortsette.",
+        "en": "Thank you, the answers have been sent. Go back to ATLAS to continue."
+      }
+    },
+    {
+      "key": "S8",
+      "title": {
+        "nb": "To fastleger",
+        "en": "Two GPs"
+      },
+      "intro": {
+        "nb": "Dette skjemaet handler om visningen av to fastleger og én pasient, en valgfri ekstra sak. Kritikk er like nyttig som ros. Ved å sende skjemaet samtykker du i at de anonyme svarene brukes i forskningsprosjektet.",
+        "en": "This form is about the view of two GPs and one patient, an optional extra case. Criticism is as useful as praise. By sending the form, you consent to the anonymous answers being used in the research project."
+      },
+      "locked": [
+        "rolle",
+        "intervju",
+        "steg",
+        "vignett",
+        "versjon"
+      ],
+      "pages": [
+        {
+          "items": [
+            {
+              "id": "rolle",
+              "type": "locked",
+              "codebook": "rolle",
+              "text": {
+                "nb": "Rolle",
+                "en": "Role"
+              },
+              "required": false
+            },
+            {
+              "id": "intervju",
+              "type": "locked",
+              "codebook": "intervju",
+              "text": {
+                "nb": "Deltok du i et intervju i dette forskningsprosjektet?",
+                "en": "Did you take part in an interview in this research project?"
+              },
+              "required": false
+            },
+            {
+              "id": "steg",
+              "type": "locked",
+              "codebook": "steg",
+              "text": {
+                "nb": "Steg",
+                "en": "Step"
+              },
+              "required": false
+            },
+            {
+              "id": "vignett",
+              "type": "locked",
+              "codebook": "vignett",
+              "text": {
+                "nb": "Vignett",
+                "en": "Vignette"
+              },
+              "required": false
+            },
+            {
+              "id": "versjon",
+              "type": "locked",
+              "codebook": "versjon",
+              "text": {
+                "nb": "Versjon",
+                "en": "Version"
+              },
+              "required": false
+            },
+            {
+              "id": "D-V5-01",
+              "type": "longtext",
+              "codebook": "d_v5_01",
+              "text": {
+                "nb": "Ville en erfaren fastlege og en ny fastlege bruke dette dashbordet forskjellig? Hvordan?",
+                "en": "Would an experienced GP and a new GP use this dashboard differently? How?"
+              },
+              "required": false,
+              "privacyLine": true
+            },
+            {
+              "id": "D-V5-02",
+              "type": "longtext",
+              "codebook": "d_v5_02",
+              "text": {
+                "nb": "Er det en risiko for at kalibreringsdata kan virke demotiverende for erfarne fastleger med synkende henvisningsrate?",
+                "en": "Is there a risk that calibration data could be discouraging for experienced GPs with declining referral rates?"
+              },
+              "required": false,
+              "privacyLine": true
+            }
+          ]
+        }
+      ],
+      "receipt": {
+        "nb": "Takk, svarene er sendt. Gå tilbake til ATLAS for å fortsette.",
+        "en": "Thank you, the answers have been sent. Go back to ATLAS to continue."
+      }
+    },
+    {
+      "key": "R1",
+      "title": {
+        "nb": "Gjennomgang",
+        "en": "Review"
+      },
+      "intro": {
+        "nb": "Dette skjemaet gjelder delen av ATLAS du nettopp har sett. Kritikk er like nyttig som ros. Svarene brukes til å forbedre prototypen før evalueringen.",
+        "en": "This form is about the part of ATLAS you have just looked at. Criticism is as useful as praise. The answers are used to improve the prototype before the evaluation."
+      },
+      "locked": [
+        "rolle",
+        "side",
+        "seksjon",
+        "versjon"
+      ],
+      "pages": [
+        {
+          "items": [
+            {
+              "id": "rolle",
+              "type": "locked",
+              "codebook": "rolle",
+              "text": {
+                "nb": "Rolle",
+                "en": "Role"
+              },
+              "required": false
+            },
+            {
+              "id": "side",
+              "type": "locked",
+              "codebook": "side",
+              "text": {
+                "nb": "Side i ATLAS",
+                "en": "Page in ATLAS"
+              },
+              "required": false
+            },
+            {
+              "id": "seksjon",
+              "type": "locked",
+              "codebook": "seksjon",
+              "text": {
+                "nb": "Seksjon",
+                "en": "Section"
+              },
+              "required": false
+            },
+            {
+              "id": "versjon",
+              "type": "locked",
+              "codebook": "versjon",
+              "text": {
+                "nb": "Versjon",
+                "en": "Version"
+              },
+              "required": false
+            },
+            {
+              "id": "R1-01",
+              "type": "clarity5",
+              "codebook": "r1_01",
+              "text": {
+                "nb": "Hvor tydelig er denne delen?",
+                "en": "How clear is this part?"
+              },
+              "anchors": {
+                "low": {
+                  "nb": "Svært utydelig",
+                  "en": "Very unclear"
+                },
+                "high": {
+                  "nb": "Svært tydelig",
+                  "en": "Very clear"
+                }
+              },
+              "required": false
+            },
+            {
+              "id": "R1-02",
+              "type": "longtext",
+              "codebook": "r1_02",
+              "text": {
+                "nb": "Hva fungerer her?",
+                "en": "What works here?"
+              },
+              "required": false,
+              "privacyLine": true
+            },
+            {
+              "id": "R1-03",
+              "type": "longtext",
+              "codebook": "r1_03",
+              "text": {
+                "nb": "Hva vil du endre her?",
+                "en": "What would you change here?"
+              },
+              "required": false,
+              "privacyLine": true
+            },
+            {
+              "id": "R1-04",
+              "type": "importance3",
+              "codebook": "r1_04",
+              "text": {
+                "nb": "Hvor viktig er endringen?",
+                "en": "How important is the change?"
+              },
+              "options": [
+                {
+                  "nb": "Lite",
+                  "en": "Low"
+                },
+                {
+                  "nb": "Middels",
+                  "en": "Medium"
+                },
+                {
+                  "nb": "Svært viktig",
+                  "en": "Very important"
+                }
+              ],
+              "required": false
+            },
+            {
+              "id": "R1-05",
+              "type": "choice",
+              "codebook": "r1_05",
+              "text": {
+                "nb": "Leste du noe her som et råd om hva klinikeren skal gjøre?",
+                "en": "Did you read anything here as advice on what the clinician should do?"
+              },
+              "options": [
+                {
+                  "nb": "Ja",
+                  "en": "Yes"
+                },
+                {
+                  "nb": "Nei",
+                  "en": "No"
+                },
+                {
+                  "nb": "Usikker",
+                  "en": "Unsure"
+                }
+              ],
+              "required": false
+            },
+            {
+              "id": "R1-06",
+              "type": "longtext",
+              "codebook": "r1_06",
+              "text": {
+                "nb": "Hva?",
+                "en": "What?"
+              },
+              "required": false,
+              "privacyLine": true
+            }
+          ]
+        }
+      ],
+      "receipt": {
+        "nb": "Takk, svarene er sendt. Gå tilbake til ATLAS for å fortsette.",
+        "en": "Thank you, the answers have been sent. Go back to ATLAS to continue."
+      }
+    },
+    {
+      "key": "R2",
+      "title": {
+        "nb": "Samlet inntrykk",
+        "en": "Summing up"
+      },
+      "intro": {
+        "nb": "Dette skjemaet samler inntrykket ditt etter hele gjennomgangen. Kritikk er like nyttig som ros. Svarene brukes til å forbedre prototypen før evalueringen.",
+        "en": "This form gathers your impression after the whole review. Criticism is as useful as praise. The answers are used to improve the prototype before the evaluation."
+      },
+      "locked": [
+        "rolle",
+        "versjon"
+      ],
+      "pages": [
+        {
+          "items": [
+            {
+              "id": "rolle",
+              "type": "locked",
+              "codebook": "rolle",
+              "text": {
+                "nb": "Rolle",
+                "en": "Role"
+              },
+              "required": false
+            },
+            {
+              "id": "versjon",
+              "type": "locked",
+              "codebook": "versjon",
+              "text": {
+                "nb": "Versjon",
+                "en": "Version"
+              },
+              "required": false
+            },
+            {
+              "id": "R2-01",
+              "type": "clarity5",
+              "codebook": "r2_01",
+              "text": {
+                "nb": "Hvor tydelig er ATLAS som helhet?",
+                "en": "How clear is ATLAS as a whole?"
+              },
+              "anchors": {
+                "low": {
+                  "nb": "Svært utydelig",
+                  "en": "Very unclear"
+                },
+                "high": {
+                  "nb": "Svært tydelig",
+                  "en": "Very clear"
+                }
+              },
+              "required": false
+            },
+            {
+              "id": "R2-02",
+              "type": "longtext",
+              "codebook": "r2_02",
+              "text": {
+                "nb": "Hva fungerer best?",
+                "en": "What works best?"
+              },
+              "required": false,
+              "privacyLine": true
+            },
+            {
+              "id": "R2-03",
+              "type": "longtext",
+              "codebook": "r2_03",
+              "text": {
+                "nb": "Hva er viktigst å endre før evalueringen starter?",
+                "en": "What is most important to change before the evaluation starts?"
+              },
+              "required": false,
+              "privacyLine": true
+            },
+            {
+              "id": "R2-04",
+              "type": "longtext",
+              "codebook": "r2_04",
+              "text": {
+                "nb": "Er det noe annet du vil legge til?",
+                "en": "Is there anything else you would like to add?"
+              },
+              "required": false,
+              "privacyLine": true
+            }
+          ]
+        }
+      ],
+      "receipt": {
+        "nb": "Takk, svarene er sendt. Gå tilbake til ATLAS for å fortsette.",
+        "en": "Thank you, the answers have been sent. Go back to ATLAS to continue."
+      }
+    }
+  ]
+}

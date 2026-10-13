@@ -1,0 +1,2356 @@
+[
+  {
+    "path": "cases/kari.json#gp.note.text.nb",
+    "source": "prototype",
+    "where": "app-data.md line 345, CASES.kari.note",
+    "original": "Kontroll. Kari beskriver nedstemthet, tidlig morgenoppvåkning, tap av glede og konsentrasjonsvansker i fire måneder, med gradvis forverring. PHQ-9 i dag: 14.\n\nGjennomgår skilsmisse, har nylig flyttet til ny kommune og mistet sosialt nettverk. 50 % sykemeldt siste to uker. Fortsatt i arbeid, men har trukket seg tilbake sosialt og sluttet med fritidsaktiviteter.\n\nTidligere behandling: Rask psykisk helsehjelp i seks uker, uten bedring. Sertralin 50 mg for fem år siden med god effekt, seponert.",
+    "substitutions": []
+  },
+  {
+    "path": "cases/kari.json#gp.selfReport.rows.0.q.nb",
+    "source": "prototype",
+    "where": "app-data.md line 349, CASES.kari.self.0.0",
+    "original": "PHQ-9, sum",
+    "substitutions": []
+  },
+  {
+    "path": "cases/kari.json#gp.selfReport.rows.0.a.nb",
+    "source": "prototype",
+    "where": "app-data.md line 349, CASES.kari.self.0.1",
+    "original": "14",
+    "substitutions": []
+  },
+  {
+    "path": "cases/kari.json#gp.selfReport.rows.1.q.nb",
+    "source": "prototype",
+    "where": "app-data.md line 349, CASES.kari.self.1.0",
+    "original": "Hvor lenge har du hatt det slik?",
+    "substitutions": []
+  },
+  {
+    "path": "cases/kari.json#gp.selfReport.rows.1.a.nb",
+    "source": "prototype",
+    "where": "app-data.md line 349, CASES.kari.self.1.1",
+    "original": "Omtrent 4 måneder",
+    "substitutions": []
+  },
+  {
+    "path": "cases/kari.json#gp.selfReport.rows.2.q.nb",
+    "source": "prototype",
+    "where": "app-data.md line 349, CASES.kari.self.2.0",
+    "original": "Klarer du arbeidet som før?",
+    "substitutions": []
+  },
+  {
+    "path": "cases/kari.json#gp.selfReport.rows.2.a.nb",
+    "source": "prototype",
+    "where": "app-data.md line 349, CASES.kari.self.2.1",
+    "original": "Delvis, 50 % sykemeldt",
+    "substitutions": []
+  },
+  {
+    "path": "cases/kari.json#gp.selfReport.rows.3.q.nb",
+    "source": "prototype",
+    "where": "app-data.md line 349, CASES.kari.self.3.0",
+    "original": "Har du hatt tanker om å skade deg selv?",
+    "substitutions": []
+  },
+  {
+    "path": "cases/kari.json#gp.selfReport.rows.3.a.nb",
+    "source": "prototype",
+    "where": "app-data.md line 349, CASES.kari.self.3.1",
+    "original": "Nei",
+    "substitutions": []
+  },
+  {
+    "path": "cases/kari.json#gp.selfReport.rows.4.q.nb",
+    "source": "prototype",
+    "where": "app-data.md line 349, CASES.kari.self.4.0",
+    "original": "Hva ønsker du hjelp til?",
+    "substitutions": []
+  },
+  {
+    "path": "cases/kari.json#gp.selfReport.rows.4.a.nb",
+    "source": "prototype",
+    "where": "app-data.md line 349, CASES.kari.self.4.1",
+    "original": "Få tilbake energien",
+    "substitutions": []
+  },
+  {
+    "path": "cases/kari.json#gp.history.0.date",
+    "source": "prototype",
+    "where": "app-data.md line 351, CASES.kari.history.0.0",
+    "original": "2026-03-10",
+    "substitutions": [
+      [
+        "2026-03-10",
+        "2026-03-17"
+      ]
+    ]
+  },
+  {
+    "path": "cases/kari.json#gp.history.0.text.nb",
+    "source": "prototype",
+    "where": "app-data.md line 351, CASES.kari.history.0.1",
+    "original": "Selvrapport mottatt før kontroll (PHQ-9 14)",
+    "substitutions": []
+  },
+  {
+    "path": "cases/kari.json#gp.history.1.date",
+    "source": "prototype",
+    "where": "app-data.md line 351, CASES.kari.history.1.0",
+    "original": "2026-01-20",
+    "substitutions": []
+  },
+  {
+    "path": "cases/kari.json#gp.history.1.text.nb",
+    "source": "prototype",
+    "where": "app-data.md line 351, CASES.kari.history.1.1",
+    "original": "Rask psykisk helsehjelp avsluttet etter seks uker, uten bedring",
+    "substitutions": []
+  },
+  {
+    "path": "cases/kari.json#gp.history.2.date",
+    "source": "prototype",
+    "where": "app-data.md line 351, CASES.kari.history.2.0",
+    "original": "2025-12-02",
+    "substitutions": []
+  },
+  {
+    "path": "cases/kari.json#gp.history.2.text.nb",
+    "source": "prototype",
+    "where": "app-data.md line 351, CASES.kari.history.2.1",
+    "original": "Konsultasjon: nedstemthet etter samlivsbrudd. Henvist til Rask psykisk helsehjelp",
+    "substitutions": []
+  },
+  {
+    "path": "cases/kari.json#gp.history.3.date",
+    "source": "prototype",
+    "where": "app-data.md line 351, CASES.kari.history.3.0",
+    "original": "2021-02-15",
+    "substitutions": []
+  },
+  {
+    "path": "cases/kari.json#gp.history.3.text.nb",
+    "source": "prototype",
+    "where": "app-data.md line 351, CASES.kari.history.3.1",
+    "original": "Sertralin seponert etter god effekt",
+    "substitutions": []
+  },
+  {
+    "path": "cases/kari.json#gp.timeliste.visit.nb",
+    "source": "prototype",
+    "where": "app-data.md line 342, CASES.kari.visit",
+    "original": "Kontroll",
+    "substitutions": []
+  },
+  {
+    "path": "cases/kari.json#gp.timeliste.chips.0.label.nb",
+    "source": "prototype",
+    "where": "app-data.md line 152, template string (ATLAS App.dc.html line 94)",
+    "original": "Selvrapport mottatt",
+    "substitutions": []
+  },
+  {
+    "path": "cases/kari.json#gp.briefing.rows.0.label.nb",
+    "source": "prototype",
+    "where": "app-data.md line 39, EN dictionary key 1 (table line 47)",
+    "original": "Hvem",
+    "substitutions": []
+  },
+  {
+    "path": "cases/kari.json#gp.briefing.rows.0.label.en",
+    "source": "prototype",
+    "where": "app-data.md line 39, EN dictionary entry 1 (table line 47)",
+    "original": "Who",
+    "substitutions": []
+  },
+  {
+    "path": "cases/kari.json#gp.briefing.rows.0.value.nb",
+    "source": "prototype",
+    "where": "app-data.md line 352, CASES.kari.gp.rows.0.1",
+    "original": "Kari Nordli, 34 år. Nedstemt i fire måneder, PHQ-9 14. Gjennomgår skilsmisse og har nylig flyttet.",
+    "substitutions": []
+  },
+  {
+    "path": "cases/kari.json#gp.briefing.rows.0.value.en",
+    "source": "prototype",
+    "where": "app-data.md line 39, EN dictionary entry 20 (table line 66)",
+    "original": "Kari Nordli, 34. Low mood for four months, PHQ-9 of 14. Going through a divorce and recently moved.",
+    "substitutions": []
+  },
+  {
+    "path": "cases/kari.json#gp.briefing.rows.1.label.nb",
+    "source": "prototype",
+    "where": "app-data.md line 39, EN dictionary key 2 (table line 48)",
+    "original": "Situasjonen",
+    "substitutions": []
+  },
+  {
+    "path": "cases/kari.json#gp.briefing.rows.1.label.en",
+    "source": "prototype",
+    "where": "app-data.md line 39, EN dictionary entry 2 (table line 48)",
+    "original": "Situation",
+    "substitutions": []
+  },
+  {
+    "path": "cases/kari.json#gp.briefing.rows.1.value.nb",
+    "source": "prototype",
+    "where": "app-data.md line 352, CASES.kari.gp.rows.1.1",
+    "original": "50 % sykemeldt i to uker. Rask psykisk helsehjelp i seks uker uten bedring. God effekt av sertralin for fem år siden.",
+    "substitutions": []
+  },
+  {
+    "path": "cases/kari.json#gp.briefing.rows.1.value.en",
+    "source": "prototype",
+    "where": "app-data.md line 39, EN dictionary entry 21 (table line 67)",
+    "original": "50 % sick leave for two weeks. Six weeks of municipal mental health care without improvement. Sertraline worked well five years ago.",
+    "substitutions": [
+      [
+        " %",
+        "%"
+      ]
+    ]
+  },
+  {
+    "path": "cases/kari.json#gp.briefing.rows.2.label.nb",
+    "source": "prototype",
+    "where": "app-data.md line 39, EN dictionary key 3 (table line 49)",
+    "original": "Hvorfor denne saken",
+    "substitutions": []
+  },
+  {
+    "path": "cases/kari.json#gp.briefing.rows.2.label.en",
+    "source": "prototype",
+    "where": "app-data.md line 39, EN dictionary entry 3 (table line 49)",
+    "original": "Why this case",
+    "substitutions": []
+  },
+  {
+    "path": "cases/kari.json#gp.briefing.rows.3.label.nb",
+    "source": "prototype",
+    "where": "app-data.md line 39, EN dictionary key 4 (table line 50)",
+    "original": "Utgangspunkt",
+    "substitutions": []
+  },
+  {
+    "path": "cases/kari.json#gp.briefing.rows.3.label.en",
+    "source": "prototype",
+    "where": "app-data.md line 39, EN dictionary entry 4 (table line 50)",
+    "original": "Starting point",
+    "substitutions": []
+  },
+  {
+    "path": "cases/kari.json#gp.briefing.time.nb",
+    "source": "prototype",
+    "where": "app-data.md line 352, CASES.kari.gp.time",
+    "original": "Omtrent 10 minutter",
+    "substitutions": []
+  },
+  {
+    "path": "cases/kari.json#gp.profile.0.label.nb",
+    "source": "prototype",
+    "where": "app-data.md line 189, template string (ATLAS App.dc.html line 186)",
+    "original": "Tidligere behandling",
+    "substitutions": []
+  },
+  {
+    "path": "cases/kari.json#gp.profile.0.value.nb",
+    "source": "prototype",
+    "where": "app-data.md line 344, CASES.kari.profilePrior",
+    "original": "Rask psykisk helsehjelp, 6 uker, uten bedring. Sertralin 2020–2021.",
+    "substitutions": [
+      [
+        "–",
+        " til "
+      ]
+    ]
+  },
+  {
+    "path": "cases/kari.json#gp.profile.1.label.nb",
+    "source": "prototype",
+    "where": "app-data.md line 190, template string (ATLAS App.dc.html line 187)",
+    "original": "Legemidler",
+    "substitutions": []
+  },
+  {
+    "path": "cases/kari.json#gp.profile.2.label.nb",
+    "source": "prototype",
+    "where": "app-data.md line 191, template string (ATLAS App.dc.html line 188)",
+    "original": "Henvisninger",
+    "substitutions": []
+  },
+  {
+    "path": "cases/kari.json#gp.profile.2.value.nb",
+    "source": "prototype",
+    "where": "app-data.md line 192, template string (ATLAS App.dc.html line 188)",
+    "original": "Ingen tidligere",
+    "substitutions": []
+  },
+  {
+    "path": "cases/kari.json#gp.note.date",
+    "source": "prototype",
+    "where": "app-data.md line 342, CASES.kari.sent",
+    "original": "2026-03-10",
+    "substitutions": [
+      [
+        "2026-03-10",
+        "2026-03-17"
+      ]
+    ]
+  },
+  {
+    "path": "cases/kari.json#gp.selfReport.date",
+    "source": "prototype",
+    "where": "app-data.md line 351, CASES.kari.history.0.0",
+    "original": "2026-03-10",
+    "substitutions": [
+      [
+        "2026-03-10",
+        "2026-03-17"
+      ]
+    ]
+  },
+  {
+    "path": "cases/kari.json#gp.meds.rows.0.name.nb",
+    "source": "prototype",
+    "where": "app-data.md line 350, CASES.kari.meds.0.0",
+    "original": "Sertralin 50 mg tablett",
+    "substitutions": []
+  },
+  {
+    "path": "cases/kari.json#gp.meds.rows.0.dose.nb",
+    "source": "prototype",
+    "where": "app-data.md line 350, CASES.kari.meds.0.1",
+    "original": "1 daglig",
+    "substitutions": []
+  },
+  {
+    "path": "cases/kari.json#gp.meds.rows.0.period.nb",
+    "source": "prototype",
+    "where": "app-data.md line 350, CASES.kari.meds.0.2",
+    "original": "2020–2021",
+    "substitutions": [
+      [
+        "–",
+        " til "
+      ]
+    ]
+  },
+  {
+    "path": "cases/kari.json#gp.meds.rows.0.status.nb",
+    "source": "prototype",
+    "where": "app-data.md line 350, CASES.kari.meds.0.3",
+    "original": "Avsluttet",
+    "substitutions": []
+  },
+  {
+    "path": "cases/kari.json#gp.meds.note.nb",
+    "source": "prototype",
+    "where": "app-data.md line 350, CASES.kari.medNote",
+    "original": "Ingen aktive legemidler. Sertralin ga god effekt for fem år siden og ble seponert.",
+    "substitutions": []
+  },
+  {
+    "path": "cases/kari.json#gp.systemReading.summary.nb",
+    "source": "prototype",
+    "where": "app-data.md line 343, CASES.kari.sys.s1",
+    "original": "Nær midten. Liknende henvisninger er vurdert ulikt.",
+    "substitutions": []
+  },
+  {
+    "path": "cases/kari.json#gp.systemReading.summary.en",
+    "source": "prototype",
+    "where": "app-data.md line 39, EN dictionary entry 54 (table line 100)",
+    "original": "Near the middle. Similar referrals have been assessed differently.",
+    "substitutions": []
+  },
+  {
+    "path": "cases/kari.json#gp.systemReading.reasoning.nb",
+    "source": "prototype",
+    "where": "app-data.md line 343, CASES.kari.sys.s2",
+    "original": "Kilder: notat, selvrapport, legemiddelliste. Varighet over tre måneder og manglende effekt av kommunalt tilbud ligger nær kriteriene. Mildt funksjonsfall og en tydelig utløsende hendelse ligger lenger fra. Risikovurdering er ikke omtalt i notatet.",
+    "substitutions": [],
+    "appended": " Setningen om liknende henvisninger er også skrevet for saken. Det finnes ingen ekte tall bak den."
+  },
+  {
+    "path": "cases/kari.json#gp.systemReading.reasoning.en",
+    "source": "prototype",
+    "where": "app-data.md line 39, EN dictionary entry 55 (table line 101)",
+    "original": "Sources: note, self-report, medication list. Duration over three months and no effect from municipal care lie close to the criteria. Mild functional decline and a clear trigger lie further away. Risk assessment is not mentioned in the note.",
+    "substitutions": [],
+    "appended": " The sentence about similar referrals is also written for the case. There are no real figures behind it."
+  },
+  {
+    "path": "cases/kari.json#gp.referralDraft.aktuelt.text.nb",
+    "source": "prototype",
+    "where": "app-data.md line 348, CASES.kari.form.aktuelt",
+    "original": "Nedstemthet, tidlig morgenoppvåkning, tap av glede og konsentrasjonsvansker i fire måneder, med gradvis forverring. PHQ-9: 14. Gjennomgår skilsmisse og har nylig flyttet.",
+    "substitutions": []
+  },
+  {
+    "path": "cases/kari.json#gp.referralDraft.tidligere.text.nb",
+    "source": "prototype",
+    "where": "app-data.md line 348, CASES.kari.form.prior",
+    "original": "Rask psykisk helsehjelp i seks uker, uten bedring. Sertralin 50 mg for fem år siden, god effekt, seponert.",
+    "substitutions": []
+  },
+  {
+    "path": "cases/kari.json#gp.referralDraft.funksjon.text.nb",
+    "source": "prototype",
+    "where": "app-data.md line 348, CASES.kari.form.func",
+    "original": "50 % sykemeldt i to uker. Sosial tilbaketrekning, har sluttet med fritidsaktiviteter.",
+    "substitutions": []
+  },
+  {
+    "path": "cases/kari.json#dps.queue.received",
+    "source": "prototype",
+    "where": "app-data.md line 342, CASES.kari.sent",
+    "original": "2026-03-10",
+    "substitutions": [
+      [
+        "2026-03-10",
+        "2026-03-17"
+      ]
+    ]
+  },
+  {
+    "path": "cases/kari.json#dps.queue.deadline",
+    "source": "prototype",
+    "where": "app-data.md line 342, CASES.kari.deadline",
+    "original": "2026-03-24",
+    "substitutions": [
+      [
+        "2026-03-24",
+        "2026-03-31"
+      ]
+    ]
+  },
+  {
+    "path": "cases/kari.json#dps.briefing.rows.0.label.nb",
+    "source": "prototype",
+    "where": "app-data.md line 39, EN dictionary key 5 (table line 51)",
+    "original": "Hva du får",
+    "substitutions": []
+  },
+  {
+    "path": "cases/kari.json#dps.briefing.rows.0.label.en",
+    "source": "prototype",
+    "where": "app-data.md line 39, EN dictionary entry 5 (table line 51)",
+    "original": "What you get",
+    "substitutions": []
+  },
+  {
+    "path": "cases/kari.json#dps.briefing.rows.1.label.nb",
+    "source": "prototype",
+    "where": "app-data.md line 39, EN dictionary key 6 (table line 52)",
+    "original": "Hva du ikke får",
+    "substitutions": []
+  },
+  {
+    "path": "cases/kari.json#dps.briefing.rows.1.label.en",
+    "source": "prototype",
+    "where": "app-data.md line 39, EN dictionary entry 6 (table line 52)",
+    "original": "What you don’t get",
+    "substitutions": []
+  },
+  {
+    "path": "cases/kari.json#dps.briefing.rows.1.value.nb",
+    "source": "prototype",
+    "where": "app-data.md line 375, CASES.astrid.dps.rows.1.1",
+    "original": "Fastlegens navn eller andre henvisninger fra samme lege.",
+    "substitutions": []
+  },
+  {
+    "path": "cases/kari.json#dps.briefing.rows.1.value.en",
+    "source": "prototype",
+    "where": "app-data.md line 39, EN dictionary entry 39 (table line 85)",
+    "original": "The GP’s name or other referrals from the same doctor.",
+    "substitutions": []
+  },
+  {
+    "path": "cases/kari.json#dps.briefing.rows.2.label.nb",
+    "source": "prototype",
+    "where": "app-data.md line 39, EN dictionary key 7 (table line 53)",
+    "original": "Frist",
+    "substitutions": []
+  },
+  {
+    "path": "cases/kari.json#dps.briefing.rows.2.label.en",
+    "source": "prototype",
+    "where": "app-data.md line 39, EN dictionary entry 7 (table line 53)",
+    "original": "Deadline",
+    "substitutions": []
+  },
+  {
+    "path": "cases/kari.json#dps.briefing.rows.2.value.nb",
+    "source": "prototype",
+    "where": "app-data.md line 353, CASES.kari.dps.rows.3.1",
+    "original": "Vurderingsfristen er ti virkedager etter mottak: 2026-03-24.",
+    "substitutions": [
+      [
+        "2026-03-24",
+        "2026-03-31"
+      ],
+      [
+        "2026-03-31",
+        "31. mars 2026"
+      ]
+    ]
+  },
+  {
+    "path": "cases/kari.json#dps.briefing.rows.2.value.en",
+    "source": "prototype",
+    "where": "app-data.md line 39, EN dictionary entry 27 (table line 73)",
+    "original": "The legal assessment deadline is ten working days after receipt: 2026-03-24.",
+    "substitutions": [
+      [
+        "2026-03-24",
+        "2026-03-31"
+      ],
+      [
+        "2026-03-31",
+        "31 March 2026"
+      ]
+    ]
+  },
+  {
+    "path": "cases/kari.json#dps.briefing.time.nb",
+    "source": "prototype",
+    "where": "app-data.md line 353, CASES.kari.dps.time",
+    "original": "Omtrent 8 minutter",
+    "substitutions": []
+  },
+  {
+    "path": "cases/kari.json#dps.referral.sent",
+    "source": "prototype",
+    "where": "app-data.md line 342, CASES.kari.sent",
+    "original": "2026-03-10",
+    "substitutions": [
+      [
+        "2026-03-10",
+        "2026-03-17"
+      ]
+    ]
+  },
+  {
+    "path": "cases/kari.json#dps.referral.received",
+    "source": "prototype",
+    "where": "app-data.md line 342, CASES.kari.sent",
+    "original": "2026-03-10",
+    "substitutions": [
+      [
+        "2026-03-10",
+        "2026-03-17"
+      ]
+    ]
+  },
+  {
+    "path": "cases/kari.json#dps.referral.deadline",
+    "source": "prototype",
+    "where": "app-data.md line 342, CASES.kari.deadline",
+    "original": "2026-03-24",
+    "substitutions": [
+      [
+        "2026-03-24",
+        "2026-03-31"
+      ]
+    ]
+  },
+  {
+    "path": "cases/kari.json#dps.referral.sections.aktuelt.nb",
+    "source": "prototype",
+    "where": "app-data.md line 348, CASES.kari.form.aktuelt",
+    "original": "Nedstemthet, tidlig morgenoppvåkning, tap av glede og konsentrasjonsvansker i fire måneder, med gradvis forverring. PHQ-9: 14. Gjennomgår skilsmisse og har nylig flyttet.",
+    "substitutions": []
+  },
+  {
+    "path": "cases/kari.json#dps.referral.sections.tidligere.nb",
+    "source": "prototype",
+    "where": "app-data.md line 348, CASES.kari.form.prior",
+    "original": "Rask psykisk helsehjelp i seks uker, uten bedring. Sertralin 50 mg for fem år siden, god effekt, seponert.",
+    "substitutions": []
+  },
+  {
+    "path": "cases/kari.json#dps.referral.sections.funksjon.nb",
+    "source": "prototype",
+    "where": "app-data.md line 348, CASES.kari.form.func",
+    "original": "50 % sykemeldt i to uker. Sosial tilbaketrekning, har sluttet med fritidsaktiviteter.",
+    "substitutions": []
+  },
+  {
+    "path": "cases/kari.json#dps.referral.sections.risiko.nb",
+    "source": "vault",
+    "where": "content.md line 151, AU:gp/1b.html:64, old referral field Risikovurdering for Kari",
+    "original": "Selvmordsrisikovurdering gjennomført. Ingen akutt selvmordsfare. Ingen voldsrisiko identifisert.",
+    "substitutions": []
+  },
+  {
+    "path": "cases/kari.json#dps.referral.sections.risiko.en",
+    "source": "vault",
+    "where": "content.md line 151, AU:gp/1b.html:64, English",
+    "original": "Suicide risk assessment completed. No acute suicide danger. No violence risk identified.",
+    "substitutions": []
+  },
+  {
+    "path": "cases/kari.json#dps.referral.sections.sporsmal.nb",
+    "source": "vault",
+    "where": "content.md line 117, AU:gp/1b.html:75, last sentence of Kari's old referral narrative",
+    "original": "Ønsker spesialistvurdering for å avklare diagnostisk bilde og behandlingsbehov.",
+    "substitutions": []
+  },
+  {
+    "path": "cases/kari.json#dps.referral.sections.sporsmal.en",
+    "source": "vault",
+    "where": "content.md line 117, AU:gp/1b.html:75, last sentence, English",
+    "original": "Requesting specialist assessment to clarify diagnostic picture and treatment needs.",
+    "substitutions": []
+  },
+  {
+    "path": "cases/kari.json#dps.referral.noteAttachment.nb",
+    "source": "prototype",
+    "where": "app-data.md line 345, CASES.kari.note",
+    "original": "Kontroll. Kari beskriver nedstemthet, tidlig morgenoppvåkning, tap av glede og konsentrasjonsvansker i fire måneder, med gradvis forverring. PHQ-9 i dag: 14.\n\nGjennomgår skilsmisse, har nylig flyttet til ny kommune og mistet sosialt nettverk. 50 % sykemeldt siste to uker. Fortsatt i arbeid, men har trukket seg tilbake sosialt og sluttet med fritidsaktiviteter.\n\nTidligere behandling: Rask psykisk helsehjelp i seks uker, uten bedring. Sertralin 50 mg for fem år siden med god effekt, seponert.",
+    "substitutions": []
+  },
+  {
+    "path": "cases/kari.json#dps.gpUncertainty.description.nb",
+    "source": "prototype",
+    "where": "app-data.md line 346, CASES.kari.unc",
+    "original": "Usikker på om dette er en reaktiv tilpasningsforstyrrelse eller en begynnende moderat depressiv episode. Funksjonsfallet er til stede, men mildt. Manglende respons på kommunalt tilbud taler for spesialistvurdering, men kort varighet og tydelig reaktiv komponent taler mot.",
+    "substitutions": []
+  },
+  {
+    "path": "cases/kari.json#dps.gpUncertainty.description.en",
+    "source": "vault",
+    "where": "content.md line 157, AU:gp/1b.html:132, English of the same text",
+    "original": "Uncertain whether this is a reactive adjustment disorder or an emerging moderate depressive episode. Functional decline is present but mild. Lack of response to municipal services argues for specialist assessment, but short duration and clear reactive component argue against.",
+    "substitutions": []
+  },
+  {
+    "path": "cases/kari.json#dps.systemReading.summary.nb",
+    "source": "prototype",
+    "where": "app-data.md line 343, CASES.kari.sys.s1",
+    "original": "Nær midten. Liknende henvisninger er vurdert ulikt.",
+    "substitutions": []
+  },
+  {
+    "path": "cases/kari.json#dps.systemReading.summary.en",
+    "source": "prototype",
+    "where": "app-data.md line 39, EN dictionary entry 54 (table line 100)",
+    "original": "Near the middle. Similar referrals have been assessed differently.",
+    "substitutions": []
+  },
+  {
+    "path": "cases/kari.json#debrief.dps.title.nb",
+    "source": "prototype",
+    "where": "app-data.md line 39, EN dictionary key 50 (table line 96)",
+    "original": "Tre plasseringer av samme sak",
+    "substitutions": []
+  },
+  {
+    "path": "cases/kari.json#debrief.dps.title.en",
+    "source": "prototype",
+    "where": "app-data.md line 39, EN dictionary entry 50 (table line 96)",
+    "original": "Three placements of the same case",
+    "substitutions": []
+  },
+  {
+    "path": "cases/kari.json#patient.fnr",
+    "source": "prototype",
+    "where": "app-data.md line 342, CASES.kari.fnr",
+    "original": "120392 ·····",
+    "substitutions": []
+  },
+  {
+    "path": "cases/erlend.json#gp.selfReport.rows.0.q.nb",
+    "source": "prototype",
+    "where": "app-data.md line 362, CASES.erlend.self.0.0",
+    "original": "GAD-7, sum",
+    "substitutions": []
+  },
+  {
+    "path": "cases/erlend.json#gp.selfReport.rows.0.a.nb",
+    "source": "prototype",
+    "where": "app-data.md line 362, CASES.erlend.self.0.1",
+    "original": "17",
+    "substitutions": []
+  },
+  {
+    "path": "cases/erlend.json#gp.selfReport.rows.1.q.nb",
+    "source": "prototype",
+    "where": "app-data.md line 362, CASES.erlend.self.1.0",
+    "original": "PHQ-9, sum",
+    "substitutions": []
+  },
+  {
+    "path": "cases/erlend.json#gp.selfReport.rows.1.a.nb",
+    "source": "prototype",
+    "where": "app-data.md line 362, CASES.erlend.self.1.1",
+    "original": "11",
+    "substitutions": []
+  },
+  {
+    "path": "cases/erlend.json#gp.selfReport.rows.2.q.nb",
+    "source": "prototype",
+    "where": "app-data.md line 362, CASES.erlend.self.2.0",
+    "original": "Klarer du arbeidet som før?",
+    "substitutions": []
+  },
+  {
+    "path": "cases/erlend.json#gp.selfReport.rows.2.a.nb",
+    "source": "prototype",
+    "where": "app-data.md line 362, CASES.erlend.self.2.1",
+    "original": "Nei, 100 % sykemeldt i seks uker",
+    "substitutions": []
+  },
+  {
+    "path": "cases/erlend.json#gp.selfReport.rows.3.q.nb",
+    "source": "prototype",
+    "where": "app-data.md line 362, CASES.erlend.self.3.0",
+    "original": "Har du hatt tanker om å skade deg selv?",
+    "substitutions": []
+  },
+  {
+    "path": "cases/erlend.json#gp.selfReport.rows.3.a.nb",
+    "source": "prototype",
+    "where": "app-data.md line 362, CASES.erlend.self.3.1",
+    "original": "Nei",
+    "substitutions": []
+  },
+  {
+    "path": "cases/erlend.json#gp.selfReport.rows.4.q.nb",
+    "source": "prototype",
+    "where": "app-data.md line 362, CASES.erlend.self.4.0",
+    "original": "Hva ønsker du hjelp til?",
+    "substitutions": []
+  },
+  {
+    "path": "cases/erlend.json#gp.selfReport.rows.4.a.nb",
+    "source": "prototype",
+    "where": "app-data.md line 362, CASES.erlend.self.4.1",
+    "original": "Klare å handle og kjøre bil igjen",
+    "substitutions": []
+  },
+  {
+    "path": "cases/erlend.json#gp.history.0.date",
+    "source": "prototype",
+    "where": "app-data.md line 364, CASES.erlend.history.0.0",
+    "original": "2026-02-14",
+    "substitutions": [
+      [
+        "2026-02-14",
+        "2026-02-13"
+      ]
+    ]
+  },
+  {
+    "path": "cases/erlend.json#gp.history.0.text.nb",
+    "source": "prototype",
+    "where": "app-data.md line 364, CASES.erlend.history.0.1",
+    "original": "Rask psykisk helsehjelp avsluttet etter ti timer, begrenset effekt",
+    "substitutions": []
+  },
+  {
+    "path": "cases/erlend.json#gp.history.1.date",
+    "source": "prototype",
+    "where": "app-data.md line 364, CASES.erlend.history.1.0",
+    "original": "2025-12-01",
+    "substitutions": []
+  },
+  {
+    "path": "cases/erlend.json#gp.history.1.text.nb",
+    "source": "prototype",
+    "where": "app-data.md line 364, CASES.erlend.history.1.1",
+    "original": "Escitalopram 10 mg startet",
+    "substitutions": []
+  },
+  {
+    "path": "cases/erlend.json#gp.history.2.date",
+    "source": "prototype",
+    "where": "app-data.md line 364, CASES.erlend.history.2.0",
+    "original": "2025-11-12",
+    "substitutions": []
+  },
+  {
+    "path": "cases/erlend.json#gp.history.2.text.nb",
+    "source": "prototype",
+    "where": "app-data.md line 364, CASES.erlend.history.2.1",
+    "original": "Henvisning til DPS avslått: «Pasienten kan behandles adekvat i primærhelsetjenesten.»",
+    "substitutions": []
+  },
+  {
+    "path": "cases/erlend.json#gp.history.3.date",
+    "source": "prototype",
+    "where": "app-data.md line 364, CASES.erlend.history.3.0",
+    "original": "2025-10-28",
+    "substitutions": [
+      [
+        "2025-10-28",
+        "2025-10-29"
+      ]
+    ]
+  },
+  {
+    "path": "cases/erlend.json#gp.history.3.text.nb",
+    "source": "prototype",
+    "where": "app-data.md line 364, CASES.erlend.history.3.1",
+    "original": "Henvisning til DPS sendt",
+    "substitutions": []
+  },
+  {
+    "path": "cases/erlend.json#gp.timeliste.visit.nb",
+    "source": "prototype",
+    "where": "app-data.md line 354, CASES.erlend.visit",
+    "original": "Ny time",
+    "substitutions": []
+  },
+  {
+    "path": "cases/erlend.json#gp.timeliste.chips.0.label.nb",
+    "source": "prototype",
+    "where": "app-data.md line 429, gpChips",
+    "original": "Tidligere avslått",
+    "substitutions": []
+  },
+  {
+    "path": "cases/erlend.json#gp.timeliste.chips.1.label.nb",
+    "source": "prototype",
+    "where": "app-data.md line 152, template string (ATLAS App.dc.html line 94)",
+    "original": "Selvrapport mottatt",
+    "substitutions": []
+  },
+  {
+    "path": "cases/erlend.json#gp.briefing.rows.0.label.nb",
+    "source": "prototype",
+    "where": "app-data.md line 39, EN dictionary key 1 (table line 47)",
+    "original": "Hvem",
+    "substitutions": []
+  },
+  {
+    "path": "cases/erlend.json#gp.briefing.rows.0.label.en",
+    "source": "prototype",
+    "where": "app-data.md line 39, EN dictionary entry 1 (table line 47)",
+    "original": "Who",
+    "substitutions": []
+  },
+  {
+    "path": "cases/erlend.json#gp.briefing.rows.0.value.nb",
+    "source": "prototype",
+    "where": "app-data.md line 365, CASES.erlend.gp.rows.0.1",
+    "original": "Erlend Bakken, 42 år. Angst med panikkanfall i åtte måneder. 100 % sykemeldt.",
+    "substitutions": []
+  },
+  {
+    "path": "cases/erlend.json#gp.briefing.rows.0.value.en",
+    "source": "prototype",
+    "where": "app-data.md line 39, EN dictionary entry 28 (table line 74)",
+    "original": "Erlend Bakken, 42. Anxiety with panic attacks for eight months. On full sick leave.",
+    "substitutions": []
+  },
+  {
+    "path": "cases/erlend.json#gp.briefing.rows.1.label.nb",
+    "source": "prototype",
+    "where": "app-data.md line 39, EN dictionary key 2 (table line 48)",
+    "original": "Situasjonen",
+    "substitutions": []
+  },
+  {
+    "path": "cases/erlend.json#gp.briefing.rows.1.label.en",
+    "source": "prototype",
+    "where": "app-data.md line 39, EN dictionary entry 2 (table line 48)",
+    "original": "Situation",
+    "substitutions": []
+  },
+  {
+    "path": "cases/erlend.json#gp.briefing.rows.1.value.nb",
+    "source": "prototype",
+    "where": "app-data.md line 365, CASES.erlend.gp.rows.1.1",
+    "original": "Henvist i oktober og avslått i november med én setning. Siden har han fått kognitiv terapi og escitalopram, med begrenset effekt.",
+    "substitutions": []
+  },
+  {
+    "path": "cases/erlend.json#gp.briefing.rows.1.value.en",
+    "source": "prototype",
+    "where": "app-data.md line 39, EN dictionary entry 29 (table line 75)",
+    "original": "Referred in October and rejected in November with one sentence. Since then he has had cognitive therapy and escitalopram, with limited effect.",
+    "substitutions": []
+  },
+  {
+    "path": "cases/erlend.json#gp.briefing.rows.2.label.nb",
+    "source": "prototype",
+    "where": "app-data.md line 39, EN dictionary key 3 (table line 49)",
+    "original": "Hvorfor denne saken",
+    "substitutions": []
+  },
+  {
+    "path": "cases/erlend.json#gp.briefing.rows.2.label.en",
+    "source": "prototype",
+    "where": "app-data.md line 39, EN dictionary entry 3 (table line 49)",
+    "original": "Why this case",
+    "substitutions": []
+  },
+  {
+    "path": "cases/erlend.json#gp.briefing.rows.3.label.nb",
+    "source": "prototype",
+    "where": "app-data.md line 39, EN dictionary key 4 (table line 50)",
+    "original": "Utgangspunkt",
+    "substitutions": []
+  },
+  {
+    "path": "cases/erlend.json#gp.briefing.rows.3.label.en",
+    "source": "prototype",
+    "where": "app-data.md line 39, EN dictionary entry 4 (table line 50)",
+    "original": "Starting point",
+    "substitutions": []
+  },
+  {
+    "path": "cases/erlend.json#gp.briefing.rows.4.label.nb",
+    "source": "prototype",
+    "where": "app-data.md line 39, EN dictionary key 8 (table line 54)",
+    "original": "Merk",
+    "substitutions": []
+  },
+  {
+    "path": "cases/erlend.json#gp.briefing.rows.4.label.en",
+    "source": "prototype",
+    "where": "app-data.md line 39, EN dictionary entry 8 (table line 54)",
+    "original": "Note",
+    "substitutions": []
+  },
+  {
+    "path": "cases/erlend.json#gp.briefing.rows.4.value.nb",
+    "source": "prototype",
+    "where": "app-data.md line 365, CASES.erlend.gp.rows.3.1",
+    "original": "Kliniske detaljer for Erlend er utkast skrevet for prototypen og må kvalitetssikres av klinikere.",
+    "substitutions": []
+  },
+  {
+    "path": "cases/erlend.json#gp.briefing.rows.4.value.en",
+    "source": "prototype",
+    "where": "app-data.md line 39, EN dictionary entry 31 (table line 77)",
+    "original": "Clinical details for Erlend are drafts written for the prototype and must be checked by clinicians.",
+    "substitutions": []
+  },
+  {
+    "path": "cases/erlend.json#gp.briefing.time.nb",
+    "source": "prototype",
+    "where": "app-data.md line 365, CASES.erlend.gp.time",
+    "original": "Omtrent 10 minutter",
+    "substitutions": []
+  },
+  {
+    "path": "cases/erlend.json#gp.profile.0.label.nb",
+    "source": "prototype",
+    "where": "app-data.md line 189, template string (ATLAS App.dc.html line 186)",
+    "original": "Tidligere behandling",
+    "substitutions": []
+  },
+  {
+    "path": "cases/erlend.json#gp.profile.0.value.nb",
+    "source": "prototype",
+    "where": "app-data.md line 357, CASES.erlend.profilePrior",
+    "original": "Kognitiv terapi i Rask psykisk helsehjelp, 10 timer. Escitalopram fra 2025-12.",
+    "substitutions": [
+      [
+        "2025-12",
+        "desember 2025"
+      ]
+    ]
+  },
+  {
+    "path": "cases/erlend.json#gp.profile.1.label.nb",
+    "source": "prototype",
+    "where": "app-data.md line 190, template string (ATLAS App.dc.html line 187)",
+    "original": "Legemidler",
+    "substitutions": []
+  },
+  {
+    "path": "cases/erlend.json#gp.profile.2.label.nb",
+    "source": "prototype",
+    "where": "app-data.md line 191, template string (ATLAS App.dc.html line 188)",
+    "original": "Henvisninger",
+    "substitutions": []
+  },
+  {
+    "path": "cases/erlend.json#gp.note.date",
+    "source": "prototype",
+    "where": "app-data.md line 354, CASES.erlend.sent",
+    "original": "2026-03-10",
+    "substitutions": [
+      [
+        "2026-03-10",
+        "2026-03-17"
+      ]
+    ]
+  },
+  {
+    "path": "cases/erlend.json#gp.note.text.nb",
+    "source": "prototype",
+    "where": "app-data.md line 358, CASES.erlend.note",
+    "original": "Ny henvisning. Erlend har hatt angst med panikkanfall flere ganger i uken i åtte måneder. GAD-7 i dag: 17, PHQ-9: 11.\n\nKognitiv terapi hos Rask psykisk helsehjelp, ti timer, begrenset effekt. Escitalopram 10 mg siden desember, delvis effekt på panikkanfallene.\n\nSelvmordstanker avkreftet. Ingen rusmiddelbruk.",
+    "substitutions": []
+  },
+  {
+    "path": "cases/erlend.json#gp.meds.rows.0.name.nb",
+    "source": "prototype",
+    "where": "app-data.md line 363, CASES.erlend.meds.0.0",
+    "original": "Escitalopram 10 mg tablett",
+    "substitutions": []
+  },
+  {
+    "path": "cases/erlend.json#gp.meds.rows.0.dose.nb",
+    "source": "prototype",
+    "where": "app-data.md line 363, CASES.erlend.meds.0.1",
+    "original": "1 daglig",
+    "substitutions": []
+  },
+  {
+    "path": "cases/erlend.json#gp.meds.rows.0.period.nb",
+    "source": "prototype",
+    "where": "app-data.md line 363, CASES.erlend.meds.0.2",
+    "original": "2025-12–",
+    "substitutions": [
+      [
+        "–",
+        " til nå"
+      ]
+    ]
+  },
+  {
+    "path": "cases/erlend.json#gp.meds.rows.0.status.nb",
+    "source": "prototype",
+    "where": "app-data.md line 363, CASES.erlend.meds.0.3",
+    "original": "Aktiv",
+    "substitutions": []
+  },
+  {
+    "path": "cases/erlend.json#gp.meds.note.nb",
+    "source": "prototype",
+    "where": "app-data.md line 363, CASES.erlend.medNote",
+    "original": "Escitalopram siden desember, delvis effekt.",
+    "substitutions": []
+  },
+  {
+    "path": "cases/erlend.json#gp.previousReferral.sent",
+    "source": "prototype",
+    "where": "app-data.md line 364, CASES.erlend.history.3.0",
+    "original": "2025-10-28",
+    "substitutions": [
+      [
+        "2025-10-28",
+        "2025-10-29"
+      ]
+    ]
+  },
+  {
+    "path": "cases/erlend.json#gp.previousReferral.decided",
+    "source": "prototype",
+    "where": "app-data.md line 355, CASES.erlend.prior.date",
+    "original": "2025-11-12",
+    "substitutions": []
+  },
+  {
+    "path": "cases/erlend.json#gp.previousReferral.outcome.nb",
+    "source": "prototype",
+    "where": "app-data.md line 357, CASES.erlend.profileRefs.0.1",
+    "original": "Avslått",
+    "substitutions": []
+  },
+  {
+    "path": "cases/erlend.json#gp.previousReferral.outcome.en",
+    "source": "vault",
+    "where": "content.md line 404, AU:gp/1b.html:160, English of «Avslått»",
+    "original": "Rejected",
+    "substitutions": []
+  },
+  {
+    "path": "cases/erlend.json#gp.previousReferral.text.nb",
+    "source": "prototype",
+    "where": "app-data.md line 355, CASES.erlend.prior.text",
+    "original": "«Pasienten kan behandles adekvat i primærhelsetjenesten.»",
+    "substitutions": []
+  },
+  {
+    "path": "cases/erlend.json#gp.previousReferral.text.en",
+    "source": "vault",
+    "where": "content.md line 405, AU:gp/1b.html:162-164, the quoted reason in English",
+    "original": "\"The patient can be adequately treated in primary care.\"",
+    "substitutions": [
+      [
+        "\"The patient can be adequately treated in primary care.\"",
+        "“The patient can be adequately treated in primary care.”"
+      ]
+    ]
+  },
+  {
+    "path": "cases/erlend.json#gp.systemReading.summary.nb",
+    "source": "prototype",
+    "where": "app-data.md line 356, CASES.erlend.sys.s1",
+    "original": "Til høyre for midten. Liknende henvisninger er oftere tatt inn.",
+    "substitutions": []
+  },
+  {
+    "path": "cases/erlend.json#gp.systemReading.summary.en",
+    "source": "prototype",
+    "where": "app-data.md line 39, EN dictionary entry 56 (table line 102)",
+    "original": "Right of the middle. Similar referrals have more often been accepted.",
+    "substitutions": []
+  },
+  {
+    "path": "cases/erlend.json#gp.systemReading.reasoning.nb",
+    "source": "prototype",
+    "where": "app-data.md line 356, CASES.erlend.sys.s2",
+    "original": "Kilder: notat, selvrapport, legemiddelliste, tidligere henvisning. Varighet på åtte måneder og to behandlingsforsøk med begrenset effekt ligger nær kriteriene. Funksjonsfall er ikke beskrevet i notatet, bare i selvrapporten.",
+    "substitutions": [],
+    "appended": " Setningen om liknende henvisninger er også skrevet for saken. Det finnes ingen ekte tall bak den."
+  },
+  {
+    "path": "cases/erlend.json#gp.systemReading.reasoning.en",
+    "source": "prototype",
+    "where": "app-data.md line 39, EN dictionary entry 57 (table line 103)",
+    "original": "Sources: note, self-report, medication list, previous referral. Eight months’ duration and two treatment attempts with limited effect lie close to the criteria. Functional decline is described only in the self-report, not in the note.",
+    "substitutions": [],
+    "appended": " The sentence about similar referrals is also written for the case. There are no real figures behind it."
+  },
+  {
+    "path": "cases/erlend.json#gp.referralDraft.aktuelt.text.nb",
+    "source": "prototype",
+    "where": "app-data.md line 361, CASES.erlend.form.aktuelt",
+    "original": "Angst med panikkanfall flere ganger i uken i åtte måneder. GAD-7: 17, PHQ-9: 11.",
+    "substitutions": []
+  },
+  {
+    "path": "cases/erlend.json#gp.referralDraft.tidligere.text.nb",
+    "source": "prototype",
+    "where": "app-data.md line 361, CASES.erlend.form.prior",
+    "original": "Kognitiv terapi i Rask psykisk helsehjelp, ti timer, begrenset effekt. Escitalopram 10 mg siden desember, delvis effekt.",
+    "substitutions": []
+  },
+  {
+    "path": "cases/erlend.json#gp.referralDraft.risiko.text.nb",
+    "source": "prototype",
+    "where": "app-data.md line 361, CASES.erlend.form.risk",
+    "original": "Selvmordstanker avkreftet. Ingen rusmiddelbruk.",
+    "substitutions": []
+  },
+  {
+    "path": "cases/erlend.json#gp.caseOnlyLetter.date",
+    "source": "prototype",
+    "where": "app-data.md line 355, CASES.erlend.prior.date",
+    "original": "2025-11-12",
+    "substitutions": []
+  },
+  {
+    "path": "cases/erlend.json#gp.caseOnlyLetter.body.nb",
+    "source": "prototype",
+    "where": "app-data.md line 355, CASES.erlend.prior.text (inside the guillemets)",
+    "original": "Pasienten kan behandles adekvat i primærhelsetjenesten.",
+    "substitutions": []
+  },
+  {
+    "path": "cases/erlend.json#gp.caseOnlyLetter.body.en",
+    "source": "vault",
+    "where": "content.md line 405, AU:gp/1b.html:162-164, inside the quotation marks",
+    "original": "The patient can be adequately treated in primary care.",
+    "substitutions": []
+  },
+  {
+    "path": "cases/erlend.json#dps.queue.received",
+    "source": "prototype",
+    "where": "app-data.md line 354, CASES.erlend.sent",
+    "original": "2026-03-10",
+    "substitutions": [
+      [
+        "2026-03-10",
+        "2026-03-17"
+      ]
+    ]
+  },
+  {
+    "path": "cases/erlend.json#dps.queue.deadline",
+    "source": "prototype",
+    "where": "app-data.md line 354, CASES.erlend.deadline",
+    "original": "2026-03-24",
+    "substitutions": [
+      [
+        "2026-03-24",
+        "2026-03-31"
+      ]
+    ]
+  },
+  {
+    "path": "cases/erlend.json#dps.queue.chips.0.label.nb",
+    "source": "prototype",
+    "where": "app-data.md line 590, queueRows sub",
+    "original": "Ny henvisning etter avslag",
+    "substitutions": []
+  },
+  {
+    "path": "cases/erlend.json#dps.briefing.rows.0.label.nb",
+    "source": "prototype",
+    "where": "app-data.md line 39, EN dictionary key 5 (table line 51)",
+    "original": "Hva du får",
+    "substitutions": []
+  },
+  {
+    "path": "cases/erlend.json#dps.briefing.rows.0.label.en",
+    "source": "prototype",
+    "where": "app-data.md line 39, EN dictionary entry 5 (table line 51)",
+    "original": "What you get",
+    "substitutions": []
+  },
+  {
+    "path": "cases/erlend.json#dps.briefing.rows.1.label.nb",
+    "source": "prototype",
+    "where": "app-data.md line 39, EN dictionary key 6 (table line 52)",
+    "original": "Hva du ikke får",
+    "substitutions": []
+  },
+  {
+    "path": "cases/erlend.json#dps.briefing.rows.1.label.en",
+    "source": "prototype",
+    "where": "app-data.md line 39, EN dictionary entry 6 (table line 52)",
+    "original": "What you don’t get",
+    "substitutions": []
+  },
+  {
+    "path": "cases/erlend.json#dps.briefing.rows.1.value.nb",
+    "source": "prototype",
+    "where": "app-data.md line 375, CASES.astrid.dps.rows.1.1",
+    "original": "Fastlegens navn eller andre henvisninger fra samme lege.",
+    "substitutions": []
+  },
+  {
+    "path": "cases/erlend.json#dps.briefing.rows.1.value.en",
+    "source": "prototype",
+    "where": "app-data.md line 39, EN dictionary entry 39 (table line 85)",
+    "original": "The GP’s name or other referrals from the same doctor.",
+    "substitutions": []
+  },
+  {
+    "path": "cases/erlend.json#dps.briefing.rows.2.label.nb",
+    "source": "prototype",
+    "where": "app-data.md line 39, EN dictionary key 7 (table line 53)",
+    "original": "Frist",
+    "substitutions": []
+  },
+  {
+    "path": "cases/erlend.json#dps.briefing.rows.2.label.en",
+    "source": "prototype",
+    "where": "app-data.md line 39, EN dictionary entry 7 (table line 53)",
+    "original": "Deadline",
+    "substitutions": []
+  },
+  {
+    "path": "cases/erlend.json#dps.briefing.rows.2.value.nb",
+    "source": "prototype",
+    "where": "app-data.md line 353, CASES.kari.dps.rows.3.1",
+    "original": "Vurderingsfristen er ti virkedager etter mottak: 2026-03-24.",
+    "substitutions": [
+      [
+        "2026-03-24",
+        "2026-03-31"
+      ],
+      [
+        "2026-03-31",
+        "31. mars 2026"
+      ]
+    ]
+  },
+  {
+    "path": "cases/erlend.json#dps.briefing.rows.2.value.en",
+    "source": "prototype",
+    "where": "app-data.md line 39, EN dictionary entry 27 (table line 73)",
+    "original": "The legal assessment deadline is ten working days after receipt: 2026-03-24.",
+    "substitutions": [
+      [
+        "2026-03-24",
+        "2026-03-31"
+      ],
+      [
+        "2026-03-31",
+        "31 March 2026"
+      ]
+    ]
+  },
+  {
+    "path": "cases/erlend.json#dps.briefing.rows.3.label.nb",
+    "source": "prototype",
+    "where": "app-data.md line 39, EN dictionary key 8 (table line 54)",
+    "original": "Merk",
+    "substitutions": []
+  },
+  {
+    "path": "cases/erlend.json#dps.briefing.rows.3.label.en",
+    "source": "prototype",
+    "where": "app-data.md line 39, EN dictionary entry 8 (table line 54)",
+    "original": "Note",
+    "substitutions": []
+  },
+  {
+    "path": "cases/erlend.json#dps.briefing.rows.3.value.nb",
+    "source": "prototype",
+    "where": "app-data.md line 39, EN dictionary key 31 (table line 77)",
+    "original": "Kliniske detaljer for Erlend er utkast skrevet for prototypen og må kvalitetssikres av klinikere.",
+    "substitutions": []
+  },
+  {
+    "path": "cases/erlend.json#dps.briefing.rows.3.value.en",
+    "source": "prototype",
+    "where": "app-data.md line 39, EN dictionary entry 31 (table line 77)",
+    "original": "Clinical details for Erlend are drafts written for the prototype and must be checked by clinicians.",
+    "substitutions": []
+  },
+  {
+    "path": "cases/erlend.json#dps.briefing.time.nb",
+    "source": "prototype",
+    "where": "app-data.md line 366, CASES.erlend.dps.time",
+    "original": "Omtrent 8 minutter",
+    "substitutions": []
+  },
+  {
+    "path": "cases/erlend.json#dps.referral.sent",
+    "source": "prototype",
+    "where": "app-data.md line 354, CASES.erlend.sent",
+    "original": "2026-03-10",
+    "substitutions": [
+      [
+        "2026-03-10",
+        "2026-03-17"
+      ]
+    ]
+  },
+  {
+    "path": "cases/erlend.json#dps.referral.received",
+    "source": "prototype",
+    "where": "app-data.md line 354, CASES.erlend.sent",
+    "original": "2026-03-10",
+    "substitutions": [
+      [
+        "2026-03-10",
+        "2026-03-17"
+      ]
+    ]
+  },
+  {
+    "path": "cases/erlend.json#dps.referral.deadline",
+    "source": "prototype",
+    "where": "app-data.md line 354, CASES.erlend.deadline",
+    "original": "2026-03-24",
+    "substitutions": [
+      [
+        "2026-03-24",
+        "2026-03-31"
+      ]
+    ]
+  },
+  {
+    "path": "cases/erlend.json#dps.referral.sections.aktuelt.nb",
+    "source": "prototype",
+    "where": "app-data.md line 361, CASES.erlend.form.aktuelt",
+    "original": "Angst med panikkanfall flere ganger i uken i åtte måneder. GAD-7: 17, PHQ-9: 11.",
+    "substitutions": []
+  },
+  {
+    "path": "cases/erlend.json#dps.referral.sections.tidligere.nb",
+    "source": "prototype",
+    "where": "app-data.md line 361, CASES.erlend.form.prior",
+    "original": "Kognitiv terapi i Rask psykisk helsehjelp, ti timer, begrenset effekt. Escitalopram 10 mg siden desember, delvis effekt.",
+    "substitutions": []
+  },
+  {
+    "path": "cases/erlend.json#dps.referral.sections.risiko.nb",
+    "source": "prototype",
+    "where": "app-data.md line 361, CASES.erlend.form.risk",
+    "original": "Selvmordstanker avkreftet. Ingen rusmiddelbruk.",
+    "substitutions": []
+  },
+  {
+    "path": "cases/erlend.json#dps.referral.noteAttachment.nb",
+    "source": "prototype",
+    "where": "app-data.md line 358, CASES.erlend.note",
+    "original": "Ny henvisning. Erlend har hatt angst med panikkanfall flere ganger i uken i åtte måneder. GAD-7 i dag: 17, PHQ-9: 11.\n\nKognitiv terapi hos Rask psykisk helsehjelp, ti timer, begrenset effekt. Escitalopram 10 mg siden desember, delvis effekt på panikkanfallene.\n\nSelvmordstanker avkreftet. Ingen rusmiddelbruk.",
+    "substitutions": []
+  },
+  {
+    "path": "cases/erlend.json#dps.gpUncertainty.description.nb",
+    "source": "prototype",
+    "where": "app-data.md line 359, CASES.erlend.unc",
+    "original": "Usikker på om DPS vil vurdere dette annerledes enn i november. Effekten av terapi og escitalopram er begrenset, men ikke fraværende. Vet ikke hva som manglet i forrige henvisning.",
+    "substitutions": []
+  },
+  {
+    "path": "cases/erlend.json#dps.previousReferral.sent",
+    "source": "prototype",
+    "where": "app-data.md line 364, CASES.erlend.history.3.0",
+    "original": "2025-10-28",
+    "substitutions": [
+      [
+        "2025-10-28",
+        "2025-10-29"
+      ]
+    ]
+  },
+  {
+    "path": "cases/erlend.json#dps.previousReferral.decided",
+    "source": "prototype",
+    "where": "app-data.md line 355, CASES.erlend.prior.date",
+    "original": "2025-11-12",
+    "substitutions": []
+  },
+  {
+    "path": "cases/erlend.json#dps.previousReferral.outcome.nb",
+    "source": "prototype",
+    "where": "app-data.md line 357, CASES.erlend.profileRefs.0.1",
+    "original": "Avslått",
+    "substitutions": []
+  },
+  {
+    "path": "cases/erlend.json#dps.previousReferral.outcome.en",
+    "source": "vault",
+    "where": "content.md line 404, AU:gp/1b.html:160, English of «Avslått»",
+    "original": "Rejected",
+    "substitutions": []
+  },
+  {
+    "path": "cases/erlend.json#dps.previousReferral.text.nb",
+    "source": "prototype",
+    "where": "app-data.md line 355, CASES.erlend.prior.text",
+    "original": "«Pasienten kan behandles adekvat i primærhelsetjenesten.»",
+    "substitutions": []
+  },
+  {
+    "path": "cases/erlend.json#dps.previousReferral.text.en",
+    "source": "vault",
+    "where": "content.md line 405, AU:gp/1b.html:162-164, the quoted reason in English",
+    "original": "\"The patient can be adequately treated in primary care.\"",
+    "substitutions": [
+      [
+        "\"The patient can be adequately treated in primary care.\"",
+        "“The patient can be adequately treated in primary care.”"
+      ]
+    ]
+  },
+  {
+    "path": "cases/erlend.json#dps.systemReading.summary.nb",
+    "source": "prototype",
+    "where": "app-data.md line 356, CASES.erlend.sys.s1",
+    "original": "Til høyre for midten. Liknende henvisninger er oftere tatt inn.",
+    "substitutions": []
+  },
+  {
+    "path": "cases/erlend.json#dps.systemReading.summary.en",
+    "source": "prototype",
+    "where": "app-data.md line 39, EN dictionary entry 56 (table line 102)",
+    "original": "Right of the middle. Similar referrals have more often been accepted.",
+    "substitutions": []
+  },
+  {
+    "path": "cases/erlend.json#debrief.dps.title.nb",
+    "source": "prototype",
+    "where": "app-data.md line 39, EN dictionary key 50 (table line 96)",
+    "original": "Tre plasseringer av samme sak",
+    "substitutions": []
+  },
+  {
+    "path": "cases/erlend.json#debrief.dps.title.en",
+    "source": "prototype",
+    "where": "app-data.md line 39, EN dictionary entry 50 (table line 96)",
+    "original": "Three placements of the same case",
+    "substitutions": []
+  },
+  {
+    "path": "cases/erlend.json#draftFlag.nb",
+    "source": "prototype",
+    "where": "app-data.md line 39, EN dictionary key 31 (table line 77)",
+    "original": "Kliniske detaljer for Erlend er utkast skrevet for prototypen og må kvalitetssikres av klinikere.",
+    "substitutions": []
+  },
+  {
+    "path": "cases/erlend.json#draftFlag.en",
+    "source": "prototype",
+    "where": "app-data.md line 39, EN dictionary entry 31 (table line 77)",
+    "original": "Clinical details for Erlend are drafts written for the prototype and must be checked by clinicians.",
+    "substitutions": []
+  },
+  {
+    "path": "cases/astrid.json#gp.selfReport.rows.0.q.nb",
+    "source": "prototype",
+    "where": "app-data.md line 349, CASES.kari.self.0.0",
+    "original": "PHQ-9, sum",
+    "substitutions": []
+  },
+  {
+    "path": "cases/astrid.json#gp.selfReport.rows.1.q.nb",
+    "source": "prototype",
+    "where": "app-data.md line 349, CASES.kari.self.1.0",
+    "original": "Hvor lenge har du hatt det slik?",
+    "substitutions": []
+  },
+  {
+    "path": "cases/astrid.json#gp.selfReport.rows.2.q.nb",
+    "source": "prototype",
+    "where": "app-data.md line 349, CASES.kari.self.2.0",
+    "original": "Klarer du arbeidet som før?",
+    "substitutions": []
+  },
+  {
+    "path": "cases/astrid.json#gp.selfReport.rows.3.q.nb",
+    "source": "prototype",
+    "where": "app-data.md line 349, CASES.kari.self.3.0",
+    "original": "Har du hatt tanker om å skade deg selv?",
+    "substitutions": []
+  },
+  {
+    "path": "cases/astrid.json#gp.selfReport.rows.3.a.nb",
+    "source": "prototype",
+    "where": "app-data.md line 349, CASES.kari.self.3.1",
+    "original": "Nei",
+    "substitutions": []
+  },
+  {
+    "path": "cases/astrid.json#gp.selfReport.rows.4.q.nb",
+    "source": "prototype",
+    "where": "app-data.md line 349, CASES.kari.self.4.0",
+    "original": "Hva ønsker du hjelp til?",
+    "substitutions": []
+  },
+  {
+    "path": "cases/astrid.json#gp.timeliste.visit.nb",
+    "source": "prototype",
+    "where": "app-data.md line 367, CASES.astrid.visit",
+    "original": "Telefon",
+    "substitutions": []
+  },
+  {
+    "path": "cases/astrid.json#gp.timeliste.chips.0.label.nb",
+    "source": "prototype",
+    "where": "app-data.md line 429, gpChips",
+    "original": "Svar fra DPS",
+    "substitutions": []
+  },
+  {
+    "path": "cases/astrid.json#gp.briefing.rows.0.label.nb",
+    "source": "prototype",
+    "where": "app-data.md line 39, EN dictionary key 1 (table line 47)",
+    "original": "Hvem",
+    "substitutions": []
+  },
+  {
+    "path": "cases/astrid.json#gp.briefing.rows.0.label.en",
+    "source": "prototype",
+    "where": "app-data.md line 39, EN dictionary entry 1 (table line 47)",
+    "original": "Who",
+    "substitutions": []
+  },
+  {
+    "path": "cases/astrid.json#gp.briefing.rows.0.value.nb",
+    "source": "prototype",
+    "where": "app-data.md line 374, CASES.astrid.gp.rows.0.1",
+    "original": "Astrid Holm, 28 år. Henvist etter samlivsbrudd og tre uker med funksjonsfall.",
+    "substitutions": []
+  },
+  {
+    "path": "cases/astrid.json#gp.briefing.rows.0.value.en",
+    "source": "prototype",
+    "where": "app-data.md line 39, EN dictionary entry 34 (table line 80)",
+    "original": "Astrid Holm, 28. Referred after a breakup and three weeks of functional decline.",
+    "substitutions": []
+  },
+  {
+    "path": "cases/astrid.json#gp.briefing.rows.1.label.nb",
+    "source": "prototype",
+    "where": "app-data.md line 39, EN dictionary key 2 (table line 48)",
+    "original": "Situasjonen",
+    "substitutions": []
+  },
+  {
+    "path": "cases/astrid.json#gp.briefing.rows.1.label.en",
+    "source": "prototype",
+    "where": "app-data.md line 39, EN dictionary entry 2 (table line 48)",
+    "original": "Situation",
+    "substitutions": []
+  },
+  {
+    "path": "cases/astrid.json#gp.briefing.rows.2.label.nb",
+    "source": "prototype",
+    "where": "app-data.md line 39, EN dictionary key 3 (table line 49)",
+    "original": "Hvorfor denne saken",
+    "substitutions": []
+  },
+  {
+    "path": "cases/astrid.json#gp.briefing.rows.2.label.en",
+    "source": "prototype",
+    "where": "app-data.md line 39, EN dictionary entry 3 (table line 49)",
+    "original": "Why this case",
+    "substitutions": []
+  },
+  {
+    "path": "cases/astrid.json#gp.briefing.rows.3.label.nb",
+    "source": "prototype",
+    "where": "app-data.md line 39, EN dictionary key 4 (table line 50)",
+    "original": "Utgangspunkt",
+    "substitutions": []
+  },
+  {
+    "path": "cases/astrid.json#gp.briefing.rows.3.label.en",
+    "source": "prototype",
+    "where": "app-data.md line 39, EN dictionary entry 4 (table line 50)",
+    "original": "Starting point",
+    "substitutions": []
+  },
+  {
+    "path": "cases/astrid.json#gp.briefing.rows.3.value.nb",
+    "source": "prototype",
+    "where": "app-data.md line 374, CASES.astrid.gp.rows.3.1",
+    "original": "Vignetten starter etter at svaret fra DPS er mottatt.",
+    "substitutions": [
+      [
+        "Vignetten",
+        "Saken"
+      ]
+    ]
+  },
+  {
+    "path": "cases/astrid.json#gp.briefing.rows.3.value.en",
+    "source": "prototype",
+    "where": "app-data.md line 39, EN dictionary entry 37 (table line 83)",
+    "original": "The vignette starts after the reply from DPS has arrived.",
+    "substitutions": [
+      [
+        "vignette",
+        "case"
+      ]
+    ]
+  },
+  {
+    "path": "cases/astrid.json#gp.briefing.time.nb",
+    "source": "prototype",
+    "where": "app-data.md line 374, CASES.astrid.gp.time",
+    "original": "Omtrent 8 minutter",
+    "substitutions": []
+  },
+  {
+    "path": "cases/astrid.json#gp.profile.0.label.nb",
+    "source": "prototype",
+    "where": "app-data.md line 189, template string (ATLAS App.dc.html line 186)",
+    "original": "Tidligere behandling",
+    "substitutions": []
+  },
+  {
+    "path": "cases/astrid.json#gp.profile.0.value.nb",
+    "source": "prototype",
+    "where": "app-data.md line 368, CASES.astrid.profilePrior",
+    "original": "Ingen behandling i spesialisthelsetjenesten.",
+    "substitutions": []
+  },
+  {
+    "path": "cases/astrid.json#gp.profile.1.label.nb",
+    "source": "prototype",
+    "where": "app-data.md line 190, template string (ATLAS App.dc.html line 187)",
+    "original": "Legemidler",
+    "substitutions": []
+  },
+  {
+    "path": "cases/astrid.json#gp.profile.2.label.nb",
+    "source": "prototype",
+    "where": "app-data.md line 191, template string (ATLAS App.dc.html line 188)",
+    "original": "Henvisninger",
+    "substitutions": []
+  },
+  {
+    "path": "cases/astrid.json#gp.firstReferral.sent",
+    "source": "prototype",
+    "where": "app-data.md line 367, CASES.astrid.sent",
+    "original": "2026-03-01",
+    "substitutions": [
+      [
+        "2026-03-01",
+        "2026-03-02"
+      ]
+    ]
+  },
+  {
+    "path": "cases/astrid.json#gp.dpsScript.return.unmet.0.criterion.nb",
+    "source": "prototype",
+    "where": "app-data.md line 371, CASES.astrid.unmet.0.0",
+    "original": "Funksjonsnivå",
+    "substitutions": []
+  },
+  {
+    "path": "cases/astrid.json#gp.dpsScript.return.unmet.0.text.nb",
+    "source": "prototype",
+    "where": "app-data.md line 371, CASES.astrid.unmet.0.1",
+    "original": "Funksjonsfall til stede, men av kort varighet (3 uker).",
+    "substitutions": []
+  },
+  {
+    "path": "cases/astrid.json#gp.dpsScript.return.unmet.1.criterion.nb",
+    "source": "prototype",
+    "where": "app-data.md line 371, CASES.astrid.unmet.1.0",
+    "original": "Varighet",
+    "substitutions": []
+  },
+  {
+    "path": "cases/astrid.json#gp.dpsScript.return.unmet.1.text.nb",
+    "source": "prototype",
+    "where": "app-data.md line 371, CASES.astrid.unmet.1.1",
+    "original": "For kort til å skille mellom tilpasningsreaksjon og vedvarende lidelse.",
+    "substitutions": []
+  },
+  {
+    "path": "cases/astrid.json#gp.dpsScript.return.unmet.2.criterion.nb",
+    "source": "prototype",
+    "where": "app-data.md line 371, CASES.astrid.unmet.2.0",
+    "original": "Behandlingsnytte",
+    "substitutions": []
+  },
+  {
+    "path": "cases/astrid.json#gp.dpsScript.return.unmet.2.text.nb",
+    "source": "prototype",
+    "where": "app-data.md line 371, CASES.astrid.unmet.2.1",
+    "original": "Kommunalt kriseoppfølgingstilbud er ikke forsøkt.",
+    "substitutions": []
+  },
+  {
+    "path": "cases/astrid.json#gp.dpsScript.return.date",
+    "source": "prototype",
+    "where": "app-data.md line 445, thread entry for the return",
+    "original": "2026-03-15",
+    "substitutions": [
+      [
+        "2026-03-15",
+        "2026-03-16"
+      ]
+    ]
+  },
+  {
+    "path": "cases/astrid.json#gp.dpsScript.return.advice.nb",
+    "source": "prototype",
+    "where": "app-data.md line 370, CASES.astrid.returnText (second paragraph)",
+    "original": "Forslag til oppfølging: kommunal psykolog med strukturert kriseoppfølging. Ny henvisning dersom funksjonen ikke bedres innen tre måneder, eller straks hvis risikofaktorer øker.",
+    "substitutions": []
+  },
+  {
+    "path": "cases/astrid.json#gp.dpsScript.answer.text.nb",
+    "source": "prototype",
+    "where": "app-data.md line 373, CASES.astrid.dpsA",
+    "original": "Godt spørsmål. Det kroniske mønsteret er relevant og ville styrket henvisningen. For denne typen presentasjoner er det nyttig å skille mellom aktuell krise (situasjonell, kort varighet) og underliggende mønster (gjentakende interpersonlige kriser). Med konkrete eksempler over tid kunne vurderingen blitt en annen. En tidslinje over tidligere kriser er nyttig i en eventuell ny henvisning.",
+    "substitutions": []
+  },
+  {
+    "path": "cases/astrid.json#dps.queue.received",
+    "source": "prototype",
+    "where": "app-data.md line 367, CASES.astrid.sent",
+    "original": "2026-03-01",
+    "substitutions": [
+      [
+        "2026-03-01",
+        "2026-03-02"
+      ]
+    ]
+  },
+  {
+    "path": "cases/astrid.json#dps.queue.chips.0.label.nb",
+    "source": "prototype",
+    "where": "app-data.md line 590, queueRows status",
+    "original": "Ny melding",
+    "substitutions": []
+  },
+  {
+    "path": "cases/astrid.json#dps.briefing.rows.0.label.nb",
+    "source": "prototype",
+    "where": "app-data.md line 39, EN dictionary key 5 (table line 51)",
+    "original": "Hva du får",
+    "substitutions": []
+  },
+  {
+    "path": "cases/astrid.json#dps.briefing.rows.0.label.en",
+    "source": "prototype",
+    "where": "app-data.md line 39, EN dictionary entry 5 (table line 51)",
+    "original": "What you get",
+    "substitutions": []
+  },
+  {
+    "path": "cases/astrid.json#dps.briefing.rows.1.label.nb",
+    "source": "prototype",
+    "where": "app-data.md line 39, EN dictionary key 6 (table line 52)",
+    "original": "Hva du ikke får",
+    "substitutions": []
+  },
+  {
+    "path": "cases/astrid.json#dps.briefing.rows.1.label.en",
+    "source": "prototype",
+    "where": "app-data.md line 39, EN dictionary entry 6 (table line 52)",
+    "original": "What you don’t get",
+    "substitutions": []
+  },
+  {
+    "path": "cases/astrid.json#dps.briefing.rows.1.value.nb",
+    "source": "prototype",
+    "where": "app-data.md line 375, CASES.astrid.dps.rows.1.1",
+    "original": "Fastlegens navn eller andre henvisninger fra samme lege.",
+    "substitutions": []
+  },
+  {
+    "path": "cases/astrid.json#dps.briefing.rows.1.value.en",
+    "source": "prototype",
+    "where": "app-data.md line 39, EN dictionary entry 39 (table line 85)",
+    "original": "The GP’s name or other referrals from the same doctor.",
+    "substitutions": []
+  },
+  {
+    "path": "cases/astrid.json#dps.briefing.rows.2.label.nb",
+    "source": "prototype",
+    "where": "app-data.md line 39, EN dictionary key 9 (table line 55)",
+    "original": "Svartid",
+    "substitutions": []
+  },
+  {
+    "path": "cases/astrid.json#dps.briefing.rows.2.label.en",
+    "source": "prototype",
+    "where": "app-data.md line 39, EN dictionary entry 9 (table line 55)",
+    "original": "Response time",
+    "substitutions": []
+  },
+  {
+    "path": "cases/astrid.json#dps.briefing.rows.2.value.nb",
+    "source": "prototype",
+    "where": "app-data.md line 375, CASES.astrid.dps.rows.2.1",
+    "original": "Svar forventes innen 5–10 virkedager. Alle meldinger lagres i henvisningshistorikken.",
+    "substitutions": [
+      [
+        "–",
+        " til "
+      ]
+    ]
+  },
+  {
+    "path": "cases/astrid.json#dps.briefing.rows.2.value.en",
+    "source": "prototype",
+    "where": "app-data.md line 39, EN dictionary entry 40 (table line 86)",
+    "original": "A reply is expected within 5–10 working days. All messages are stored in the referral history.",
+    "substitutions": [
+      [
+        "–",
+        " to "
+      ]
+    ]
+  },
+  {
+    "path": "cases/astrid.json#dps.briefing.time.nb",
+    "source": "prototype",
+    "where": "app-data.md line 375, CASES.astrid.dps.time",
+    "original": "Omtrent 5 minutter",
+    "substitutions": []
+  },
+  {
+    "path": "cases/astrid.json#dps.referral.sent",
+    "source": "prototype",
+    "where": "app-data.md line 367, CASES.astrid.sent",
+    "original": "2026-03-01",
+    "substitutions": [
+      [
+        "2026-03-01",
+        "2026-03-02"
+      ]
+    ]
+  },
+  {
+    "path": "cases/astrid.json#dps.referral.received",
+    "source": "prototype",
+    "where": "app-data.md line 367, CASES.astrid.sent",
+    "original": "2026-03-01",
+    "substitutions": [
+      [
+        "2026-03-01",
+        "2026-03-02"
+      ]
+    ]
+  },
+  {
+    "path": "cases/astrid.json#dps.gpScript.question.date",
+    "source": "prototype",
+    "where": "app-data.md line 446, the GP question's time",
+    "original": "2026-03-17",
+    "substitutions": []
+  },
+  {
+    "path": "cases/astrid.json#dps.gpScript.question.text.nb",
+    "source": "prototype",
+    "where": "app-data.md line 372, CASES.astrid.gpQ",
+    "original": "Takk for tilbakemeldingen. Jeg forstår vurderingen om at funksjonsnedgangen er av kort varighet. Mitt spørsmål: pasienten har et mønster med gjentakende interpersonlige kriser over flere år, selv om det nåværende funksjonsfallet er nylig. Bør dette kroniske mønsteret ha vært dokumentert annerledes i henvisningen for at det skulle vektes i vurderingen?",
+    "substitutions": []
+  },
+  {
+    "path": "cases/astrid.json#dps.gpScript.question.text.en",
+    "source": "vault",
+    "where": "content.md line 557, AU:shared/3b.html:53-55, English",
+    "original": "Thank you for the feedback. I understand the assessment that the functional decline is of short duration. My question: the patient has a pattern of recurring interpersonal crises over several years, even though the current functional decline is recent. Should this chronic pattern have been documented differently in the referral for it to be weighted in the assessment?",
+    "substitutions": []
+  },
+  {
+    "path": "cases/astrid.json#dps.returnSent.unmet.0.criterion.nb",
+    "source": "prototype",
+    "where": "app-data.md line 371, CASES.astrid.unmet.0.0",
+    "original": "Funksjonsnivå",
+    "substitutions": []
+  },
+  {
+    "path": "cases/astrid.json#dps.returnSent.unmet.0.text.nb",
+    "source": "prototype",
+    "where": "app-data.md line 371, CASES.astrid.unmet.0.1",
+    "original": "Funksjonsfall til stede, men av kort varighet (3 uker).",
+    "substitutions": []
+  },
+  {
+    "path": "cases/astrid.json#dps.returnSent.unmet.1.criterion.nb",
+    "source": "prototype",
+    "where": "app-data.md line 371, CASES.astrid.unmet.1.0",
+    "original": "Varighet",
+    "substitutions": []
+  },
+  {
+    "path": "cases/astrid.json#dps.returnSent.unmet.1.text.nb",
+    "source": "prototype",
+    "where": "app-data.md line 371, CASES.astrid.unmet.1.1",
+    "original": "For kort til å skille mellom tilpasningsreaksjon og vedvarende lidelse.",
+    "substitutions": []
+  },
+  {
+    "path": "cases/astrid.json#dps.returnSent.unmet.2.criterion.nb",
+    "source": "prototype",
+    "where": "app-data.md line 371, CASES.astrid.unmet.2.0",
+    "original": "Behandlingsnytte",
+    "substitutions": []
+  },
+  {
+    "path": "cases/astrid.json#dps.returnSent.unmet.2.text.nb",
+    "source": "prototype",
+    "where": "app-data.md line 371, CASES.astrid.unmet.2.1",
+    "original": "Kommunalt kriseoppfølgingstilbud er ikke forsøkt.",
+    "substitutions": []
+  },
+  {
+    "path": "cases/astrid.json#dps.returnSent.date",
+    "source": "prototype",
+    "where": "app-data.md line 445, thread entry for the return",
+    "original": "2026-03-15",
+    "substitutions": [
+      [
+        "2026-03-15",
+        "2026-03-16"
+      ]
+    ]
+  },
+  {
+    "path": "cases/astrid.json#dps.returnSent.advice.nb",
+    "source": "prototype",
+    "where": "app-data.md line 370, CASES.astrid.returnText (second paragraph)",
+    "original": "Forslag til oppfølging: kommunal psykolog med strukturert kriseoppfølging. Ny henvisning dersom funksjonen ikke bedres innen tre måneder, eller straks hvis risikofaktorer øker.",
+    "substitutions": []
+  },
+  {
+    "path": "cases/astrid.json#debrief.gp.title.nb",
+    "source": "prototype",
+    "where": "app-data.md line 39, EN dictionary key 51 (table line 97)",
+    "original": "Fra retur til plan",
+    "substitutions": []
+  },
+  {
+    "path": "cases/astrid.json#debrief.gp.title.en",
+    "source": "prototype",
+    "where": "app-data.md line 39, EN dictionary entry 51 (table line 97)",
+    "original": "From return to plan",
+    "substitutions": []
+  },
+  {
+    "path": "cases/astrid.json#patient.fnr",
+    "source": "prototype",
+    "where": "app-data.md line 367, CASES.astrid.fnr",
+    "original": "250897 ·····",
+    "substitutions": []
+  },
+  {
+    "path": "cases/torbjorn.json#gp.briefing.rows.0.label.nb",
+    "source": "prototype",
+    "where": "app-data.md line 39, EN dictionary key 1 (table line 47)",
+    "original": "Hvem",
+    "substitutions": []
+  },
+  {
+    "path": "cases/torbjorn.json#gp.briefing.rows.0.label.en",
+    "source": "prototype",
+    "where": "app-data.md line 39, EN dictionary entry 1 (table line 47)",
+    "original": "Who",
+    "substitutions": []
+  },
+  {
+    "path": "cases/torbjorn.json#gp.briefing.rows.1.label.nb",
+    "source": "prototype",
+    "where": "app-data.md line 39, EN dictionary key 2 (table line 48)",
+    "original": "Situasjonen",
+    "substitutions": []
+  },
+  {
+    "path": "cases/torbjorn.json#gp.briefing.rows.1.label.en",
+    "source": "prototype",
+    "where": "app-data.md line 39, EN dictionary entry 2 (table line 48)",
+    "original": "Situation",
+    "substitutions": []
+  },
+  {
+    "path": "cases/torbjorn.json#gp.briefing.rows.2.label.nb",
+    "source": "prototype",
+    "where": "app-data.md line 39, EN dictionary key 3 (table line 49)",
+    "original": "Hvorfor denne saken",
+    "substitutions": []
+  },
+  {
+    "path": "cases/torbjorn.json#gp.briefing.rows.2.label.en",
+    "source": "prototype",
+    "where": "app-data.md line 39, EN dictionary entry 3 (table line 49)",
+    "original": "Why this case",
+    "substitutions": []
+  },
+  {
+    "path": "cases/torbjorn.json#gp.briefing.rows.3.label.nb",
+    "source": "prototype",
+    "where": "app-data.md line 39, EN dictionary key 4 (table line 50)",
+    "original": "Utgangspunkt",
+    "substitutions": []
+  },
+  {
+    "path": "cases/torbjorn.json#gp.briefing.rows.3.label.en",
+    "source": "prototype",
+    "where": "app-data.md line 39, EN dictionary entry 4 (table line 50)",
+    "original": "Starting point",
+    "substitutions": []
+  },
+  {
+    "path": "cases/torbjorn.json#gp.profile.0.label.nb",
+    "source": "prototype",
+    "where": "app-data.md line 189, template string (ATLAS App.dc.html line 186)",
+    "original": "Tidligere behandling",
+    "substitutions": []
+  },
+  {
+    "path": "cases/torbjorn.json#gp.profile.1.label.nb",
+    "source": "prototype",
+    "where": "app-data.md line 190, template string (ATLAS App.dc.html line 187)",
+    "original": "Legemidler",
+    "substitutions": []
+  },
+  {
+    "path": "cases/torbjorn.json#gp.profile.2.label.nb",
+    "source": "prototype",
+    "where": "app-data.md line 191, template string (ATLAS App.dc.html line 188)",
+    "original": "Henvisninger",
+    "substitutions": []
+  },
+  {
+    "path": "cases/torbjorn.json#gp.profile.2.value.nb",
+    "source": "prototype",
+    "where": "app-data.md line 192, template string (ATLAS App.dc.html line 188)",
+    "original": "Ingen tidligere",
+    "substitutions": []
+  },
+  {
+    "path": "cases/sofie.json#gp.selfReport.rows.0.q.nb",
+    "source": "prototype",
+    "where": "app-data.md line 349, CASES.kari.self.0.0",
+    "original": "PHQ-9, sum",
+    "substitutions": []
+  },
+  {
+    "path": "cases/sofie.json#gp.selfReport.rows.1.q.nb",
+    "source": "prototype",
+    "where": "app-data.md line 362, CASES.erlend.self.0.0",
+    "original": "GAD-7, sum",
+    "substitutions": []
+  },
+  {
+    "path": "cases/sofie.json#gp.selfReport.rows.2.q.nb",
+    "source": "prototype",
+    "where": "app-data.md line 349, CASES.kari.self.1.0",
+    "original": "Hvor lenge har du hatt det slik?",
+    "substitutions": []
+  },
+  {
+    "path": "cases/sofie.json#gp.selfReport.rows.3.q.nb",
+    "source": "prototype",
+    "where": "app-data.md line 349, CASES.kari.self.2.0",
+    "original": "Klarer du arbeidet som før?",
+    "substitutions": []
+  },
+  {
+    "path": "cases/sofie.json#gp.selfReport.rows.4.q.nb",
+    "source": "prototype",
+    "where": "app-data.md line 349, CASES.kari.self.3.0",
+    "original": "Har du hatt tanker om å skade deg selv?",
+    "substitutions": []
+  },
+  {
+    "path": "cases/sofie.json#gp.selfReport.rows.4.a.nb",
+    "source": "prototype",
+    "where": "app-data.md line 349, CASES.kari.self.3.1",
+    "original": "Nei",
+    "substitutions": []
+  },
+  {
+    "path": "cases/sofie.json#gp.selfReport.rows.5.q.nb",
+    "source": "prototype",
+    "where": "app-data.md line 349, CASES.kari.self.4.0",
+    "original": "Hva ønsker du hjelp til?",
+    "substitutions": []
+  },
+  {
+    "path": "cases/sofie.json#gp.timeliste.chips.0.label.nb",
+    "source": "prototype",
+    "where": "app-data.md line 152, template string (ATLAS App.dc.html line 94)",
+    "original": "Selvrapport mottatt",
+    "substitutions": []
+  },
+  {
+    "path": "cases/sofie.json#gp.briefing.rows.0.label.nb",
+    "source": "prototype",
+    "where": "app-data.md line 39, EN dictionary key 1 (table line 47)",
+    "original": "Hvem",
+    "substitutions": []
+  },
+  {
+    "path": "cases/sofie.json#gp.briefing.rows.0.label.en",
+    "source": "prototype",
+    "where": "app-data.md line 39, EN dictionary entry 1 (table line 47)",
+    "original": "Who",
+    "substitutions": []
+  },
+  {
+    "path": "cases/sofie.json#gp.briefing.rows.1.label.nb",
+    "source": "prototype",
+    "where": "app-data.md line 39, EN dictionary key 2 (table line 48)",
+    "original": "Situasjonen",
+    "substitutions": []
+  },
+  {
+    "path": "cases/sofie.json#gp.briefing.rows.1.label.en",
+    "source": "prototype",
+    "where": "app-data.md line 39, EN dictionary entry 2 (table line 48)",
+    "original": "Situation",
+    "substitutions": []
+  },
+  {
+    "path": "cases/sofie.json#gp.briefing.rows.2.label.nb",
+    "source": "prototype",
+    "where": "app-data.md line 39, EN dictionary key 3 (table line 49)",
+    "original": "Hvorfor denne saken",
+    "substitutions": []
+  },
+  {
+    "path": "cases/sofie.json#gp.briefing.rows.2.label.en",
+    "source": "prototype",
+    "where": "app-data.md line 39, EN dictionary entry 3 (table line 49)",
+    "original": "Why this case",
+    "substitutions": []
+  },
+  {
+    "path": "cases/sofie.json#gp.briefing.rows.3.label.nb",
+    "source": "prototype",
+    "where": "app-data.md line 39, EN dictionary key 4 (table line 50)",
+    "original": "Utgangspunkt",
+    "substitutions": []
+  },
+  {
+    "path": "cases/sofie.json#gp.briefing.rows.3.label.en",
+    "source": "prototype",
+    "where": "app-data.md line 39, EN dictionary entry 4 (table line 50)",
+    "original": "Starting point",
+    "substitutions": []
+  },
+  {
+    "path": "cases/sofie.json#gp.profile.0.label.nb",
+    "source": "prototype",
+    "where": "app-data.md line 189, template string (ATLAS App.dc.html line 186)",
+    "original": "Tidligere behandling",
+    "substitutions": []
+  },
+  {
+    "path": "cases/sofie.json#gp.profile.1.label.nb",
+    "source": "prototype",
+    "where": "app-data.md line 190, template string (ATLAS App.dc.html line 187)",
+    "original": "Legemidler",
+    "substitutions": []
+  },
+  {
+    "path": "cases/sofie.json#gp.profile.2.label.nb",
+    "source": "prototype",
+    "where": "app-data.md line 191, template string (ATLAS App.dc.html line 188)",
+    "original": "Henvisninger",
+    "substitutions": []
+  },
+  {
+    "path": "cases/sofie.json#gp.profile.2.value.nb",
+    "source": "prototype",
+    "where": "app-data.md line 192, template string (ATLAS App.dc.html line 188)",
+    "original": "Ingen tidligere",
+    "substitutions": []
+  },
+  {
+    "path": "cases/sofie.json#dps.briefing.rows.0.label.nb",
+    "source": "prototype",
+    "where": "app-data.md line 39, EN dictionary key 5 (table line 51)",
+    "original": "Hva du får",
+    "substitutions": []
+  },
+  {
+    "path": "cases/sofie.json#dps.briefing.rows.0.label.en",
+    "source": "prototype",
+    "where": "app-data.md line 39, EN dictionary entry 5 (table line 51)",
+    "original": "What you get",
+    "substitutions": []
+  },
+  {
+    "path": "cases/sofie.json#dps.briefing.rows.1.label.nb",
+    "source": "prototype",
+    "where": "app-data.md line 39, EN dictionary key 6 (table line 52)",
+    "original": "Hva du ikke får",
+    "substitutions": []
+  },
+  {
+    "path": "cases/sofie.json#dps.briefing.rows.1.label.en",
+    "source": "prototype",
+    "where": "app-data.md line 39, EN dictionary entry 6 (table line 52)",
+    "original": "What you don’t get",
+    "substitutions": []
+  },
+  {
+    "path": "cases/sofie.json#dps.briefing.rows.1.value.nb",
+    "source": "prototype",
+    "where": "app-data.md line 375, CASES.astrid.dps.rows.1.1",
+    "original": "Fastlegens navn eller andre henvisninger fra samme lege.",
+    "substitutions": []
+  },
+  {
+    "path": "cases/sofie.json#dps.briefing.rows.1.value.en",
+    "source": "prototype",
+    "where": "app-data.md line 39, EN dictionary entry 39 (table line 85)",
+    "original": "The GP’s name or other referrals from the same doctor.",
+    "substitutions": []
+  },
+  {
+    "path": "cases/sofie.json#dps.briefing.rows.2.label.nb",
+    "source": "prototype",
+    "where": "app-data.md line 39, EN dictionary key 7 (table line 53)",
+    "original": "Frist",
+    "substitutions": []
+  },
+  {
+    "path": "cases/sofie.json#dps.briefing.rows.2.label.en",
+    "source": "prototype",
+    "where": "app-data.md line 39, EN dictionary entry 7 (table line 53)",
+    "original": "Deadline",
+    "substitutions": []
+  },
+  {
+    "path": "cases/sofie.json#dps.briefing.rows.2.value.nb",
+    "source": "prototype",
+    "where": "app-data.md line 353, CASES.kari.dps.rows.3.1",
+    "original": "Vurderingsfristen er ti virkedager etter mottak: 2026-03-24.",
+    "substitutions": [
+      [
+        "2026-03-24",
+        "2026-03-31"
+      ],
+      [
+        "2026-03-31",
+        "31. mars 2026"
+      ]
+    ]
+  },
+  {
+    "path": "cases/sofie.json#dps.briefing.rows.2.value.en",
+    "source": "prototype",
+    "where": "app-data.md line 39, EN dictionary entry 27 (table line 73)",
+    "original": "The legal assessment deadline is ten working days after receipt: 2026-03-24.",
+    "substitutions": [
+      [
+        "2026-03-24",
+        "2026-03-31"
+      ],
+      [
+        "2026-03-31",
+        "31 March 2026"
+      ]
+    ]
+  },
+  {
+    "path": "pattern.json#outcomes.0.label.nb",
+    "source": "prototype",
+    "where": "app-data.md line 28, OUTCOMES",
+    "original": "Rett til helsehjelp",
+    "substitutions": []
+  },
+  {
+    "path": "pattern.json#outcomes.1.label.nb",
+    "source": "prototype",
+    "where": "app-data.md line 28, OUTCOMES",
+    "original": "Retur med råd",
+    "substitutions": []
+  },
+  {
+    "path": "v5.json#patientLine.nb",
+    "source": "prototype",
+    "where": "app-data.md line 39, CASES.kari.gp.rows.0.1",
+    "original": "Kari Nordli, 34 år. Nedstemt i fire måneder, PHQ-9 14. Gjennomgår skilsmisse og har nylig flyttet.",
+    "substitutions": []
+  },
+  {
+    "path": "v5.json#patientLine.en",
+    "source": "prototype",
+    "where": "app-data.md line 39, EN dictionary entry 20 (table line 66)",
+    "original": "Kari Nordli, 34. Low mood for four months, PHQ-9 of 14. Going through a divorce and recently moved.",
+    "substitutions": []
+  },
+  {
+    "path": "v5.json#gps.0.pattern.outcomes.0.label.nb",
+    "source": "prototype",
+    "where": "app-data.md line 28, OUTCOMES",
+    "original": "Rett til helsehjelp",
+    "substitutions": []
+  },
+  {
+    "path": "v5.json#gps.0.pattern.outcomes.1.label.nb",
+    "source": "prototype",
+    "where": "app-data.md line 28, OUTCOMES",
+    "original": "Retur med råd",
+    "substitutions": []
+  },
+  {
+    "path": "v5.json#gps.1.pattern.outcomes.0.label.nb",
+    "source": "prototype",
+    "where": "app-data.md line 28, OUTCOMES",
+    "original": "Rett til helsehjelp",
+    "substitutions": []
+  },
+  {
+    "path": "v5.json#gps.1.pattern.outcomes.1.label.nb",
+    "source": "prototype",
+    "where": "app-data.md line 28, OUTCOMES",
+    "original": "Retur med råd",
+    "substitutions": []
+  },
+  {
+    "path": "shared.json#kalibrering.catchment.1.label.nb",
+    "source": "prototype",
+    "where": "app-data.md line 28, OUTCOMES",
+    "original": "Rett til helsehjelp",
+    "substitutions": []
+  },
+  {
+    "path": "shared.json#kalibrering.catchment.2.label.nb",
+    "source": "prototype",
+    "where": "app-data.md line 28, OUTCOMES",
+    "original": "Retur med råd",
+    "substitutions": []
+  }
+]

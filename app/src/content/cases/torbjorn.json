@@ -1,0 +1,214 @@
+{
+  "id": "torbjorn",
+  "vignette": "V2",
+  "patient": {
+    "name": "Torbjørn Viken",
+    "age": 52,
+    "initials": "TV",
+    "fnr": "180973 ·····"
+  },
+  "gp": {
+    "timeliste": {
+      "time": "11:45",
+      "visit": {
+        "nb": "Øyeblikkelig hjelp",
+        "en": "Urgent same-day appointment"
+      },
+      "chips": []
+    },
+    "briefing": {
+      "task": {
+        "nb": "Du er Torbjørns fastlege. Han kommer til en time som øyeblikkelig hjelp kl. 11:45. Les notatet og bestem om du vil henvise til DPS.",
+        "en": "You are Torbjørn’s GP. He comes for an urgent same-day appointment at 11:45. Read the note and decide whether to refer to DPS."
+      },
+      "rows": [
+        {
+          "label": {
+            "nb": "Hvem",
+            "en": "Who"
+          },
+          "value": {
+            "nb": "Torbjørn Viken, 52 år. Akutte psykotiske symptomer i to uker.",
+            "en": "Torbjørn Viken, 52. Acute psychotic symptoms for two weeks."
+          }
+        },
+        {
+          "label": {
+            "nb": "Situasjonen",
+            "en": "Situation"
+          },
+          "value": {
+            "nb": "Hører stemmer som sier at han må forlate hjemmet, og tror at naboene tar opp det han gjør. Klarer ikke å ivareta seg selv. Ingen kjent psykisk lidelse og ingen rusmiddelbruk.",
+            "en": "Hears voices telling him that he must leave his home, and believes that the neighbours are recording what he does. Unable to take care of himself. No known mental illness and no substance use."
+          }
+        },
+        {
+          "label": {
+            "nb": "Hvorfor denne saken",
+            "en": "Why this case"
+          },
+          "value": {
+            "nb": "Symptomene har kommet i løpet av to uker, og notatet beskriver dem og risikovurderingen.",
+            "en": "The symptoms began within the last two weeks, and the note describes them and the risk assessment."
+          }
+        },
+        {
+          "label": {
+            "nb": "Utgangspunkt",
+            "en": "Starting point"
+          },
+          "value": {
+            "nb": "Notatet er skrevet i timen. Det finnes ingen selvrapport.",
+            "en": "The note was written during the appointment. There is no self-report."
+          }
+        }
+      ],
+      "time": {
+        "nb": "Omtrent 5 minutter",
+        "en": "About 5 minutes"
+      }
+    },
+    "atlasTask": {
+      "nb": "Plasser saken på båndet før du ser systemets lesning. Bestem deretter om du vil henvise.",
+      "en": "Place the case on the band before you see the system’s reading. Then decide whether to refer."
+    },
+    "profile": [
+      {
+        "label": {
+          "nb": "Tidligere behandling",
+          "en": "Previous treatment"
+        },
+        "value": {
+          "nb": "Ingen kjent psykisk lidelse eller behandling",
+          "en": "No known mental illness or treatment"
+        },
+        "source": "record"
+      },
+      {
+        "label": {
+          "nb": "Legemidler",
+          "en": "Medicines"
+        },
+        "value": {
+          "nb": "Ingen faste",
+          "en": "None regular"
+        },
+        "source": "record"
+      },
+      {
+        "label": {
+          "nb": "Henvisninger",
+          "en": "Referrals"
+        },
+        "value": {
+          "nb": "Ingen tidligere",
+          "en": "None before"
+        },
+        "source": "record"
+      }
+    ],
+    "note": {
+      "date": "2026-03-17",
+      "text": {
+        "nb": "Øyeblikkelig hjelp. Torbjørn har de siste to ukene hørt stemmer som sier at han må forlate hjemmet sitt. Han tror at naboene tar opp det han gjør. Talen er usammenhengende i konsultasjonen.\n\nMarkert funksjonsfall de siste to ukene. Ingen kjent psykisk lidelse og ingen tidligere behandling. Ingen rusmiddelbruk.\n\nSelvmords- og voldsrisikovurdering gjennomført: ingen umiddelbar fare for selvskading, men klarer ikke å ivareta seg selv.",
+        "en": "Urgent same-day appointment. For the last two weeks Torbjørn has heard voices telling him that he must leave his home. He believes that the neighbours are recording what he does. His speech is disorganised in the consultation.\n\nMarked functional decline over the last two weeks. No known mental illness and no previous treatment. No substance use.\n\nSuicide and violence risk assessment done: no immediate risk of self-harm, but unable to take care of himself."
+      }
+    },
+    "selfReport": {
+      "date": "2026-03-17",
+      "intro": {
+        "nb": "Ingen selvrapport. Timen ble satt opp som øyeblikkelig hjelp samme dag.",
+        "en": "No self-report. The appointment was set up as an urgent same-day appointment."
+      },
+      "rows": []
+    },
+    "meds": {
+      "rows": [],
+      "note": {
+        "nb": "Ingen faste legemidler.",
+        "en": "No regular medicines."
+      }
+    },
+    "history": [
+      {
+        "date": "2026-03-17",
+        "text": {
+          "nb": "Time som øyeblikkelig hjelp, satt opp samme dag",
+          "en": "Urgent same-day appointment, set up the same day"
+        }
+      },
+      {
+        "date": "2025-09-16",
+        "text": {
+          "nb": "Konsultasjon: ryggsmerter. Ingen psykiske plager beskrevet.",
+          "en": "Consultation: back pain. No mental health problems described."
+        }
+      }
+    ],
+    "systemReading": {
+      "placement": 92,
+      "summary": {
+        "nb": "Klart innenfor. Liknende henvisninger er nesten alltid tatt inn.",
+        "en": "Clearly within. Similar referrals have almost always been accepted."
+      },
+      "reasoning": {
+        "nb": "Kilder: notat, legemiddelliste. Akutte psykotiske symptomer, markert funksjonsfall og at pasienten ikke klarer å ivareta seg selv ligger nær kriteriene. Ingen opplysninger i notatet ligger langt fra dem. Setningen om liknende henvisninger er også skrevet for saken. Det finnes ingen ekte tall bak den.",
+        "en": "Sources: note, medication list. Acute psychotic symptoms, marked functional decline and the patient being unable to take care of himself lie close to the criteria. Nothing in the note lies far from them. The sentence about similar referrals is also written for the case. There are no real figures behind it."
+      }
+    },
+    "referralDraft": {
+      "aktuelt": {
+        "text": {
+          "nb": "Akutte psykotiske symptomer i to uker: hører stemmer som sier at han må forlate hjemmet sitt, tror at naboene tar opp det han gjør, og har usammenhengende tale. Ingen rusmiddelbruk.",
+          "en": "Acute psychotic symptoms for two weeks: hears voices telling him that he must leave his home, believes that the neighbours are recording what he does, and has disorganised speech. No substance use."
+        },
+        "fromNote": true
+      },
+      "tidligere": {
+        "text": {
+          "nb": "Ingen kjent psykisk lidelse og ingen tidligere behandling.",
+          "en": "No known mental illness and no previous treatment."
+        },
+        "fromNote": true
+      },
+      "funksjon": {
+        "text": {
+          "nb": "Markert funksjonsfall de siste to ukene. Klarer ikke å ivareta seg selv.",
+          "en": "Marked functional decline over the last two weeks. Unable to take care of himself."
+        },
+        "fromNote": true
+      },
+      "risiko": {
+        "text": {
+          "nb": "Selvmords- og voldsrisikovurdering gjennomført: ingen umiddelbar fare for selvskading, men klarer ikke å ivareta seg selv.",
+          "en": "Suicide and violence risk assessment done: no immediate risk of self-harm, but unable to take care of himself."
+        },
+        "fromNote": true
+      },
+      "sporsmal": {
+        "text": {
+          "nb": "",
+          "en": ""
+        },
+        "fromNote": false
+      }
+    },
+    "dpsScript": {}
+  },
+  "debrief": {
+    "gp": {
+      "title": {
+        "nb": "Plasseringer og utfall",
+        "en": "Placements and outcome"
+      },
+      "whatHappened": {
+        "nb": "{{plassering}} Systemets lesning lå klart innenfor kriteriene. Fastlegens beslutning: {{beslutning}}. Fastlegens trygghet: {{trygghet}}.",
+        "en": "{{plassering}} The system’s reading was clearly within the criteria. The GP’s decision: {{beslutning}}. The GP’s confidence: {{trygghet}}."
+      },
+      "purpose": {
+        "nb": "Saken er laget for å prøve om ATLAS blir en ekstra byrde i en klar sak der fastlegen ikke er i tvil, og om løsningen passer for klare saker eller først og fremst for gråsonesaker.",
+        "en": "The case was built to test whether ATLAS becomes an extra burden in a clear-cut case where the GP has no doubt, and whether it suits clear-cut cases or mainly grey-zone cases."
+      }
+    }
+  }
+}

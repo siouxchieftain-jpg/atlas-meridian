@@ -1,0 +1,552 @@
+{
+  "id": "erlend",
+  "vignette": "V3",
+  "patient": {
+    "name": "Erlend Bakken",
+    "age": 42,
+    "initials": "EB",
+    "fnr": "030783 ·····"
+  },
+  "draftFlag": {
+    "nb": "Kliniske detaljer for Erlend er utkast skrevet for prototypen og må kvalitetssikres av klinikere.",
+    "en": "Clinical details for Erlend are drafts written for the prototype and must be checked by clinicians."
+  },
+  "gp": {
+    "timeliste": {
+      "time": "09:30",
+      "visit": {
+        "nb": "Ny time",
+        "en": "New appointment"
+      },
+      "chips": [
+        {
+          "label": {
+            "nb": "Tidligere avslått",
+            "en": "Previously rejected"
+          }
+        },
+        {
+          "label": {
+            "nb": "Selvrapport mottatt",
+            "en": "Self-report received"
+          }
+        }
+      ]
+    },
+    "briefing": {
+      "task": {
+        "nb": "Du er Erlends fastlege og skal skrive en ny henvisning til DPS. Den forrige ble avslått i november. Les notatet og bestem om du vil sende en ny henvisning.",
+        "en": "You are Erlend’s GP and are about to write a new referral to DPS. The previous one was rejected in November. Read the note and decide whether to send a new referral."
+      },
+      "rows": [
+        {
+          "label": {
+            "nb": "Hvem",
+            "en": "Who"
+          },
+          "value": {
+            "nb": "Erlend Bakken, 42 år. Angst med panikkanfall i åtte måneder. 100 % sykemeldt.",
+            "en": "Erlend Bakken, 42. Anxiety with panic attacks for eight months. On full sick leave."
+          }
+        },
+        {
+          "label": {
+            "nb": "Situasjonen",
+            "en": "Situation"
+          },
+          "value": {
+            "nb": "Henvist i oktober og avslått i november med én setning. Siden har han fått kognitiv terapi og escitalopram, med begrenset effekt.",
+            "en": "Referred in October and rejected in November with one sentence. Since then he has had cognitive therapy and escitalopram, with limited effect."
+          }
+        },
+        {
+          "label": {
+            "nb": "Hvorfor denne saken",
+            "en": "Why this case"
+          },
+          "value": {
+            "nb": "Det forrige avslaget sa ikke hva som manglet, og plagene har vart siden.",
+            "en": "The previous rejection did not say what was missing, and the symptoms have continued since."
+          }
+        },
+        {
+          "label": {
+            "nb": "Utgangspunkt",
+            "en": "Starting point"
+          },
+          "value": {
+            "nb": "Erlend fylte ut selvrapporten før timen.",
+            "en": "Erlend filled in the self-report before the appointment."
+          }
+        },
+        {
+          "label": {
+            "nb": "Merk",
+            "en": "Note"
+          },
+          "value": {
+            "nb": "Kliniske detaljer for Erlend er utkast skrevet for prototypen og må kvalitetssikres av klinikere.",
+            "en": "Clinical details for Erlend are drafts written for the prototype and must be checked by clinicians."
+          }
+        }
+      ],
+      "time": {
+        "nb": "Omtrent 10 minutter",
+        "en": "About 10 minutes"
+      }
+    },
+    "atlasTask": {
+      "nb": "Utkastet til ny henvisning åpnes, med ATLAS-panelet ved siden av. Plasser saken på båndet før du ser systemets lesning. Skriv deretter henvisningen ferdig og velg Send henvisning eller Lagre utkast.",
+      "en": "The draft of the new referral opens, with the ATLAS panel beside it. Place the case on the band before you see the system’s reading. Then finish the referral, and choose whether to send it or save it as a draft."
+    },
+    "profile": [
+      {
+        "label": {
+          "nb": "Tidligere behandling",
+          "en": "Previous treatment"
+        },
+        "value": {
+          "nb": "Kognitiv terapi i Rask psykisk helsehjelp, 10 timer. Escitalopram fra desember 2025.",
+          "en": "Cognitive therapy in Rask psykisk helsehjelp, 10 sessions. Escitalopram from December 2025."
+        },
+        "source": "record"
+      },
+      {
+        "label": {
+          "nb": "Legemidler",
+          "en": "Medicines"
+        },
+        "value": {
+          "nb": "1 aktivt: escitalopram 10 mg",
+          "en": "1 active: escitalopram 10 mg"
+        },
+        "source": "record"
+      },
+      {
+        "label": {
+          "nb": "Henvisninger",
+          "en": "Referrals"
+        },
+        "value": {
+          "nb": "Henvist 29. oktober 2025, avslått 12. november 2025",
+          "en": "Referred 29 October 2025, rejected 12 November 2025"
+        },
+        "source": "record"
+      }
+    ],
+    "note": {
+      "date": "2026-03-17",
+      "text": {
+        "nb": "Ny henvisning. Erlend har hatt angst med panikkanfall flere ganger i uken i åtte måneder. GAD-7 i dag: 17, PHQ-9: 11.\n\nKognitiv terapi hos Rask psykisk helsehjelp, ti timer, begrenset effekt. Escitalopram 10 mg siden desember, delvis effekt på panikkanfallene.\n\nSelvmordstanker avkreftet. Ingen rusmiddelbruk.",
+        "en": "New referral. Erlend has had anxiety with panic attacks several times a week for eight months. GAD-7 today: 17, PHQ-9: 11.\n\nCognitive therapy with Rask psykisk helsehjelp, ten sessions, limited effect. Escitalopram 10 mg since December, partial effect on the panic attacks.\n\nSuicidal thoughts denied. No substance use."
+      }
+    },
+    "selfReport": {
+      "date": "2026-03-17",
+      "intro": {
+        "nb": "Erlend fylte ut skjemaet før timen.",
+        "en": "Erlend filled in the form before the appointment."
+      },
+      "rows": [
+        {
+          "q": {
+            "nb": "GAD-7, sum",
+            "en": "GAD-7, total"
+          },
+          "a": {
+            "nb": "17",
+            "en": "17"
+          }
+        },
+        {
+          "q": {
+            "nb": "PHQ-9, sum",
+            "en": "PHQ-9, total"
+          },
+          "a": {
+            "nb": "11",
+            "en": "11"
+          }
+        },
+        {
+          "q": {
+            "nb": "Klarer du arbeidet som før?",
+            "en": "Can you manage your work as before?"
+          },
+          "a": {
+            "nb": "Nei, 100 % sykemeldt i seks uker",
+            "en": "No, 100% sick leave for six weeks"
+          }
+        },
+        {
+          "q": {
+            "nb": "Har du hatt tanker om å skade deg selv?",
+            "en": "Have you had thoughts of harming yourself?"
+          },
+          "a": {
+            "nb": "Nei",
+            "en": "No"
+          }
+        },
+        {
+          "q": {
+            "nb": "Hva ønsker du hjelp til?",
+            "en": "What would you like help with?"
+          },
+          "a": {
+            "nb": "Klare å handle og kjøre bil igjen",
+            "en": "Being able to go shopping and drive again"
+          }
+        }
+      ]
+    },
+    "meds": {
+      "rows": [
+        {
+          "name": {
+            "nb": "Escitalopram 10 mg tablett",
+            "en": "Escitalopram 10 mg tablet"
+          },
+          "dose": {
+            "nb": "1 daglig",
+            "en": "1 daily"
+          },
+          "period": {
+            "nb": "2025-12 til nå",
+            "en": "2025-12 to date"
+          },
+          "status": {
+            "nb": "Aktiv",
+            "en": "Active"
+          }
+        }
+      ],
+      "note": {
+        "nb": "Escitalopram siden desember, delvis effekt.",
+        "en": "Escitalopram since December, partial effect."
+      }
+    },
+    "history": [
+      {
+        "date": "2026-02-13",
+        "text": {
+          "nb": "Rask psykisk helsehjelp avsluttet etter ti timer, begrenset effekt",
+          "en": "Rask psykisk helsehjelp ended after ten sessions, limited effect"
+        }
+      },
+      {
+        "date": "2025-12-01",
+        "text": {
+          "nb": "Escitalopram 10 mg startet",
+          "en": "Escitalopram 10 mg started"
+        }
+      },
+      {
+        "date": "2025-11-12",
+        "text": {
+          "nb": "Henvisning til DPS avslått: «Pasienten kan behandles adekvat i primærhelsetjenesten.»",
+          "en": "Referral to DPS rejected: “The patient can be adequately treated in primary care.”"
+        }
+      },
+      {
+        "date": "2025-10-29",
+        "text": {
+          "nb": "Henvisning til DPS sendt",
+          "en": "Referral to DPS sent"
+        }
+      }
+    ],
+    "previousReferral": {
+      "sent": "2025-10-29",
+      "decided": "2025-11-12",
+      "outcome": {
+        "nb": "Avslått",
+        "en": "Rejected"
+      },
+      "text": {
+        "nb": "«Pasienten kan behandles adekvat i primærhelsetjenesten.»",
+        "en": "“The patient can be adequately treated in primary care.”"
+      }
+    },
+    "systemReading": {
+      "placement": 56,
+      "summary": {
+        "nb": "Til høyre for midten. Liknende henvisninger er oftere tatt inn.",
+        "en": "Right of the middle. Similar referrals have more often been accepted."
+      },
+      "reasoning": {
+        "nb": "Kilder: notat, selvrapport, legemiddelliste, tidligere henvisning. Varighet på åtte måneder og to behandlingsforsøk med begrenset effekt ligger nær kriteriene. Funksjonsfall er ikke beskrevet i notatet, bare i selvrapporten. Setningen om liknende henvisninger er også skrevet for saken. Det finnes ingen ekte tall bak den.",
+        "en": "Sources: note, self-report, medication list, previous referral. Eight months’ duration and two treatment attempts with limited effect lie close to the criteria. Functional decline is described only in the self-report, not in the note. The sentence about similar referrals is also written for the case. There are no real figures behind it."
+      }
+    },
+    "referralDraft": {
+      "aktuelt": {
+        "text": {
+          "nb": "Angst med panikkanfall flere ganger i uken i åtte måneder. GAD-7: 17, PHQ-9: 11.",
+          "en": "Anxiety with panic attacks several times a week for eight months. GAD-7: 17, PHQ-9: 11."
+        },
+        "fromNote": true
+      },
+      "tidligere": {
+        "text": {
+          "nb": "Kognitiv terapi i Rask psykisk helsehjelp, ti timer, begrenset effekt. Escitalopram 10 mg siden desember, delvis effekt.",
+          "en": "Cognitive therapy in Rask psykisk helsehjelp, ten sessions, limited effect. Escitalopram 10 mg since December, partial effect."
+        },
+        "fromNote": true
+      },
+      "funksjon": {
+        "text": {
+          "nb": "",
+          "en": ""
+        },
+        "fromNote": false
+      },
+      "risiko": {
+        "text": {
+          "nb": "Selvmordstanker avkreftet. Ingen rusmiddelbruk.",
+          "en": "Suicidal thoughts denied. No substance use."
+        },
+        "fromNote": true
+      },
+      "sporsmal": {
+        "text": {
+          "nb": "",
+          "en": ""
+        },
+        "fromNote": false
+      }
+    },
+    "caseOnlyLetter": {
+      "date": "2025-11-12",
+      "from": {
+        "nb": "DPS Skjærgården, inntaksteamet",
+        "en": "DPS Skjærgården, intake team"
+      },
+      "title": {
+        "nb": "Avslag på henvisning",
+        "en": "Referral rejected"
+      },
+      "body": {
+        "nb": "Pasienten kan behandles adekvat i primærhelsetjenesten.",
+        "en": "The patient can be adequately treated in primary care."
+      }
+    },
+    "dpsScript": {
+      "grant": {
+        "date": "2026-03-25",
+        "text": {
+          "nb": "Henvisningen er vurdert. Erlend har rett til nødvendig helsehjelp og blir kalt inn til første samtale innen fristen.",
+          "en": "The referral has been assessed. Erlend has the right to necessary health care and will be called in for a first appointment within the deadline."
+        },
+        "reasons": [
+          {
+            "nb": "Varighet: angst med panikkanfall flere ganger i uken i åtte måneder.",
+            "en": "Duration: anxiety with panic attacks several times a week for eight months."
+          },
+          {
+            "nb": "Alvorlighet: GAD-7 17.",
+            "en": "Severity: GAD-7 of 17."
+          },
+          {
+            "nb": "Tidligere behandling: kognitiv terapi i Rask psykisk helsehjelp og escitalopram, med begrenset effekt.",
+            "en": "Previous treatment: cognitive therapy in Rask psykisk helsehjelp and escitalopram, with limited effect."
+          }
+        ]
+      }
+    }
+  },
+  "dps": {
+    "queue": {
+      "received": "2026-03-17",
+      "deadline": "2026-03-31",
+      "chips": [
+        {
+          "label": {
+            "nb": "Ny henvisning etter avslag",
+            "en": "New referral after rejection"
+          },
+          "isNew": true
+        }
+      ]
+    },
+    "briefing": {
+      "task": {
+        "nb": "Du er i inntaksteamet ved DPS Skjærgården. Erlend er henvist på nytt etter et avslag i november. Les henvisningen og velg et utfall.",
+        "en": "You are on the intake team at DPS Skjærgården. Erlend has been referred again after a rejection in November. Read the referral and choose an outcome."
+      },
+      "rows": [
+        {
+          "label": {
+            "nb": "Hva du får",
+            "en": "What you get"
+          },
+          "value": {
+            "nb": "Den nye henvisningen fra fastlegen, med konsultasjonsnotatet som vedlegg. Fra egen journal: en linje om at en tidligere henvisning ble avslått 12. november 2025.",
+            "en": "The new referral from the GP, with the consultation note attached. From DPS’s own record: a line saying that an earlier referral was rejected on 12 November 2025."
+          }
+        },
+        {
+          "label": {
+            "nb": "Hva du ikke får",
+            "en": "What you don’t get"
+          },
+          "value": {
+            "nb": "Fastlegens navn eller andre henvisninger fra samme lege.",
+            "en": "The GP’s name or other referrals from the same doctor."
+          }
+        },
+        {
+          "label": {
+            "nb": "Frist",
+            "en": "Deadline"
+          },
+          "value": {
+            "nb": "Vurderingsfristen er ti virkedager etter mottak: 31. mars 2026.",
+            "en": "The legal assessment deadline is ten working days after receipt: 31 March 2026."
+          }
+        },
+        {
+          "label": {
+            "nb": "Merk",
+            "en": "Note"
+          },
+          "value": {
+            "nb": "Kliniske detaljer for Erlend er utkast skrevet for prototypen og må kvalitetssikres av klinikere.",
+            "en": "Clinical details for Erlend are drafts written for the prototype and must be checked by clinicians."
+          }
+        }
+      ],
+      "time": {
+        "nb": "Omtrent 8 minutter",
+        "en": "About 8 minutes"
+      }
+    },
+    "atlasTask": {
+      "nb": "Med ATLAS ser du også det forrige utfallet og fastlegens beskrivelse av hva som er uklart. Plasser saken på båndet før du ser fastlegens plassering og systemets lesning. Velg deretter et utfall.",
+      "en": "With ATLAS you also see the previous outcome and the GP’s description of what is unclear. Place the case on the band before you see the GP’s placement and the system’s reading. Then choose an outcome."
+    },
+    "referral": {
+      "sent": "2026-03-17",
+      "received": "2026-03-17",
+      "deadline": "2026-03-31",
+      "sections": {
+        "aktuelt": {
+          "nb": "Angst med panikkanfall flere ganger i uken i åtte måneder. GAD-7: 17, PHQ-9: 11.",
+          "en": "Anxiety with panic attacks several times a week for eight months. GAD-7: 17, PHQ-9: 11."
+        },
+        "tidligere": {
+          "nb": "Kognitiv terapi i Rask psykisk helsehjelp, ti timer, begrenset effekt. Escitalopram 10 mg siden desember, delvis effekt.",
+          "en": "Cognitive therapy in Rask psykisk helsehjelp, ten sessions, limited effect. Escitalopram 10 mg since December, partial effect."
+        },
+        "funksjon": {
+          "nb": "100 % sykemeldt i seks uker. Ifølge selvrapporten ønsker han hjelp til å klare å handle og kjøre bil igjen.",
+          "en": "100% sick leave for six weeks. According to the self-report, he would like help to be able to go shopping and drive again."
+        },
+        "risiko": {
+          "nb": "Selvmordstanker avkreftet. Ingen rusmiddelbruk.",
+          "en": "Suicidal thoughts denied. No substance use."
+        },
+        "sporsmal": {
+          "nb": "Ny vurdering etter avslaget 12. november 2025. Panikkanfallene vedvarer etter ti timer kognitiv terapi og escitalopram. Har Erlend rett til nødvendig helsehjelp i spesialisthelsetjenesten nå?",
+          "en": "A new assessment after the rejection of 12 November 2025. The panic attacks continue after ten sessions of cognitive therapy and escitalopram. Does Erlend now have the right to necessary health care in specialist health services?"
+        }
+      },
+      "noteAttachment": {
+        "nb": "Ny henvisning. Erlend har hatt angst med panikkanfall flere ganger i uken i åtte måneder. GAD-7 i dag: 17, PHQ-9: 11.\n\nKognitiv terapi hos Rask psykisk helsehjelp, ti timer, begrenset effekt. Escitalopram 10 mg siden desember, delvis effekt på panikkanfallene.\n\nSelvmordstanker avkreftet. Ingen rusmiddelbruk.",
+        "en": "New referral. Erlend has had anxiety with panic attacks several times a week for eight months. GAD-7 today: 17, PHQ-9: 11.\n\nCognitive therapy with Rask psykisk helsehjelp, ten sessions, limited effect. Escitalopram 10 mg since December, partial effect on the panic attacks.\n\nSuicidal thoughts denied. No substance use."
+      }
+    },
+    "gpUncertainty": {
+      "tags": [
+        "terskel",
+        "epistemisk"
+      ],
+      "description": {
+        "nb": "Usikker på om DPS vil vurdere dette annerledes enn i november. Effekten av terapi og escitalopram er begrenset, men ikke fraværende. Vet ikke hva som manglet i forrige henvisning.",
+        "en": "Unsure whether DPS will assess this differently than in November. The effect of therapy and escitalopram is limited, but not absent. Does not know what was missing in the previous referral."
+      },
+      "confidence": "middels",
+      "placement": 62
+    },
+    "guideAsReceived": [
+      "alvorlighet",
+      "funksjon",
+      "varighet",
+      "behandling",
+      "risiko"
+    ],
+    "ownRecordLine": {
+      "nb": "Tidligere henvisning avslått 12. november 2025",
+      "en": "Earlier referral rejected 12 November 2025"
+    },
+    "previousReferral": {
+      "sent": "2025-10-29",
+      "decided": "2025-11-12",
+      "outcome": {
+        "nb": "Avslått",
+        "en": "Rejected"
+      },
+      "text": {
+        "nb": "«Pasienten kan behandles adekvat i primærhelsetjenesten.»",
+        "en": "“The patient can be adequately treated in primary care.”"
+      }
+    },
+    "systemReading": {
+      "placement": 56,
+      "summary": {
+        "nb": "Til høyre for midten. Liknende henvisninger er oftere tatt inn.",
+        "en": "Right of the middle. Similar referrals have more often been accepted."
+      },
+      "reasoning": {
+        "nb": "Kilder: henvisningen, det vedlagte notatet og den tidligere henvisningen. Varighet på åtte måneder og to behandlingsforsøk med begrenset effekt ligger nær kriteriene. Setningen om liknende henvisninger er også skrevet for saken. Det finnes ingen ekte tall bak den.",
+        "en": "Sources: the referral, the attached note and the previous referral. Eight months’ duration and two treatment attempts with limited effect lie close to the criteria. The sentence about similar referrals is also written for the case. There are no real figures behind it."
+      }
+    },
+    "gpScript": {
+      "replyToRequest": {
+        "date": "2026-03-20",
+        "text": {
+          "nb": "Erlend har vært 100 % sykemeldt i seks uker. Panikkanfallene kommer flere ganger i uken, og han ønsker hjelp til å klare å handle og kjøre bil igjen. Selvmordstanker er avkreftet, og han bruker ikke rusmidler.",
+          "en": "Erlend has been on 100% sick leave for six weeks. The panic attacks come several times a week, and he would like help to be able to go shopping and drive again. Suicidal thoughts are denied, and he does not use substances."
+        }
+      },
+      "ackOfReturn": {
+        "date": "2026-03-20",
+        "text": {
+          "nb": "Takk for tilbakemeldingen. Rådene er notert, og Erlend følges opp videre hos fastlegen.",
+          "en": "Thank you for the feedback. The advice is noted, and Erlend will be followed up further by his GP."
+        }
+      }
+    }
+  },
+  "debrief": {
+    "gp": {
+      "title": {
+        "nb": "Plasseringer og utfall",
+        "en": "Placements and outcome"
+      },
+      "whatHappened": {
+        "nb": "Fastlegen skrev en ny henvisning etter avslaget 12. november 2025. {{plassering}} Fastlegens beslutning: {{beslutning}}. Fastlegens trygghet: {{trygghet}}. Utfall: {{utfall}}.",
+        "en": "The GP wrote a new referral after the rejection of 12 November 2025. {{plassering}} The GP’s decision: {{beslutning}}. The GP’s confidence: {{trygghet}}. Outcome: {{utfall}}."
+      },
+      "purpose": {
+        "nb": "Saken er laget for å prøve om synlige kriterier og et synlig tidligere utfall endrer hvordan en fastlege dokumenterer etter et avslag uten forklaring: mer åpent, mer strategisk eller likt.",
+        "en": "The case was built to test whether visible criteria and a visible previous outcome change how a GP documents after a rejection without explanation: more openly, more strategically or no differently."
+      }
+    },
+    "dps": {
+      "title": {
+        "nb": "Tre plasseringer av samme sak",
+        "en": "Three placements of the same case"
+      },
+      "whatHappened": {
+        "nb": "{{plassering}} Den forrige henvisningen ble avslått 12. november 2025 med én setning. Utfall: {{utfall}}.",
+        "en": "{{plassering}} The previous referral was rejected on 12 November 2025 with one sentence. Outcome: {{utfall}}."
+      },
+      "purpose": {
+        "nb": "Saken er laget for å prøve om fastlegens egen usikkerhet og det synlige tidligere utfallet endrer hvordan inntaksteamet vurderer en ny henvisning etter et avslag, og om en strukturert begrunnelse gir fastlegen noe å bygge på.",
+        "en": "The case was built to test whether the GP’s own uncertainty and the visible previous outcome change how the intake team assesses a new referral after a rejection, and whether a structured justification gives the GP something to build on."
+      }
+    }
+  }
+}

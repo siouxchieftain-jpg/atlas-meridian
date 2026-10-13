@@ -1,0 +1,31 @@
+{
+  "ordinary": [
+    {
+      "id": "ola",
+      "time": "08:30",
+      "name": "Ola Berg",
+      "age": 61,
+      "initials": "OB",
+      "fnr": "070464 ·····",
+      "visit": { "nb": "Kontroll, hypertensjon", "en": "Check-up, hypertension" }
+    },
+    {
+      "id": "ingrid",
+      "time": "10:45",
+      "name": "Ingrid Myhre",
+      "age": 47,
+      "initials": "IM",
+      "fnr": "220878 ·····",
+      "visit": { "nb": "Oppfølging av sykemelding", "en": "Sick leave follow-up" }
+    },
+    {
+      "id": "jonas",
+      "time": "11:15",
+      "name": "Jonas Brekke",
+      "age": 23,
+      "initials": "JB",
+      "fnr": "150502 ·····",
+      "visit": { "nb": "Legeattest", "en": "Medical certificate" }
+    }
+  ]
+}

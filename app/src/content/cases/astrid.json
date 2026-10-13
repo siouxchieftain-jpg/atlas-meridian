@@ -1,0 +1,534 @@
+{
+  "id": "astrid",
+  "vignette": "V4",
+  "patient": {
+    "name": "Astrid Holm",
+    "age": 28,
+    "initials": "AH",
+    "fnr": "250897 ·····"
+  },
+  "gp": {
+    "timeliste": {
+      "time": "10:15",
+      "visit": {
+        "nb": "Telefon",
+        "en": "Telephone"
+      },
+      "chips": [
+        {
+          "label": {
+            "nb": "Svar fra DPS",
+            "en": "Reply from DPS"
+          },
+          "isNew": true
+        }
+      ]
+    },
+    "briefing": {
+      "task": {
+        "nb": "Du er Astrids fastlege. DPS har svart på henvisningen du sendte 2. mars 2026, og Astrid har telefontime kl. 10:15. Les svaret og bestem hva du gjør videre.",
+        "en": "You are Astrid’s GP. DPS has replied to the referral you sent on 2 March 2026, and Astrid has a telephone appointment at 10:15. Read the reply and decide what to do next."
+      },
+      "rows": [
+        {
+          "label": {
+            "nb": "Hvem",
+            "en": "Who"
+          },
+          "value": {
+            "nb": "Astrid Holm, 28 år. Henvist etter samlivsbrudd og tre uker med funksjonsfall.",
+            "en": "Astrid Holm, 28. Referred after a breakup and three weeks of functional decline."
+          }
+        },
+        {
+          "label": {
+            "nb": "Situasjonen",
+            "en": "Situation"
+          },
+          "value": {
+            "nb": "DPS svarte 16. mars 2026 at henvisningen er avslått.",
+            "en": "DPS replied on 16 March 2026 that the referral is rejected."
+          }
+        },
+        {
+          "label": {
+            "nb": "Hvorfor denne saken",
+            "en": "Why this case"
+          },
+          "value": {
+            "nb": "Henvisningen gjaldt gjentakende kriser i nære relasjoner over flere år, og den aktuelle krisen etter et samlivsbrudd.",
+            "en": "The referral concerned recurring crises in close relationships over several years, and the current crisis after a breakup."
+          }
+        },
+        {
+          "label": {
+            "nb": "Utgangspunkt",
+            "en": "Starting point"
+          },
+          "value": {
+            "nb": "Saken starter etter at svaret fra DPS er mottatt.",
+            "en": "The case starts after the reply from DPS has arrived."
+          }
+        }
+      ],
+      "time": {
+        "nb": "Omtrent 8 minutter",
+        "en": "About 8 minutes"
+      }
+    },
+    "atlasTask": {
+      "nb": "Med ATLAS ser du returen med årsaker, forklaring og råd, og kriteriene DPS vurderte som ikke oppfylt. Hvis noe er uklart, kan du skrive et spørsmål til DPS i dialogen.",
+      "en": "With ATLAS you see the return with reasons, explanation and advice, and the criteria DPS assessed as not met. If something is unclear, you can write a question to DPS in the dialogue."
+    },
+    "profile": [
+      {
+        "label": {
+          "nb": "Tidligere behandling",
+          "en": "Previous treatment"
+        },
+        "value": {
+          "nb": "Ingen behandling i spesialisthelsetjenesten.",
+          "en": "No treatment in specialist health services."
+        },
+        "source": "record"
+      },
+      {
+        "label": {
+          "nb": "Legemidler",
+          "en": "Medicines"
+        },
+        "value": {
+          "nb": "Ingen",
+          "en": "None"
+        },
+        "source": "record"
+      },
+      {
+        "label": {
+          "nb": "Henvisninger",
+          "en": "Referrals"
+        },
+        "value": {
+          "nb": "Henvist 2. mars 2026, svar 16. mars 2026: avslått",
+          "en": "Referred 2 March 2026, reply 16 March 2026: rejected"
+        },
+        "source": "record"
+      }
+    ],
+    "note": {
+      "date": "2026-03-02",
+      "text": {
+        "nb": "Konsultasjon. Astrid kommer tre uker etter et samlivsbrudd. Siden da sover hun dårlig, gråter mye og har raske svingninger i humøret. PHQ-9 i dag: 12.\n\nHar hatt flere liknende kriser i nære relasjoner de siste årene. Funksjonsfall de siste tre ukene, med konsentrasjonsvansker og flere fraværsdager på jobb. Har trukket seg fra venner. Ingen tidligere behandling i spesialisthelsetjenesten, og kommunale tilbud er ikke prøvd.\n\nSelvmordsrisiko vurdert. Ingen aktuelle selvmordstanker eller planer. Henvises til DPS med spørsmål om emosjonelt ustabile personlighetstrekk.",
+        "en": "Consultation. Astrid comes three weeks after a breakup. Since then she has slept poorly, cried a lot and had rapid swings in mood. PHQ-9 today: 12.\n\nHas had several similar crises in close relationships in recent years. Functional decline over the last three weeks, with difficulty concentrating and several days off work. Has withdrawn from friends. No previous treatment in specialist health services, and municipal services have not been tried.\n\nSuicide risk assessed. No current suicidal thoughts or plans. Referred to DPS with a question of emotionally unstable personality traits."
+      }
+    },
+    "selfReport": {
+      "date": "2026-03-02",
+      "intro": {
+        "nb": "Astrid fylte ut skjemaet før timen.",
+        "en": "Astrid filled in the form before the appointment."
+      },
+      "rows": [
+        {
+          "q": {
+            "nb": "PHQ-9, sum",
+            "en": "PHQ-9, total"
+          },
+          "a": {
+            "nb": "12",
+            "en": "12"
+          }
+        },
+        {
+          "q": {
+            "nb": "Hvor lenge har du hatt det slik?",
+            "en": "How long have you felt like this?"
+          },
+          "a": {
+            "nb": "Tre uker, siden bruddet",
+            "en": "Three weeks, since the breakup"
+          }
+        },
+        {
+          "q": {
+            "nb": "Klarer du arbeidet som før?",
+            "en": "Can you manage your work as before?"
+          },
+          "a": {
+            "nb": "Delvis, flere fraværsdager",
+            "en": "Partly, several days off"
+          }
+        },
+        {
+          "q": {
+            "nb": "Har du hatt tanker om å skade deg selv?",
+            "en": "Have you had thoughts of harming yourself?"
+          },
+          "a": {
+            "nb": "Nei",
+            "en": "No"
+          }
+        },
+        {
+          "q": {
+            "nb": "Hva ønsker du hjelp til?",
+            "en": "What would you like help with?"
+          },
+          "a": {
+            "nb": "Å slutte å havne i de samme krisene",
+            "en": "To stop ending up in the same crises"
+          }
+        }
+      ]
+    },
+    "meds": {
+      "rows": [],
+      "note": {
+        "nb": "Ingen faste legemidler.",
+        "en": "No regular medicines."
+      }
+    },
+    "history": [
+      {
+        "date": "2026-03-16",
+        "text": {
+          "nb": "Svar fra DPS: henvisningen er avslått.",
+          "en": "Reply from DPS: the referral is rejected."
+        }
+      },
+      {
+        "date": "2026-03-02",
+        "text": {
+          "nb": "Konsultasjon: krise etter samlivsbrudd. Henvist til DPS.",
+          "en": "Consultation: crisis after a breakup. Referred to DPS."
+        }
+      },
+      {
+        "date": "2026-03-02",
+        "text": {
+          "nb": "Selvrapport mottatt før konsultasjon (PHQ-9 12)",
+          "en": "Self-report received before the consultation (PHQ-9 12)"
+        }
+      },
+      {
+        "date": "2024-09-17",
+        "text": {
+          "nb": "Konsultasjon: krise etter konflikt i nær relasjon. Samtaler hos fastlegen i to uker.",
+          "en": "Consultation: crisis after a conflict in a close relationship. Talks with the GP over two weeks."
+        }
+      },
+      {
+        "date": "2022-11-08",
+        "text": {
+          "nb": "Konsultasjon: krise etter samlivsbrudd. Kort oppfølging hos fastlegen.",
+          "en": "Consultation: crisis after a breakup. Brief follow-up with the GP."
+        }
+      }
+    ],
+    "caseOnlyLetter": {
+      "date": "2026-03-16",
+      "from": {
+        "nb": "DPS Skjærgården, inntaksteamet",
+        "en": "DPS Skjærgården, intake team"
+      },
+      "title": {
+        "nb": "Svar på henvisning",
+        "en": "Reply to referral"
+      },
+      "body": {
+        "nb": "Henvisningen for Astrid Holm, mottatt 2. mars 2026, er vurdert.\n\nHenvisningen er avslått og returneres til henvisende fastlege.",
+        "en": "The referral for Astrid Holm, received 2 March 2026, has been assessed.\n\nThe referral is rejected and returned to the referring GP."
+      }
+    },
+    "firstReferral": {
+      "sent": "2026-03-02",
+      "sections": {
+        "aktuelt": {
+          "nb": "Krise etter samlivsbrudd for tre uker siden, med søvnvansker, gråt og raske svingninger i humøret. PHQ-9: 12. Har hatt flere liknende kriser i nære relasjoner de siste årene. Spørsmål om emosjonelt ustabile personlighetstrekk.",
+          "en": "Crisis after a breakup three weeks ago, with sleep problems, crying and rapid swings in mood. PHQ-9: 12. Has had several similar crises in close relationships in recent years. Question of emotionally unstable personality traits."
+        },
+        "tidligere": {
+          "nb": "Ingen tidligere behandling i spesialisthelsetjenesten. Kommunale tilbud er ikke prøvd.",
+          "en": "No previous treatment in specialist health services. Municipal services have not been tried."
+        },
+        "funksjon": {
+          "nb": "Funksjonsfall de siste tre ukene, med konsentrasjonsvansker og flere fraværsdager på jobb. Har trukket seg fra venner.",
+          "en": "Functional decline over the last three weeks, with difficulty concentrating and several days off work. Has withdrawn from friends."
+        },
+        "risiko": {
+          "nb": "Selvmordsrisiko er vurdert. Ingen aktuelle selvmordstanker eller planer.",
+          "en": "Suicide risk has been assessed. No current suicidal thoughts or plans."
+        },
+        "sporsmal": {
+          "nb": "Ønsker vurdering og eventuell utredning av mulige emosjonelt ustabile personlighetstrekk, med tanke på behandling i spesialisthelsetjenesten.",
+          "en": "Requests assessment and, if needed, investigation of possible emotionally unstable personality traits, with a view to treatment in specialist health services."
+        }
+      }
+    },
+    "dpsScript": {
+      "return": {
+        "date": "2026-03-16",
+        "reasons": [
+          "situasjonellKrise",
+          "kortVarighet",
+          "kommunaltIkkeProvd"
+        ],
+        "explanation": {
+          "nb": "Henvisningen er avslått og returneres til henvisende fastlege. Presentasjonen er forenlig med emosjonelt ustabile personlighetstrekk, men den nåværende krisen er primært situasjonell (samlivsbrudd). Funksjonsnedgangen er av nylig dato (tre uker) og møter ikke varighetskriteriet for spesialistbehandling ved denne presentasjonstypen.",
+          "en": "The referral is rejected and returned to the referring GP. The presentation is consistent with emotionally unstable personality traits, but the current crisis is primarily situational (relationship breakdown). The functional decline is recent (three weeks) and does not meet the duration criterion for specialist treatment for this presentation type."
+        },
+        "advice": {
+          "nb": "Forslag til oppfølging: kommunal psykolog med strukturert kriseoppfølging. Ny henvisning dersom funksjonen ikke bedres innen tre måneder, eller straks hvis risikofaktorer øker.",
+          "en": "Suggested follow-up: a municipal psychologist with structured crisis follow-up. A new referral if functioning does not improve within three months, or at once if risk factors increase."
+        },
+        "unmet": [
+          {
+            "criterion": {
+              "nb": "Funksjonsnivå",
+              "en": "Level of functioning"
+            },
+            "text": {
+              "nb": "Funksjonsfall til stede, men av kort varighet (3 uker).",
+              "en": "Functional decline present, but of short duration (3 weeks)."
+            }
+          },
+          {
+            "criterion": {
+              "nb": "Varighet",
+              "en": "Duration"
+            },
+            "text": {
+              "nb": "For kort til å skille mellom tilpasningsreaksjon og vedvarende lidelse.",
+              "en": "Too short to distinguish between an adjustment reaction and a lasting disorder."
+            }
+          },
+          {
+            "criterion": {
+              "nb": "Behandlingsnytte",
+              "en": "Benefit of treatment"
+            },
+            "text": {
+              "nb": "Kommunalt kriseoppfølgingstilbud er ikke forsøkt.",
+              "en": "The municipal crisis follow-up service has not been tried."
+            }
+          }
+        ]
+      },
+      "answer": {
+        "date": "2026-03-19",
+        "text": {
+          "nb": "Godt spørsmål. Det kroniske mønsteret er relevant og ville styrket henvisningen. For denne typen presentasjoner er det nyttig å skille mellom aktuell krise (situasjonell, kort varighet) og underliggende mønster (gjentakende interpersonlige kriser). Med konkrete eksempler over tid kunne vurderingen blitt en annen. En tidslinje over tidligere kriser er nyttig i en eventuell ny henvisning.",
+          "en": "Good question. The chronic pattern is relevant and would have strengthened the referral. For this type of presentation it is useful to distinguish between the current crisis (situational, short duration) and the underlying pattern (recurring interpersonal crises). With concrete examples over time, the assessment could have been different. A timeline of earlier crises is useful in any new referral."
+        }
+      }
+    }
+  },
+  "dps": {
+    "queue": {
+      "received": "2026-03-02",
+      "deadline": "2026-03-16",
+      "chips": [
+        {
+          "label": {
+            "nb": "Ny melding",
+            "en": "New message"
+          },
+          "isNew": true
+        }
+      ]
+    },
+    "briefing": {
+      "task": {
+        "nb": "Du er i inntaksteamet ved DPS Skjærgården. Fastlegen har sendt et spørsmål om svaret på Astrids henvisning. Les spørsmålet og svar fastlegen.",
+        "en": "You are on the intake team at DPS Skjærgården. The GP has sent a question about the reply to Astrid’s referral. Read the question and answer the GP."
+      },
+      "rows": [
+        {
+          "label": {
+            "nb": "Hva du får",
+            "en": "What you get"
+          },
+          "value": {
+            "nb": "Henvisningen fra fastlegen, svaret inntaksteamet sendte 16. mars 2026, og et spørsmål fra fastlegen om svaret.",
+            "en": "The referral from the GP, the reply the intake team sent on 16 March 2026, and a question from the GP about the reply."
+          }
+        },
+        {
+          "label": {
+            "nb": "Hva du ikke får",
+            "en": "What you don’t get"
+          },
+          "value": {
+            "nb": "Fastlegens navn eller andre henvisninger fra samme lege.",
+            "en": "The GP’s name or other referrals from the same doctor."
+          }
+        },
+        {
+          "label": {
+            "nb": "Svartid",
+            "en": "Response time"
+          },
+          "value": {
+            "nb": "Svar forventes innen 5 til 10 virkedager. Alle meldinger lagres i henvisningshistorikken.",
+            "en": "A reply is expected within 5 to 10 working days. All messages are stored in the referral history."
+          }
+        }
+      ],
+      "time": {
+        "nb": "Omtrent 5 minutter",
+        "en": "About 5 minutes"
+      }
+    },
+    "atlasTask": {
+      "nb": "Med ATLAS ser du returen inntaksteamet sendte, med årsaker, råd og kriteriene som ikke var oppfylt, og fastlegens spørsmål i dialogen. Skriv svaret der.",
+      "en": "With ATLAS you see the return the intake team sent, with reasons, advice and the criteria that were not met, and the GP’s question in the dialogue. Write the answer there."
+    },
+    "referral": {
+      "sent": "2026-03-02",
+      "received": "2026-03-02",
+      "deadline": "2026-03-16",
+      "sections": {
+        "aktuelt": {
+          "nb": "Krise etter samlivsbrudd for tre uker siden, med søvnvansker, gråt og raske svingninger i humøret. PHQ-9: 12. Har hatt flere liknende kriser i nære relasjoner de siste årene. Spørsmål om emosjonelt ustabile personlighetstrekk.",
+          "en": "Crisis after a breakup three weeks ago, with sleep problems, crying and rapid swings in mood. PHQ-9: 12. Has had several similar crises in close relationships in recent years. Question of emotionally unstable personality traits."
+        },
+        "tidligere": {
+          "nb": "Ingen tidligere behandling i spesialisthelsetjenesten. Kommunale tilbud er ikke prøvd.",
+          "en": "No previous treatment in specialist health services. Municipal services have not been tried."
+        },
+        "funksjon": {
+          "nb": "Funksjonsfall de siste tre ukene, med konsentrasjonsvansker og flere fraværsdager på jobb. Har trukket seg fra venner.",
+          "en": "Functional decline over the last three weeks, with difficulty concentrating and several days off work. Has withdrawn from friends."
+        },
+        "risiko": {
+          "nb": "Selvmordsrisiko er vurdert. Ingen aktuelle selvmordstanker eller planer.",
+          "en": "Suicide risk has been assessed. No current suicidal thoughts or plans."
+        },
+        "sporsmal": {
+          "nb": "Ønsker vurdering og eventuell utredning av mulige emosjonelt ustabile personlighetstrekk, med tanke på behandling i spesialisthelsetjenesten.",
+          "en": "Requests assessment and, if needed, investigation of possible emotionally unstable personality traits, with a view to treatment in specialist health services."
+        }
+      },
+      "noteAttachment": {
+        "nb": "Konsultasjon. Astrid kommer tre uker etter et samlivsbrudd. Siden da sover hun dårlig, gråter mye og har raske svingninger i humøret. PHQ-9 i dag: 12.\n\nHar hatt flere liknende kriser i nære relasjoner de siste årene. Funksjonsfall de siste tre ukene, med konsentrasjonsvansker og flere fraværsdager på jobb. Har trukket seg fra venner. Ingen tidligere behandling i spesialisthelsetjenesten, og kommunale tilbud er ikke prøvd.\n\nSelvmordsrisiko vurdert. Ingen aktuelle selvmordstanker eller planer. Henvises til DPS med spørsmål om emosjonelt ustabile personlighetstrekk.",
+        "en": "Consultation. Astrid comes three weeks after a breakup. Since then she has slept poorly, cried a lot and had rapid swings in mood. PHQ-9 today: 12.\n\nHas had several similar crises in close relationships in recent years. Functional decline over the last three weeks, with difficulty concentrating and several days off work. Has withdrawn from friends. No previous treatment in specialist health services, and municipal services have not been tried.\n\nSuicide risk assessed. No current suicidal thoughts or plans. Referred to DPS with a question of emotionally unstable personality traits."
+      }
+    },
+    "guideAsReceived": [
+      "alvorlighet",
+      "funksjon",
+      "varighet",
+      "behandling",
+      "risiko"
+    ],
+    "gpScript": {
+      "question": {
+        "date": "2026-03-17",
+        "text": {
+          "nb": "Takk for tilbakemeldingen. Jeg forstår vurderingen om at funksjonsnedgangen er av kort varighet. Mitt spørsmål: pasienten har et mønster med gjentakende interpersonlige kriser over flere år, selv om det nåværende funksjonsfallet er nylig. Bør dette kroniske mønsteret ha vært dokumentert annerledes i henvisningen for at det skulle vektes i vurderingen?",
+          "en": "Thank you for the feedback. I understand the assessment that the functional decline is of short duration. My question: the patient has a pattern of recurring interpersonal crises over several years, even though the current functional decline is recent. Should this chronic pattern have been documented differently in the referral for it to be weighted in the assessment?"
+        }
+      },
+      "questionPlain": {
+        "date": "2026-03-17",
+        "text": {
+          "nb": "Gjelder svaret på henvisningen for Astrid Holm. Brevet sier at henvisningen er avslått, men ikke hva vurderingen bygger på. Pasienten har hatt gjentakende kriser i nære relasjoner over flere år. Hva skal til for at en ny henvisning blir vurdert annerledes?",
+          "en": "About the reply to the referral for Astrid Holm. The letter says that the referral is rejected, but not what the assessment is based on. The patient has had recurring crises in close relationships over several years. What would it take for a new referral to be assessed differently?"
+        }
+      }
+    },
+    "returnSent": {
+      "date": "2026-03-16",
+      "reasons": [
+        "situasjonellKrise",
+        "kortVarighet",
+        "kommunaltIkkeProvd"
+      ],
+      "explanation": {
+        "nb": "Henvisningen er avslått og returneres til henvisende fastlege. Presentasjonen er forenlig med emosjonelt ustabile personlighetstrekk, men den nåværende krisen er primært situasjonell (samlivsbrudd). Funksjonsnedgangen er av nylig dato (tre uker) og møter ikke varighetskriteriet for spesialistbehandling ved denne presentasjonstypen.",
+        "en": "The referral is rejected and returned to the referring GP. The presentation is consistent with emotionally unstable personality traits, but the current crisis is primarily situational (relationship breakdown). The functional decline is recent (three weeks) and does not meet the duration criterion for specialist treatment for this presentation type."
+      },
+      "advice": {
+        "nb": "Forslag til oppfølging: kommunal psykolog med strukturert kriseoppfølging. Ny henvisning dersom funksjonen ikke bedres innen tre måneder, eller straks hvis risikofaktorer øker.",
+        "en": "Suggested follow-up: a municipal psychologist with structured crisis follow-up. A new referral if functioning does not improve within three months, or at once if risk factors increase."
+      },
+      "unmet": [
+        {
+          "criterion": {
+            "nb": "Funksjonsnivå",
+            "en": "Level of functioning"
+          },
+          "text": {
+            "nb": "Funksjonsfall til stede, men av kort varighet (3 uker).",
+            "en": "Functional decline present, but of short duration (3 weeks)."
+          }
+        },
+        {
+          "criterion": {
+            "nb": "Varighet",
+            "en": "Duration"
+          },
+          "text": {
+            "nb": "For kort til å skille mellom tilpasningsreaksjon og vedvarende lidelse.",
+            "en": "Too short to distinguish between an adjustment reaction and a lasting disorder."
+          }
+        },
+        {
+          "criterion": {
+            "nb": "Behandlingsnytte",
+            "en": "Benefit of treatment"
+          },
+          "text": {
+            "nb": "Kommunalt kriseoppfølgingstilbud er ikke forsøkt.",
+            "en": "The municipal crisis follow-up service has not been tried."
+          }
+        }
+      ]
+    },
+    "plainLetter": {
+      "date": "2026-03-16",
+      "from": {
+        "nb": "DPS Skjærgården, inntaksteamet",
+        "en": "DPS Skjærgården, intake team"
+      },
+      "title": {
+        "nb": "Henvisning og svar",
+        "en": "Referral and reply"
+      },
+      "body": {
+        "nb": "Henvisning fra fastlegen, sendt 2. mars 2026\n\nAktuelt og problemstilling: Krise etter samlivsbrudd for tre uker siden, med søvnvansker, gråt og raske svingninger i humøret. PHQ-9: 12. Har hatt flere liknende kriser i nære relasjoner de siste årene. Spørsmål om emosjonelt ustabile personlighetstrekk.\n\nTidligere behandling: Ingen tidligere behandling i spesialisthelsetjenesten. Kommunale tilbud er ikke prøvd.\n\nFunksjonsfall: Funksjonsfall de siste tre ukene, med konsentrasjonsvansker og flere fraværsdager på jobb. Har trukket seg fra venner.\n\nRisikovurdering: Selvmordsrisiko er vurdert. Ingen aktuelle selvmordstanker eller planer.\n\nSpørsmål til DPS: Ønsker vurdering og eventuell utredning av mulige emosjonelt ustabile personlighetstrekk, med tanke på behandling i spesialisthelsetjenesten.\n\nSvar fra DPS Skjærgården, sendt 16. mars 2026\n\nHenvisningen for Astrid Holm, mottatt 2. mars 2026, er vurdert.\n\nHenvisningen er avslått og returneres til henvisende fastlege.",
+        "en": "Referral from the GP, sent 2 March 2026\n\nPresenting problem: Crisis after a breakup three weeks ago, with sleep problems, crying and rapid swings in mood. PHQ-9: 12. Has had several similar crises in close relationships in recent years. Question of emotionally unstable personality traits.\n\nPrevious treatment: No previous treatment in specialist health services. Municipal services have not been tried.\n\nFunctional decline: Functional decline over the last three weeks, with difficulty concentrating and several days off work. Has withdrawn from friends.\n\nRisk assessment: Suicide risk has been assessed. No current suicidal thoughts or plans.\n\nQuestion for DPS: Requests assessment and, if needed, investigation of possible emotionally unstable personality traits, with a view to treatment in specialist health services.\n\nReply from DPS Skjærgården, sent 16 March 2026\n\nThe referral for Astrid Holm, received 2 March 2026, has been assessed.\n\nThe referral is rejected and returned to the referring GP."
+      }
+    }
+  },
+  "debrief": {
+    "gp": {
+      "title": {
+        "nb": "Fra retur til plan",
+        "en": "From return to plan"
+      },
+      "whatHappened": {
+        "nb": "DPS avslo henvisningen 16. mars 2026 og returnerte den med tre årsaker, en forklaring og råd. Fastlegen leste returen. Fastlegens beslutning: {{beslutning}}. Plan: {{utfall}}.",
+        "en": "DPS rejected the referral on 16 March 2026 and returned it with three reasons, an explanation and advice. The GP read the return. The GP’s decision: {{beslutning}}. Plan: {{utfall}}."
+      },
+      "purpose": {
+        "nb": "Saken er laget for å prøve om et avslag med årsaker, forklaring og råd kan bli tilbakemelding som fastlegen kan bruke, og starten på en dialog i stedet for en ny runde med henvisning.",
+        "en": "The case was built to test whether a rejection with reasons, an explanation and advice can become feedback the GP can use, and the start of a dialogue instead of another round of referral."
+      }
+    },
+    "dps": {
+      "title": {
+        "nb": "Fra retur til svar",
+        "en": "From return to answer"
+      },
+      "whatHappened": {
+        "nb": "Inntaksteamet returnerte henvisningen 16. mars 2026 med tre årsaker, en forklaring og råd. {{sporsmal}} {{svar}}",
+        "en": "The intake team returned the referral on 16 March 2026 with three reasons, an explanation and advice. {{sporsmal}} {{svar}}"
+      },
+      "purpose": {
+        "nb": "Saken er laget for å prøve om det å svare på fastlegens spørsmål i samme tråd som returen gjør tilbakemeldingen nyttigere for fastlegen, uten at det krever en ny henvisning.",
+        "en": "The case was built to test whether answering the GP’s question in the same thread as the return makes the feedback more useful to the GP, without requiring a new referral."
+      }
+    }
+  }
+}
