@@ -63,8 +63,8 @@
               "en": "The study name"
             },
             "body": {
-              "nb": "ATLAS har gitt deg et tilfeldig studienavn. Det står ferdig utfylt øverst i hvert skjema, sammen med rollen din, slik at svarene dine holdes sammen uten navnet ditt.",
-              "en": "ATLAS has given you a random study name. It is filled in at the top of every form, with your role, so that your answers are kept together without your name."
+              "nb": "ATLAS har gitt deg et tilfeldig studienavn. Det står ferdig utfylt i hvert skjema, sammen med rollen din, slik at svarene dine knyttes sammen uten navnet ditt.",
+              "en": "ATLAS has given you a random study name. It is filled in on every form, with your role, so that your answers are linked without your name."
             },
             "reason": {
               "nb": "Et tilfeldig navn gjør at svarene kan sorteres per deltaker, uten at noen kan se hvem som har svart.",
@@ -444,8 +444,8 @@
               "en": "The study name"
             },
             "body": {
-              "nb": "ATLAS har gitt deg et tilfeldig studienavn. Det står ferdig utfylt øverst i hvert skjema, sammen med rollen din, slik at svarene dine holdes sammen uten navnet ditt.",
-              "en": "ATLAS has given you a random study name. It is filled in at the top of every form, with your role, so that your answers are kept together without your name."
+              "nb": "ATLAS har gitt deg et tilfeldig studienavn. Det står ferdig utfylt i hvert skjema, sammen med rollen din, slik at svarene dine knyttes sammen uten navnet ditt.",
+              "en": "ATLAS has given you a random study name. It is filled in on every form, with your role, so that your answers are linked without your name."
             },
             "reason": {
               "nb": "Et tilfeldig navn gjør at svarene kan sorteres per deltaker, uten at noen kan se hvem som har svart.",

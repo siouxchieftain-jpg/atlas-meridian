@@ -248,8 +248,6 @@ export function DpsAssessment({ caseId }: { caseId: CaseId }) {
   ) : undefined;
   return (
     <CaseLayout side={side} compactSummary={compact}>
-      <CaseModeBar caseId={caseId} />
-      <AtlasTaskBar caseId={caseId} />
       <CaseTitle
         caseId={caseId}
         docTitle={s('assessmentTitle')}
@@ -257,6 +255,9 @@ export function DpsAssessment({ caseId }: { caseId: CaseId }) {
         sub={s('fromReferringGp', { date: formatDate(d.referral.received, lang) })}
         side={d.returnSent ? <Assessed date={d.returnSent.date} /> : <Frist date={d.referral.deadline} />}
       />
+      {/* Notices sit under the title (G-16). */}
+      <CaseModeBar caseId={caseId} />
+      <AtlasTaskBar caseId={caseId} />
       {caseId === 'astrid' ? (
         <AstridDps without={without} />
       ) : (

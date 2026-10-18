@@ -1,20 +1,20 @@
-import { Button, makeStyles, tokens, typographyStyles } from '@fluentui/react-components';
+import { Button, makeStyles, mergeClasses, tokens, typographyStyles } from '@fluentui/react-components';
 import { ArrowLeft16Regular, ArrowCounterclockwise16Regular } from '@fluentui/react-icons';
-import { useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
+import { useEffect, useId, useMemo, useRef, useState, type ReactNode } from 'react';
 import type { Role } from '../content/types';
-import { cases, pattern, vocab } from '../content';
-import { useLang } from '../i18n/i18n';
+import { cases, ordinary, pattern, vocab } from '../content';
+import { formatDateWithWeekday, formatDayMonth, useLang } from '../i18n/i18n';
 import { mentionedCriteria } from '../engine/criteria';
 import { dpsOutcomeMessage, type ThreadMessage, type ThreadOutput } from '../engine/thread';
-import { DPS_TODAY } from '../engine/clock';
+import { DPS_TODAY, GP_TODAY } from '../engine/clock';
 import { emptyDps, emptyGp, type DpsWork, type GpWork } from '../state/types';
 import { SandboxWorkProvider, useWork, type WorkApi } from '../state/work';
 import { ConfidenceScale, InfoGuide, UncertaintyTags } from '../patterns/clinical';
 import { useAtlasAnnounce } from '../patterns/announce';
+import { StatusChip } from '../patterns/basics';
 import { DecisionSection } from '../case/AtlasPanelGp';
 import { BandSection } from '../case/BandSection';
 import { GpUnsureBlock, DpsOutcomeSection, ReferralLetter, receivedReferral } from '../case/dpsParts';
-import { QueueView, TimelisteView } from '../case/lists';
 import { ProfileRail, RecordTabs } from '../case/record';
 import { ReferralEditor } from '../case/ReferralEditor';
 import { StructuredReturnView, ThreadView } from '../case/Thread';
@@ -135,32 +135,159 @@ function PatientLine() {
   );
 }
 
+/* The overview's list in miniature, drawn as Min dag draws it: one row per patient, time, initials, name and visit,
+   and what can be done now. Sofie Lund is the one row that opens; the GP's ordinary appointments make the day. */
+const useList = makeStyles({
+  card: {
+    backgroundColor: tokens.colorNeutralBackground1,
+    borderRadius: tokens.borderRadiusLarge,
+    border: `1px solid ${tokens.colorNeutralStroke3}`,
+    boxShadow: tokens.shadow2,
+    minWidth: 0,
+    '@media (forced-colors: active)': { border: '1px solid CanvasText' },
+  },
+  headBox: { display: 'flex', flexDirection: 'column', gap: '2px', paddingInline: '16px', paddingBlockStart: '14px', paddingBlockEnd: '10px' },
+  head: { ...typographyStyles.subtitle2, margin: 0 },
+  summary: { ...typographyStyles.caption1, margin: 0, color: tokens.colorNeutralForeground3 },
+  rows: { listStyle: 'none', margin: 0, padding: 0, borderTop: `1px solid ${tokens.colorNeutralStroke3}` },
+  row: {
+    display: 'grid',
+    gridTemplateColumns: '48px 32px minmax(0, 1fr) auto',
+    alignItems: 'center',
+    columnGap: '10px',
+    paddingInline: '16px',
+    paddingBlock: '10px',
+    borderBottom: `1px solid ${tokens.colorNeutralStroke3}`,
+  },
+  rowDps: { gridTemplateColumns: '64px 32px minmax(0, 1fr) auto' },
+  rowOpen: { backgroundColor: tokens.colorBrandBackground2, boxShadow: `inset 3px 0 0 ${tokens.colorBrandStroke1}` },
+  time: { ...typographyStyles.body1Strong, fontVariantNumeric: 'tabular-nums' },
+  timeQuiet: { ...typographyStyles.body1, fontVariantNumeric: 'tabular-nums' },
+  received: { display: 'flex', flexDirection: 'column', ...typographyStyles.caption1, color: tokens.colorNeutralForeground2 },
+  receivedDate: { ...typographyStyles.body1Strong, color: tokens.colorNeutralForeground1 },
+  avatar: {
+    width: '32px',
+    height: '32px',
+    borderRadius: tokens.borderRadiusCircular,
+    backgroundColor: tokens.colorNeutralBackground3,
+    color: tokens.colorNeutralForeground2,
+    display: 'inline-flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    ...typographyStyles.caption1Strong,
+  },
+  who: { display: 'flex', flexDirection: 'column', minWidth: 0 },
+  name: { ...typographyStyles.body1Strong, overflowWrap: 'anywhere' },
+  nameQuiet: { ...typographyStyles.body1, overflowWrap: 'anywhere' },
+  visit: { ...typographyStyles.caption1, color: tokens.colorNeutralForeground3, overflowWrap: 'anywhere' },
+  chipLine: { display: 'flex', flexWrap: 'wrap', gap: '4px', marginBlockStart: '2px' },
+  later: { ...typographyStyles.caption1, color: tokens.colorNeutralForeground3, whiteSpace: 'nowrap' },
+  foot: { ...typographyStyles.caption1, margin: 0, paddingInline: '16px', paddingBlock: '10px', color: tokens.colorNeutralForeground3 },
+});
+
+const capital = (x: string) => (x ? x.charAt(0).toUpperCase() + x.slice(1) : x);
+
 function FrameList({ role }: { role: Role }) {
   const cls = useStyles();
-  const { s, t } = useLang();
+  const list = useList();
+  const { s, t, lang } = useLang();
   const [opened, setOpened] = useState(false);
   const announce = useAtlasAnnounce();
+  const titleId = useId();
+  const nameId = useId();
   const open = () => {
     if (!opened) announce(s('tourOpenedNote'));
     setOpened(true);
   };
   const c = cases.sofie;
+  const openButton = (
+    <Button size="small" aria-describedby={nameId} onClick={open}>
+      {s('stepOpen')}
+    </Button>
+  );
+  const name = (
+    <span className={list.name} id={nameId}>
+      {s('patientAge', { name: c.patient.name, age: c.patient.age })}
+    </span>
+  );
+  let rows: ReactNode;
+  if (role === 'gp') {
+    const line = [t(c.gp.timeliste.visit), ...c.gp.timeliste.chips.slice(0, 1).map((ch) => t(ch.label))].join(' · ');
+    const day = [
+      {
+        time: c.gp.timeliste.time,
+        node: (
+          <li key={SOFIE} className={mergeClasses(list.row, opened && list.rowOpen)}>
+            <span className={list.time}>{c.gp.timeliste.time}</span>
+            <span className={list.avatar} aria-hidden="true">
+              {c.patient.initials}
+            </span>
+            <span className={list.who}>
+              {name}
+              <span className={list.visit}>{line}</span>
+            </span>
+            {openButton}
+          </li>
+        ),
+      },
+      ...ordinary.map((o) => ({
+        time: o.time,
+        node: (
+          <li key={o.id} className={list.row}>
+            <span className={list.timeQuiet}>{o.time}</span>
+            <span className={list.avatar} aria-hidden="true">
+              {o.initials}
+            </span>
+            <span className={list.who}>
+              <span className={list.nameQuiet}>{s('patientAge', { name: o.name, age: o.age })}</span>
+              <span className={list.visit}>{t(o.visit)}</span>
+            </span>
+            <span className={list.later}>{s('listRoutineTag')}</span>
+          </li>
+        ),
+      })),
+    ].sort((a, b) => a.time.localeCompare(b.time));
+    rows = day.map((r) => r.node);
+  } else {
+    const q = c.dps!.queue;
+    rows = (
+      <li className={mergeClasses(list.row, list.rowDps, opened && list.rowOpen)}>
+        <span className={list.received}>
+          {s('colReceived')}
+          <span className={list.receivedDate}>{formatDayMonth(q.received, lang)}</span>
+        </span>
+        <span className={list.avatar} aria-hidden="true">
+          {c.patient.initials}
+        </span>
+        <span className={list.who}>
+          {name}
+          <span className={list.visit}>{`${s('homeFromGp')} · ${t(q.chips[0]?.label)}`}</span>
+          <span className={list.chipLine}>
+            <StatusChip>{s('homeDeadlineChip', { date: formatDayMonth(q.deadline, lang) })}</StatusChip>
+          </span>
+        </span>
+        {openButton}
+      </li>
+    );
+  }
   return (
     <div className={cls.stack}>
-      {role === 'gp' ? (
-        <TimelisteView
-          title={false}
-          entries={[{ caseId: SOFIE, onOpen: open, selected: opened, chips: c.gp.timeliste.chips.map((x) => ({ label: t(x.label), isNew: x.isNew })) }]}
-        />
-      ) : (
-        <QueueView
-          title={false}
-          entries={[{ caseId: SOFIE, onOpen: open, selected: opened, chips: c.dps!.queue.chips.map((x) => ({ label: t(x.label), isNew: x.isNew })) }]}
-        />
-      )}
-      {opened && (
-        <p className={cls.note}>{s('tourOpenedNote')}</p>
-      )}
+      <section className={list.card} aria-labelledby={titleId}>
+        <div className={list.headBox}>
+          <h3 id={titleId} className={list.head}>
+            {role === 'gp' ? s('timelisteTitle') : s('navQueue')}
+          </h3>
+          {/* The practice day in one line; «1 referral case», never «1 referral cases» (r6F-07). */}
+          <p className={list.summary}>
+            {role === 'gp'
+              ? s('timelisteSummaryOneCase', { date: capital(formatDateWithWeekday(GP_TODAY, lang)), n: 1 + ordinary.length })
+              : s('queueSummaryOne', { date: capital(formatDateWithWeekday(DPS_TODAY, lang)) })}
+          </p>
+        </div>
+        <ul className={list.rows}>{rows}</ul>
+        <p className={list.foot}>{role === 'gp' ? s('homeRoutineNote') : s('homeQueueNote')}</p>
+      </section>
+      {opened && <p className={cls.note}>{s('tourOpenedNote')}</p>}
     </div>
   );
 }

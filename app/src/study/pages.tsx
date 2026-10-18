@@ -10,7 +10,7 @@ import { stepIndex, useStudy } from '../state/study';
 import { STEP_ORDER, type FormStep, type StepId } from '../state/types';
 import { Panel } from '../patterns/basics';
 import { focusAfterOverlay } from '../patterns/announce';
-import { Actions, Body, Card, GuidePage, Lead, Muted, PageCard } from '../patterns/layout';
+import { Actions, Body, Card, IntroPage, Lead, Muted, PageCard } from '../patterns/layout';
 import { FOCUS_HEADING_ON_LOAD, PageHeading } from '../shell/PageHeading';
 import { ConfirmDialog } from '../shell/HeaderParts';
 import { V5View } from '../overview/V5View';
@@ -49,7 +49,7 @@ const useStyles = makeStyles({
   reasons: { listStyle: 'none', margin: 0, padding: 0, display: 'flex', flexDirection: 'column', gap: tokens.spacingVerticalM },
   reasonItem: { display: 'flex', flexDirection: 'column', gap: '2px', paddingBlockEnd: tokens.spacingVerticalS, borderBottom: `1px solid ${tokens.colorNeutralStroke3}` },
   reasonTitle: { ...typographyStyles.body1Strong },
-  reasonText: { ...typographyStyles.body1, margin: 0 },
+  reasonText: { ...typographyStyles.body1, margin: 0, maxWidth: '72ch' },
   seeAgain: { listStyle: 'none', margin: 0, padding: 0, display: 'flex', flexDirection: 'column' },
   seeAgainItem: {
     display: 'flex',
@@ -127,11 +127,12 @@ export function AvslutningPage() {
       <Body>{s('avslutningIntro')}</Body>
       <FormStepCard step="S6" autoOpen />
       {ctl.stepDone('S6') ? (
+        // Finishing is the expected path and the primary action; the extras are optional (Meridian: primary first).
         <Actions>
-          <Button appearance="primary" onClick={() => ctl.goToStep('ekstra')}>
-            {s('toExtra')}
+          <Button appearance="primary" onClick={() => ctl.goToStep('takk')}>
+            {s('finish')}
           </Button>
-          <Button onClick={() => ctl.goToStep('takk')}>{s('finish')}</Button>
+          <Button onClick={() => ctl.goToStep('ekstra')}>{s('toExtra')}</Button>
         </Actions>
       ) : (
         <FormWaiting step="S6" />
@@ -233,7 +234,7 @@ export function TakkPage() {
   const caseIds: CaseId[] = ['kari', 'erlend', 'astrid'];
   if (role === 'gp' && study.state.ledger.S7) caseIds.push('torbjorn');
   return (
-    <GuidePage
+    <IntroPage
       wide
       after={
         <Card aria-label={s('takkReasonsTitle')}>
@@ -270,14 +271,14 @@ export function TakkPage() {
         </Card>
       }
     >
-      <PageHeading title={s('stepTakk')} guide>
+      <PageHeading title={s('stepTakk')}>
         {s('takkTitle')}
       </PageHeading>
       <Lead>{previewFlag() ? s('takkBodyPreview') : s('takkBody')}</Lead>
       {/* The full name only now, after the last form: it names what the forms ask about. */}
       <Body>{s('takkAtlasName')}</Body>
       <ClearBrowserData />
-    </GuidePage>
+    </IntroPage>
   );
 }
 
@@ -289,14 +290,26 @@ export function TakkPage() {
 function ClearBrowserData() {
   const cls = useStyles();
   const { s } = useLang();
+  const study = useStudy();
   const [ask, setAsk] = useState(false);
   const askBtn = useRef<HTMLButtonElement>(null);
   // In a preview nothing went to Nettskjema, and removing the data removes the preview answers too (R2DPS-03).
   const preview = previewFlag();
+  const name = study.state.studienavn;
   return (
     <div className={cls.section}>
       <h2 className={cls.h2}>{s('takkClearTitle')}</h2>
       <Body>{preview ? s('takkClearBodyPreview') : s('takkClearBody')}</Body>
+      {/* The study name is the only way to withdraw sent answers (the information letter): shown before it can go. */}
+      {name && !preview && (
+        <Body>
+          {s('takkClearNameLead')}{' '}
+          <strong lang="nb" data-takk-studienavn="">
+            {name}
+          </strong>
+          . {s('takkClearNameNote')}
+        </Body>
+      )}
       <div>
         <Button ref={askBtn} onClick={() => setAsk(true)}>
           {s('takkClearButton')}

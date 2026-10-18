@@ -1,7 +1,9 @@
 import {
   Button,
   MessageBar,
+  MessageBarActions,
   MessageBarBody,
+  MessageBarTitle,
   ToggleButton,
   makeStyles,
   mergeClasses,
@@ -34,17 +36,9 @@ const useStyles = makeStyles({
     boxShadow: tokens.shadow2,
     '@media (forced-colors: active)': { border: '1px solid CanvasText' },
   },
-  badge: {
-    ...typographyStyles.caption1Strong,
-    paddingInline: tokens.spacingHorizontalS,
-    paddingBlock: '2px',
-    borderRadius: tokens.borderRadiusMedium,
-    border: `1px solid ${tokens.colorNeutralStroke1}`,
-    color: tokens.colorNeutralForeground1,
-    whiteSpace: 'nowrap',
-  },
-  text: { ...typographyStyles.body1, margin: 0, flexGrow: 1, flexBasis: '240px', minWidth: 0 },
   reason: { ...typographyStyles.caption1, color: tokens.colorNeutralForeground3, margin: 0, flexBasis: '100%' },
+  // The study's case-only notice: one message bar under the case title (G-16).
+  noticeLine: { display: 'block', marginBlockStart: '2px' },
   group: { display: 'inline-flex', gap: '2px' },
   spacer: { flexGrow: 1 },
   placeholder: { ...typographyStyles.body1, margin: 0, color: tokens.colorNeutralForeground2 },
@@ -101,9 +95,9 @@ export function OtherSideButton({ caseId, view }: { caseId: CaseId; view: string
 }
 
 /**
- * The bar above a case view. Study, case-only state: «Uten ATLAS» and «Vis
- * ATLAS» (disabled with its reason until page 1 is confirmed). Review: the
- * «Uten ATLAS» / «Med ATLAS» switch and «Se fra den andre siden».
+ * The bar under a case view's title. Study, case-only state: an informative message bar, «Uten ATLAS», with «Vis
+ * ATLAS» as its action while the form panel is out of sight (the panel carries its own, with the reason, G-18).
+ * Review: the «Uten ATLAS» / «Med ATLAS» switch and «Se fra den andre siden».
  */
 export function CaseModeBar({ caseId }: { caseId: CaseId }) {
   const cls = useStyles();
@@ -116,32 +110,38 @@ export function CaseModeBar({ caseId }: { caseId: CaseId }) {
   if (work.mode === 'study') {
     if (!work.withoutAtlas(caseId) || !core) return null;
     const can = work.canShowAtlas(caseId as CoreCaseId);
-    // One primary «Vis ATLAS» at a time: the form panel's, when the panel shows (Meridian: one primary action).
-    const panelShows = !!host?.form && host.visible;
+    // One «Vis ATLAS» at a time: the form panel's while the panel shows it, else this bar's (Meridian: one primary action).
+    const panelShows = !!host?.form && host.visible && host.form.caseId === caseId;
     return (
-      <div className={cls.bar} data-case-only="">
-        <span className={cls.badge}>{s('utenAtlas')}</span>
-        <div className={cls.text}>
-          <p style={{ margin: 0 }}>{s('placeholderHidden')}</p>
-          <p className={cls.reason}>
-            {work.viewer === 'gp' ? s('caseOnlyLine') : caseId === 'astrid' ? s('caseOnlyLineDpsAstrid') : s('caseOnlyLineDps')}
-          </p>
-        </div>
-        <Button
-          appearance={can && !panelShows ? 'primary' : 'secondary'}
-          icon={<Eye20Regular />}
-          disabledFocusable={!can}
-          aria-describedby={!can ? reasonId : undefined}
-          onClick={() => can && work.showAtlas(caseId)}
-        >
-          {s('showAtlas')}
-        </Button>
-        {!can && (
-          <p className={cls.reason} id={reasonId}>
-            {s('showAtlasReason')}
-          </p>
-        )}
-      </div>
+      // Silent: the bar is part of the page, read with it; it is not news to announce (G-32).
+      <Silent>
+        <MessageBar intent="info" layout="multiline" data-case-only="">
+          <MessageBarBody>
+            <MessageBarTitle>{s('utenAtlas')}</MessageBarTitle> {s('placeholderHidden')}
+            <span className={cls.noticeLine}>
+              {work.viewer === 'gp' ? s('caseOnlyLine') : caseId === 'astrid' ? s('caseOnlyLineDpsAstrid') : s('caseOnlyLineDps')}
+            </span>
+            {!can && !panelShows && (
+              <span className={cls.noticeLine} id={reasonId}>
+                {s('showAtlasReason')}
+              </span>
+            )}
+          </MessageBarBody>
+          {!panelShows && (
+            <MessageBarActions>
+              <Button
+                appearance={can ? 'primary' : 'secondary'}
+                icon={<Eye20Regular />}
+                disabledFocusable={!can}
+                aria-describedby={!can ? reasonId : undefined}
+                onClick={() => can && work.showAtlas(caseId)}
+              >
+                {s('showAtlas')}
+              </Button>
+            </MessageBarActions>
+          )}
+        </MessageBar>
+      </Silent>
     );
   }
   const other = otherSidePath(caseId, work.viewer);

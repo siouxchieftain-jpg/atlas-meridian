@@ -14,31 +14,6 @@ import { formatDate, useLang } from '../i18n/i18n';
 import { Panel, ProvenanceChip, StatusChip } from '../patterns/basics';
 
 const useStyles = makeStyles({
-  header: { display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: tokens.spacingHorizontalM, rowGap: tokens.spacingVerticalXS },
-  avatar: {
-    width: '40px',
-    height: '40px',
-    borderRadius: tokens.borderRadiusCircular,
-    backgroundColor: tokens.colorNeutralBackground3,
-    color: tokens.colorNeutralForeground2,
-    display: 'inline-flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    ...typographyStyles.body1Strong,
-    flexShrink: 0,
-  },
-  who: { display: 'flex', flexDirection: 'column', minWidth: 0 },
-  sub: { ...typographyStyles.caption1, color: tokens.colorNeutralForeground3 },
-  chips: { display: 'flex', flexWrap: 'wrap', gap: tokens.spacingHorizontalXS },
-  flag: {
-    ...typographyStyles.caption1,
-    color: tokens.colorNeutralForeground2,
-    backgroundColor: tokens.colorNeutralBackground3,
-    borderRadius: tokens.borderRadiusMedium,
-    paddingInline: tokens.spacingHorizontalS,
-    paddingBlock: tokens.spacingVerticalXXS,
-    marginTop: tokens.spacingVerticalXS,
-  },
   profile: { display: 'flex', flexDirection: 'column', gap: tokens.spacingVerticalM },
   pRow: { display: 'flex', flexDirection: 'column', gap: '2px' },
   pLabelRow: { display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: tokens.spacingHorizontalXS, flexWrap: 'wrap' },
@@ -98,31 +73,6 @@ const useStyles = makeStyles({
   prevText: { ...typographyStyles.body1, margin: 0 },
   prevNote: { ...typographyStyles.caption1, color: tokens.colorNeutralForeground3, margin: 0 },
 });
-
-export function CaseHeader({ content, chips, extra }: { content: CaseContent; chips?: ReactNode; extra?: ReactNode }) {
-  const cls = useStyles();
-  const { s, t } = useLang();
-  const p = content.patient;
-  return (
-    <div>
-      <div className={cls.header}>
-        <span className={cls.avatar} aria-hidden="true">
-          {p.initials}
-        </span>
-        <div className={cls.who}>
-          <span style={{ ...typographyStyles.subtitle2 }}>{s('patientAge', { name: p.name, age: p.age })}</span>
-          {extra && <span className={cls.sub}>{extra}</span>}
-        </div>
-        {chips && <div className={cls.chips}>{chips}</div>}
-      </div>
-      {content.draftFlag && (
-        <p className={cls.flag}>
-          <strong>{s('draftFlagLabel')}:</strong> {t(content.draftFlag)}
-        </p>
-      )}
-    </div>
-  );
-}
 
 export function ProfileRail({ content }: { content: CaseContent }) {
   const cls = useStyles();

@@ -58,7 +58,8 @@ const useStyles = makeStyles({
     '@media print': { display: 'none' },
   },
   compactBand: { '@media only screen and (min-width: 1024px)': { display: 'none' }, '@media print': { display: 'none' } },
-  noSideRoot: { paddingBlockStart: `${size.panelInset}px` },
+  // Without the ATLAS panel (the case-only state in the study) the panels keep the same 8 px between them.
+  noSideRoot: { paddingBlockStart: `${size.panelInset}px`, display: 'flex', flexDirection: 'column', gap: `${size.panelInset}px`, minWidth: 0 },
 });
 
 /** The ATLAS panel's header: the name and the caption on every instance. */

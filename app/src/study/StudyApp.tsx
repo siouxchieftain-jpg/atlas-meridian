@@ -42,9 +42,8 @@ import { RoleLabel, StudyProgress } from './StudyHeader';
 import { StudyFeedbackTab, feedbackOpened, useStudyFeedback } from './StudyFeedback';
 import { StudyNoticeProvider, useStudyNotice } from './notice';
 import { partOf, roleSeg } from './parts';
-import { SheenButton } from '../patterns/basics';
+import { StartButton } from '../patterns/basics';
 import { Actions, Body, Muted } from '../patterns/layout';
-import { guide } from '../theme/constants';
 
 const useStyles = makeStyles({
   banner: { paddingInline: tokens.spacingHorizontalS, paddingBlockEnd: tokens.spacingVerticalXS },
@@ -67,12 +66,12 @@ const useStyles = makeStyles({
     display: 'flex',
     flexDirection: 'column',
     gap: '6px',
-    paddingInline: '14px',
-    paddingBlock: '10px',
-    borderRadius: '10px',
-    border: `1px solid ${guide.cardEdge}`,
-    background: guide.card,
-    '@media (forced-colors: active)': { background: 'Canvas', border: '1px solid CanvasText' },
+    paddingInline: '16px',
+    paddingBlock: '12px',
+    borderRadius: tokens.borderRadiusMedium,
+    border: `1px solid ${tokens.colorNeutralStroke2}`,
+    backgroundColor: tokens.colorNeutralBackground2,
+    '@media (forced-colors: active)': { border: '1px solid CanvasText' },
   },
   promptQ: { ...typographyStyles.body1Strong, margin: 0 },
 });
@@ -195,7 +194,8 @@ function StudyShell() {
   });
   help.push({ key: 'glossary', label: s('helpGlossary'), icon: <BookOpen20Regular />, dialog: { title: s('helpGlossary'), body: <GlossaryBody /> } });
   help.push({ key: 'about', label: s('helpAboutPrototype'), icon: <Info20Regular />, dialog: { title: s('helpAboutPrototype'), body: <AboutBody /> } });
-  if (stepIndex(furthest) > 0) help.push({ key: 'reset', label: s('helpResetUnsent'), icon: <ArrowCounterclockwise20Regular />, onSelect: () => setConfirmReset(true) });
+  if (stepIndex(furthest) > 0)
+    help.push({ key: 'reset', label: s('helpResetUnsent'), icon: <ArrowCounterclockwise20Regular />, onSelect: () => setConfirmReset(true), divider: true });
 
   const form = host.form;
   const actions: FormPanelActions | null = useMemo(() => {
@@ -344,7 +344,7 @@ function StudyTourPage({ igjen }: { igjen: boolean }) {
     replay && !justDone ? (
       <div data-tour-end="replay">
         <Actions>
-          <SheenButton onClick={() => navigate(ctl.currentPath())}>{s('tourBackToStudy')}</SheenButton>
+          <StartButton onClick={() => navigate(ctl.currentPath())}>{s('tourBackToStudy')}</StartButton>
         </Actions>
       </div>
     ) : (
@@ -359,7 +359,6 @@ function StudyTourPage({ igjen }: { igjen: boolean }) {
             <Muted>{s('promptWhy')}</Muted>
             <div>
               <Button
-                appearance="primary"
                 icon={<CommentEdit20Regular />}
                 data-tour-feedback=""
                 onClick={() =>
@@ -377,7 +376,7 @@ function StudyTourPage({ igjen }: { igjen: boolean }) {
           <Muted>{s('promptAlways')}</Muted>
         )}
         <Actions>
-          <SheenButton
+          <StartButton
             icon={<ArrowRight20Regular />}
             iconPosition="after"
             onClick={() => {
@@ -387,7 +386,7 @@ function StudyTourPage({ igjen }: { igjen: boolean }) {
             }}
           >
             {s('toHome')}
-          </SheenButton>
+          </StartButton>
         </Actions>
         {fb.dialog}
       </div>

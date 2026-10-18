@@ -1776,8 +1776,8 @@
     "en": "How it works"
   },
   "velkommenLetter": {
-    "nb": "Last ned informasjonsskrivet (PDF)",
-    "en": "Download the information letter (PDF)"
+    "nb": "Les informasjonsskrivet",
+    "en": "Read the information letter"
   },
   "velkommenContact": {
     "nb": "Spørsmål?",
@@ -2019,6 +2019,14 @@
     "nb": "ATLAS har lagret framdriften og de to svarene under «Om deg» i denne nettleseren. Du kan fjerne dem nå. Skjemaene du har sendt, ligger i Nettskjema og påvirkes ikke.",
     "en": "ATLAS has stored your progress and the two answers under ‘About you’ in this browser. You can remove them now. The forms you have sent are in Nettskjema and are not affected."
   },
+  "takkClearNameLead": {
+    "nb": "Studienavnet ditt er",
+    "en": "Your study name is"
+  },
+  "takkClearNameNote": {
+    "nb": "Noter det før du fjerner dataene, hvis du vil kunne trekke svarene dine senere. Etterpå står det ikke lenger her.",
+    "en": "Note it before you remove the data if you may want to withdraw your answers later. Afterwards it is no longer shown here."
+  },
   "takkClearButton": {
     "nb": "Fjern ATLAS-data fra denne nettleseren",
     "en": "Remove ATLAS data from this browser"
@@ -2028,8 +2036,8 @@
     "en": "Remove ATLAS data from this browser?"
   },
   "takkClearConfirmBody": {
-    "nb": "Framdriften, språkvalget og svarene under «Om deg» slettes fra denne nettleseren. Studien starter på nytt fra Velkommen hvis noen åpner lenken igjen her.",
-    "en": "Your progress, the language choice and the answers under ‘About you’ are deleted from this browser. The study starts again from ‘Welcome’ if someone opens the link here again."
+    "nb": "Framdriften, språkvalget, studienavnet og svarene under «Om deg» slettes fra denne nettleseren. Studien starter på nytt fra Velkommen hvis noen åpner lenken igjen her.",
+    "en": "Your progress, the language choice, the study name and the answers under ‘About you’ are deleted from this browser. The study starts again from ‘Welcome’ if someone opens the link here again."
   },
   "takkClearBodyPreview": {
     "nb": "ATLAS har lagret framdriften, de to svarene under «Om deg» og svarene fra forhåndsvisningen i denne nettleseren. Svarene fra forhåndsvisningen finnes ikke noe annet sted: last dem ned fra banneret øverst før du fjerner dataene.",
@@ -3436,20 +3444,20 @@
     "en": "The role, the answer and the study name cannot be changed once the form is sent."
   },
   "omDegNameLead": {
-    "nb": "ATLAS laget dette navnet tilfeldig da du valgte rolle. Det står i hvert skjema du sender, slik at svarene dine holdes sammen uten navnet ditt.",
-    "en": "ATLAS made this name at random when you chose your role. It is in every form you send, so that your answers are kept together without your name."
+    "nb": "ATLAS laget dette navnet tilfeldig da du valgte rolle. Det står i hvert skjema du sender, slik at svarene dine knyttes sammen uten navnet ditt.",
+    "en": "ATLAS made this name at random when you chose your role. It is in every form you send, so that your answers are linked without your name."
   },
   "omDegNameFact1": {
-    "nb": "Du trenger ikke huske det",
-    "en": "You do not need to remember it"
+    "nb": "Du trenger det bare hvis du vil trekke svarene dine",
+    "en": "You only need it if you want to withdraw your answers"
   },
   "omDegNameFact2": {
     "nb": "Ingen kan se hvem som har hvilket navn",
     "en": "Nobody can see who has which name"
   },
   "omDegNameFact3": {
-    "nb": "Du ser det øverst i hvert skjema",
-    "en": "You see it at the top of every form"
+    "nb": "Du ser det i hvert skjema og på oversikten",
+    "en": "You see it in every form and on the overview"
   },
   "studyMapParts": {
     "nb": "Delene øverst",
@@ -3540,8 +3548,8 @@
     "en": "The fields are locked: you see them, but cannot change them."
   },
   "velkommenChipAnon": {
-    "nb": "Frivillig og anonymt",
-    "en": "Voluntary and anonymous"
+    "nb": "Frivillig, uten navn eller e-post",
+    "en": "Voluntary, no name or email"
   },
   "homeNewOne": {
     "nb": "1 ny",

@@ -7,6 +7,7 @@ import {
   DialogSurface,
   DialogTitle,
   Menu,
+  MenuDivider,
   MenuItem,
   MenuList,
   MenuPopover,
@@ -18,12 +19,11 @@ import {
   typographyStyles,
 } from '@fluentui/react-components';
 import { ArrowCounterclockwise20Regular, BookOpen20Regular, ChevronDown16Regular, Info20Regular, QuestionCircle20Regular } from '@fluentui/react-icons';
-import { useEffect, useId, useRef, useState, type ReactElement, type ReactNode } from 'react';
+import { Fragment, useEffect, useId, useRef, useState, type ReactElement, type ReactNode } from 'react';
 import { glossary } from '../content';
 import { useLang } from '../i18n/i18n';
 import { RouterLink } from '../router/router';
-import { GuideImage, useSelectedToggle } from '../patterns/basics';
-import { guide } from '../theme/constants';
+import { useSelectedToggle } from '../patterns/basics';
 
 const useStyles = makeStyles({
   wordmark: {
@@ -51,41 +51,34 @@ const useStyles = makeStyles({
   gText: { ...typographyStyles.body1, margin: 0, color: tokens.colorNeutralForeground2 },
   badge: { ...typographyStyles.body1Strong, whiteSpace: 'nowrap' },
   step: { ...typographyStyles.caption1, color: tokens.colorNeutralForeground3, whiteSpace: 'nowrap' },
-  // A help dialog is part of the guide layer: the image in its header, fading into the white body.
+  // A help dialog is a plain Fluent dialog, as Help is in any Microsoft 365 app (ATLAS 3.2: the guide layer is for
+  // Velkommen and the tour only).
   helpSurface: {
     padding: 0,
     width: '100%',
-    maxWidth: 'min(760px, calc(100vw - 32px))',
-    borderRadius: '14px',
+    maxWidth: 'min(680px, calc(100vw - 32px))',
     overflowY: 'auto',
   },
   helpHead: {
-    position: 'relative',
-    isolation: 'isolate',
-    overflow: 'hidden',
-    minHeight: '128px',
     boxSizing: 'border-box',
-    paddingInline: 'clamp(20px, 4vw, 28px)',
-    paddingBlock: '26px',
+    paddingInline: tokens.spacingHorizontalXXL,
+    paddingBlockStart: tokens.spacingVerticalXXL,
+    paddingBlockEnd: tokens.spacingVerticalS,
     display: 'flex',
     flexDirection: 'column',
-    justifyContent: 'flex-end',
-    gap: '4px',
-    borderRadius: '14px 14px 0 0',
-    background: `linear-gradient(180deg,rgba(255,255,255,0) 35%,#FFFFFF 100%), linear-gradient(120deg,#FFF3EC 0%,#FDEDF5 52%,#F1EEFC 100%)`,
-    '@media (forced-colors: active)': { background: 'Canvas' },
+    gap: '2px',
   },
-  helpEyebrow: { ...typographyStyles.caption1Strong, margin: 0, color: guide.ink },
-  helpTitle: { ...typographyStyles.title3, margin: 0 },
-  helpContent: { paddingInline: 'clamp(20px, 4vw, 28px)', paddingBlockStart: tokens.spacingVerticalS, paddingBlockEnd: '24px' },
+  helpEyebrow: { ...typographyStyles.caption1Strong, margin: 0, color: tokens.colorNeutralForeground2 },
+  helpTitle: { ...typographyStyles.subtitle1, margin: 0 },
+  helpContent: { paddingInline: tokens.spacingHorizontalXXL, paddingBlockStart: tokens.spacingVerticalS, paddingBlockEnd: tokens.spacingVerticalXXL },
   helpActions: {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'space-between',
     flexWrap: 'wrap',
     gap: tokens.spacingHorizontalM,
-    paddingInline: 'clamp(20px, 4vw, 28px)',
-    paddingBlockEnd: '24px',
+    paddingInline: tokens.spacingHorizontalXXL,
+    paddingBlockEnd: tokens.spacingVerticalXXL,
   },
   helpExtra: { minWidth: 0 },
 });
@@ -158,6 +151,8 @@ export interface HelpItem {
   href?: string;
   /** `extra` sits beside «Lukk», for example «Se omvisningen igjen»; it gets the dialog's close. */
   dialog?: { title: string; body: ReactNode; extra?: (close: () => void) => ReactNode };
+  /** A divider before the item: an action that changes something, set apart from the help that only shows. */
+  divider?: boolean;
 }
 
 /** Hjelp: the tour again, how the evaluation works, the glossary, about the prototype, and mode-specific items. */
@@ -185,17 +180,19 @@ export function HelpMenu({ items }: { items: HelpItem[] }) {
         <MenuPopover>
           <MenuList>
             {items.map((it) => (
-              <MenuItem
-                key={it.key}
-                icon={(it.icon as ReactElement) ?? <Info20Regular />}
-                onClick={() => {
-                  if (it.dialog) setDialog(it.dialog);
-                  else if (it.href) window.open(it.href, '_blank', 'noopener');
-                  else it.onSelect?.();
-                }}
-              >
-                {it.label}
-              </MenuItem>
+              <Fragment key={it.key}>
+                {it.divider && <MenuDivider />}
+                <MenuItem
+                  icon={(it.icon as ReactElement) ?? <Info20Regular />}
+                  onClick={() => {
+                    if (it.dialog) setDialog(it.dialog);
+                    else if (it.href) window.open(it.href, '_blank', 'noopener');
+                    else it.onSelect?.();
+                  }}
+                >
+                  {it.label}
+                </MenuItem>
+              </Fragment>
             ))}
           </MenuList>
         </MenuPopover>
@@ -210,7 +207,6 @@ export function HelpMenu({ items }: { items: HelpItem[] }) {
       >
         <DialogSurface className={cls.helpSurface}>
           <div className={cls.helpHead}>
-            <GuideImage variant="header" />
             <p className={cls.helpEyebrow}>{s('helpEyebrow')}</p>
             <DialogTitle as="h2" className={cls.helpTitle}>
               {dialog?.title}

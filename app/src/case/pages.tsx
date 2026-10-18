@@ -1,6 +1,6 @@
-import { Button, Field, makeStyles, tokens, typographyStyles } from '@fluentui/react-components';
-import { ArrowRight16Regular, ArrowRight20Regular, DocumentEdit20Regular, Home20Regular, Send28Regular } from '@fluentui/react-icons';
-import { useEffect, useId } from 'react';
+import { Button, Field, MessageBar, MessageBarBody, makeStyles, tokens, typographyStyles } from '@fluentui/react-components';
+import { ArrowRight16Regular, ArrowRight20Regular, DocumentEdit20Regular, Home20Regular } from '@fluentui/react-icons';
+import { useEffect, useId, type ReactNode } from 'react';
 import type { StringKey } from '../i18n/strings';
 import type { CaseId, CoreCaseId, Outcome, T } from '../content/types';
 import { cases, vocab } from '../content';
@@ -12,15 +12,15 @@ import { navigate } from '../router/router';
 import type { DpsWork, GpWork } from '../state/types';
 import { useWork } from '../state/work';
 import { ChoiceGroup } from '../patterns/ChoiceGroup';
-import { DesignNote, ProvenanceChip, GrowingTextarea, SheenButton } from '../patterns/basics';
-import { useAtlasAnnounce } from '../patterns/announce';
+import { DesignNote, ProvenanceChip, GrowingTextarea, StartButton } from '../patterns/basics';
+import { Silent, useAtlasAnnounce } from '../patterns/announce';
 import { Rows } from '../patterns/clinical';
-import { Actions, Body, Card, Eyebrow, GuidePage, Lead, MetaChips, Muted, PageCard } from '../patterns/layout';
+import { Actions, Body, Card, Lead, MetaChips, Muted } from '../patterns/layout';
 import { UncertaintyBand } from '../patterns/UncertaintyBand';
-import { PageHeading } from '../shell/PageHeading';
 import { positionKey } from '../engine/placement';
 import { Responsibility } from './AtlasPanelGp';
 import { OtherSideButton } from './CaseChrome';
+import { CaseTitle } from './CaseTitle';
 import { receivedReferral } from './dpsParts';
 import { atlasLine, draftSections } from './ReferralEditor';
 import { useCaseStatus } from './useCaseStatus';
@@ -30,19 +30,11 @@ const isCore = (c: CaseId): c is CoreCaseId => c === 'kari' || c === 'erlend' ||
 
 const useStyles = makeStyles({
   h2: { ...typographyStyles.subtitle1, margin: 0 },
-  held: {
-    ...typographyStyles.body1,
-    margin: 0,
-    paddingInline: tokens.spacingHorizontalM,
-    paddingBlock: tokens.spacingVerticalS,
-    borderRadius: tokens.borderRadiusMedium,
-    border: `1px dashed ${tokens.colorNeutralStroke1}`,
-    backgroundColor: 'rgba(255,255,255,0.7)',
-    color: tokens.colorNeutralForeground2,
-  },
-  // G-22: «send» is the icon for Sendt; neutral and modest, no celebration after a clinical decision (B6).
-  sentIcon: { color: tokens.colorNeutralForeground2, fontSize: '28px', width: '28px', height: '28px' },
-  // Anything that shows the band stays solid white, also on the dawn (Meridian band rule).
+  // A page in a case's flow: the patient banner, then the page's cards, as in the case views.
+  flow: { display: 'flex', flexDirection: 'column', gap: '8px', paddingBlockStart: '8px', minWidth: 0 },
+  // The summary's band and table keep a readable width inside a wide card.
+  report: { display: 'flex', flexDirection: 'column', gap: tokens.spacingVerticalL, maxWidth: '760px', minWidth: 0 },
+  // Anything that shows the band sits on solid white, in a box of its own (Meridian band rule).
   bandBox: {
     backgroundColor: tokens.colorNeutralBackground1,
     borderRadius: tokens.borderRadiusLarge,
@@ -63,9 +55,35 @@ const useStyles = makeStyles({
   },
 });
 
+/**
+ * A page in a case's flow (briefing, sent, plan, summary): the same case header as the case views, with the path from
+ * the overview, then the page's own cards (ATLAS 3.2: one case header). As in the case views, the h1 names what the page
+ * is: the patient on the briefing, as on the record; the document on the others, with the patient under it, as on the
+ * referral and the dialog.
+ */
+function CaseFlow({ caseId, view, heading, sub, children }: { caseId: CaseId; view: string; heading?: string; sub?: ReactNode; children: ReactNode }) {
+  const cls = useStyles();
+  const { s } = useLang();
+  const work = useWork();
+  const c = cases[caseId];
+  return (
+    <div className={cls.flow}>
+      <CaseTitle
+        caseId={caseId}
+        crumbs={[{ label: work.viewer === 'gp' ? s('navTimeliste') : s('navQueue'), to: work.listPath }, { label: view }]}
+        docTitle={view}
+        heading={heading}
+        sub={sub ?? (heading ? s('patientAge', { name: c.patient.name, age: c.patient.age }) : undefined)}
+      />
+      {children}
+    </div>
+  );
+}
+
 /* ---------- Briefing ---------- */
 
 export function BriefingPage({ caseId }: { caseId: CaseId }) {
+  const cls = useStyles();
   const { s, t } = useLang();
   const work = useWork();
   const c = cases[caseId];
@@ -73,37 +91,31 @@ export function BriefingPage({ caseId }: { caseId: CaseId }) {
   if (!b) return null;
   const index = ({ kari: 1, erlend: 2, astrid: 3 } as Partial<Record<CaseId, number>>)[caseId];
   const role = work.viewer === 'gp' ? s('roleGp') : s('roleDps');
-  const eyebrow = index ? `${s('caseOf', { n: index })} · ${role}` : `${s('extraCase')} · ${role}`;
+  const where = index ? `${s('caseOf', { n: index })} · ${role}` : `${s('extraCase')} · ${role}`;
   const startLabel = work.mode === 'study' && work.phase(caseId) !== 'briefing' ? s('continueCase') : s('startCase');
   return (
-    <GuidePage
-      after={
-        <Card aria-label={s('about')}>
-          <h2 style={{ ...typographyStyles.subtitle1, margin: 0 }}>{s('about')}</h2>
-          <Rows rows={b.rows.map((r) => ({ label: t(r.label), value: t(r.value) }))} />
-        </Card>
-      }
-    >
-      <OtherSideButton caseId={caseId} view="orientering" />
-      <Eyebrow>{eyebrow}</Eyebrow>
-      <PageHeading title={s('about')} guide>
-        {s('patientAge', { name: c.patient.name, age: c.patient.age })}
-      </PageHeading>
-      <Lead>{t(b.task)}</Lead>
-      <MetaChips time={t(b.time)} fictional={s('fictionalPatient')} />
-      <Actions>
-        <SheenButton icon={<ArrowRight20Regular />} iconPosition="after" onClick={() => work.startCase(caseId)}>
-          {startLabel}
-        </SheenButton>
-      </Actions>
-    </GuidePage>
+    <CaseFlow caseId={caseId} view={s('about')} sub={where}>
+      <Card>
+        <OtherSideButton caseId={caseId} view="orientering" />
+        <Lead>{t(b.task)}</Lead>
+        <MetaChips time={t(b.time)} fictional={s('fictionalPatient')} />
+        <Actions>
+          <StartButton icon={<ArrowRight20Regular />} iconPosition="after" onClick={() => work.startCase(caseId)}>
+            {startLabel}
+          </StartButton>
+        </Actions>
+      </Card>
+      <Card aria-label={s('about')}>
+        <h2 className={cls.h2}>{s('about')}</h2>
+        <Rows rows={b.rows.map((r) => ({ label: t(r.label), value: t(r.value) }))} />
+      </Card>
+    </CaseFlow>
   );
 }
 
 /* ---------- Sendt ---------- */
 
 export function SentPage({ caseId }: { caseId: CaseId }) {
-  const cls = useStyles();
   const { s, lang } = useLang();
   const work = useWork();
   const status = useCaseStatus(caseId);
@@ -143,41 +155,45 @@ export function SentPage({ caseId }: { caseId: CaseId }) {
   const noReply =
     (work.viewer === 'dps' && (dps.outcome === 'rett' || caseId === 'astrid')) || (work.viewer === 'gp' && caseId === 'torbjorn');
   const heldLine = caseId === 'torbjorn' ? s('heldOnePage') : noReply ? s('heldNoReply') : s('heldReply');
+  const page2 = work.phase(caseId) === 'page2';
   return (
-    <GuidePage>
-      <OtherSideButton caseId={caseId} view="sendt" />
-      <Send28Regular className={cls.sentIcon} aria-hidden="true" />
-      <PageHeading title={s('sentLabel')} guide>
-        {title}
-      </PageHeading>
-      <Muted>{s('sentOn', { date: formatDate(date, lang) })}</Muted>
-      <Lead>{body}</Lead>
-      {held ? (
-        <>
-          <p className={cls.held}>{heldLine}</p>
-          {work.phase(caseId) === 'page2' && <Body>{caseId === 'torbjorn' ? s('formAnswerNow') : s('formGoOn')}</Body>}
-        </>
-      ) : (
-        <Actions>
-          <SheenButton
-            icon={<ArrowRight20Regular />}
-            iconPosition="after"
-            onClick={() =>
-              status.next === 'oppsummering' ? work.toSummary(caseId) : navigate(work.casePath(caseId, status.next === 'sendt' ? 'dialog' : status.next))
-            }
-          >
-            {s('continue')}
-          </SheenButton>
-        </Actions>
-      )}
-      <DesignNote id="sendt" show={work.notes} />
-    </GuidePage>
+    <CaseFlow caseId={caseId} view={s('sentLabel')} heading={title}>
+      <Card>
+        <OtherSideButton caseId={caseId} view="sendt" />
+        <Muted>{s('sentOn', { date: formatDate(date, lang) })}</Muted>
+        <Lead>{body}</Lead>
+        {held ? (
+          // What waits for the form, as a notice under the title (G-16); said by the form panel, not again here.
+          <Silent>
+            <MessageBar intent="info" layout="multiline">
+              <MessageBarBody>
+                {heldLine}
+                {page2 ? ` ${caseId === 'torbjorn' ? s('formAnswerNow') : s('formGoOn')}` : ''}
+              </MessageBarBody>
+            </MessageBar>
+          </Silent>
+        ) : (
+          <Actions>
+            <StartButton
+              icon={<ArrowRight20Regular />}
+              iconPosition="after"
+              onClick={() =>
+                status.next === 'oppsummering' ? work.toSummary(caseId) : navigate(work.casePath(caseId, status.next === 'sendt' ? 'dialog' : status.next))
+              }
+            >
+              {s('continue')}
+            </StartButton>
+          </Actions>
+        )}
+        <DesignNote id="sendt" show={work.notes} />
+      </Card>
+    </CaseFlow>
   );
 }
 
 /* ---------- Din plan ---------- */
 
-export function PlanPanel({ caseId, status }: { caseId: CaseId; status: CaseStatus }) {
+export function PlanPanel({ caseId, status, titled }: { caseId: CaseId; status: CaseStatus; /** The page's h1 already says «Din plan». */ titled?: boolean }) {
   const cls = useStyles();
   const { s } = useLang();
   const work = useWork();
@@ -199,9 +215,16 @@ export function PlanPanel({ caseId, status }: { caseId: CaseId; status: CaseStat
   return (
     <section style={{ display: 'flex', flexDirection: 'column', gap: 12 }} aria-label={s('planTitle')} data-section="plan">
       {status.planKind === 'gpOnly' && <Body>{s('planGpOnly')}</Body>}
-      {locked && <p className={cls.held}>{lockedBySecond ? s('lockedPlanSecond') : s('lockedPlan')}</p>}
+      {locked && (
+        <Silent>
+          <MessageBar intent="info">
+            <MessageBarBody>{lockedBySecond ? s('lockedPlanSecond') : s('lockedPlan')}</MessageBarBody>
+          </MessageBar>
+        </Silent>
+      )}
       <ChoiceGroup<'folgOpp' | 'henvisPaNytt'>
         legend={s('planTitle')}
+        hideLegend={titled}
         chip={<ProvenanceChip source="own" />}
         value={gp.plan}
         disabled={locked}
@@ -259,15 +282,15 @@ export function PlanPanel({ caseId, status }: { caseId: CaseId; status: CaseStat
 export function PlanPage({ caseId }: { caseId: CaseId }) {
   const { s } = useLang();
   const status = useCaseStatus(caseId);
-  const c = cases[caseId];
   return (
-    <PageCard narrow>
-      <OtherSideButton caseId={caseId} view="plan" />
-      <PageHeading title={s('planTitle')} sub={s('patientAge', { name: c.patient.name, age: c.patient.age })}>
-        {s('planTitle')}
-      </PageHeading>
-      <PlanPanel caseId={caseId} status={status} />
-    </PageCard>
+    <CaseFlow caseId={caseId} view={s('planTitle')} heading={s('planTitle')}>
+      <Card>
+        <OtherSideButton caseId={caseId} view="plan" />
+        <div style={{ maxWidth: 720 }}>
+          <PlanPanel caseId={caseId} status={status} titled />
+        </div>
+      </Card>
+    </CaseFlow>
   );
 }
 
@@ -476,15 +499,13 @@ export function DebriefPage({ caseId }: { caseId: CaseId }) {
     </span>
   );
   return (
-    <GuidePage>
-      <OtherSideButton caseId={caseId} view="oppsummering" />
-      <Eyebrow>
-        {s('debrief')} · {s('patientAge', { name: c.patient.name, age: c.patient.age })}
-      </Eyebrow>
-      <PageHeading title={s('debrief')} guide>
-        {/* The title follows the same state as the text below it: no answer sent, no «svar» in the title (R2V-07, r4F-06);
-            «Tre plasseringer» only when all three markers are there (r5F-06). */}
-        {viewer === 'dps' && caseId === 'astrid' && !dps.answerSent
+    <CaseFlow
+      caseId={caseId}
+      view={s('debrief')}
+      heading={
+        // The title follows the same state as the text below it: no answer sent, no «svar» in the title (R2V-07, r4F-06);
+        // «Tre plasseringer» only when all three markers are there (r5F-06).
+        viewer === 'dps' && caseId === 'astrid' && !dps.answerSent
           ? status.thread.gpSkipped
             ? s('dbDpsAstridNoQuestionTitle')
             : dps.answerSkipped
@@ -492,43 +513,49 @@ export function DebriefPage({ caseId }: { caseId: CaseId }) {
               : s('dbDpsAstridPendingTitle')
           : viewer === 'dps' && caseId !== 'astrid' && (own === undefined || other === undefined || !reading)
             ? s('dbTitlePlacements')
-            : t(debrief.title)}
-      </PageHeading>
-      {/* Review mode: what rests on the other side's example is marked once, under the title (r7F-04). */}
-      {caption && (
-        <p className={cls.reason} data-muted="">
-          {s(caption)}
-        </p>
-      )}
-      <Lead>{fill(t(debrief.whatHappened), words)}</Lead>
-      {showBand && (
-        <div className={cls.bandBox}>
-          <h2 className={cls.h2} style={{ marginBottom: 8 }}>
-            {s('placements')}
-          </h2>
-          <UncertaintyBand own={own} other={other} system={reading!.placement} legend sentence={sentence} />
+            : t(debrief.title)
+      }
+    >
+      <Card>
+        <OtherSideButton caseId={caseId} view="oppsummering" />
+        {/* Review mode: what rests on the other side's example is marked once, under the title (r7F-04). */}
+        {caption && (
+          <p className={cls.reason} data-muted="">
+            {s(caption)}
+          </p>
+        )}
+        <Lead>{fill(t(debrief.whatHappened), words)}</Lead>
+        <div className={cls.report}>
+          {showBand && (
+            <div className={cls.bandBox}>
+              <h2 className={cls.h2} style={{ marginBottom: 8 }}>
+                {s('placements')}
+              </h2>
+              <UncertaintyBand own={own} other={other} system={reading!.placement} legend sentence={sentence} />
+            </div>
+          )}
+          <div className={cls.bandBox}>
+            <Rows rows={rows} />
+          </div>
+          {work.mode === 'review' && work.notes && (
+            <p className={cls.purpose}>
+              <strong>{s('casePurpose')}:</strong> {t(debrief.purpose)}
+            </p>
+          )}
+          <DesignNote id="oppsummering" show={work.notes} />
+          {/* Study: the one optional question at the end of a case (decision 4), then back to the overview (v3.1). */}
+          {work.mode === 'study' && isCore(caseId) ? (
+            <CaseEndPrompt caseId={caseId} onContinue={() => work.finishCase(caseId)} />
+          ) : (
+            <Actions>
+              <StartButton icon={<ArrowRight20Regular />} iconPosition="after" onClick={() => work.finishCase(caseId)}>
+                {work.mode === 'study' ? s('goToNextStep') : s('backToList')}
+              </StartButton>
+            </Actions>
+          )}
         </div>
-      )}
-      <div className={cls.bandBox}>
-        <Rows rows={rows} />
-      </div>
-      {work.mode === 'review' && work.notes && (
-        <p className={cls.purpose}>
-          <strong>{s('casePurpose')}:</strong> {t(debrief.purpose)}
-        </p>
-      )}
-      <DesignNote id="oppsummering" show={work.notes} />
-      {/* Study: the one optional question at the end of a case (decision 4), then back to the overview (v3.1). */}
-      {work.mode === 'study' && isCore(caseId) ? (
-        <CaseEndPrompt caseId={caseId} onContinue={() => work.finishCase(caseId)} />
-      ) : (
-        <Actions>
-          <SheenButton icon={<ArrowRight20Regular />} iconPosition="after" onClick={() => work.finishCase(caseId)}>
-            {work.mode === 'study' ? s('goToNextStep') : s('backToList')}
-          </SheenButton>
-        </Actions>
-      )}
-    </GuidePage>
+      </Card>
+    </CaseFlow>
   );
 }
 

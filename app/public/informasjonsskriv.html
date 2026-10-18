@@ -1,0 +1,339 @@
+<!doctype html>
+<html lang="nb">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="light" />
+    <meta name="robots" content="noindex, nofollow" />
+    <meta name="referrer" content="no-referrer" />
+    <title>Informasjonsskriv · ATLAS</title>
+    <link rel="icon" href="./favicon.svg" type="image/svg+xml" />
+    <style>
+      /* Meridian: Fluent 2 tokens with the Meridian brand ramp. A document on the frame wash, like a page in a Microsoft 365 app. */
+      :root {
+        --fg1: #242424;
+        --fg2: #424242;
+        --fg3: #616161;
+        --stroke1: #d1d1d1;
+        --stroke2: #e0e0e0;
+        --link: #5649b0;
+        --link-hover: #4a3f99;
+        --link-pressed: #3f3682;
+        --brand-tint: #f9f8fe;
+        --brand-edge: #d2ccf8;
+        --shadow4: 0 0 2px rgba(0, 0, 0, 0.12), 0 2px 4px rgba(0, 0, 0, 0.14);
+        --font: 'Segoe UI', 'Segoe UI Web (West European)', -apple-system, BlinkMacSystemFont, Roboto, 'Helvetica Neue', sans-serif;
+      }
+      html { background: #f5f5f5; }
+      body {
+        margin: 0;
+        min-height: 100vh;
+        background: linear-gradient(90deg, #f5f5f5 0%, #f9f8fe 100%);
+        color: var(--fg1);
+        font-family: var(--font);
+        font-size: 14px;
+        line-height: 20px;
+      }
+      a { color: var(--link); text-decoration: underline; text-underline-offset: 2px; }
+      a:hover { color: var(--link-hover); }
+      a:active { color: var(--link-pressed); }
+      a:focus-visible, button:focus-visible { outline: 2px solid #000000; outline-offset: 2px; border-radius: 4px; }
+
+      /* The 48 px header on the frame. */
+      .bar { position: sticky; top: 0; z-index: 1; display: flex; align-items: center; gap: 8px; height: 48px; padding: 0 16px; background: #f5f5f5; border-bottom: 1px solid var(--stroke2); }
+      .wordmark { font-size: 18px; line-height: 24px; font-weight: 700; letter-spacing: 0.02em; color: var(--fg1); text-decoration: none; }
+      .crumb { color: var(--fg2); }
+      .crumb::before { content: ''; display: inline-block; width: 1px; height: 16px; margin: 0 10px 0 4px; background: var(--stroke1); vertical-align: -3px; }
+      .spacer { flex: 1; }
+      .tool { display: inline-flex; align-items: center; gap: 6px; height: 32px; padding: 0 10px; border: 1px solid transparent; border-radius: 4px; background: transparent; color: var(--fg1); font: inherit; cursor: pointer; text-decoration: none; }
+      .tool:hover { background: #ebebeb; color: var(--fg1); }
+      .tool svg { flex: none; }
+      .lang { display: inline-flex; gap: 2px; }
+      .lang button[aria-pressed='true'] { border-color: var(--brand-edge); background: var(--brand-tint); color: var(--link); font-weight: 600; }
+
+      /* The document. Opened at #nb or #en, its top stays clear of the sticky bar. */
+      main { padding: 24px 16px 48px; }
+      .doc { max-width: 760px; margin: 0 auto; background: #ffffff; border-radius: 8px; box-shadow: var(--shadow4); padding: 48px 56px 56px; scroll-margin-top: 56px; }
+      .head { display: flex; align-items: flex-start; justify-content: space-between; gap: 24px; }
+      .eyebrow { margin: 0; color: var(--link); font-weight: 600; }
+      .logo { flex: none; display: block; }
+      h1 { margin: 12px 0 0; font-size: 28px; line-height: 36px; font-weight: 600; }
+      .lead { margin: 12px 0 0; font-size: 16px; line-height: 24px; color: var(--fg2); }
+      .meta { margin: 16px 0 0; padding-bottom: 24px; border-bottom: 1px solid var(--stroke2); color: var(--fg3); font-size: 12px; line-height: 16px; }
+      h2 { margin: 32px 0 8px; font-size: 20px; line-height: 26px; font-weight: 600; }
+      p, li, dd, dt { font-size: 15px; line-height: 24px; }
+      p { margin: 8px 0 0; }
+      ul { margin: 8px 0 0; padding-left: 22px; }
+      li + li { margin-top: 6px; }
+      .note { margin-top: 16px; padding: 12px 16px; border: 1px solid var(--brand-edge); border-radius: 4px; background: var(--brand-tint); }
+      .note p:first-child { margin-top: 0; }
+      dl.contacts { margin: 12px 0 0; display: grid; grid-template-columns: max-content 1fr; column-gap: 24px; row-gap: 10px; }
+      dl.contacts dt { font-weight: 600; }
+      dl.contacts dd { margin: 0; }
+      .sign { margin-top: 32px; display: flex; flex-wrap: wrap; gap: 24px 56px; }
+      .sign p { margin: 0; }
+      .sign .who { font-weight: 600; }
+      .sign .role { color: var(--fg3); font-size: 14px; line-height: 20px; }
+      footer { max-width: 760px; margin: 16px auto 0; color: var(--fg3); font-size: 12px; line-height: 16px; }
+      [hidden] { display: none !important; }
+
+      @media (max-width: 640px) {
+        .bar { padding: 0 8px; }
+        .crumb { display: none; }
+        /* The tools keep their names for screen readers when only the icon shows. */
+        .tool .label { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+        main { padding: 0 0 32px; }
+        .doc { border-radius: 0; box-shadow: none; padding: 28px 20px 36px; }
+        .head { flex-direction: column-reverse; gap: 16px; }
+        dl.contacts { grid-template-columns: 1fr; row-gap: 2px; }
+        dl.contacts dd { margin-bottom: 10px; }
+        footer { padding: 0 20px; }
+      }
+      /* Paper: A4, with the letter's name and the page number at the foot of every page, in each language. */
+      @page { size: A4; margin: 18mm 18mm 22mm; }
+      @page nb {
+        @bottom-left { content: 'Informasjonsskriv · ATLAS · Versjon 1'; font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, 'Helvetica Neue', sans-serif; font-size: 9pt; color: #616161; }
+        @bottom-right { content: 'Side ' counter(page) ' av ' counter(pages); font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, 'Helvetica Neue', sans-serif; font-size: 9pt; color: #616161; }
+      }
+      @page en {
+        @bottom-left { content: 'Information letter · ATLAS · Version 1'; font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, 'Helvetica Neue', sans-serif; font-size: 9pt; color: #616161; }
+        @bottom-right { content: 'Page ' counter(page) ' of ' counter(pages); font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, 'Helvetica Neue', sans-serif; font-size: 9pt; color: #616161; }
+      }
+      @media print {
+        #nb { page: nb; }
+        #en { page: en; }
+        html, body { background: #ffffff; }
+        .bar, footer { display: none; }
+        main { padding: 0; }
+        .doc { max-width: none; box-shadow: none; border-radius: 0; padding: 0; }
+        h2 { break-after: avoid; }
+        li, dl.contacts, .sign, .note { break-inside: avoid; }
+        a { color: var(--fg1); }
+      }
+      @media (forced-colors: active) {
+        .doc, .note { border: 1px solid CanvasText; }
+        .lang button[aria-pressed='true'] { border-color: Highlight; }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="bar">
+      <span class="wordmark">ATLAS</span>
+      <span class="crumb" id="crumb">Informasjonsskriv</span>
+      <span class="spacer"></span>
+      <span class="lang" role="group" id="langgroup" aria-label="Språk">
+        <button type="button" class="tool" data-lang="nb" aria-pressed="true" lang="nb">Norsk</button>
+        <button type="button" class="tool" data-lang="en" aria-pressed="false" lang="en">English</button>
+      </span>
+      <a class="tool" id="pdf" href="./informasjonsskriv.pdf" download>
+        <svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><path fill="currentColor" d="M10 3a.5.5 0 0 1 .5.5v8.8l2.65-2.65a.5.5 0 0 1 .7.7l-3.5 3.5a.5.5 0 0 1-.7 0l-3.5-3.5a.5.5 0 0 1 .7-.7l2.65 2.65V3.5A.5.5 0 0 1 10 3Zm-5.5 13a.5.5 0 0 0 0 1h11a.5.5 0 0 0 0-1h-11Z"/></svg>
+        <span class="label" id="pdflabel">Last ned PDF</span>
+      </a>
+      <button type="button" class="tool" id="print">
+        <svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><path fill="currentColor" d="M5 4.5A1.5 1.5 0 0 1 6.5 3h7A1.5 1.5 0 0 1 15 4.5V6h.5A2.5 2.5 0 0 1 18 8.5v5a1.5 1.5 0 0 1-1.5 1.5H15v.5a1.5 1.5 0 0 1-1.5 1.5h-7A1.5 1.5 0 0 1 5 15.5V15H3.5A1.5 1.5 0 0 1 2 13.5v-5A2.5 2.5 0 0 1 4.5 6H5V4.5ZM6 6h8V4.5a.5.5 0 0 0-.5-.5h-7a.5.5 0 0 0-.5.5V6Zm-1 8v-1.5A1.5 1.5 0 0 1 6.5 11h7a1.5 1.5 0 0 1 1.5 1.5V14h1.5a.5.5 0 0 0 .5-.5v-5A1.5 1.5 0 0 0 15.5 7h-11A1.5 1.5 0 0 0 3 8.5v5a.5.5 0 0 0 .5.5H5Zm1.5-2a.5.5 0 0 0-.5.5v3a.5.5 0 0 0 .5.5h7a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 0-.5-.5h-7Z"/></svg>
+        <span class="label" id="printlabel">Skriv ut</span>
+      </button>
+    </header>
+
+    <main>
+      <!-- Norsk -->
+      <article class="doc" id="nb" lang="nb" aria-labelledby="nb-title">
+        <div class="head">
+          <div>
+            <p class="eyebrow">Forskningsprosjekt ved Universitetet i Agder</p>
+            <h1 id="nb-title">Vil du delta i evalueringen av ATLAS?</h1>
+          </div>
+          <img class="logo" src="./uia-logo.png" alt="Universitetet i Agder" width="141" height="32" />
+        </div>
+        <p class="lead">Dette er en invitasjon til å prøve ATLAS, en forskningsprototype for henvisninger til psykisk helsevern, og si hva du mener om den. Her står det hva evalueringen går ut på, og hva det betyr for deg å delta.</p>
+        <p class="meta">Til fastleger og til klinikere som vurderer henvisninger i DPS · Versjon 1, 18. oktober 2026</p>
+
+        <h2>Formålet med evalueringen</h2>
+        <p>Doktorgradsprosjektet «Klinisk beslutningstaking i henvisninger til psykisk helsevern» ved Universitetet i Agder undersøker hvordan fastleger og spesialister i DPS tar beslutninger om henvisninger, særlig når saken er usikker. Intervjuer med fastleger og DPS-spesialister ligger til grunn for ATLAS, en prototype av beslutningsstøtte for begge sider av henvisningen.</p>
+        <p>ATLAS viser hvor usikker en sak er, og hvilke kriterier en henvisning omtaler. Den anbefaler ikke hva du skal gjøre. Evalueringen skal finne ut hvordan klinikere opplever ATLAS: hva som er klart, hva som er nyttig, hva som står i veien, og om noe leses som et råd. Svarene brukes til å forbedre ATLAS og i doktorgradsavhandlingen.</p>
+
+        <h2>Hvorfor får du spørsmål om å delta?</h2>
+        <p>Du får spørsmålet fordi du er fastlege, eller fordi du vurderer henvisninger i et DPS. Du kan delta enten du var med i et intervju i prosjektet eller ikke.</p>
+
+        <h2>Hva innebærer det å delta?</h2>
+        <ul>
+          <li>Du bruker ATLAS i nettleseren på en datamaskin, i omtrent en time. Du kan ta pause og fortsette senere i samme nettleser.</li>
+          <li>Du velger rolle, fastlege eller DPS, og får en kort omvisning i ATLAS.</li>
+          <li>Du går gjennom tre fiktive pasientsaker. Hver sak ser du først uten ATLAS og deretter med ATLAS.</li>
+          <li>Underveis svarer du på korte skjemaer i Nettskjema: om rollen og arbeidet ditt, om hver sak, om ATLAS som helhet og til slutt noen avsluttende spørsmål. Det finnes ingen riktige svar.</li>
+          <li>Fastleger kan også se på to korte ekstrasaker hvis de vil, og DPS-klinikere på én kort ekstravisning. Du kan dessuten gi tilbakemelding på hvert skjermbilde underveis. Begge deler er frivillig.</li>
+        </ul>
+        <p>Alle pasienter, klinikere og tall i ATLAS er fiktive. Ikke skriv opplysninger om ekte pasienter eller andre personer i skjemaene.</p>
+
+        <h2>Det er frivillig å delta</h2>
+        <p>Du kan avslutte når du vil, uten å oppgi grunn, og du kan hoppe over skjemaer du ikke vil svare på. Det får ingen følger for deg.</p>
+        <p>Du samtykker til å delta ved å krysse av for «Jeg har lest informasjonsskrivet og vil delta» i det første skjemaet.</p>
+        <p>Har du notert studienavnet ditt, kan du trekke svarene du har sendt: send navnet til prosjektleder, så slettes alle svar med det. Studienavnet står i hvert skjema og på oversikten i ATLAS. Uten studienavnet kan vi ikke finne svarene dine, fordi de ikke er knyttet til deg. Svar som allerede inngår i publiserte resultater, kan ikke tas ut av dem.</p>
+
+        <h2>Ditt personvern</h2>
+        <ul>
+          <li>ATLAS og skjemaene spør ikke etter navn, e-post, telefonnummer eller arbeidssted, og du logger ikke inn.</li>
+          <li>Svarene dine knyttes sammen av et tilfeldig studienavn, for eksempel «Rolig elg 27». ATLAS lager det i nettleseren din når du velger rolle. Ingen har en liste som kobler studienavn til personer.</li>
+          <li>Hvert skjema får automatisk med rollen din, studienavnet og hvilken versjon av ATLAS du brukte. Skjemaene i studien får også med om du deltok i et intervju i prosjektet, hvilket steg det gjelder og, for en sak eller en ekstravisning, hvilken. En tilbakemelding underveis får med hvilken side og del av ATLAS den gjelder.</li>
+          <li>Svarene lagres i Nettskjema, en tjeneste for sikker datainnsamling som drives av Universitetet i Oslo. Bare forskerne i prosjektet har tilgang til dem.</li>
+          <li>ATLAS husker hvor langt du har kommet, bare i nettleseren din, slik at du kan ta pause. ATLAS har ingen analyseverktøy og ingen sporing. Nettsiden ligger hos GitHub Pages, som registrerer IP-adressene til besøkende av sikkerhetshensyn. Prosjektet har ikke tilgang til dem.</li>
+          <li>Bruker du en datamaskin som andre også bruker, kan neste person velge «Ikke deg? Start som ny deltaker» når ATLAS åpnes igjen, og få sitt eget studienavn.</li>
+        </ul>
+        <p>Resultatene publiseres i doktorgradsavhandlingen og i vitenskapelige artikler, som samlede resultater og korte sitater fra fritekstsvar, uten opplysninger som kan identifisere deg.</p>
+
+        <div class="note">
+          <p><strong>Pilotrunde.</strong> Før studien starter, prøves ATLAS i en pilotrunde. Svarene fra pilotrunden merkes som pilot og brukes bare til å prøve ut ATLAS og skjemaene. De holdes utenfor studiens data. Mens pilotrunden pågår, står det «Pilot» øverst i ATLAS.</p>
+        </div>
+
+        <h2>Hva skjer med svarene når prosjektet er ferdig?</h2>
+        <p>Prosjektet skal etter planen avsluttes i januar 2027. Etter det kan svarene lagres videre i anonymisert form, slik at forskningen kan etterprøves.</p>
+
+        <h2>Hvem er ansvarlig?</h2>
+        <p>Universitetet i Agder er ansvarlig for prosjektet. Evalueringen gjøres av stipendiat Jishnu Das, veiledet av Geir Inge Hausvik og Carl Erik Moe. Doktorgradsprosjektet er vurdert av Personverntjenester i Sikt (referanse 480551).</p>
+
+        <h2>Spørsmål?</h2>
+        <p>Ta kontakt hvis du har spørsmål om evalueringen eller om personvern.</p>
+        <dl class="contacts">
+          <dt>Prosjektleder</dt>
+          <dd>Jishnu Das, stipendiat, Institutt for informasjonssystemer, Universitetet i Agder: <a href="mailto:jishnu.das@uia.no">jishnu.das@uia.no</a></dd>
+          <dt>Veiledere</dt>
+          <dd>Geir Inge Hausvik: <a href="mailto:geir.i.hausvik@uia.no">geir.i.hausvik@uia.no</a><br />Carl Erik Moe: <a href="mailto:carl.e.moe@uia.no">carl.e.moe@uia.no</a></dd>
+          <dt>Personvernombud ved UiA</dt>
+          <dd>Trond Hauso: <a href="mailto:trond.hauso@uia.no">trond.hauso@uia.no</a></dd>
+          <dt>Personverntjenester i Sikt</dt>
+          <dd><a href="mailto:personverntjenester@sikt.no">personverntjenester@sikt.no</a>, telefon 73 98 40 40</dd>
+        </dl>
+
+        <p style="margin-top: 32px">Med vennlig hilsen</p>
+        <div class="sign">
+          <div><p class="who">Jishnu Das</p><p class="role">Prosjektleder</p></div>
+          <div><p class="who">Geir Inge Hausvik</p><p class="role">Veileder</p></div>
+          <div><p class="who">Carl Erik Moe</p><p class="role">Veileder</p></div>
+        </div>
+      </article>
+
+      <!-- English -->
+      <article class="doc" id="en" lang="en" aria-labelledby="en-title" hidden>
+        <div class="head">
+          <div>
+            <p class="eyebrow">Research project at the University of Agder</p>
+            <h1 id="en-title">Would you like to take part in the evaluation of ATLAS?</h1>
+          </div>
+          <img class="logo" src="./uia-logo.png" alt="University of Agder" width="141" height="32" />
+        </div>
+        <p class="lead">This is an invitation to try ATLAS, a research prototype for referrals to mental health care, and to say what you think of it. This letter explains what the evaluation involves and what taking part means for you.</p>
+        <p class="meta">For GPs and for clinicians who assess referrals at a DPS · Version 1, 18 October 2026</p>
+
+        <h2>Purpose of the evaluation</h2>
+        <p>The PhD project ‘Clinical decision-making in mental health referrals’ at the University of Agder studies how GPs and specialists at DPS (district psychiatric centres) make decisions about referrals, especially when a case is uncertain. Interviews with GPs and DPS specialists are the basis for ATLAS, a prototype of decision support for both sides of a referral.</p>
+        <p>ATLAS shows how uncertain a case is and which criteria a referral speaks to. It does not recommend what to do. The evaluation looks at how clinicians experience ATLAS: what is clear, what is useful, what gets in the way, and whether anything reads as advice. The answers are used to improve ATLAS and in the doctoral thesis.</p>
+
+        <h2>Why are you being asked?</h2>
+        <p>You are being asked because you are a GP, or because you assess referrals at a DPS. You can take part whether or not you were interviewed in the project.</p>
+
+        <h2>What does taking part involve?</h2>
+        <ul>
+          <li>You use ATLAS in a web browser on a computer, for about an hour. You can take a break and continue later in the same browser.</li>
+          <li>You choose a role, GP or DPS, and get a short tour of ATLAS.</li>
+          <li>You work through three fictional patient cases. You see each case first without ATLAS and then with ATLAS.</li>
+          <li>Along the way you answer short forms in Nettskjema: about your role and work, about each case, about ATLAS as a whole, and a few closing questions. There are no right answers.</li>
+          <li>GPs can also look at two short extra cases if they wish, and DPS clinicians at one short extra view. You can also give feedback on any screen along the way. Both are optional.</li>
+        </ul>
+        <p>All patients, clinicians and figures in ATLAS are fictional. Do not write information about real patients or other people in the forms.</p>
+
+        <h2>Taking part is voluntary</h2>
+        <p>You can stop whenever you like, without giving a reason, and you can skip forms you do not want to answer. This has no consequences for you.</p>
+        <p>You consent to take part by ticking ‘I have read the information letter and want to take part’ in the first form.</p>
+        <p>If you have noted your study name, you can withdraw the answers you have sent: send the name to the project leader, and every answer with it will be deleted. The study name is shown in every form and on the overview in ATLAS. Without the study name we cannot find your answers, because they are not linked to you. Answers already included in published results cannot be taken out of them.</p>
+
+        <h2>Your privacy</h2>
+        <ul>
+          <li>ATLAS and the forms do not ask for your name, email, phone number or workplace, and you do not sign in.</li>
+          <li>Your answers are linked by a random study name, for example ‘Rolig elg 27’. ATLAS makes it in your browser when you choose a role. Nobody has a list that links study names to people.</li>
+          <li>Each form automatically includes your role, the study name and which version of ATLAS you used. The study’s forms also include whether you took part in an interview in the project, which step the form belongs to and, for a case or an extra view, which one. Feedback along the way includes which page and part of ATLAS it is about.</li>
+          <li>The answers are stored in Nettskjema, a service for secure data collection run by the University of Oslo. Only the researchers in the project have access to them.</li>
+          <li>ATLAS remembers how far you have come, only in your browser, so you can take a break. ATLAS has no analytics and no tracking. The site is hosted on GitHub Pages, which logs visitors’ IP addresses for security purposes. The project has no access to them.</li>
+          <li>If you use a computer that others also use, the next person can choose ‘Not you? Start as a new participant’ when ATLAS opens again, and get a study name of their own.</li>
+        </ul>
+        <p>The results are published in the doctoral thesis and in scientific articles, as aggregated results and short quotes from free-text answers, without anything that could identify you.</p>
+
+        <div class="note">
+          <p><strong>Pilot round.</strong> Before the study starts, ATLAS is tried in a pilot round. Answers from the pilot round are marked as pilot and used only to try out ATLAS and the forms. They are kept out of the study’s data. While the pilot round runs, ATLAS shows ‘Pilot’ at the top.</p>
+        </div>
+
+        <h2>What happens to the answers when the project ends?</h2>
+        <p>The project is planned to end in January 2027. After that, the answers may be kept in anonymised form, so the research can be checked.</p>
+
+        <h2>Who is responsible?</h2>
+        <p>The University of Agder is responsible for the project. The evaluation is carried out by PhD research fellow Jishnu Das, supervised by Geir Inge Hausvik and Carl Erik Moe. The doctoral project has been assessed by Data Protection Services at Sikt (reference 480551).</p>
+
+        <h2>Questions?</h2>
+        <p>Get in touch if you have questions about the evaluation or about privacy.</p>
+        <dl class="contacts">
+          <dt>Project leader</dt>
+          <dd>Jishnu Das, PhD research fellow, Department of Information Systems, University of Agder: <a href="mailto:jishnu.das@uia.no">jishnu.das@uia.no</a></dd>
+          <dt>Supervisors</dt>
+          <dd>Geir Inge Hausvik: <a href="mailto:geir.i.hausvik@uia.no">geir.i.hausvik@uia.no</a><br />Carl Erik Moe: <a href="mailto:carl.e.moe@uia.no">carl.e.moe@uia.no</a></dd>
+          <dt>Data protection officer at UiA</dt>
+          <dd>Trond Hauso: <a href="mailto:trond.hauso@uia.no">trond.hauso@uia.no</a></dd>
+          <dt>Data Protection Services at Sikt</dt>
+          <dd><a href="mailto:personverntjenester@sikt.no">personverntjenester@sikt.no</a>, phone +47 73 98 40 40</dd>
+        </dl>
+
+        <p style="margin-top: 32px">Kind regards</p>
+        <div class="sign">
+          <div><p class="who">Jishnu Das</p><p class="role">Project leader</p></div>
+          <div><p class="who">Geir Inge Hausvik</p><p class="role">Supervisor</p></div>
+          <div><p class="who">Carl Erik Moe</p><p class="role">Supervisor</p></div>
+        </div>
+      </article>
+    </main>
+
+    <footer>
+      <p id="foot">ATLAS er en forskningsprototype og skal ikke brukes til kliniske beslutninger.</p>
+    </footer>
+
+    <script>
+      (function () {
+        // The letter opens in the language ATLAS is set to; #en or #nb in the address chooses one.
+        var T = {
+          nb: { doc: 'Informasjonsskriv · ATLAS', crumb: 'Informasjonsskriv', pdf: 'Last ned PDF', pdfHref: './informasjonsskriv.pdf', print: 'Skriv ut', group: 'Språk', foot: 'ATLAS er en forskningsprototype og skal ikke brukes til kliniske beslutninger.' },
+          en: { doc: 'Information letter · ATLAS', crumb: 'Information letter', pdf: 'Download PDF', pdfHref: './information-letter.pdf', print: 'Print', group: 'Language', foot: 'ATLAS is a research prototype and must not be used for clinical decision-making.' }
+        };
+        function show(lang) {
+          var t = T[lang];
+          document.documentElement.lang = lang;
+          document.title = t.doc;
+          document.getElementById('nb').hidden = lang !== 'nb';
+          document.getElementById('en').hidden = lang !== 'en';
+          document.getElementById('crumb').textContent = t.crumb;
+          document.getElementById('pdflabel').textContent = t.pdf;
+          document.getElementById('pdf').setAttribute('href', t.pdfHref);
+          document.getElementById('printlabel').textContent = t.print;
+          document.getElementById('langgroup').setAttribute('aria-label', t.group);
+          document.getElementById('foot').textContent = t.foot;
+          var buttons = document.querySelectorAll('[data-lang]');
+          for (var i = 0; i < buttons.length; i++) buttons[i].setAttribute('aria-pressed', String(buttons[i].getAttribute('data-lang') === lang));
+        }
+        var lang = 'nb';
+        try { lang = JSON.parse(window.localStorage.getItem('atlas.settings.lang') || '"nb"') === 'en' ? 'en' : 'nb'; } catch (e) {}
+        if (window.location.hash === '#en') lang = 'en';
+        if (window.location.hash === '#nb') lang = 'nb';
+        show(lang);
+        var buttons = document.querySelectorAll('[data-lang]');
+        for (var i = 0; i < buttons.length; i++) {
+          buttons[i].addEventListener('click', function (e) {
+            var next = e.currentTarget.getAttribute('data-lang');
+            show(next);
+            try { history.replaceState(null, '', '#' + next); } catch (err) {}
+          });
+        }
+        // A link to #en or #nb on the open letter switches it too.
+        window.addEventListener('hashchange', function () {
+          if (window.location.hash === '#en' || window.location.hash === '#nb') show(window.location.hash.slice(1));
+        });
+        document.getElementById('print').addEventListener('click', function () { window.print(); });
+      })();
+    </script>
+  </body>
+</html>

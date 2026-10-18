@@ -5,7 +5,7 @@ import { useId, type ReactNode } from 'react';
  * One choice group on native radios (G-20): equal options, nothing
  * pre-selected, fixed order, identical size. Selected = brand outline and
  * tint; focus = an outside ring. Used for Behold or Henvis, the DPS outcomes,
- * the plan and the confidence steps.
+ * the plan and the confidence steps (a scale: one row of equal steps, never wrapped).
  */
 export interface Choice<V extends string> {
   value: V;
@@ -39,7 +39,8 @@ const useStyles = makeStyles({
   grid: { display: 'grid', gap: tokens.spacingHorizontalS },
   row: { gridTemplateColumns: 'repeat(auto-fit, minmax(120px, 1fr))' },
   column: { gridTemplateColumns: '1fr' },
-  compactRow: { display: 'flex', flexWrap: 'wrap', gap: tokens.spacingHorizontalXS },
+  // An ordered scale (Din trygghet nå): the steps in one row, equal widths, in the order of the scale.
+  scaleRow: { gap: tokens.spacingHorizontalXS },
   card: {
     position: 'relative',
     display: 'flex',
@@ -61,13 +62,6 @@ const useStyles = makeStyles({
     },
     '@media (forced-colors: active)': { border: '1px solid CanvasText' },
   },
-  compactCard: {
-    minHeight: '32px',
-    paddingInline: tokens.spacingHorizontalS,
-    paddingBlock: tokens.spacingVerticalXXS,
-    borderRadius: tokens.borderRadiusCircular,
-    ...typographyStyles.body1,
-  },
   selected: {
     border: `2px solid ${tokens.colorBrandStroke1}`,
     backgroundColor: tokens.colorBrandBackground2,
@@ -75,7 +69,17 @@ const useStyles = makeStyles({
     ':hover': { border: `2px solid ${tokens.colorBrandStroke1}`, backgroundColor: tokens.colorBrandBackground2Hover },
     '@media (forced-colors: active)': { border: '2px solid Highlight' },
   },
-  compactSelected: { paddingInline: `calc(${tokens.spacingHorizontalS} - 1px)` },
+  scaleCard: {
+    justifyContent: 'center',
+    textAlign: 'center',
+    minHeight: '40px',
+    paddingInline: '2px',
+    paddingBlock: tokens.spacingVerticalXS,
+    borderRadius: tokens.borderRadiusMedium,
+    ...typographyStyles.caption1,
+    overflowWrap: 'anywhere',
+  },
+  scaleSelected: { paddingInline: '1px', paddingBlock: `calc(${tokens.spacingVerticalXS} - 1px)`, fontWeight: tokens.fontWeightSemibold },
   disabled: { cursor: 'not-allowed', color: tokens.colorNeutralForeground3, ':hover': { backgroundColor: tokens.colorNeutralBackground1 } },
   input: {
     position: 'absolute',
@@ -109,7 +113,7 @@ export function ChoiceGroup<V extends string>({
   choices: Choice<V>[];
   value?: V;
   onChange: (value: V) => void;
-  layout?: 'row' | 'column' | 'compact';
+  layout?: 'row' | 'column' | 'scale';
   /** Read-only: the radios stay in the Tab order and say they are unavailable (G-18); a change is ignored. */
   disabled?: boolean;
   describedBy?: string;
@@ -125,7 +129,10 @@ export function ChoiceGroup<V extends string>({
         <span>{legend}</span>
         {chip}
       </legend>
-      <div className={mergeClasses(cls.grid, layout === 'row' && cls.row, layout === 'column' && cls.column, layout === 'compact' && cls.compactRow)}>
+      <div
+        className={mergeClasses(cls.grid, layout === 'row' && cls.row, layout === 'column' && cls.column, layout === 'scale' && cls.scaleRow)}
+        style={layout === 'scale' ? { gridTemplateColumns: `repeat(${choices.length}, minmax(0, 1fr))` } : undefined}
+      >
         {choices.map((c) => {
           const checked = value === c.value;
           return (
@@ -133,9 +140,9 @@ export function ChoiceGroup<V extends string>({
               key={c.value}
               className={mergeClasses(
                 cls.card,
-                layout === 'compact' && cls.compactCard,
                 checked && cls.selected,
-                checked && layout === 'compact' && cls.compactSelected,
+                layout === 'scale' && cls.scaleCard,
+                checked && layout === 'scale' && cls.scaleSelected,
                 disabled && cls.disabled,
               )}
             >

@@ -94,7 +94,7 @@ test('a GP completes the whole study on the panel route, with the right locked v
   for (const s of sent) {
     expect(s.fields.rolle).toBe('Fastlege');
     expect(s.fields.intervju).toBe('Nei');
-    expect(s.fields.versjon).toMatch(/^3\.1\.0-/);
+    expect(s.fields.versjon).toMatch(/^3\.2\.0-/);
     expect(s.fields.versjon).not.toMatch(/-pilot$/);
   }
   expect(sent.find((s) => s.key === 'S3')?.fields.vignett).toBe('V1');

@@ -1,6 +1,5 @@
 import {
   Button,
-  Link,
   MessageBar,
   MessageBarActions,
   MessageBarBody,
@@ -74,6 +73,7 @@ const useStyles = makeStyles({
   footRow: { display: 'flex', flexWrap: 'wrap', gap: tokens.spacingHorizontalS, alignItems: 'center' },
   info: { ...typographyStyles.body1, margin: 0 },
   quiet: { ...typographyStyles.caption1, color: tokens.colorNeutralForeground3 },
+  skip: { alignSelf: 'flex-start', minWidth: 0, paddingInline: tokens.spacingHorizontalXS, marginInlineStart: `calc(-1 * ${tokens.spacingHorizontalXS})`, fontWeight: tokens.fontWeightRegular },
   toggle: {
     position: 'fixed',
     right: tokens.spacingHorizontalL,
@@ -123,7 +123,7 @@ export interface FormPanelActions {
 }
 
 /** Decide inline or overlay from the measured shell width, never a fixed media query. */
-function useInline(visible: boolean, atlasInline: boolean): { inline: boolean; left: number } {
+function useInline(visible: boolean, atlasInline: boolean, caseForm: boolean): { inline: boolean; left: number } {
   const [inline, setInline] = useState(false);
   const [mainLeft, setMainLeft] = useState(0);
   useLayoutEffect(() => {
@@ -133,9 +133,11 @@ function useInline(visible: boolean, atlasInline: boolean): { inline: boolean; l
       setMainLeft(left);
       const available = window.innerWidth - left;
       // The form sits beside the ATLAS panel whenever the case column keeps 520 px, so the panel
-      // never covers ATLAS on a 1366 px laptop (WCAG 2.4.11, AX-01).
-      const need = size.formPanel + (atlasInline ? size.contentMinWithAtlas + size.atlasPanel : size.contentMin);
-      setInline(available >= need);
+      // never covers ATLAS on a 1366 px laptop (WCAG 2.4.11, AX-01). A case page without ATLAS narrows to
+      // 520 px too (its profile stacks above the note), so at 1024 px page 1 sits beside the case it asks
+      // about instead of over it (ATLAS 3.2).
+      const column = atlasInline ? size.contentMinWithAtlas + size.atlasPanel : caseForm ? size.contentMinWithAtlas : size.contentMin;
+      setInline(available >= size.formPanel + column);
     };
     measure();
     window.addEventListener('resize', measure);
@@ -145,7 +147,7 @@ function useInline(visible: boolean, atlasInline: boolean): { inline: boolean; l
       window.removeEventListener('resize', measure);
       ro.disconnect();
     };
-  }, [atlasInline]);
+  }, [atlasInline, caseForm]);
   useEffect(() => {
     document.documentElement.style.setProperty('--atlas-form-inline', inline && visible ? `${size.formPanel}px` : '0px');
     // Shown over the page (a narrow window): it covers the right edge, where the review tab sits (r7A-12).
@@ -159,7 +161,7 @@ export function FormPanel({ actions }: { actions: FormPanelActions | null }) {
   const host = useFormHost();
   const { s } = useLang();
   const { form, visible } = host;
-  const { inline } = useInline(!!form && visible, host.atlasInline);
+  const { inline } = useInline(!!form && visible, host.atlasInline, !!form?.caseId);
   const panelId = useId();
   const headRef = useRef<HTMLHeadingElement>(null);
   const panelRef = useRef<HTMLElement>(null);
@@ -418,9 +420,10 @@ export function FormPanel({ actions }: { actions: FormPanelActions | null }) {
               )}
             </div>
             {actions.onSkip && (
-              <Link as="button" className={cls.quiet} onClick={actions.onSkip}>
+              // A quiet way past the form, at least 24 px tall (G-02).
+              <Button appearance="transparent" size="small" className={cls.skip} onClick={actions.onSkip}>
                 {actions.skipLabel ?? s('formSkip')}
-              </Link>
+              </Button>
             )}
           </div>
         )}

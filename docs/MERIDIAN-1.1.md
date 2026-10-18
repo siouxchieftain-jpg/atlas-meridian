@@ -16,7 +16,7 @@ Meridian 1.0 is the ATLAS design language as exported from the design tool on 20
 | ID | Rule | In ATLAS v3 |
 |---|---|---|
 | G-01 | Layout by size class: one column below 640 px, with the navigation as a drawer; a 48 px rail from 640 px; the ATLAS side panel inline from 1024 px and an end overlay below that; Meridian's 260 px navigation from 1366 px. Where the ATLAS panel is an overlay, a compact band sits at the top of the content. | As stated. No screen scrolls sideways at 320 px. |
-| G-02 | Targets are at least 24 × 24 px for a fine pointer and 44 × 44 px for touch. | Every target is at least 24 × 24 px; the study recommends a laptop, and the touch sizes are not set. |
+| G-02 | Targets are at least 24 × 24 px for a fine pointer and 44 × 44 px for touch. | Every target is at least 24 × 24 px, quiet ones too («Hopp over skjemaet», «Ikke svar nå» are small transparent buttons since 3.2); the study recommends a laptop, and the touch sizes are not set. |
 | G-03 | Tabs, toolbars, breadcrumbs and tables keep their order when narrow and never make the page scroll sideways. | As stated. |
 | G-04 | Every view has a title («`<view>` · ATLAS»), one `h1` and the landmarks header, navigation, main and the ATLAS aside; on a route change focus moves to the `h1`. No patient name in a title. | As stated, in both languages. |
 | G-05 | Fluent components keep their own focus indicators; ATLAS's own parts take a 2 px outside ring (`colorStrokeFocus2`); a selected state never uses black; scroll padding keeps a focused element clear of the sticky header. | As stated. |
@@ -30,11 +30,11 @@ Meridian 1.0 is the ATLAS design language as exported from the design tool on 20
 | G-13 | Errors sit with what failed and offer the next step. | A form that does not load says so in the panel and offers a new tab: «Skjemaet lastet ikke her. Åpne det i en ny fane.» |
 | G-14 | Every view that depends on data has an empty state: one sentence and at most one secondary action, never the sheen or a gradient. | Mitt henvisningsmønster and Kalibrering have a «no data yet» state; an empty section reads «Tom». |
 | G-15 | Toasts confirm system events only, and never carry a needed action. | ATLAS v3 uses no toasts: a confirmation sits where the action led. |
-| G-16 | Message bars sit under the page or panel title, informative for clinical notices, and an action bar returns until resolved. | As stated. |
+| G-16 | Message bars sit under the page or panel title, informative for clinical notices, and an action bar returns until resolved. | As stated; since 3.2 the study's «Uten ATLAS» notice, the task line with ATLAS and the held lines on «Sendt» and «Din plan» are message bars under the case header. |
 | G-17 | A tooltip only names an icon-only control (or adds a short extra); a definition opens in a popover, never a tooltip; one tooltip appearance everywhere. | The rail's items and the review tab when it shows its icon only; tag definitions open as notes. The review tab's tooltip still draws Fluent's arrow, which the rail's do not; it goes in the next build. |
 | G-18 | A control that cannot be used yet stays in the tab order (`disabledFocusable`) with its reason shown and linked. | As stated (for example «Vis ATLAS» and «Send»). |
 | G-19 | Validation on blur and submit, never per keystroke; only for missing or malformed data, never on a clinical field. | The preview forms. |
-| G-20 | Decision controls are one choice group on native radios: equal size, fixed order, nothing pre-selected; selected is a brand outline and tint. | Behold and Henvis, the DPS outcomes, the plan, the reviewer's role. |
+| G-20 | Decision controls are one choice group on native radios: equal size, fixed order, nothing pre-selected; selected is a brand outline and tint. | Behold and Henvis, the DPS outcomes, the plan, the reviewer's role, and «Din trygghet nå» as a scale in one row (3.2). |
 | G-21 | The 48 px rail: icon links with `aria-current`, a 4 px brand indicator, a tooltip with the item's name and arrow-key movement. | As stated. |
 | G-22 | Fixed icon meanings, with no clashes: «Rett til helsehjelp» uses `arrow_enter`; «Fiktiv pasient» uses `beaker`; status icons mean system state only. | As stated. |
 | G-23 | Print shows the content without the shell, panels, the feedback tab or the dawn; the band prints with its caption and sentence. | As stated. |

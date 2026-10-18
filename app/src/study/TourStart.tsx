@@ -1,26 +1,23 @@
 import { Button, Dialog, DialogSurface, DialogTitle, makeStyles, tokens, typographyStyles } from '@fluentui/react-components';
-import { ArrowRight20Regular, Beaker16Regular, Dismiss20Regular, DocumentBulletList16Regular, Map16Regular, TextBulletListSquare16Regular } from '@fluentui/react-icons';
+import { ArrowRight20Regular, Beaker16Regular, ChevronRight16Regular, Dismiss20Regular, DocumentBulletList16Regular, Map16Regular, TextBulletListSquare16Regular } from '@fluentui/react-icons';
 import type { ReactNode } from 'react';
 import { useLang } from '../i18n/i18n';
 import type { StringKey } from '../i18n/strings';
 import { navigate } from '../router/router';
 import { useStudy } from '../state/study';
-import { GuideImage, SheenButton } from '../patterns/basics';
-import { guide } from '../theme/constants';
+import { StartButton } from '../patterns/basics';
 
 const useStyles = makeStyles({
   surface: {
     padding: 0,
     width: '100%',
     maxWidth: 'min(1040px, calc(100vw - 32px))',
-    borderRadius: '14px',
+    borderRadius: tokens.borderRadiusXLarge,
     overflowY: 'auto',
     maxHeight: 'calc(100dvh - 32px)',
   },
+  // A plain dialog header, as in any Fluent dialog.
   head: {
-    position: 'relative',
-    isolation: 'isolate',
-    overflow: 'hidden',
     display: 'flex',
     alignItems: 'flex-start',
     justifyContent: 'space-between',
@@ -28,14 +25,11 @@ const useStyles = makeStyles({
     paddingInline: 'clamp(20px, 3vw, 28px)',
     paddingBlockStart: '24px',
     paddingBlockEnd: '12px',
-    borderRadius: '14px 14px 0 0',
-    background: `linear-gradient(180deg,rgba(255,255,255,0) 35%,#FFFFFF 100%), linear-gradient(120deg,#FFF3EC 0%,#FDEDF5 52%,#F1EEFC 100%)`,
-    '@media (forced-colors: active)': { background: 'Canvas' },
   },
   headText: { display: 'flex', flexDirection: 'column', gap: '4px', minWidth: 0 },
-  eyebrow: { ...typographyStyles.caption1Strong, margin: 0, color: guide.ink },
-  title: { ...typographyStyles.title2, margin: 0 },
-  close: { flexShrink: 0, backgroundColor: 'rgba(255,255,255,0.7)' },
+  eyebrow: { ...typographyStyles.caption1Strong, margin: 0, color: tokens.colorNeutralForeground2 },
+  title: { ...typographyStyles.title3, margin: 0 },
+  close: { flexShrink: 0 },
   body: {
     display: 'grid',
     gridTemplateColumns: 'minmax(0, 1fr)',
@@ -53,17 +47,19 @@ const useStyles = makeStyles({
     columnGap: '10px',
     alignItems: 'start',
     padding: '12px',
-    borderRadius: '10px',
-    border: `1px solid ${guide.cardEdge}`,
-    backgroundColor: '#FFF8F4',
+    borderRadius: tokens.borderRadiusMedium,
+    border: `1px solid ${tokens.colorNeutralStroke2}`,
+    backgroundColor: tokens.colorNeutralBackground2,
     '@media (forced-colors: active)': { border: '1px solid CanvasText' },
   },
   tileIcon: {
     width: '28px',
     height: '28px',
     borderRadius: tokens.borderRadiusCircular,
-    backgroundColor: '#FFE9DE',
-    color: guide.ink,
+    backgroundColor: tokens.colorNeutralBackground1,
+    border: `1px solid ${tokens.colorNeutralStroke2}`,
+    boxSizing: 'border-box',
+    color: tokens.colorNeutralForeground2,
     display: 'inline-flex',
     alignItems: 'center',
     justifyContent: 'center',
@@ -72,17 +68,29 @@ const useStyles = makeStyles({
   tileText: { ...typographyStyles.body1, margin: 0, color: tokens.colorNeutralForeground2 },
   faq: { display: 'flex', flexDirection: 'column', minWidth: 0 },
   faqTitle: { ...typographyStyles.subtitle2, margin: 0, paddingBlockEnd: '8px', borderBottom: `1px solid ${tokens.colorNeutralStroke2}` },
-  details: { borderBottom: `1px solid ${tokens.colorNeutralStroke2}` },
+  // An accordion as elsewhere in ATLAS: a chevron that turns when the answer opens, not the browser's marker.
+  details: { borderBottom: `1px solid ${tokens.colorNeutralStroke2}`, '&[open] [data-chevron]': { transform: 'rotate(90deg)' } },
   summary: {
     ...typographyStyles.body1Strong,
     cursor: 'pointer',
+    display: 'flex',
+    alignItems: 'center',
+    gap: '8px',
     paddingBlock: '10px',
     paddingInline: '4px',
-    listStylePosition: 'inside',
+    listStyleType: 'none',
     borderRadius: tokens.borderRadiusSmall,
+    '::-webkit-details-marker': { display: 'none' },
     ':focus-visible': { outline: `2px solid ${tokens.colorStrokeFocus2}`, outlineOffset: '2px' },
   },
-  answer: { ...typographyStyles.body1, margin: 0, paddingInline: '4px', paddingBlockEnd: '12px', color: tokens.colorNeutralForeground2 },
+  chevron: {
+    flexShrink: 0,
+    color: tokens.colorNeutralForeground2,
+    transitionProperty: 'transform',
+    transitionDuration: tokens.durationFaster,
+    '@media (prefers-reduced-motion: reduce)': { transitionDuration: '0.01ms' },
+  },
+  answer: { ...typographyStyles.body1, margin: 0, paddingInlineStart: '28px', paddingInlineEnd: '4px', paddingBlockEnd: '12px', color: tokens.colorNeutralForeground2 },
   foot: {
     display: 'flex',
     flexWrap: 'wrap',
@@ -131,7 +139,6 @@ export function TourStartDialog({ open, onClose }: { open: boolean; onClose: () 
     <Dialog open={open} onOpenChange={(_, d) => !d.open && onClose()}>
       <DialogSurface className={cls.surface} data-tour-start="">
         <div className={cls.head}>
-          <GuideImage variant="header" />
           <div className={cls.headText}>
             <p className={cls.eyebrow}>{s('tourStartEyebrow')}</p>
             <DialogTitle as="h2" className={cls.title}>
@@ -165,7 +172,10 @@ export function TourStartDialog({ open, onClose }: { open: boolean; onClose: () 
             {faq.map(([q, a]) => (
               // One answer open at a time where the browser supports a named group; elsewhere each opens on its own.
               <details key={q} className={cls.details} name="atlas-faq">
-                <summary className={cls.summary}>{s(q)}</summary>
+                <summary className={cls.summary}>
+                  <ChevronRight16Regular className={cls.chevron} data-chevron="" aria-hidden="true" />
+                  {s(q)}
+                </summary>
                 <p className={cls.answer}>{s(a)}</p>
               </details>
             ))}
@@ -173,11 +183,9 @@ export function TourStartDialog({ open, onClose }: { open: boolean; onClose: () 
         </div>
         <div className={cls.foot}>
           <p className={cls.footNote}>{s('tourStartRequired')}</p>
+          {/* Meridian: the primary goes first, left of the other action. */}
           <div className={cls.footActions}>
-            <Button size="large" onClick={onClose}>
-              {s('tourStartNotNow')}
-            </Button>
-            <SheenButton
+            <StartButton
               icon={<ArrowRight20Regular />}
               iconPosition="after"
               onClick={() => {
@@ -186,7 +194,8 @@ export function TourStartDialog({ open, onClose }: { open: boolean; onClose: () 
               }}
             >
               {s('studyCardStartTour')}
-            </SheenButton>
+            </StartButton>
+            <Button onClick={onClose}>{s('tourStartNotNow')}</Button>
           </div>
         </div>
       </DialogSurface>

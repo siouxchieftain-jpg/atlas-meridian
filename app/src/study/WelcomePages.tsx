@@ -5,7 +5,7 @@ import {
   CheckmarkCircle20Filled,
   Circle20Regular,
   Clock16Regular,
-  DocumentArrowDown16Regular,
+  DocumentText16Regular,
   Info16Regular,
   Info24Regular,
   LockClosed16Regular,
@@ -25,7 +25,7 @@ import { ChoiceGroup } from '../patterns/ChoiceGroup';
 import { GuideImage, SheenButton } from '../patterns/basics';
 import { focusAfterOverlay } from '../patterns/announce';
 import { Actions, Body, Eyebrow, Lead, Muted } from '../patterns/layout';
-import { atlasDawn, guide, size } from '../theme/constants';
+import { atlasDawn, size } from '../theme/constants';
 import { FOCUS_HEADING_ON_LOAD, PageHeading } from '../shell/PageHeading';
 import { ConfirmDialog } from '../shell/HeaderParts';
 import { HOME_PATH, useStudyController } from './controller';
@@ -37,7 +37,7 @@ import { CORE, caseInProgress, casesDone, currentCase, partOf, partTwoLabel } fr
 
 const useVelkommen = makeStyles({
   wrap: { marginBlockStart: `${size.panelInset}px`, display: 'flex', flexDirection: 'column', gap: tokens.spacingVerticalS },
-  // A guide surface (B6): the dawn, with the guide layer's image on top of it. One screen tall on a laptop (decision 13).
+  // A guide surface (B6): the dawn, with the guide layer's image on top of it. The height its content needs.
   hero: {
     position: 'relative',
     isolation: 'isolate',
@@ -45,14 +45,13 @@ const useVelkommen = makeStyles({
     background: atlasDawn,
     borderRadius: tokens.borderRadiusLarge,
     boxShadow: tokens.shadow2,
-    paddingInline: 'clamp(16px, 3.4vw, 40px)',
-    paddingBlock: 'clamp(16px, 2.2vw, 24px)',
+    paddingInline: 'clamp(16px, 3.4vw, 48px)',
+    paddingBlock: 'clamp(24px, 3.4vw, 40px)',
     display: 'flex',
     flexWrap: 'wrap',
     alignItems: 'center',
     columnGap: '48px',
-    rowGap: '18px',
-    '@media (max-height: 640px)': { paddingBlock: '12px', rowGap: '12px' },
+    rowGap: '28px',
     boxSizing: 'border-box',
     '& [data-muted]': { color: tokens.colorNeutralForeground2 },
     '@media print': { background: '#FFFFFF', boxShadow: 'none' },
@@ -172,8 +171,6 @@ const useVelkommen = makeStyles({
     justifyContent: 'center',
     ...typographyStyles.caption1Strong,
   },
-  // The tour is the participant's own step: the guide's warm mark (board 10b).
-  stepNumTour: { background: guide.mark, color: tokens.colorNeutralForeground1, border: `1px solid ${guide.cardEdge}` },
   stepTitle: { ...typographyStyles.body1Strong, display: 'block' },
   stepText: { ...typographyStyles.caption1, color: tokens.colorNeutralForeground2, display: 'block' },
   // Welcome back: where the participant is, in the three parts.
@@ -192,7 +189,7 @@ const useVelkommen = makeStyles({
   },
   progRow: { display: 'grid', gridTemplateColumns: '24px minmax(0, 1fr)', columnGap: '12px', alignItems: 'start' },
   progIcon: { display: 'inline-flex', color: tokens.colorNeutralForeground2, marginTop: '1px' },
-  progIconNow: { color: guide.ink },
+  progIconNow: { color: tokens.colorBrandForeground1 },
   progTitle: { ...typographyStyles.body1Strong, display: 'block' },
   progText: { ...typographyStyles.caption1, color: tokens.colorNeutralForeground2, display: 'block' },
   nameChip: {
@@ -208,9 +205,7 @@ const useVelkommen = makeStyles({
     ...typographyStyles.caption1,
     color: tokens.colorNeutralForeground2,
   },
-  nameDot: { width: '8px', height: '8px', borderRadius: tokens.borderRadiusCircular, backgroundColor: guide.coral },
   nameValue: { ...typographyStyles.body1Strong, color: tokens.colorNeutralForeground1 },
-  backEyebrow: { ...typographyStyles.caption1Strong, margin: 0, color: guide.ink },
   notYou: { minWidth: 0, height: 'auto', whiteSpace: 'normal', textAlign: 'start' },
   closed: {
     display: 'flex',
@@ -275,7 +270,7 @@ function IntroText({ withContact }: { withContact: boolean }) {
   ];
   return (
     <>
-      <Eyebrow>{s('velkommenEyebrow')}</Eyebrow>
+      <Eyebrow brand>{s('velkommenEyebrow')}</Eyebrow>
       <PageHeading title={s('stepVelkommen')} guide>
         {s('velkommenTitle')}
       </PageHeading>
@@ -298,7 +293,7 @@ function IntroText({ withContact }: { withContact: boolean }) {
         {/* A missing letter or contact is said, never hidden: the release check confirms both are set. */}
         {cfg.informationLetter ? (
           <Link href={cfg.informationLetter} target="_blank" rel="noopener noreferrer" className={v.letter}>
-            <DocumentArrowDown16Regular aria-hidden="true" />
+            <DocumentText16Regular aria-hidden="true" />
             {s('velkommenLetter')}
           </Link>
         ) : (
@@ -342,7 +337,9 @@ function RoleCards() {
             </span>
             <p className={v.cardText}>{c.text}</p>
             <p className={v.cardNote}>{c.note}</p>
-            <SheenButton
+            {/* Two equal choices: secondary, the same size and weight (Meridian: the sheen is for one start action only). */}
+            <Button
+              size="large"
               className={v.cardStart}
               icon={<ArrowRight20Regular />}
               iconPosition="after"
@@ -352,7 +349,7 @@ function RoleCards() {
               }}
             >
               {c.start}
-            </SheenButton>
+            </Button>
           </article>
         ))}
       </div>
@@ -383,7 +380,7 @@ function FiveSteps() {
       <ol className={v.stepList}>
         {steps.map(([title, text], i) => (
           <li key={title} className={v.step}>
-            <span className={mergeClasses(v.stepNum, i === 2 && v.stepNumTour)} aria-hidden="true">
+            <span className={v.stepNum} aria-hidden="true">
               {i + 1}
             </span>
             <span>
@@ -419,16 +416,16 @@ function WelcomeBack() {
   const [ask, setAsk] = useState(false);
   return (
     <>
-      <p className={v.backEyebrow}>{s('velkommenBackEyebrow')}</p>
+      {/* The title greets, the button resumes: the two never say the same. */}
+      <Eyebrow brand>{s('velkommenEyebrow')}</Eyebrow>
       <PageHeading title={s('stepVelkommen')} guide>
-        {s('velkommenResume')}
+        {s('velkommenBackEyebrow')}
       </PageHeading>
       <Lead>
         {whereLine(study, s)} {s('velkommenBackSaved')}
       </Lead>
       {study.state.studienavn && (
         <span className={v.nameChip}>
-          <span className={v.nameDot} aria-hidden="true" />
           {s('omDegNameTitle')}
           <span className={v.nameValue} lang="nb">
             {study.state.studienavn}
@@ -570,21 +567,20 @@ export function VelkommenPage() {
 /* ---------- 2 Om deg ---------- */
 
 const useOmDeg = makeStyles({
-  wrap: { marginBlockStart: `${size.panelInset}px`, display: 'flex', flexWrap: 'wrap', alignItems: 'stretch', gap: '16px' },
-  // The two panels fit side by side beside an open form panel too (776 px of content on a 1280 px laptop).
+  // The two panels share the width, two to one, and stack when the content is narrow (beside an open form panel too).
+  wrap: { marginBlockStart: `${size.panelInset}px`, display: 'flex', flexWrap: 'wrap', alignItems: 'flex-start', gap: `${size.panelInset}px` },
   main: {
-    flex: '1 1 460px',
-    maxWidth: '640px',
+    flex: '2 1 460px',
     minWidth: 0,
+    alignSelf: 'flex-start',
     display: 'flex',
     flexDirection: 'column',
-    justifyContent: 'center',
-    gap: '12px',
+    gap: '14px',
     backgroundColor: tokens.colorNeutralBackground1,
     borderRadius: tokens.borderRadiusLarge,
     boxShadow: tokens.shadow2,
-    paddingInline: 'clamp(16px, 2vw, 28px)',
-    paddingBlock: 'clamp(16px, 2vw, 22px)',
+    padding: tokens.spacingHorizontalL,
+    '@media only screen and (min-width: 640px)': { padding: tokens.spacingHorizontalXXL },
     boxSizing: 'border-box',
     '@media (forced-colors: active)': { border: '1px solid CanvasText' },
   },
@@ -624,42 +620,29 @@ const useOmDeg = makeStyles({
   },
   nextIcon: { marginTop: '2px', color: tokens.colorNeutralForeground2, display: 'inline-flex' },
   reason: { ...typographyStyles.caption1, color: tokens.colorNeutralForeground3, margin: '8px 0 0' },
-  // The study name: a guide card beside the form (B6), the name large, what it is for, and three short facts.
+  // The study name: a white card beside the form, the name large, what it is for, and three short facts.
   name: {
-    position: 'relative',
-    isolation: 'isolate',
-    overflow: 'hidden',
-    flex: '1 1 260px',
-    maxWidth: '440px',
+    flex: '1 1 300px',
     minWidth: 0,
+    alignSelf: 'flex-start',
     display: 'flex',
     flexDirection: 'column',
-    justifyContent: 'center',
     gap: '12px',
-    paddingInline: 'clamp(20px, 2.2vw, 28px)',
-    paddingBlock: '28px',
+    padding: tokens.spacingHorizontalL,
+    '@media only screen and (min-width: 640px)': { padding: tokens.spacingHorizontalXXL },
     borderRadius: tokens.borderRadiusLarge,
-    border: `1px solid ${guide.cardEdge}`,
-    background: guide.card,
+    backgroundColor: tokens.colorNeutralBackground1,
+    boxShadow: tokens.shadow2,
     boxSizing: 'border-box',
-    '@media (forced-colors: active)': { background: 'Canvas', border: '1px solid CanvasText' },
+    '@media (forced-colors: active)': { border: '1px solid CanvasText' },
   },
-  nameEyebrow: { ...typographyStyles.caption1Strong, margin: 0, color: guide.ink },
-  nameValue: { ...typographyStyles.title2, margin: 0, color: tokens.colorNeutralForeground1, overflowWrap: 'anywhere' },
+  nameEyebrow: { ...typographyStyles.caption1Strong, margin: 0, color: tokens.colorNeutralForeground2 },
+  // Prominent in its card, never above the page's own title.
+  nameValue: { ...typographyStyles.subtitle1, margin: 0, color: tokens.colorNeutralForeground1, overflowWrap: 'anywhere' },
   nameText: { ...typographyStyles.body1, margin: 0, color: tokens.colorNeutralForeground1 },
-  facts: { listStyle: 'none', margin: 0, padding: 0, display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: '8px' },
-  fact: {
-    display: 'inline-flex',
-    alignItems: 'center',
-    gap: '6px',
-    paddingInline: '10px',
-    paddingBlock: '3px',
-    borderRadius: tokens.borderRadiusCircular,
-    border: `1px solid ${guide.cardEdge}`,
-    backgroundColor: 'rgba(255,255,255,0.9)',
-    ...typographyStyles.body1,
-  },
-  factIcon: { color: guide.ink, display: 'inline-flex' },
+  facts: { listStyle: 'none', margin: 0, padding: 0, display: 'flex', flexDirection: 'column', gap: '8px' },
+  fact: { display: 'flex', alignItems: 'flex-start', gap: '8px', ...typographyStyles.body1, color: tokens.colorNeutralForeground1 },
+  factIcon: { color: tokens.colorNeutralForeground2, display: 'inline-flex', marginTop: '2px' },
 });
 
 export function OmDegPage() {
@@ -765,7 +748,6 @@ export function OmDegPage() {
       </div>
       {st.studienavn && (
         <aside className={o.name} aria-labelledby={nameId} data-studienavn="">
-          <GuideImage variant="band" />
           <p className={o.nameEyebrow} id={nameId}>
             {s('omDegNameTitle')}
           </p>

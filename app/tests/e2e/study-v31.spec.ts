@@ -28,7 +28,7 @@ async function frameParams(page: Page): Promise<URLSearchParams> {
   return new URL(src ?? 'about:blank').searchParams;
 }
 
-/** How far the page scrolls down and sideways: both 0 when it is one screen. */
+/** How far the page scrolls down and sideways. Pages may scroll down (ATLAS 3.2); sideways is always 0. */
 async function overflow(page: Page): Promise<[number, number]> {
   await page.waitForTimeout(250);
   return page.evaluate(() => [
@@ -108,7 +108,7 @@ test('S9 from the overview opens in the panel with the role, the study name, the
   expect(q.get('CBstudienavn')).toBe(name);
   expect(q.get('CBside')).toBe('fastlege/hjem');
   expect(q.get('CBseksjon')).toBe('timeliste');
-  expect(q.get('CBversjon')).toMatch(/^3\.1\.0-/);
+  expect(q.get('CBversjon')).toMatch(/^3\.2\.0-/);
   expect(q.get('LCKside')).toBe('true');
   expect(q.get('CBsteg')).toBeNull();
   expect(q.get('CBintervju')).toBeNull();
@@ -294,7 +294,7 @@ test('the pilot round: the «Pilot» chip, the line on Velkommen, the pilot form
   await expect(page.locator('header').getByText('Pilot', { exact: true })).toBeVisible();
   await startStudy(page, 'DPS-kliniker');
   expect(new URL((await page.locator('iframe[data-form-frame]').getAttribute('src'))!).pathname).toBe('/a/pilot-S1');
-  expect((await frameParams(page)).get('CBversjon')).toMatch(/^3\.1\.0-.*-pilot$/);
+  expect((await frameParams(page)).get('CBversjon')).toMatch(/^3\.2\.0-.*-pilot$/);
   await sendForm(page);
   await toHome(page);
   await page.locator('[data-feedback-tab]').click();
@@ -356,13 +356,13 @@ for (const [width, height] of [
   [1280, 600],
 ] as const) {
   for (const role of ['Fastlege', 'DPS-kliniker'] as const) {
-    test(`one screen tall at ${width}×${height}, ${role}: the study’s own pages scroll neither down nor sideways`, async ({ page }) => {
+    test(`at ${width}×${height}, ${role}: the study’s own pages never scroll sideways`, async ({ page }) => {
       await page.setViewportSize({ width, height });
       await mockNettskjema(page);
       const seen: string[] = [];
       const check = async (where: string) => {
-        const [down, side] = await overflow(page);
-        if (down > 0 || side > 0) seen.push(`${where}: ${down}px down, ${side}px sideways`);
+        const [, side] = await overflow(page);
+        if (side > 0) seen.push(`${where}: ${side}px sideways`);
       };
       await page.goto('/');
       await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
@@ -399,4 +399,37 @@ for (const [width, height] of [
       expect(seen, seen.join('\n')).toEqual([]);
     });
   }
+}
+
+// The overview measures its own width: beside an open feedback form it drops to fewer columns, so the day's list keeps
+// room for its rows (ATLAS 3.2; a sideways check cannot see a squeezed column).
+for (const [width, role] of [
+  [1280, 'Fastlege'],
+  [1366, 'Fastlege'],
+  [1280, 'DPS-kliniker'],
+  [1366, 'DPS-kliniker'],
+] as const) {
+  test(`at ${width} px, ${role}: with S9 open beside the overview, the day's list keeps room for its rows`, async ({ page }) => {
+    await page.setViewportSize({ width, height: 800 });
+    await mockNettskjema(page);
+    await startStudy(page, role);
+    await sendForm(page);
+    await toHome(page);
+    await expect(page.locator('[data-columns="3"]')).toBeVisible();
+    await page.locator('[data-feedback-tab]').click();
+    await page.locator('[data-feedback-part]').first().click();
+    await expect(panel(page)).toBeVisible();
+    await expect(panel(page)).toHaveAttribute('data-inline', 'true');
+    await expect(page.locator('[data-columns="3"]')).toHaveCount(0);
+    const list = page.locator(role === 'Fastlege' ? '[data-home-part="timeliste"]' : '[data-home-part="mottatte"]');
+    const box = await list.boundingBox();
+    expect(box!.width).toBeGreaterThanOrEqual(440);
+    // Each patient's name has a line of its own width, never a letter per line.
+    const narrowest = await list.locator('li').evaluateAll((rows) =>
+      Math.min(...rows.map((r) => (r.querySelector('span:nth-child(3)') as HTMLElement | null)?.getBoundingClientRect().width ?? 0)),
+    );
+    expect(narrowest).toBeGreaterThanOrEqual(160);
+    const [, side] = await overflow(page);
+    expect(side).toBeLessThanOrEqual(0);
+  });
 }
