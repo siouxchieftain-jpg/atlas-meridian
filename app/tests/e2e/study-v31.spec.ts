@@ -108,7 +108,7 @@ test('S9 from the overview opens in the panel with the role, the study name, the
   expect(q.get('CBstudienavn')).toBe(name);
   expect(q.get('CBside')).toBe('fastlege/hjem');
   expect(q.get('CBseksjon')).toBe('timeliste');
-  expect(q.get('CBversjon')).toMatch(/^3\.1\.0-/);
+  expect(q.get('CBversjon')).toMatch(/^3\.2\.0-/);
   expect(q.get('LCKside')).toBe('true');
   expect(q.get('CBsteg')).toBeNull();
   expect(q.get('CBintervju')).toBeNull();
@@ -294,7 +294,7 @@ test('the pilot round: the «Pilot» chip, the line on Velkommen, the pilot form
   await expect(page.locator('header').getByText('Pilot', { exact: true })).toBeVisible();
   await startStudy(page, 'DPS-kliniker');
   expect(new URL((await page.locator('iframe[data-form-frame]').getAttribute('src'))!).pathname).toBe('/a/pilot-S1');
-  expect((await frameParams(page)).get('CBversjon')).toMatch(/^3\.1\.0-.*-pilot$/);
+  expect((await frameParams(page)).get('CBversjon')).toMatch(/^3\.2\.0-.*-pilot$/);
   await sendForm(page);
   await toHome(page);
   await page.locator('[data-feedback-tab]').click();

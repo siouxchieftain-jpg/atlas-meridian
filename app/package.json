@@ -1,7 +1,7 @@
 {
   "name": "atlas-meridian-app",
   "private": true,
-  "version": "3.1.0",
+  "version": "3.2.0",
   "description": "ATLAS v3 on Meridian: a formative evaluation prototype (fictional patients only).",
   "type": "module",
   "scripts": {
