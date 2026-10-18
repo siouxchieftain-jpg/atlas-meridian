@@ -243,10 +243,13 @@ describe('the receipt names its form (nettskjema.mjs verify)', () => {
 
   it('opens a form through the end of a day in Norway, winter or summer', async () => {
     const path = '../../scripts/nettskjema.mjs';
-    const m = (await import(/* @vite-ignore */ path)) as { osloEndOfDay: (d: unknown) => string | undefined };
-    expect(m.osloEndOfDay('2026-11-30')).toBe('2026-11-30T23:59:00+01:00');
-    expect(m.osloEndOfDay('2027-06-15')).toBe('2027-06-15T23:59:00+02:00');
+    const m = (await import(/* @vite-ignore */ path)) as { osloEndOfDay: (d: unknown) => string | undefined; osloWallTime: (at?: Date) => string };
+    // Nettskjema takes Norwegian wall time with no offset.
+    expect(m.osloEndOfDay('2026-11-30')).toBe('2026-11-30T23:59:00');
+    expect(m.osloEndOfDay('2027-06-15')).toBe('2027-06-15T23:59:00');
     expect(m.osloEndOfDay('2026-02-30')).toBeUndefined();
     expect(m.osloEndOfDay('30.11.2026')).toBeUndefined();
+    expect(m.osloWallTime(new Date('2026-10-18T16:05:07.250Z'))).toBe('2026-10-18T18:05:07');
+    expect(m.osloWallTime(new Date('2026-12-01T23:30:00Z'))).toBe('2026-12-02T00:30:00');
   });
 });

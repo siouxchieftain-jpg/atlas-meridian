@@ -446,22 +446,40 @@ async function status() {
 }
 
 /**
- * The end of a day in Norway as ISO 8601 with its offset (23:59 on 2026-11-30 is 2026-11-30T23:59:00+01:00), or
- * undefined for anything that is not a date.
+ * A moment as Nettskjema takes the open period: Norwegian wall time, to the second, with no offset
+ * (2026-10-18T18:05:07). Nettskjema writes the period this way, and refused a time in «Z» and one with an offset.
  */
+export function osloWallTime(at = new Date()) {
+  const p = Object.fromEntries(
+    new Intl.DateTimeFormat('en-GB', {
+      timeZone: 'Europe/Oslo',
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+      hourCycle: 'h23',
+    })
+      .formatToParts(at)
+      .map((x) => [x.type, x.value]),
+  );
+  return `${p.year}-${p.month}-${p.day}T${p.hour}:${p.minute}:${p.second}`;
+}
+
+/** The end of a day in Norway as Nettskjema takes it (2026-11-30T23:59:00), or undefined for anything that is not a date. */
 export function osloEndOfDay(day) {
   if (!/^\d{4}-\d{2}-\d{2}$/.test(String(day ?? ''))) return undefined;
   const noon = new Date(`${day}T12:00:00Z`);
   if (Number.isNaN(noon.getTime()) || noon.toISOString().slice(0, 10) !== day) return undefined;
-  const name = new Intl.DateTimeFormat('en-GB', { timeZone: 'Europe/Oslo', timeZoneName: 'longOffset' })
-    .formatToParts(noon)
-    .find((p) => p.type === 'timeZoneName')?.value;
-  const offset = /^GMT([+-]\d{2}:\d{2})$/.exec(name ?? '')?.[1] ?? '+01:00';
-  return `${day}T23:59:00${offset}`;
+  return `${day}T23:59:00`;
 }
 
-/** Sets the open period of every form in the set (--only limits it), then reads back whether each is open. */
-async function setOpenPeriod(c, period, label) {
+/**
+ * Sets the open period of every form in the set (--only limits it), then reads back whether each is open. A form that
+ * does not read as it should is named, and the run ends with an error.
+ */
+async function setOpenPeriod(c, period, label, wantOpen) {
   const cfg = readConfig();
   const only = flag('only')?.split(',').map((s) => s.trim());
   for (const form of roundForms()) {
@@ -485,7 +503,11 @@ async function setOpenPeriod(c, period, label) {
     if (only && !only.includes(form.key)) continue;
     const id = formIdOf(addressOf(cfg, form.key));
     const f = id ? byId.get(id) : undefined;
-    if (id) console.log(`${pad(form.key, 12)} ${label}: ${f ? (f.open ? 'open' : 'closed') : 'not visible to the client'}${f?.openTo ? `, open to ${f.openTo}` : ''}`);
+    if (!id) continue;
+    const as = f ? (f.open ? 'open' : 'closed') : 'not visible to the client';
+    const off = !f || Boolean(f.open) !== wantOpen;
+    if (off) process.exitCode = 1;
+    console.log(`${pad(form.key, 12)} ${label}: ${as}${f?.openTo ? `, open to ${f.openTo}` : ''}${off ? `  <- expected ${wantOpen ? 'open' : 'closed'}: check the form in Nettskjema` : ''}`);
   }
 }
 
@@ -493,11 +515,12 @@ async function open() {
   const openTo = osloEndOfDay(flag('until'));
   if (!openTo) throw new Error('open needs --until YYYY-MM-DD: the last day the forms take answers (Norwegian time)');
   if (ROUND === 'study' && !rest.includes('--study')) throw new Error('this would open the study forms: add --study if that is meant, or use --round pilot');
-  await setOpenPeriod(credentials(), { openFrom: new Date().toISOString(), openTo }, `opened through ${flag('until')}`);
+  // The opening is set an hour back, so the form takes answers at once.
+  await setOpenPeriod(credentials(), { openFrom: osloWallTime(new Date(Date.now() - 3_600_000)), openTo }, `opened through ${flag('until')}`, true);
 }
 
 async function close() {
-  await setOpenPeriod(credentials(), { openTo: new Date().toISOString() }, 'closed now');
+  await setOpenPeriod(credentials(), { openTo: osloWallTime() }, 'closed now', false);
 }
 
 const modes = { plan, create, update, verify, status, open, close };
