@@ -14,7 +14,8 @@
 //
 // The API client's ID and secret are read from a file only the owner keeps (default
 // %USERPROFILE%/nettskjema-api/atlas.json, or NETTSKJEMA_CREDENTIALS): {"clientId": "...", "clientSecret": "...",
-// "editor": "<Nettskjema username>"}. The script never prints the secret or the token, never sends an answer and
+// "editor": "<Nettskjema username>"}; without "editor" (or --editor), create and update take the person who already
+// edits the forms the config names. The script never prints the secret or the token, never sends an answer and
 // never deletes anything: test answers are deleted by the owner in Nettskjema («Slett alle svar»).
 import { readFileSync, writeFileSync, existsSync } from 'node:fs';
 import { homedir } from 'node:os';
@@ -214,6 +215,27 @@ function saveAddress(key, formId) {
   writeFileSync(configPath, `${JSON.stringify(cfg, null, 2)}\n`);
 }
 
+/**
+ * The person who edits the forms beside the API client: --editor, the credentials file's "editor", or else the person
+ * already editing the forms this config names (the first editor that is not an API client). Only a username, never a
+ * secret, is printed.
+ */
+async function editorFor(c) {
+  if (c.editor) return c.editor;
+  const cfg = readConfig();
+  for (const [key, address] of Object.entries({ ...(cfg.forms ?? {}), ...(cfg.pilotForms ?? {}) })) {
+    const id = formIdOf(address);
+    if (!id) continue;
+    const s = await api(c, 'GET', `/form/${id}/settings`);
+    const human = (s?.editors ?? []).map((e) => e?.username).find((u) => u && !/@apiclient$/.test(u));
+    if (human) {
+      console.log(`Editor: ${human} (the editor of ${key}, form ${id})`);
+      return human;
+    }
+  }
+  return undefined;
+}
+
 /* ---------- Verify: the form as stored against the instrument ---------- */
 
 const norm = (s) => String(s ?? '').replace(/\s+/g, ' ').replace(/<p>\s*<\/p>/g, '').trim();
@@ -317,9 +339,10 @@ async function plan() {
 
 async function create() {
   const c = credentials();
-  if (!c.editor) throw new Error('no editor: add "editor" to the credentials file or pass --editor <Nettskjema username>');
+  const editor = await editorFor(c);
+  if (!editor) throw new Error('no editor: add "editor" to the credentials file or pass --editor <Nettskjema username>');
   const only = flag('only')?.split(',').map((s) => s.trim());
-  const editors = [`${c.id}@apiclient`, c.editor];
+  const editors = [`${c.id}@apiclient`, editor];
   for (const form of roundForms()) {
     if (only && !only.includes(form.key)) continue;
     const existing = formIdOf(addressOf(readConfig(), form.key));
@@ -357,9 +380,10 @@ async function create() {
 /** Brings forms that already exist in line with the instrument. Refuses a form that has answers. */
 async function update() {
   const c = credentials();
-  if (!c.editor) throw new Error('no editor: add "editor" to the credentials file or pass --editor <Nettskjema username>');
+  const editor = await editorFor(c);
+  if (!editor) throw new Error('no editor: add "editor" to the credentials file or pass --editor <Nettskjema username>');
   const only = flag('only')?.split(',').map((s) => s.trim());
-  const editors = [`${c.id}@apiclient`, c.editor];
+  const editors = [`${c.id}@apiclient`, editor];
   const mine = await api(c, 'GET', '/form/me');
   const answers = new Map((mine ?? []).map((f) => [f.formId, f.numberOfDeliveredSubmissions ?? 0]));
   for (const form of roundForms()) {
