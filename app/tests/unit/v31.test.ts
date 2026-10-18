@@ -36,7 +36,7 @@ describe('the pilot round (decision 10)', () => {
 
   it('marks every answer in the pilot round with a version ending in -pilot', async () => {
     const forms = await freshForms({ round: 'pilot', forms: {}, pilotForms: { S1: 'https://nettskjema.no/a/101' } });
-    expect(forms.versjonValue()).toMatch(/^3\.2\.0-.*-pilot$/);
+    expect(forms.versjonValue()).toMatch(/^3\.3\.0-.*-pilot$/);
     expect(forms.studyLocked('S1', 'fastlege', 'Nei', {}, 'Rolig elg 27').versjon).toMatch(/-pilot$/);
     expect(forms.feedbackLocked('fastlege', 'Rolig elg 27', 'fastlege/hjem', 'hele').versjon).toMatch(/-pilot$/);
   });

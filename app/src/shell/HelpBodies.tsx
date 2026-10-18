@@ -13,6 +13,7 @@ import {
 } from '@fluentui/react-icons';
 import { Fragment, type ReactNode } from 'react';
 import { useLang } from '../i18n/i18n';
+import { guide } from '../theme/constants';
 
 const useStyles = makeStyles({
   stack: { display: 'flex', flexDirection: 'column', gap: '26px' },
@@ -53,9 +54,9 @@ const useStyles = makeStyles({
     ...typographyStyles.caption1Strong,
     color: tokens.colorNeutralForeground1,
   },
-  stepNumNow: { border: `2px solid ${tokens.colorBrandStroke1}`, backgroundColor: tokens.colorBrandBackground2, color: tokens.colorBrandForeground1 },
+  stepNumNow: { border: 'none', background: guide.mark, boxShadow: `0 0 0 3px ${guide.peach}` },
   stepLabel: { minWidth: 0, overflowWrap: 'break-word' },
-  here: { display: 'block', ...typographyStyles.caption1Strong, color: tokens.colorBrandForeground1 },
+  here: { display: 'block', ...typographyStyles.caption1Strong, color: guide.ink },
   // One case's form: four stages, in a row on a wide dialog.
   flow: {
     display: 'grid',
@@ -70,12 +71,12 @@ const useStyles = makeStyles({
     gap: '2px',
     paddingInline: tokens.spacingHorizontalM,
     paddingBlock: tokens.spacingVerticalS,
-    borderRadius: tokens.borderRadiusLarge,
+    borderRadius: '10px',
     border: `1px solid ${tokens.colorNeutralStroke2}`,
     backgroundColor: tokens.colorNeutralBackground1,
   },
   stageAtlas: { backgroundColor: tokens.colorBrandBackground2, border: `1px solid ${tokens.colorBrandStroke2}` },
-  stageWho: { ...typographyStyles.caption1Strong, color: tokens.colorNeutralForeground2 },
+  stageWho: { ...typographyStyles.caption1Strong, color: guide.ink },
   stageWhoAtlas: { color: tokens.colorBrandForeground1 },
   stageTitle: { ...typographyStyles.body1Strong },
   stageText: { ...typographyStyles.caption1, color: tokens.colorNeutralForeground2 },
@@ -89,8 +90,11 @@ const useStyles = makeStyles({
     width: '32px',
     height: '32px',
     borderRadius: tokens.borderRadiusCircular,
-    backgroundColor: tokens.colorNeutralBackground3,
-    color: tokens.colorNeutralForeground2,
+    // A soft peach circle with a warm edge, so the icon reads as a mark on white (board 7b).
+    backgroundColor: guide.peachLight,
+    border: `1px solid ${guide.cardEdge}`,
+    boxSizing: 'border-box',
+    color: guide.ink,
     display: 'inline-flex',
     alignItems: 'center',
     justifyContent: 'center',
@@ -108,9 +112,9 @@ const useStyles = makeStyles({
     gap: '6px',
     paddingInline: tokens.spacingHorizontalL,
     paddingBlock: tokens.spacingVerticalM,
-    borderRadius: tokens.borderRadiusLarge,
-    border: `1px solid ${tokens.colorNeutralStroke2}`,
-    backgroundColor: tokens.colorNeutralBackground2,
+    borderRadius: tokens.borderRadiusXLarge,
+    border: `1px solid ${guide.cardEdge}`,
+    background: guide.card,
   },
   tileTitle: { ...typographyStyles.body1Strong, margin: 0 },
   tileText: { ...typographyStyles.body1, margin: 0, color: tokens.colorNeutralForeground2 },

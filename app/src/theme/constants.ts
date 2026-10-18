@@ -23,7 +23,10 @@ export const band = {
 /** The neutral proportion bar in Mitt henvisningsmønster: greys only, never status colours (B1). */
 export const neutralBar = ['#424242', '#8A8A8A', '#C7C7C7', '#F0F0F0'] as const;
 
-/** Guide surfaces only: Velkommen and the tour (ATLAS 3.2). */
+/**
+ * Guide surfaces only: the study around the work (Velkommen, Om deg's name card, the study card, the tour, help, the
+ * briefing's task card and the end of the study). Never a clinical view or behind the band (Meridian, two registers).
+ */
 export const atlasDawn =
   'radial-gradient(22% 34% at 76% 36%,#FDCFB4 0%,rgba(253,207,180,0) 75%),' +
   'radial-gradient(44% 64% at 78% 34%,#FEE5D7 0%,rgba(254,229,215,0) 72%),' +
@@ -40,19 +43,28 @@ export const atlasDawn =
 export const guideImage = 'url(./guide-organza.webp)';
 
 /**
- * The guide layer's warm colours (the tour, and review mode's Merknader). Buttons
- * stay brand everywhere. Small text uses `ink` (6.8:1 on white); `coral` and
- * `peach` are for marks and illustration only, never for text.
+ * The guide layer's warm colours: guide cards, help, the tour, the study name's mark and review mode's Merknader.
+ * Buttons stay brand everywhere. Small text uses `ink` (6.8:1 on white, at least 4.7:1 on the card and the mark);
+ * `coral`, `peach` and `rose` are for marks and illustration only, never for text.
  */
 export const guide = {
   ink: '#9C3D1F',
   coral: '#F59E85',
   peach: '#FDCFB4',
+  /** A soft peach fill: the circle behind a guide tile's icon (dawn-peach-light). */
+  peachLight: '#FEE5D7',
+  rose: '#F6B8DA',
   /** A guide card: the dawn in a card, with a warm edge. */
   card: 'linear-gradient(165deg,#FFF4EE 0%,#FDEDF5 52%,#F3F0FD 100%)',
+  /** The card's first colour, where the artwork fades into it. */
+  cardTop: '#FFF4EE',
   cardEdge: '#F6D9CF',
   /** A number marker or a guide pill. */
   mark: 'linear-gradient(135deg,#FDCFB4 0%,#FBDDF0 58%,#D2CCF8 100%)',
+  /** The study name's mark: lighter at its end, so its ink initials keep 4.5:1 everywhere on it. */
+  nameMark: 'linear-gradient(135deg,#FDCFB4 0%,#FBDDF0 58%,#E4DFFB 100%)',
+  /** A quiet warm rule or track, as between a guide card's parts and in the tour's progress. */
+  track: 'rgba(156,61,31,0.16)',
 } as const;
 
 /** The app frame behind white content panels (ATLAS's stand-in for Mica). */

@@ -302,7 +302,11 @@ export interface DesignNote {
   text: T;
 }
 
+/** The glossary's three groups (Hjelp → Ordliste): roles and services, the referral and its rules, and what is in ATLAS. */
+export type GlossaryGroup = 'roller' | 'henvisning' | 'atlas';
+
 export interface GlossaryEntry {
+  group: GlossaryGroup;
   term: T;
   text: T;
 }

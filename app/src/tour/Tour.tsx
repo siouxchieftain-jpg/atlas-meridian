@@ -24,15 +24,17 @@ import { useId, useLayoutEffect, useRef, useState, type ReactNode } from 'react'
 import type { Role, TourPart, TourStep } from '../content/types';
 import { tour, tourParts } from '../content';
 import { useLang } from '../i18n/i18n';
-import { GuideImage, StartButton } from '../patterns/basics';
+import { GuideImage, SheenButton } from '../patterns/basics';
 import { Actions, Body, Lead } from '../patterns/layout';
 import { PageHeading } from '../shell/PageHeading';
-import { atlasDawn, size } from '../theme/constants';
+import { atlasDawn, guide, size } from '../theme/constants';
 import { SandboxFrame, isStudyFrame, useSandbox, type Sandbox } from './frames';
 
 const useStyles = makeStyles({
   // The guide layer's stage: the dawn and the image, the progress on top, the panel and the live window in the middle.
   surface: {
+    // Down to the footer when the step is short, as every study page (ATLAS 3.3).
+    flexGrow: 1,
     position: 'relative',
     isolation: 'isolate',
     // Clip, not hidden: hidden would make the stage the scroll container, and the sticky text card would scroll away.
@@ -60,33 +62,35 @@ const useStyles = makeStyles({
     display: 'inline-flex',
     alignItems: 'center',
     gap: '6px',
-    paddingBlock: '3px',
-    paddingInlineStart: '8px',
-    paddingInlineEnd: '10px',
-    borderRadius: tokens.borderRadiusMedium,
-    backgroundColor: tokens.colorNeutralBackground1,
-    border: `1px solid ${tokens.colorBrandStroke2}`,
-    color: tokens.colorBrandForeground1,
+    paddingBlock: '4px',
+    paddingInlineStart: '10px',
+    paddingInlineEnd: '12px',
+    borderRadius: tokens.borderRadiusCircular,
+    background: `linear-gradient(90deg,${guide.peach} 0%,${guide.rose} 100%)`,
+    boxShadow: '0 1px 2px rgba(156,61,31,0.18)',
+    color: tokens.colorNeutralForeground1,
     ...typographyStyles.caption1Strong,
     '@media (forced-colors: active)': { border: '1px solid CanvasText' },
   },
   where: { ...typographyStyles.caption1, color: tokens.colorNeutralForeground2 },
   progress: { flex: '1 1 280px', maxWidth: '520px', display: 'flex', alignItems: 'center', gap: '10px' },
   progressPart: { display: 'flex', gap: '4px' },
-  // To do in neutral stroke 1, done in brand 80, the current step in brand 40: each step reads apart from its neighbours.
-  seg: { flex: '1 1 0', height: '4px', borderRadius: '2px', backgroundColor: tokens.colorNeutralStroke1, '@media (forced-colors: active)': { border: '1px solid CanvasText' } },
-  segDone: { backgroundColor: tokens.colorBrandBackground },
-  segNow: { backgroundColor: tokens.colorBrandBackgroundPressed, '@media (forced-colors: active)': { backgroundColor: 'Highlight' } },
-  // A white card over the image, so the text always reads on white.
+  // The guide's warm track: to do in the quiet track, done in coral, the current step in ink.
+  seg: { flex: '1 1 0', height: '6px', borderRadius: '3px', backgroundColor: guide.track, '@media (forced-colors: active)': { border: '1px solid CanvasText' } },
+  segDone: { backgroundColor: guide.coral },
+  segNow: { backgroundColor: guide.ink, '@media (forced-colors: active)': { backgroundColor: 'Highlight' } },
+  // A frosted panel over the image, so the text always reads on white (board 7a).
   text: {
     display: 'flex',
     flexDirection: 'column',
     gap: tokens.spacingVerticalL,
     minWidth: 0,
     padding: 'clamp(18px, 2.5vw, 28px)',
-    borderRadius: tokens.borderRadiusLarge,
-    backgroundColor: tokens.colorNeutralBackground1,
-    boxShadow: tokens.shadow4,
+    borderRadius: tokens.borderRadiusXLarge,
+    backgroundColor: 'rgba(255,255,255,0.78)',
+    backdropFilter: 'blur(22px)',
+    WebkitBackdropFilter: 'blur(22px)',
+    boxShadow: '0 0 2px rgba(0,0,0,0.06), 0 10px 30px rgba(63,54,130,0.12)',
     boxSizing: 'border-box',
     animationName: { from: { opacity: 0 }, to: { opacity: 1 } },
     animationDuration: '400ms',
@@ -95,7 +99,7 @@ const useStyles = makeStyles({
     '@media only screen and (min-width: 1024px)': { position: 'sticky', top: 'calc(var(--atlas-header-h, 48px) + 24px)' },
     '@media (forced-colors: active)': { backgroundColor: 'Canvas', border: '1px solid CanvasText' },
   },
-  part: { ...typographyStyles.caption1Strong, margin: 0, color: tokens.colorBrandForeground1 },
+  part: { ...typographyStyles.caption1Strong, margin: 0, color: guide.ink },
   tryIt: {
     display: 'flex',
     gap: '10px',
@@ -104,12 +108,12 @@ const useStyles = makeStyles({
     margin: 0,
     paddingInline: '14px',
     paddingBlock: '12px',
-    borderRadius: tokens.borderRadiusMedium,
-    backgroundColor: tokens.colorNeutralBackground2,
-    border: `1px solid ${tokens.colorNeutralStroke2}`,
+    borderRadius: tokens.borderRadiusLarge,
+    backgroundColor: guide.cardTop,
+    border: `1px solid ${guide.peach}`,
     '@media (forced-colors: active)': { border: '1px solid CanvasText' },
   },
-  tryIcon: { color: tokens.colorBrandForeground1, flexShrink: 0, marginTop: '1px' },
+  tryIcon: { color: guide.ink, flexShrink: 0, marginTop: '1px' },
   bridge: {
     display: 'flex',
     gap: tokens.spacingHorizontalS,
@@ -154,15 +158,17 @@ const useStyles = makeStyles({
     '@media (forced-colors: active)': { '::after': { backgroundColor: 'Highlight', border: '1px solid Highlight' } },
   },
   nav: { display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: tokens.spacingHorizontalM, flexWrap: 'wrap' },
-  // The live window: a white window on the stage, as a Fluent card at its elevation.
+  // The live window: a thin warm frame round a white window (board 7a); what is inside stays solid white (G-31).
   window: {
-    borderRadius: tokens.borderRadiusLarge,
-    border: `1px solid ${tokens.colorNeutralStroke2}`,
-    boxShadow: tokens.shadow16,
+    padding: '2px',
+    borderRadius: tokens.borderRadiusXLarge,
+    // guide-coral, guide-rose and brand 120: every stop a token.
+    background: `linear-gradient(135deg,${guide.coral} 0%,${guide.rose} 50%,#BCB4F5 100%)`,
+    boxShadow: '0 0 2px rgba(0,0,0,0.10), 0 18px 44px rgba(63,54,130,0.20)',
     minWidth: 0,
-    '@media (forced-colors: active)': { border: '1px solid CanvasText' },
+    '@media (forced-colors: active)': { background: 'Canvas', border: '1px solid CanvasText' },
   },
-  windowInner: { backgroundColor: tokens.colorNeutralBackground1, borderRadius: tokens.borderRadiusLarge, overflow: 'hidden' },
+  windowInner: { backgroundColor: tokens.colorNeutralBackground1, borderRadius: `calc(${tokens.borderRadiusXLarge} - 2px)`, overflow: 'hidden' },
   // A plain 40 px bar with the frame's title: no browser tab, no favicon, no window buttons (fluent.md 5.2, R2A-10).
   bar: {
     display: 'flex',
@@ -461,12 +467,12 @@ export function TourView({
             ))}
           </div>
           <Actions>
-            <Button icon={<ArrowLeft20Regular />} disabled={pos.part === 0 && stepIdx === 0} onClick={prev}>
+            <Button size="large" icon={<ArrowLeft20Regular />} disabled={pos.part === 0 && stepIdx === 0} onClick={prev}>
               {s('previous')}
             </Button>
-            <StartButton size="medium" icon={<ArrowRight20Regular />} iconPosition="after" onClick={next}>
+            <SheenButton icon={<ArrowRight20Regular />} iconPosition="after" onClick={next}>
               {!lastInPart ? s('next') : !lastPart ? s('tourNextPart') : s('tourFinish')}
-            </StartButton>
+            </SheenButton>
           </Actions>
         </div>
       </div>

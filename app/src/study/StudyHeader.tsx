@@ -1,8 +1,9 @@
-import { makeStyles, mergeClasses, tokens, typographyStyles } from '@fluentui/react-components';
+import { Button, Popover, PopoverSurface, PopoverTrigger, makeStyles, mergeClasses, tokens, typographyStyles } from '@fluentui/react-components';
 import { Checkmark12Filled, People16Regular, Stethoscope20Regular } from '@fluentui/react-icons';
+import { useId } from 'react';
 import { useLang } from '../i18n/i18n';
 import { useStudy } from '../state/study';
-import { SrOnly } from '../patterns/basics';
+import { SrOnly, StudyNameMark } from '../patterns/basics';
 import { casesDone, partOf, partTwoLabel, type StudyPart } from './parts';
 
 const useStyles = makeStyles({
@@ -64,6 +65,15 @@ const useStyles = makeStyles({
   numNow: { border: 'none', backgroundColor: tokens.colorBrandBackground, color: tokens.colorNeutralForegroundOnBrand },
   numDone: { border: `1px solid ${tokens.colorNeutralStroke1}`, color: tokens.colorNeutralForeground1 },
   sep: { width: '14px', height: '1px', backgroundColor: tokens.colorNeutralStroke1, flexShrink: 0 },
+  // The study name as the participant's account, at the end of the header as in Microsoft 365 (ATLAS 3.3).
+  account: { minWidth: '32px', width: '32px', height: '32px', padding: 0, marginInlineStart: tokens.spacingHorizontalXS },
+  accountPop: { maxWidth: '300px', display: 'flex', flexDirection: 'column', gap: tokens.spacingVerticalS },
+  accountHead: { display: 'flex', alignItems: 'center', gap: '12px' },
+  accountWho: { display: 'flex', flexDirection: 'column', minWidth: 0 },
+  accountLabel: { ...typographyStyles.caption1, color: tokens.colorNeutralForeground2 },
+  accountName: { ...typographyStyles.subtitle2, margin: 0, overflowWrap: 'anywhere' },
+  accountText: { ...typographyStyles.body1, margin: 0, color: tokens.colorNeutralForeground1 },
+  accountRole: { ...typographyStyles.body1, margin: 0, color: tokens.colorNeutralForeground2 },
   // Between 640 and 1180 px there is no room for the pills: one line says where the participant is.
   compact: {
     display: 'none',
@@ -128,5 +138,43 @@ export function StudyProgress() {
       </ol>
       <span className={cls.compact}>{s('partCompact', { n: now, title: label(now) })}</span>
     </>
+  );
+}
+
+/**
+ * The study name as the participant's account, at the end of the header, as an account picture is in Microsoft 365:
+ * the name's mark opens a card with the name, the role and what the name is for. It is there once ATLAS has made the
+ * name (the role is chosen), and never names a person.
+ */
+export function StudyAccount() {
+  const cls = useStyles();
+  const { s } = useLang();
+  const study = useStudy();
+  const titleId = useId();
+  const name = study.state.studienavn;
+  if (!name || !study.role) return null;
+  return (
+    <Popover withArrow positioning="below-end" trapFocus>
+      <PopoverTrigger disableButtonEnhancement>
+        <Button appearance="subtle" shape="circular" className={cls.account} aria-label={s('accountLabel', { name })} data-study-account="">
+          <StudyNameMark name={name} size={28} />
+        </Button>
+      </PopoverTrigger>
+      <PopoverSurface aria-labelledby={titleId} tabIndex={-1}>
+        <div className={cls.accountPop}>
+          <div className={cls.accountHead}>
+            <StudyNameMark name={name} size={40} />
+            <span className={cls.accountWho}>
+              <span className={cls.accountLabel}>{s('omDegNameTitle')}</span>
+              <p className={cls.accountName} id={titleId} lang="nb">
+                {name}
+              </p>
+            </span>
+          </div>
+          <p className={cls.accountRole}>{s(study.role === 'gp' ? 'omDegAsGp' : 'omDegAsDps')}</p>
+          <p className={cls.accountText}>{s('omDegNameLead')}</p>
+        </div>
+      </PopoverSurface>
+    </Popover>
   );
 }
