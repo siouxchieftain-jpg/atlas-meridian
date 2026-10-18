@@ -20,6 +20,9 @@ import { ReferralEditor } from '../case/ReferralEditor';
 import { StructuredReturnView, ThreadView } from '../case/Thread';
 import { PatternView } from '../overview/PatternView';
 import { Kalibrering, SharedDialog } from '../overview/SharedView';
+import { FrameStudyCase, FrameStudyMap, FrameStudyName, FrameStudyStop, isStudyFrame } from './studyFrames';
+
+export { isStudyFrame };
 
 /**
  * The tour's live frames: the real components on the practice patient Sofie
@@ -378,6 +381,18 @@ export function TourFrame({ frame, role }: { frame: string; role: Role }) {
     case 'outcomeReturn':
       body = <FrameOutcomeReturn />;
       break;
+    case 'studyMap':
+      body = <FrameStudyMap role={role} />;
+      break;
+    case 'studyCase':
+      body = <FrameStudyCase />;
+      break;
+    case 'studyStop':
+      body = <FrameStudyStop />;
+      break;
+    case 'studyName':
+      body = <FrameStudyName role={role} />;
+      break;
     default:
       body = null;
   }
@@ -389,11 +404,14 @@ export function SandboxFrame({ sandbox, frame, role }: { sandbox: Sandbox; frame
   return (
     <SandboxWorkProvider value={sandbox.work}>
       <TourFrame frame={frame} role={role} />
-      <div style={{ marginTop: 16 }}>
-        <Button size="small" appearance="subtle" icon={<ArrowCounterclockwise16Regular />} onClick={sandbox.reset}>
-          {s('tourResetFrame')}
-        </Button>
-      </div>
+      {/* A drawing of the study has nothing to reset. */}
+      {!isStudyFrame(frame) && (
+        <div style={{ marginTop: 16 }}>
+          <Button size="small" appearance="subtle" icon={<ArrowCounterclockwise16Regular />} onClick={sandbox.reset}>
+            {s('tourResetFrame')}
+          </Button>
+        </div>
+      )}
     </SandboxWorkProvider>
   );
 }

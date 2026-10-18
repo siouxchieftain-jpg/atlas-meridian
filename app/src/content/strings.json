@@ -1383,10 +1383,6 @@
     "nb": "Pasienter uten henvisningssak er med for å vise en vanlig dag og kan ikke åpnes.",
     "en": "Patients without a referral question are included to show an ordinary day and cannot be opened."
   },
-  "laterInStudy": {
-    "nb": "Senere i studien",
-    "en": "Later in the study"
-  },
   "chipReferred": {
     "nb": "Henvist",
     "en": "Referred"
@@ -1772,36 +1768,12 @@
     "en": "ATLAS is a research prototype. It shows an idea, not a finished product. All the patients and all the figures are fictional."
   },
   "velkommenImagine": {
-    "nb": "Forestill deg at ATLAS er bygget inn i systemet du bruker til daglig, for eksempel DIPS, med pasientopplysningene ferdig utfylt.",
-    "en": "Imagine that ATLAS is built into the system you use every day, for example DIPS, with the patient information already filled in."
-  },
-  "velkommenNoRight": {
-    "nb": "Det finnes ingen riktige svar. Prosjektet tester ideen, ikke deg.",
-    "en": "There are no right answers. The project tests the idea, not you."
+    "nb": "Forestill deg at ATLAS er en del av journalsystemet du bruker til daglig, med pasientopplysningene ferdig utfylt.",
+    "en": "Imagine that ATLAS is part of the record system you use every day, with the patient information already filled in."
   },
   "velkommenHowTitle": {
     "nb": "Slik foregår det",
     "en": "How it works"
-  },
-  "velkommenHow1": {
-    "nb": "Du velger rollen din og svarer på noen få spørsmål om deg.",
-    "en": "You choose your role and answer a few questions about yourself."
-  },
-  "velkommenHow2": {
-    "nb": "En kort omvisning viser skjermbildene på en øvingspasient.",
-    "en": "A short tour shows the screens on a practice patient."
-  },
-  "velkommenHow3": {
-    "nb": "Du arbeider med tre saker. I hver sak svarer du først uten ATLAS og deretter med ATLAS.",
-    "en": "You work through three cases. In each case you answer first without ATLAS and then with ATLAS."
-  },
-  "velkommenHow4": {
-    "nb": "Spørsmålene ligger i korte skjemaer fra Nettskjema, ett for hvert steg.",
-    "en": "The questions are in short forms from Nettskjema, one for each step."
-  },
-  "velkommenDevice": {
-    "nb": "Bruk helst en bærbar eller stasjonær datamaskin.",
-    "en": "A laptop or desktop computer works best."
   },
   "velkommenLetter": {
     "nb": "Last ned informasjonsskrivet (PDF)",
@@ -1826,10 +1798,6 @@
   "omDegTitle": {
     "nb": "Om deg",
     "en": "About you"
-  },
-  "omDegIntro": {
-    "nb": "Ett spørsmål her i ATLAS. Svaret, rollen og studienavnet ditt blir låste felt i hvert skjema du sender.",
-    "en": "One question here in ATLAS. Your answer, your role and your study name become locked fields in each form you send."
   },
   "roleQuestion": {
     "nb": "Hva er din rolle?",
@@ -1883,10 +1851,6 @@
     "nb": "Skjemaet «Før du ser ATLAS» åpnes i panelet. Det har noen spørsmål om arbeidet ditt i dag.",
     "en": "The form ‘Before you see ATLAS’ opens in the panel. It has a few questions about your work today."
   },
-  "goToTour": {
-    "nb": "Gå til omvisningen",
-    "en": "Go to the tour"
-  },
   "formWaiting": {
     "nb": "Send eller hopp over skjemaet for å gå videre.",
     "en": "Send or skip the form to go on."
@@ -1920,8 +1884,8 @@
     "en": "Next part"
   },
   "tourFinish": {
-    "nb": "Se oversikten",
-    "en": "See the overview"
+    "nb": "Avslutt omvisningen",
+    "en": "Finish the tour"
   },
   "tourWhy": {
     "nb": "Hvorfor dette finnes",
@@ -1963,22 +1927,6 @@
     "nb": "Omvisningen er ferdig",
     "en": "The tour is finished"
   },
-  "navQuestion": {
-    "nb": "Har du sett gjennom alle skjermbildene?",
-    "en": "Have you looked through all the screens?"
-  },
-  "navYes": {
-    "nb": "Ja, gå videre",
-    "en": "Yes, go on"
-  },
-  "navNo": {
-    "nb": "Nei, jeg trenger mer tid",
-    "en": "No, I need more time"
-  },
-  "navQuestionNote": {
-    "nb": "Svaret her lagres ikke. Spørsmålet kommer igjen i neste skjema.",
-    "en": "The answer here is not stored. The question comes again in the next form."
-  },
   "tourReplayNote": {
     "nb": "Omvisningen vises på nytt. Svarene dine påvirkes ikke.",
     "en": "The tour is shown again. Your answers are not affected."
@@ -1996,20 +1944,20 @@
     "en": "Overall impression"
   },
   "helhetIntro": {
-    "nb": "Skjemaet «Helhetsinntrykk» åpnes i panelet. Spørsmålene gjelder skjermbildene fra omvisningen. Med «Se igjen» kan du åpne et steg fra omvisningen på nytt.",
-    "en": "The form ‘Overall impression’ opens in the panel. The questions are about the screens from the tour. With ‘See again’ you can open a step from the tour once more."
+    "nb": "Skjemaet «Helhetsinntrykk» åpnes i panelet. Nå som du har arbeidet med de tre sakene, spør det om ATLAS som helhet. Med «Se igjen» kan du åpne et steg fra omvisningen på nytt.",
+    "en": "The form ‘Overall impression’ opens in the panel. Now that you have worked through the three cases, it asks about ATLAS as a whole. With ‘See again’ you can open a step from the tour once more."
   },
   "helhetGoOn": {
-    "nb": "Gå til den første saken",
-    "en": "Go to the first case"
+    "nb": "Gå videre til avslutningen",
+    "en": "Go on to the closing questions"
   },
   "avslutningTitle": {
     "nb": "Avslutning",
     "en": "Closing questions"
   },
   "avslutningIntro": {
-    "nb": "Det siste skjemaet har noen spørsmål om ATLAS som helhet. Etterpå kan du avslutte, eller se på ekstra saker.",
-    "en": "The last form has a few questions about ATLAS as a whole. Afterwards you can finish, or look at extra cases."
+    "nb": "Det siste skjemaet har noen korte spørsmål om hva du sitter igjen med. Etterpå kan du avslutte, eller se på ekstra saker.",
+    "en": "The last form has a few short questions about what you take away. Afterwards you can finish, or look at extra cases."
   },
   "toExtra": {
     "nb": "Ekstra (valgfritt)",
@@ -2435,6 +2383,10 @@
     "nb": "Åpent nå",
     "en": "Open now"
   },
+  "feedbackGiven": {
+    "nb": "Tilbakemelding gitt",
+    "en": "Feedback given"
+  },
   "feedbackSwitchTitle": {
     "nb": "Bytte skjema?",
     "en": "Switch form?"
@@ -2458,10 +2410,6 @@
   "feedbackOverviewIntro": {
     "nb": "Her ser du hvilke deler du har gitt tilbakemelding på. Tilbakemeldingene går til Nettskjema, eller blir i nettleseren når skjemaet vises som forhåndsvisning.",
     "en": "Here you can see which parts you have given feedback on. Feedback goes to Nettskjema, or stays in the browser when the form is shown as a preview."
-  },
-  "feedbackGiven": {
-    "nb": "Tilbakemelding gitt",
-    "en": "Feedback given"
   },
   "feedbackThanks": {
     "nb": "Takk. Tilbakemeldingen er registrert.",
@@ -2611,14 +2559,6 @@
     "nb": "Rollen følger med skjemaene du sender.",
     "en": "Your role goes with the forms you send."
   },
-  "velkommenResumeTitle": {
-    "nb": "Du er i gang",
-    "en": "You have started"
-  },
-  "velkommenResumeText": {
-    "nb": "Du deltar som {{role}}.",
-    "en": "You are taking part as {{role}}."
-  },
   "velkommenGoodTitle": {
     "nb": "Godt å vite",
     "en": "Good to know"
@@ -2627,30 +2567,6 @@
     "nb": "Omtrent en time",
     "en": "About an hour"
   },
-  "velkommenTimeText": {
-    "nb": "Det er frivillig å delta. Du kan ta pauser, fortsette senere eller stoppe når du vil. ATLAS husker hvor langt du har kommet, i denne nettleseren.",
-    "en": "Taking part is voluntary. You can take breaks, continue later or stop whenever you like. ATLAS remembers how far you have got, in this browser."
-  },
-  "velkommenAnonTitle": {
-    "nb": "Anonymt",
-    "en": "Anonymous"
-  },
-  "velkommenAnonText": {
-    "nb": "Du oppgir verken navn, e-post eller innlogging. ATLAS gir deg et tilfeldig studienavn, slik at svarene dine kan sorteres sammen. Svarene går rett til Nettskjema ved Universitetet i Oslo.",
-    "en": "You give no name, e-mail or login. ATLAS gives you a random study name, so your answers can be sorted together. The answers go straight to Nettskjema at the University of Oslo."
-  },
-  "velkommenLetterTitle": {
-    "nb": "Informasjonsskrivet",
-    "en": "The information letter"
-  },
-  "velkommenLetterText": {
-    "nb": "Det samme skrivet som fulgte invitasjonen. Der står alt om personvern og samtykke.",
-    "en": "The same letter that came with the invitation. It covers privacy and consent in full."
-  },
-  "omDegRole": {
-    "nb": "Rollen din",
-    "en": "Your role"
-  },
   "omDegRoleChange": {
     "nb": "Velg en annen rolle",
     "en": "Choose another role"
@@ -2658,10 +2574,6 @@
   "omDegNameTitle": {
     "nb": "Studienavnet ditt",
     "en": "Your study name"
-  },
-  "omDegNameText": {
-    "nb": "Navnet er tilfeldig og følger med hvert skjema, slik at svarene dine kan sorteres sammen. Ingen vet hvem som har hvilket navn.",
-    "en": "The name is random and goes with each form, so your answers can be sorted together. Nobody knows who has which name."
   },
   "listOpenCase": {
     "nb": "Åpne saken",
@@ -2674,10 +2586,6 @@
   "listCaseTag": {
     "nb": "Sak {{n}}",
     "en": "Case {{n}}"
-  },
-  "listExtraTag": {
-    "nb": "Ekstra",
-    "en": "Extra"
   },
   "listRoutineTag": {
     "nb": "Vanlig time",
@@ -2711,10 +2619,6 @@
     "nb": "Svar forventes innen 5 til 10 virkedager.",
     "en": "A reply is expected within 5 to 10 working days."
   },
-  "guideStudyStep": {
-    "nb": "Studien · steg {{n}} av 9",
-    "en": "The study · step {{n}} of 9"
-  },
   "guideCaseOf": {
     "nb": "Sak {{n}} av 3: {{name}}",
     "en": "Case {{n}} of 3: {{name}}"
@@ -2723,33 +2627,9 @@
     "nb": "Du ser saken først uten ATLAS, deretter med ATLAS.",
     "en": "You see the case first without ATLAS, then with ATLAS."
   },
-  "guideCasesLabel": {
-    "nb": "Sakene i studien",
-    "en": "The cases in the study"
-  },
-  "guideCaseRow": {
-    "nb": "Sak {{n}} · {{name}}",
-    "en": "Case {{n}} · {{name}}"
-  },
-  "guideNow": {
-    "nb": "Nå",
-    "en": "Now"
-  },
   "guideAllDoneTitle": {
     "nb": "De tre sakene er ferdige",
     "en": "The three cases are done"
-  },
-  "guideAllDoneText": {
-    "nb": "Gå videre i studien når du er klar.",
-    "en": "Go on in the study when you are ready."
-  },
-  "guideGoOn": {
-    "nb": "Gå videre",
-    "en": "Go on"
-  },
-  "guideDpsHidden": {
-    "nb": "Du ser ikke fastlegens navn eller hvordan fastlegen har henvist før.",
-    "en": "You do not see the GP’s name or how the GP has referred before."
   },
   "guideTourAgain": {
     "nb": "Se omvisningen igjen",
@@ -2795,21 +2675,9 @@
     "nb": "Hjelp",
     "en": "Help"
   },
-  "helpStepsTitle": {
-    "nb": "Studien har ni steg",
-    "en": "The study has nine steps"
-  },
-  "helpStepsList": {
-    "nb": "Stegene i studien",
-    "en": "The steps in the study"
-  },
   "helpYouAreHere": {
     "nb": "Du er her",
     "en": "You are here"
-  },
-  "helpStepsNote": {
-    "nb": "Telleren øverst på skjermen viser hvor du er.",
-    "en": "The counter at the top of the screen shows where you are."
   },
   "helpCaseFormTitle": {
     "nb": "Hver sak har ett skjema med tre sider",
@@ -2898,5 +2766,785 @@
   "takkAtlasName": {
     "nb": "ATLAS står for Adaptive Trust-calibration and Liaison Architecture for Specialist-referrals.",
     "en": "ATLAS stands for Adaptive Trust-calibration and Liaison Architecture for Specialist-referrals."
+  },
+  "partIntro": {
+    "nb": "Bli kjent",
+    "en": "Getting started"
+  },
+  "partCasesGp": {
+    "nb": "Tre pasienter",
+    "en": "Three patients"
+  },
+  "partCasesDps": {
+    "nb": "Tre henvisninger",
+    "en": "Three referrals"
+  },
+  "partEnd": {
+    "nb": "Avslutning",
+    "en": "Closing"
+  },
+  "partCasesDone": {
+    "nb": "{{n}} av 3 ferdig",
+    "en": "{{n}} of 3 done"
+  },
+  "partsLabel": {
+    "nb": "Studiens tre deler",
+    "en": "The three parts of the study"
+  },
+  "partCompact": {
+    "nb": "Del {{n}} av 3: {{title}}",
+    "en": "Part {{n}} of 3: {{title}}"
+  },
+  "roundPilot": {
+    "nb": "Pilot",
+    "en": "Pilot"
+  },
+  "navHome": {
+    "nb": "Oversikten",
+    "en": "The overview"
+  },
+  "toHome": {
+    "nb": "Til oversikten",
+    "en": "To the overview"
+  },
+  "homeGpTitle": {
+    "nb": "Min dag",
+    "en": "My day"
+  },
+  "homeDpsTitle": {
+    "nb": "Inntaket i dag",
+    "en": "Intake today"
+  },
+  "homeDayLabel": {
+    "nb": "Dagen i studien: {{date}}",
+    "en": "The day in the study: {{date}}"
+  },
+  "homeCountsLabel": {
+    "nb": "Dagen i tall",
+    "en": "The day in numbers"
+  },
+  "homeCountAppointments": {
+    "nb": "timer",
+    "en": "appointments"
+  },
+  "homeCountCases": {
+    "nb": "med henvisningssak",
+    "en": "with a referral case"
+  },
+  "homeCountInbox": {
+    "nb": "nye i innboksen",
+    "en": "new in the inbox"
+  },
+  "homeCountInboxOne": {
+    "nb": "ny i innboksen",
+    "en": "new in the inbox"
+  },
+  "homeCountInboxNone": {
+    "nb": "Ingen nye i innboksen",
+    "en": "Nothing new in the inbox"
+  },
+  "homeCountReferrals": {
+    "nb": "henvisninger",
+    "en": "referrals"
+  },
+  "homeCountMessageOne": {
+    "nb": "ny melding",
+    "en": "new message"
+  },
+  "homeCountMessageNone": {
+    "nb": "Ingen nye meldinger",
+    "en": "No new messages"
+  },
+  "homeNextDeadline": {
+    "nb": "Neste frist {{date}}",
+    "en": "Next deadline {{date}}"
+  },
+  "homeTimelisteTitle": {
+    "nb": "Timeliste i dag",
+    "en": "Today’s appointments"
+  },
+  "homeNext": {
+    "nb": "Neste: {{name}} kl. {{time}}",
+    "en": "Next: {{name}} at {{time}}"
+  },
+  "homeAfterTour": {
+    "nb": "Etter omvisningen",
+    "en": "After the tour"
+  },
+  "homeLater": {
+    "nb": "Senere",
+    "en": "Later"
+  },
+  "homeRoutineNote": {
+    "nb": "Vanlige timer viser en vanlig dag og kan ikke åpnes.",
+    "en": "Ordinary appointments show an ordinary day and cannot be opened."
+  },
+  "homeInboxTitle": {
+    "nb": "Innboks",
+    "en": "Inbox"
+  },
+  "homeNewCount": {
+    "nb": "{{n}} nye",
+    "en": "{{n}} new"
+  },
+  "homeNewWord": {
+    "nb": "ny",
+    "en": "new"
+  },
+  "homeInboxSelfReport": {
+    "nb": "Selvrapport · i dag",
+    "en": "Self-report · today"
+  },
+  "homeInboxSelfReportNote": {
+    "nb": "Fylt ut før timen kl. {{time}}",
+    "en": "Filled in before the appointment at {{time}}"
+  },
+  "homeReferralsTitle": {
+    "nb": "Henvisninger",
+    "en": "Referrals"
+  },
+  "homePatternOnlyYou": {
+    "nb": "Kun synlig for deg",
+    "en": "Visible only to you"
+  },
+  "homePatternReferrals": {
+    "nb": "henvisninger",
+    "en": "referrals"
+  },
+  "homePatternNote": {
+    "nb": "Fiktive tall. Ingen sammenlikning med andre.",
+    "en": "Fictional figures. No comparison with others."
+  },
+  "homeSeePattern": {
+    "nb": "Se mønsteret",
+    "en": "See the pattern"
+  },
+  "homeSharedGp": {
+    "nb": "Kalibrering og dialog med DPS for opptaksområdet",
+    "en": "Calibration and dialogue with DPS for the catchment area"
+  },
+  "homeSharedDps": {
+    "nb": "Kalibrering for opptaksområdet. Ingen enkeltfastleger vises.",
+    "en": "Calibration for the catchment area. No individual GPs are shown."
+  },
+  "homePause": {
+    "nb": "Du kan ta pause her. ATLAS husker hvor du er.",
+    "en": "You can take a break here. ATLAS remembers where you are."
+  },
+  "homeQueueNote": {
+    "nb": "Nyeste først. Avsenderen vises som rolle, aldri med navn.",
+    "en": "Newest first. The sender is shown as a role, never by name."
+  },
+  "homeFromGp": {
+    "nb": "Fra henvisende fastlege",
+    "en": "From the referring GP"
+  },
+  "homeAssessedMessage": {
+    "nb": "Vurdert {{date}} · Ny melding fra fastlegen",
+    "en": "Assessed {{date}} · New message from the GP"
+  },
+  "homeDeadlineChip": {
+    "nb": "Frist {{date}}",
+    "en": "Deadline {{date}}"
+  },
+  "homeDeadlinesTitle": {
+    "nb": "Frister",
+    "en": "Deadlines"
+  },
+  "homeDaysLabel": {
+    "nb": "Virkedagene fram til fristen",
+    "en": "The working days up to the deadline"
+  },
+  "homeToday": {
+    "nb": "i dag",
+    "en": "today"
+  },
+  "homeDueFor": {
+    "nb": "frist for {{n}} henvisninger",
+    "en": "deadline for {{n}} referrals"
+  },
+  "homeDeadlineLine": {
+    "nb": "{{date}} · vurderingsfrist",
+    "en": "{{date}} · assessment deadline"
+  },
+  "homeDeadlineNote": {
+    "nb": "Fristen er ti virkedager etter mottak. Den er en dato og rangerer ikke pasientene.",
+    "en": "The deadline is ten working days after receipt. It is a date and does not rank the patients."
+  },
+  "homeMessagesTitle": {
+    "nb": "Meldinger",
+    "en": "Messages"
+  },
+  "homeMessageFromGp": {
+    "nb": "Dialogmelding fra henvisende fastlege",
+    "en": "Dialogue message from the referring GP"
+  },
+  "homeMessageAstrid": {
+    "nb": "Et spørsmål om svaret dere sendte {{date}}",
+    "en": "A question about the reply you sent on {{date}}"
+  },
+  "studyCardEyebrow": {
+    "nb": "Del {{n}} av 3 · {{title}}",
+    "en": "Part {{n}} of 3 · {{title}}"
+  },
+  "studyCardTourTitle": {
+    "nb": "Start med omvisningen",
+    "en": "Start with the tour"
+  },
+  "studyCardTourGoOnTitle": {
+    "nb": "Fortsett omvisningen",
+    "en": "Continue the tour"
+  },
+  "studyCardTourTextGp": {
+    "nb": "En øvingspasient, Sofie Lund, viser deg hvor alt er. Ingenting du gjør der, lagres.",
+    "en": "A practice patient, Sofie Lund, shows you where everything is. Nothing you do there is saved."
+  },
+  "studyCardTourTextDps": {
+    "nb": "En øvingshenvisning for Sofie Lund viser deg hvor alt er. Ingenting du gjør der, lagres.",
+    "en": "A practice referral for Sofie Lund shows you where everything is. Nothing you do there is saved."
+  },
+  "studyCardLockedGp": {
+    "nb": "Sakene åpner seg etter omvisningen.",
+    "en": "The cases open after the tour."
+  },
+  "studyCardLockedDps": {
+    "nb": "Henvisningene åpner seg etter omvisningen.",
+    "en": "The referrals open after the tour."
+  },
+  "studyCardStartTour": {
+    "nb": "Start omvisningen",
+    "en": "Start the tour"
+  },
+  "studyCardTourGoOn": {
+    "nb": "Fortsett omvisningen",
+    "en": "Continue the tour"
+  },
+  "studyCardResumeTitle": {
+    "nb": "Fortsett sak {{n}}: {{name}}",
+    "en": "Continue case {{n}}: {{name}}"
+  },
+  "studyCardMetaGp": {
+    "nb": "Kl. {{time}} · {{visit}} · {{duration}}",
+    "en": "At {{time}} · {{visit}} · {{duration}}"
+  },
+  "studyCardMetaDps": {
+    "nb": "Mottatt {{date}} · {{duration}}",
+    "en": "Received {{date}} · {{duration}}"
+  },
+  "studyCardDoneText": {
+    "nb": "Til slutt kommer to skjemaer om ATLAS som helhet, og ekstrasakene hvis du vil.",
+    "en": "Finally there are two forms about ATLAS as a whole, and the extra cases if you like."
+  },
+  "studyCardToEnd": {
+    "nb": "Gå til avslutningen",
+    "en": "Go to the closing part"
+  },
+  "studyNameWhat": {
+    "nb": "Hva er dette?",
+    "en": "What is this?"
+  },
+  "tourStartEyebrow": {
+    "nb": "Omvisning · Bli kjent",
+    "en": "Tour · Getting started"
+  },
+  "tourStartTitle": {
+    "nb": "Før du starter: en kort omvisning",
+    "en": "Before you start: a short tour"
+  },
+  "tourStartIntroGp": {
+    "nb": "Omvisningen viser hva som finnes i ATLAS, hvor det står, og hvordan studien går. Sakene åpner seg når du er ferdig.",
+    "en": "The tour shows what is in ATLAS, where it is, and how the study runs. The cases open when you have finished."
+  },
+  "tourStartIntroDps": {
+    "nb": "Omvisningen viser hva som finnes i ATLAS, hvor det står, og hvordan studien går. Henvisningene åpner seg når du er ferdig.",
+    "en": "The tour shows what is in ATLAS, where it is, and how the study runs. The referrals open when you have finished."
+  },
+  "tourStartPartsTitle": {
+    "nb": "Fem korte deler",
+    "en": "Five short parts"
+  },
+  "tourStartPartsText": {
+    "nb": "Du kan ta pause og fortsette fra oversikten.",
+    "en": "You can take a break and continue from the overview."
+  },
+  "tourStartPracticeTitle": {
+    "nb": "En øvingspasient",
+    "en": "A practice patient"
+  },
+  "tourStartPracticeText": {
+    "nb": "Sofie Lund er laget for omvisningen. Ingenting du gjør der, lagres.",
+    "en": "Sofie Lund was made for the tour. Nothing you do there is saved."
+  },
+  "tourStartWhereTitle": {
+    "nb": "Hvor alt står",
+    "en": "Where everything is"
+  },
+  "tourStartWhereGp": {
+    "nb": "Oversikten, pasienten, ATLAS-panelet, skjemapanelet og knappen for tilbakemelding.",
+    "en": "The overview, the patient, the ATLAS panel, the form panel and the feedback button."
+  },
+  "tourStartWhereDps": {
+    "nb": "Oversikten, henvisningen, ATLAS-panelet, skjemapanelet og knappen for tilbakemelding.",
+    "en": "The overview, the referral, the ATLAS panel, the form panel and the feedback button."
+  },
+  "tourStartCaseTitle": {
+    "nb": "Hvordan en sak går",
+    "en": "How a case runs"
+  },
+  "tourStartCaseText": {
+    "nb": "Først uten ATLAS, så med ATLAS. Skjemaet har en stoppside som sender deg tilbake til ATLAS.",
+    "en": "First without ATLAS, then with ATLAS. The form has a stop page that sends you back to ATLAS."
+  },
+  "tourStartFaqTitle": {
+    "nb": "Vanlige spørsmål",
+    "en": "Common questions"
+  },
+  "faqDecideQ": {
+    "nb": "Bestemmer ATLAS for meg?",
+    "en": "Does ATLAS decide for me?"
+  },
+  "faqDecideA": {
+    "nb": "Du plasserer saken selv først. Deretter viser ATLAS systemets lesning. ATLAS anbefaler ikke et utfall og rangerer ikke henvisninger.",
+    "en": "You place the case yourself first. Then ATLAS shows the system’s reading. ATLAS does not recommend an outcome or rank referrals."
+  },
+  "faqPatternQ": {
+    "nb": "Blir mønsteret mitt delt?",
+    "en": "Is my pattern shared?"
+  },
+  "faqPatternA": {
+    "nb": "Nei. Mitt henvisningsmønster er kun synlig for deg og deles ikke med DPS eller andre. Delt oversikt viser tall for opptaksområdet, der ingen enkelt fastlege kan identifiseres.",
+    "en": "No. My referral pattern is visible only to you and is not shared with DPS or anyone else. The shared overview shows figures for the catchment area, where no individual GP can be identified."
+  },
+  "faqSenderQ": {
+    "nb": "Ser jeg hvem som har henvist?",
+    "en": "Do I see who made the referral?"
+  },
+  "faqSenderA": {
+    "nb": "Nei. Henvisningen viser avsenderen som rolle. Du ser ikke fastlegens navn eller hvordan fastlegen har henvist før.",
+    "en": "No. The referral shows the sender as a role. You do not see the GP’s name or how the GP has referred before."
+  },
+  "faqWorkQ": {
+    "nb": "Er dette mer arbeid?",
+    "en": "Is this more work?"
+  },
+  "faqWorkA": {
+    "nb": "Det er et av spørsmålene i studien. Skjemaene spør hva du mener etter at du har brukt ATLAS.",
+    "en": "That is one of the questions in the study. The forms ask what you think after you have used ATLAS."
+  },
+  "faqSourceQ": {
+    "nb": "Hvor kommer det ATLAS viser fra?",
+    "en": "Where does what ATLAS shows come from?"
+  },
+  "faqSourceA": {
+    "nb": "Fra opplysningene i saken. Hver blokk er merket med kilden: journalen, notatet, selvrapporten, den andre klinikeren eller systemets lesning. Systemets lesning er skrevet for hver sak og er ikke beregnet.",
+    "en": "From the information in the case. Each block is labelled with its source: the record, the note, the self-report, the other clinician or the system’s reading. The system’s reading is written for each case and is not calculated."
+  },
+  "tourStartRequired": {
+    "nb": "Omvisningen kommer før sakene.",
+    "en": "The tour comes before the cases."
+  },
+  "tourStartNotNow": {
+    "nb": "Ikke nå",
+    "en": "Not now"
+  },
+  "tourEndOpenGp": {
+    "nb": "Sakene er åpne nå",
+    "en": "The cases are open now"
+  },
+  "tourEndOpenDps": {
+    "nb": "Henvisningene er åpne nå",
+    "en": "The referrals are open now"
+  },
+  "tourEndText": {
+    "nb": "Fra oversikten starter du med sak 1.",
+    "en": "From the overview you start with case 1."
+  },
+  "tourPromptQuestion": {
+    "nb": "Vil du si noe om omvisningen før du går videre?",
+    "en": "Would you like to say something about the tour before you go on?"
+  },
+  "promptWhy": {
+    "nb": "Det er frivillig og tar under ett minutt.",
+    "en": "It is voluntary and takes less than a minute."
+  },
+  "promptAlways": {
+    "nb": "Du kan alltid gi tilbakemelding fra knappen ved høyre kant.",
+    "en": "You can always give feedback from the button on the right edge."
+  },
+  "tourStudyFrameNote": {
+    "nb": "En tegning av studien. Ingenting her kan trykkes på.",
+    "en": "A drawing of the study. Nothing here can be pressed."
+  },
+  "casePromptQuestion": {
+    "nb": "Før du går videre til {{name}}: vil du si noe om skjermbildene i saken?",
+    "en": "Before you go on to {{name}}: would you like to say something about the screens in the case?"
+  },
+  "casePromptQuestionLast": {
+    "nb": "Før du går videre: vil du si noe om skjermbildene i saken?",
+    "en": "Before you go on: would you like to say something about the screens in the case?"
+  },
+  "casePromptWhy": {
+    "nb": "Det er frivillig og tar under ett minutt. Spørsmålet kommer først nå, så det ikke påvirker svarene i skjemaet.",
+    "en": "It is voluntary and takes less than a minute. The question comes only now, so that it does not affect the answers in the form."
+  },
+  "feedbackOpenedTab": {
+    "nb": "Tilbakemeldingen åpnet seg i en ny fane, så skjemaet du er i, står urørt.",
+    "en": "The feedback opened in a new tab, so the form you are in is left as it is."
+  },
+  "feedbackNotReady": {
+    "nb": "Skjemaet for tilbakemelding er ikke klart ennå.",
+    "en": "The feedback form is not ready yet."
+  },
+  "feedbackBlockedPreview": {
+    "nb": "Skjemaet for steget er åpent. I forhåndsvisningen kan du gi tilbakemelding når det er sendt eller hoppet over.",
+    "en": "The step’s form is open. In the preview you can give feedback once it has been sent or skipped."
+  },
+  "feedbackWhere": {
+    "nb": "Svaret går til Nettskjema med studienavnet ditt, aldri med navnet ditt.",
+    "en": "The answer goes to Nettskjema with your study name, never with your name."
+  },
+  "feedbackClose": {
+    "nb": "Lukk uten å sende",
+    "en": "Close without sending"
+  },
+  "secStudyCard": {
+    "nb": "Studiekortet",
+    "en": "The study card"
+  },
+  "secWholeCase": {
+    "nb": "Hele saken",
+    "en": "The whole case"
+  },
+  "secConsultation": {
+    "nb": "Konsultasjonen",
+    "en": "The consultation"
+  },
+  "secAtlasPanel": {
+    "nb": "ATLAS-panelet",
+    "en": "The ATLAS panel"
+  },
+  "secReferralPart": {
+    "nb": "Henvisningen",
+    "en": "The referral"
+  },
+  "secReplyFromDps": {
+    "nb": "Svaret fra DPS",
+    "en": "The reply from DPS"
+  },
+  "secAssessmentPart": {
+    "nb": "Vurderingen",
+    "en": "The assessment"
+  },
+  "secDialogWithGp": {
+    "nb": "Dialogen med fastlegen",
+    "en": "The dialogue with the GP"
+  },
+  "helpPartsTitle": {
+    "nb": "Studien har tre deler",
+    "en": "The study has three parts"
+  },
+  "helpPart1Text": {
+    "nb": "Rollen din, ett spørsmål om deg og omvisningen.",
+    "en": "Your role, one question about you, and the tour."
+  },
+  "helpPart2Text": {
+    "nb": "Tre saker. Hver sak har ett skjema: først uten ATLAS, så med.",
+    "en": "Three cases. Each case has one form: first without ATLAS, then with it."
+  },
+  "helpPart3Text": {
+    "nb": "To skjemaer om ATLAS som helhet, og ekstrasakene hvis du vil.",
+    "en": "Two forms about ATLAS as a whole, and the extra cases if you like."
+  },
+  "helpPartsNote": {
+    "nb": "Oversikten er utgangspunktet. Du kommer tilbake dit etter hver del.",
+    "en": "The overview is the starting point. You come back to it after each part."
+  },
+  "helpRowFeedback": {
+    "nb": "Med «Gi tilbakemelding» ved høyre kant kan du når som helst si hva du mener om et skjermbilde.",
+    "en": "With ‘Give feedback’ on the right edge you can say what you think about a screen at any time."
+  },
+  "velkommenChipNoRight": {
+    "nb": "Ingen riktige svar",
+    "en": "No right answers"
+  },
+  "velkommenPilot": {
+    "nb": "Pilotrunde: svarene merkes som pilot og holdes utenfor studiens data.",
+    "en": "Pilot round: the answers are marked as pilot and kept out of the study’s data."
+  },
+  "velkommenStepsLead": {
+    "nb": "Fem steg, omtrent en time i alt. Du kan ta pause mellom stegene.",
+    "en": "Five steps, about an hour in all. You can take a break between the steps."
+  },
+  "vStep1Title": {
+    "nb": "Rolle og om deg",
+    "en": "Role and about you"
+  },
+  "vStep1Text": {
+    "nb": "Ett kort spørsmål",
+    "en": "One short question"
+  },
+  "vStep2Title": {
+    "nb": "Oversikten",
+    "en": "The overview"
+  },
+  "vStep2Text": {
+    "nb": "Dagen din i ATLAS",
+    "en": "Your day in ATLAS"
+  },
+  "vStep3Title": {
+    "nb": "Omvisningen",
+    "en": "The tour"
+  },
+  "vStep3Text": {
+    "nb": "Du starter den selv",
+    "en": "You start it yourself"
+  },
+  "vStep4Title": {
+    "nb": "Tre saker",
+    "en": "Three cases"
+  },
+  "vStep4Text": {
+    "nb": "Først uten ATLAS, så med",
+    "en": "First without ATLAS, then with it"
+  },
+  "vStep5Title": {
+    "nb": "Korte skjemaer",
+    "en": "Short forms"
+  },
+  "vStep5Text": {
+    "nb": "Når de hører hjemme",
+    "en": "At the moment they belong to"
+  },
+  "velkommenBackEyebrow": {
+    "nb": "Velkommen tilbake",
+    "en": "Welcome back"
+  },
+  "velkommenBackSaved": {
+    "nb": "Det du har sendt, er lagret i Nettskjema. ATLAS husker hvor du var. Et skjema du ikke sendte, begynner på nytt.",
+    "en": "What you have sent is stored in Nettskjema. ATLAS remembers where you were. A form you did not send starts again."
+  },
+  "velkommenWhereTour": {
+    "nb": "Du var kommet til omvisningen.",
+    "en": "You had reached the tour."
+  },
+  "velkommenWhereOmDeg": {
+    "nb": "Du hadde valgt rolle, men ikke sendt det første skjemaet.",
+    "en": "You had chosen a role but not sent the first form."
+  },
+  "velkommenWhereTourStarted": {
+    "nb": "Du var i omvisningen.",
+    "en": "You were in the tour."
+  },
+  "velkommenWhereCase": {
+    "nb": "Du var i sak {{n}}, {{name}}.",
+    "en": "You were in case {{n}}, {{name}}."
+  },
+  "velkommenWhereNextCase": {
+    "nb": "Neste er sak {{n}}, {{name}}.",
+    "en": "Next is case {{n}}, {{name}}."
+  },
+  "velkommenWhereEnd": {
+    "nb": "Du var kommet til avslutningen.",
+    "en": "You had reached the closing part."
+  },
+  "velkommenWhereDone": {
+    "nb": "Du har fullført studien.",
+    "en": "You have finished the study."
+  },
+  "velkommenNotYou": {
+    "nb": "Ikke deg? Start som ny deltaker",
+    "en": "Not you? Start as a new participant"
+  },
+  "velkommenNotYouNote": {
+    "nb": "Bruker flere samme datamaskin, får hver deltaker sitt eget studienavn. Det den forrige deltakeren har sendt, er lagret i Nettskjema og berøres ikke.",
+    "en": "When several people use the same computer, each participant gets their own study name. What the previous participant has sent is stored in Nettskjema and is not affected."
+  },
+  "newParticipantTitle": {
+    "nb": "Start som ny deltaker?",
+    "en": "Start as a new participant?"
+  },
+  "newParticipantBody": {
+    "nb": "ATLAS fjerner denne øktens framdrift fra nettleseren: rollen, studienavnet og hvor langt økten har kommet. Det som er sendt til Nettskjema, blir liggende. Den nye deltakeren får et nytt studienavn.",
+    "en": "ATLAS removes this session’s progress from the browser: the role, the study name and how far the session has got. What was sent to Nettskjema stays. The new participant gets a new study name."
+  },
+  "newParticipantConfirm": {
+    "nb": "Start som ny deltaker",
+    "en": "Start as a new participant"
+  },
+  "velkommenProgressLabel": {
+    "nb": "Hvor langt du har kommet",
+    "en": "How far you have got"
+  },
+  "velkommenCasesDetail": {
+    "nb": "{{n}} av 3 ferdig. Nå: sak {{m}}.",
+    "en": "{{n}} of 3 done. Now: case {{m}}."
+  },
+  "velkommenClosedTitle": {
+    "nb": "Studien er avsluttet",
+    "en": "The study has ended"
+  },
+  "velkommenClosedPeriod": {
+    "nb": "Den var åpen fra {{from}} til {{to}}.",
+    "en": "It was open from {{from}} to {{to}}."
+  },
+  "velkommenClosedBody": {
+    "nb": "Det er ikke lenger mulig å sende svar, så ATLAS starter ingen nye økter.",
+    "en": "It is no longer possible to send answers, so ATLAS starts no new sessions."
+  },
+  "velkommenClosedThanks": {
+    "nb": "Takk for interessen. Resultatene blir publisert i doktorgradsavhandlingen og i artikler fra prosjektet.",
+    "en": "Thank you for your interest. The results will be published in the doctoral thesis and in articles from the project."
+  },
+  "smallScreenTitle": {
+    "nb": "ATLAS er laget for en bærbar eller stasjonær datamaskin.",
+    "en": "ATLAS is made for a laptop or desktop computer."
+  },
+  "smallScreenText": {
+    "nb": "På en liten skjerm blir pasientbildet og panelene trange.",
+    "en": "On a small screen the patient view and the panels get cramped."
+  },
+  "smallScreenGoOn": {
+    "nb": "Fortsett likevel",
+    "en": "Continue anyway"
+  },
+  "omDegLead": {
+    "nb": "Ett spørsmål, så et kort skjema. Etterpå kommer du til oversikten din.",
+    "en": "One question, then a short form. Afterwards you come to your overview."
+  },
+  "omDegAsGp": {
+    "nb": "Du deltar som fastlege.",
+    "en": "You are taking part as a GP."
+  },
+  "omDegAsDps": {
+    "nb": "Du deltar fra DPS-inntaket.",
+    "en": "You are taking part from DPS intake."
+  },
+  "omDegNext": {
+    "nb": "Neste:",
+    "en": "Next:"
+  },
+  "omDegNextText": {
+    "nb": "Skjemaet «Før du ser ATLAS» har fem spørsmål. Rollen, svaret og studienavnet står ferdig utfylt øverst.",
+    "en": "The form ‘Before you see ATLAS’ has five questions. The role, the answer and the study name are filled in at the top."
+  },
+  "omDegLockNote": {
+    "nb": "Rollen, svaret og studienavnet kan ikke endres etter at skjemaet er sendt.",
+    "en": "The role, the answer and the study name cannot be changed once the form is sent."
+  },
+  "omDegNameLead": {
+    "nb": "ATLAS laget dette navnet tilfeldig da du valgte rolle. Det står i hvert skjema du sender, slik at svarene dine holdes sammen uten navnet ditt.",
+    "en": "ATLAS made this name at random when you chose your role. It is in every form you send, so that your answers are kept together without your name."
+  },
+  "omDegNameFact1": {
+    "nb": "Du trenger ikke huske det",
+    "en": "You do not need to remember it"
+  },
+  "omDegNameFact2": {
+    "nb": "Ingen kan se hvem som har hvilket navn",
+    "en": "Nobody can see who has which name"
+  },
+  "omDegNameFact3": {
+    "nb": "Du ser det øverst i hvert skjema",
+    "en": "You see it at the top of every form"
+  },
+  "studyMapParts": {
+    "nb": "Delene øverst",
+    "en": "The parts at the top"
+  },
+  "studyMapPartsText": {
+    "nb": "hvor langt du har kommet i studien.",
+    "en": "how far you have got in the study."
+  },
+  "studyMapCard": {
+    "nb": "Studiekortet",
+    "en": "The study card"
+  },
+  "studyMapCardText": {
+    "nb": "neste steg, og studienavnet ditt.",
+    "en": "the next step, and your study name."
+  },
+  "studyMapListGp": {
+    "nb": "sakene åpnes herfra, én om gangen.",
+    "en": "the cases are opened from here, one at a time."
+  },
+  "studyMapListDps": {
+    "nb": "henvisningene åpnes herfra, én om gangen.",
+    "en": "the referrals are opened from here, one at a time."
+  },
+  "studyMapFeedbackText": {
+    "nb": "når som helst, på hvert skjermbilde.",
+    "en": "at any time, on every screen."
+  },
+  "studyMapHelpText": {
+    "nb": "slik foregår studien, ordlisten og om prototypen.",
+    "en": "how the study works, the glossary and about the prototype."
+  },
+  "studyFlowLabel": {
+    "nb": "Slik går en sak",
+    "en": "How a case runs"
+  },
+  "studyFlowCase": {
+    "nb": "Saken",
+    "en": "The case"
+  },
+  "studyFlowBriefTitle": {
+    "nb": "Orientering",
+    "en": "Briefing"
+  },
+  "studyFlowBriefText": {
+    "nb": "Hvem, hvorfor i dag, og hva du skal avgjøre.",
+    "en": "Who, why today, and what you are to decide."
+  },
+  "studyFlowSummaryTitle": {
+    "nb": "Oppsummering",
+    "en": "Summary"
+  },
+  "studyFlowSummaryText": {
+    "nb": "Hva du gjorde. Så tilbake til oversikten.",
+    "en": "What you did. Then back to the overview."
+  },
+  "studyStopLabel": {
+    "nb": "Side 2 av skjemaet for en sak",
+    "en": "Page 2 of a case form"
+  },
+  "studyStopCaption": {
+    "nb": "Etter «Vis ATLAS» gjør du saken ferdig. Deretter ber ATLAS deg gå videre i skjemaet.",
+    "en": "After ‘Show ATLAS’ you finish the case. Then ATLAS asks you to go on in the form."
+  },
+  "studyNameLabel": {
+    "nb": "Toppen av et skjema",
+    "en": "The top of a form"
+  },
+  "studyNameRole": {
+    "nb": "Rolle",
+    "en": "Role"
+  },
+  "studyNameName": {
+    "nb": "Studienavn",
+    "en": "Study name"
+  },
+  "studyNameStep": {
+    "nb": "Steg",
+    "en": "Step"
+  },
+  "studyNameExample": {
+    "nb": "Glad piggsvin 42",
+    "en": "Glad piggsvin 42"
+  },
+  "studyNameCaption": {
+    "nb": "Feltene er låst: du ser dem, men kan ikke endre dem.",
+    "en": "The fields are locked: you see them, but cannot change them."
+  },
+  "velkommenChipAnon": {
+    "nb": "Frivillig og anonymt",
+    "en": "Voluntary and anonymous"
+  },
+  "homeNewOne": {
+    "nb": "1 ny",
+    "en": "1 new"
+  },
+  "studyCardReady": {
+    "nb": "Du er klar. Start med {{name}}.",
+    "en": "You are ready. Start with {{name}}."
   }
 }

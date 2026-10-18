@@ -9,27 +9,28 @@ test.beforeEach(async ({ context }) => {
 
 /** A GP participant in the middle of Kari's ATLAS work (seeded, so every width starts from the same state). */
 const KARI_ATLAS = {
-  v: 1,
+  v: 2,
   roleChoice: 'fastlege',
   intervju: 'Nei',
   furthest: 'kari',
   route: 'panel',
   ledger: {
     S1: { status: 'sent', at: '2026-10-12T10:00:00Z', steg: 'S1', via: 'panel' },
-    S2: { status: 'sent', at: '2026-10-12T10:20:00Z', steg: 'S2', via: 'panel' },
   },
   visAtlas: { kari: true },
   page1: { kari: true },
   phase: { kari: 'atlas' },
   gp: { kari: { tags: [], description: '', decisionReason: '', messages: [], planReason: '', placement: 50 } },
   dps: {},
-  tour: { part: 4, step: 0, done: true },
+  tour: { part: 5, step: 0, done: true, started: true },
   extra: {},
+  prompts: {},
+  feedbackSent: [],
 };
 
 async function seed(page: Page, state: object) {
   await page.addInitScript((s) => {
-    window.localStorage.setItem('atlas.study.v1', JSON.stringify(s));
+    window.localStorage.setItem('atlas.study.v2', JSON.stringify(s));
   }, state);
 }
 
@@ -72,7 +73,7 @@ for (const width of WIDTHS) {
     await mockNettskjema(page);
     await seed(page, KARI_ATLAS);
     const bad: string[] = [];
-    for (const p of ['/#/studie/velkommen', '/#/studie/sak/kari/konsultasjon', '/#/studie/steg', '/#/studie/liste', '/#/studie/helhet']) {
+    for (const p of ['/#/studie/velkommen', '/#/studie/hjem', '/#/studie/sak/kari/konsultasjon', '/#/studie/steg', '/#/studie/om-deg', '/#/studie/omvisning?igjen']) {
       await page.goto(p);
       await page.waitForTimeout(150);
       const o = await overflow(page);

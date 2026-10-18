@@ -11,11 +11,15 @@ Generated from `app/src/content/instrument.json` by `app/scripts/build-sheet.mjs
 - At the top of every form: «Ved å sende skjemaet samtykker du i at de anonyme svarene brukes i forskningsprosjektet.» / "By sending the form, you consent to the anonymous answers being used in the research project.", and «Ikke skriv opplysninger om pasienter eller andre personer.» / "Do not write any information about patients or other people.".
 - Above every long text question: «Ikke skriv opplysninger om pasienter eller andre personer.» / "Do not write any information about patients or other people.".
 - Long text answers take at most 3,800 characters.
-- «Melding på kvitteringsside etter levert svar»: the form's receipt text below, then a button back to the site, written as Nettskjema documents it: `<div><a class="receipt-link-as-button" href="https://siouxchieftain-jpg.github.io/atlas-meridian/sendt.html" rel="noopener noreferrer">Tilbake til ATLAS</a></div>`. `sendt.html` marks the step as sent and leads back to the study. Check in the pilot that Nettskjema keeps the button.
+- «Melding på kvitteringsside etter levert svar»: the form's receipt text below, then a button back to the site, written as Nettskjema documents it: `<div><a class="receipt-link-as-button" href="https://siouxchieftain-jpg.github.io/atlas-meridian/sendt.html?skjema=<step>" rel="noopener noreferrer">Tilbake til ATLAS</a></div>`, where `<step>` is the form's step (`S1` to `S9`; both versions of S2 name `S2`). `sendt.html` marks the step it names as sent, when that step is the one waiting, and leads back to the study; S9's receipt marks no step and offers to close its tab. `node scripts/nettskjema.mjs verify` checks the link. Check in the pilot that Nettskjema keeps the button.
 - A closing date.
 - Locked fields: one «Tekstsvar» per field, under the heading «Fylt ut automatisk av ATLAS» / "Filled in automatically by ATLAS". ATLAS fills and locks each from the form's address (`CB<codebook>=<value>&LCK<codebook>=true`); in the panel the address also carries `embed=1`.
 - When the form is open for answers, copy its address from «Innhent svar» (it looks like `https://nettskjema.no/a/123456`) into `app/public/atlas-config.json` under the key given for the form.
 - Before the first invitation, delete every test answer with «Slett alle svar».
+
+## The pilot set
+
+The pilot answers into a copy of the twelve study forms (S1 to S9, not R1 and R2), titled «(pilot)»: `node scripts/nettskjema.mjs create --round pilot` makes them and writes their addresses under `pilotForms` in `app/public/atlas-config.json`. While that file says `"round": "pilot"`, the app opens these forms, and every `versjon` ends in `-pilot`, so no pilot answer lands in a study form.
 
 ## Locked values
 
@@ -27,8 +31,8 @@ The values are Norwegian whatever language the app shows.
 | `intervju` | `Ja`, `Nei`, `Vil ikke svare` |
 | `steg` | `S1` to `S8`; `S3-etter`, `S4-etter` or `S5-etter` when a case form is opened again after «Vis ATLAS» |
 | `vignett` | `V1` (S3), `V3` (S4), `V4` (S5), `V2` (S7), `V5` (S8) |
-| `versjon` | The build: `3.0.0-` and the commit |
-| `side`, `seksjon` | R1 only: the screen (for example `fastlege/kari/konsultasjon`) and the part of it |
+| `versjon` | The build: the package version and the commit (for example `3.1.0-66ca8de`); in the pilot round it ends in `-pilot` |
+| `side`, `seksjon` | R1 and S9: the screen (for example `fastlege/kari/konsultasjon`, or `fastlege/kari/saken` for a case as a whole) and the part of it |
 
 ## The case forms (S3, S4, S5)
 
@@ -62,10 +66,10 @@ Each case form has three pages. Page 1 holds B1, marked «Obligatorisk». Page 2
 
 ### S2.fastlege: «Helhetsinntrykk» / "Overall impression"
 
-- **Used by:** Step S2, GPs.
+- **Used by:** Step S2 (after the three cases), GPs.
 - **Address goes in:** `forms["S2.fastlege"]` in `app/public/atlas-config.json`.
 - **Locked fields:** `rolle`, `intervju`, `studienavn`, `steg`, `versjon`.
-- **Intro:** «Dette skjemaet spør om helhetsinntrykket ditt av ATLAS etter omvisningen. Kritikk er like nyttig som ros. Ved å sende skjemaet samtykker du i at de anonyme svarene brukes i forskningsprosjektet.» / "This form asks about your overall impression of ATLAS after the tour. Criticism is as useful as praise. By sending the form, you consent to the anonymous answers being used in the research project."
+- **Intro:** «Dette skjemaet spør om helhetsinntrykket ditt av ATLAS etter de tre sakene. Kritikk er like nyttig som ros. Ved å sende skjemaet samtykker du i at de anonyme svarene brukes i forskningsprosjektet.» / "This form asks about your overall impression of ATLAS after the three cases. Criticism is as useful as praise. By sending the form, you consent to the anonymous answers being used in the research project."
 
 **Page**
 
@@ -76,22 +80,21 @@ Each case form has three pages. Page 1 holds B1, marked «Obligatorisk». Page 2
 | studienavn | `studienavn` | Tekstsvar (kort), locked |  | Studienavn / Study name |  |
 | steg | `steg` | Tekstsvar (kort), locked |  | Steg / Step |  |
 | versjon | `versjon` | Tekstsvar (kort), locked |  | Versjon / Version |  |
-| B-02 | `b_02` | Flervalg (én) | No | Har du sett gjennom alle skjermbildene i ATLAS-dashbordet? / Have you reviewed all the screens in the ATLAS dashboard? | Ja / Yes; Nei, jeg trenger mer tid / No, I need more time |
-| C1-01 | `c1_01` | Lineær skala 1 to 7 | No | Dashbordet gir meg informasjon som kan hjelpe meg å ta mer kalibrerte henvisningsbeslutninger over tid. / The dashboard provides information that could help me make more calibrated referral decisions over time. | 1 to 7: Helt uenig / Strongly disagree … Helt enig / Strongly agree |
-| C1-02 | `c1_02` | Lineær skala 1 to 7 | No | Usikkerheten i en klinisk situasjon er tydelig kommunisert i dashbordet. / The uncertainty in a clinical situation is clearly communicated in the dashboard. | 1 to 7: Helt uenig / Strongly disagree … Helt enig / Strongly agree |
+| C1-01 | `c1_01` | Lineær skala 1 to 7 | No | ATLAS gir meg informasjon som kan hjelpe meg å ta mer kalibrerte henvisningsbeslutninger over tid. / ATLAS provides information that could help me make more calibrated referral decisions over time. | 1 to 7: Helt uenig / Strongly disagree … Helt enig / Strongly agree |
+| C1-02 | `c1_02` | Lineær skala 1 to 7 | No | Usikkerheten i en klinisk situasjon er tydelig kommunisert i ATLAS. / The uncertainty in a clinical situation is clearly communicated in ATLAS. | 1 to 7: Helt uenig / Strongly disagree … Helt enig / Strongly agree |
 | C1-03 | `c1_03` | Lineær skala 1 to 7 | No | Informasjonen om usikkerhet hjelper meg å ta bedre beslutninger. / The uncertainty information helps me make better decisions. | 1 to 7: Helt uenig / Strongly disagree … Helt enig / Strongly agree |
 | C1-04 | `c1_04` | Lineær skala 1 to 7 | No | Oversikten over mine tidligere henvisningsmønstre er nyttig. / The overview of my previous referral patterns is useful. | 1 to 7: Helt uenig / Strongly disagree … Helt enig / Strongly agree |
 | C1-05 | `c1_05` | Tekstsvar (langt), at most 3,800 characters | Obligatorisk | Forklar vurderingen din (1-3 setninger). Hva fungerer? Hva fungerer ikke? Hva mangler? / Please explain your rating (1-3 sentences). What works? What does not work? What is missing? |  |
-| C2-01 | `c2_01` | Lineær skala 1 to 7 | No | Dashbordet gjør det tydeligere for meg hva spesialisten (eller fastlegen) vurderer når de håndterer en henvisning. / The dashboard makes it clearer to me what the specialist (or GP) considers when handling a referral. | 1 to 7: Helt uenig / Strongly disagree … Helt enig / Strongly agree |
+| C2-01 | `c2_01` | Lineær skala 1 to 7 | No | ATLAS gjør det tydeligere for meg hva spesialisten (eller fastlegen) vurderer når de håndterer en henvisning. / ATLAS makes it clearer to me what the specialist (or GP) considers when handling a referral. | 1 to 7: Helt uenig / Strongly disagree … Helt enig / Strongly agree |
 | C2-02 | `c2_02` | Lineær skala 1 to 7 | No | Informasjonsguiden ville redusere behovet for strategisk dokumentasjon. / The information completeness guide would reduce the need for strategic documentation. | 1 to 7: Helt uenig / Strongly disagree … Helt enig / Strongly agree |
 | C2-03 | `c2_03` | Tekstsvar (langt), at most 3,800 characters | Obligatorisk | Forklar vurderingen din (1-3 setninger). Ville synlige kriterier endre hvordan du skriver eller vurderer henvisninger? / Please explain your rating (1-3 sentences). Would visible criteria change how you write or assess referrals? |  |
-| C3-01 | `c3_01` | Lineær skala 1 to 7 | No | Dashbordet ivaretar behovene til både fastleger og spesialister. / The dashboard serves the needs of both GPs and specialists. | 1 to 7: Helt uenig / Strongly disagree … Helt enig / Strongly agree |
+| C3-01 | `c3_01` | Lineær skala 1 to 7 | No | ATLAS ivaretar behovene til både fastleger og spesialister. / ATLAS serves the needs of both GPs and specialists. | 1 to 7: Helt uenig / Strongly disagree … Helt enig / Strongly agree |
 | C3-02 | `c3_02` | Lineær skala 1 to 7 | No | Den delte oversikten (kalibrering, dialog) ville forbedre samhandlingen mellom fastleger og DPS. / The shared overview (calibration, dialogue) would improve the interaction between GPs and DPS. | 1 to 7: Helt uenig / Strongly disagree … Helt enig / Strongly agree |
-| C3-03 | `c3_03` | Tekstsvar (langt), at most 3,800 characters | Obligatorisk | Hvordan vurderer du dashbordets evne til å ivareta behovene til den andre siden (fastleger eller spesialister)? Hva fungerer? Hva mangler? (1-3 setninger) / How do you assess the dashboard's ability to serve the needs of the other side (GPs or specialists)? What works? What is missing? (1-3 sentences) |  |
-| C4-01 | `c4_01` | Lineær skala 1 to 7 | No | Jeg kunne brukt dette dashbordet innenfor mine vanlige arbeidsrutiner uten vesentlig ekstra tidsbruk. / I could use this dashboard within my usual work routines without significant additional time. | 1 to 7: Helt uenig / Strongly disagree … Helt enig / Strongly agree |
+| C3-03 | `c3_03` | Tekstsvar (langt), at most 3,800 characters | Obligatorisk | Hvordan vurderer du evnen ATLAS har til å ivareta behovene til den andre siden (fastleger eller spesialister)? Hva fungerer? Hva mangler? (1-3 setninger) / How do you assess ATLAS's ability to serve the needs of the other side (GPs or specialists)? What works? What is missing? (1-3 sentences) |  |
+| C4-01 | `c4_01` | Lineær skala 1 to 7 | No | Jeg kunne brukt ATLAS innenfor mine vanlige arbeidsrutiner uten vesentlig ekstra tidsbruk. / I could use ATLAS within my usual work routines without significant additional time. | 1 to 7: Helt uenig / Strongly disagree … Helt enig / Strongly agree |
 | C4-02 | `c4_02` | Tekstsvar (langt), at most 3,800 characters | No | Forklar vurderingen din (1-3 setninger). Hva ville gjøre det lettere eller vanskeligere å bruke dette i din hverdag? / Please explain your rating (1-3 sentences). What would make it easier or harder to use this in your daily practice? |  |
-| C5-01 | `c5_01` | Lineær skala 1 to 7 | No | Dashbordet gjør det tydelig at jeg fortsatt har det endelige kliniske ansvaret. / The dashboard makes it clear that I still have the final clinical responsibility. | 1 to 7: Helt uenig / Strongly disagree … Helt enig / Strongly agree |
-| C5-02 | `c5_02` | Lineær skala 1 to 7 | No | Jeg ville følt meg presset til å følge dashbordets indikasjon. / I would feel pressured to follow the dashboard's indication. | 1 to 7: Helt uenig / Strongly disagree … Helt enig / Strongly agree |
+| C5-01 | `c5_01` | Lineær skala 1 to 7 | No | ATLAS gjør det tydelig at jeg fortsatt har det endelige kliniske ansvaret. / ATLAS makes it clear that I still have the final clinical responsibility. | 1 to 7: Helt uenig / Strongly disagree … Helt enig / Strongly agree |
+| C5-02 | `c5_02` | Lineær skala 1 to 7 | No | Jeg ville følt meg presset til å følge indikasjonen fra ATLAS. / I would feel pressured to follow the indication from ATLAS. | 1 to 7: Helt uenig / Strongly disagree … Helt enig / Strongly agree |
 | C5-03 | `c5_03` | Tekstsvar (langt), at most 3,800 characters | Obligatorisk | Ser du noen risiko for at dette verktøyet kan påvirke din vurdering på uønskede måter? (1-3 setninger) / Do you see any risk that this tool could influence your judgement in undesirable ways? (1-3 sentences) |  |
 | C-CUCF-01 | `c_cucf_01` | Lineær skala 1 to 7 | No | Tilbakemeldingene om henvisningsutfall ville hjelpe meg å kalibrere mine fremtidige beslutninger. / The feedback on referral outcomes would help me calibrate my future decisions. | 1 to 7: Helt uenig / Strongly disagree … Helt enig / Strongly agree |
 | C-CUCF-02 | `c_cucf_02` | Tekstsvar (langt), at most 3,800 characters | No | Hva ville denne tilbakemeldingen bety for din praksis over tid? (1-3 setninger) / What would this feedback mean for your practice over time? (1-3 sentences) |  |
@@ -100,10 +103,10 @@ Each case form has three pages. Page 1 holds B1, marked «Obligatorisk». Page 2
 
 ### S2.dps: «Helhetsinntrykk» / "Overall impression"
 
-- **Used by:** Step S2, DPS participants.
+- **Used by:** Step S2 (after the three cases), DPS participants.
 - **Address goes in:** `forms["S2.dps"]` in `app/public/atlas-config.json`.
 - **Locked fields:** `rolle`, `intervju`, `studienavn`, `steg`, `versjon`.
-- **Intro:** «Dette skjemaet spør om helhetsinntrykket ditt av ATLAS etter omvisningen. Kritikk er like nyttig som ros. Ved å sende skjemaet samtykker du i at de anonyme svarene brukes i forskningsprosjektet.» / "This form asks about your overall impression of ATLAS after the tour. Criticism is as useful as praise. By sending the form, you consent to the anonymous answers being used in the research project."
+- **Intro:** «Dette skjemaet spør om helhetsinntrykket ditt av ATLAS etter de tre sakene. Kritikk er like nyttig som ros. Ved å sende skjemaet samtykker du i at de anonyme svarene brukes i forskningsprosjektet.» / "This form asks about your overall impression of ATLAS after the three cases. Criticism is as useful as praise. By sending the form, you consent to the anonymous answers being used in the research project."
 
 **Page**
 
@@ -114,22 +117,21 @@ Each case form has three pages. Page 1 holds B1, marked «Obligatorisk». Page 2
 | studienavn | `studienavn` | Tekstsvar (kort), locked |  | Studienavn / Study name |  |
 | steg | `steg` | Tekstsvar (kort), locked |  | Steg / Step |  |
 | versjon | `versjon` | Tekstsvar (kort), locked |  | Versjon / Version |  |
-| B-02 | `b_02` | Flervalg (én) | No | Har du sett gjennom alle skjermbildene i ATLAS-dashbordet? / Have you reviewed all the screens in the ATLAS dashboard? | Ja / Yes; Nei, jeg trenger mer tid / No, I need more time |
-| C1-01 | `c1_01` | Lineær skala 1 to 7 | No | Dashbordet gir meg informasjon som kan hjelpe meg å ta mer kalibrerte henvisningsbeslutninger over tid. / The dashboard provides information that could help me make more calibrated referral decisions over time. | 1 to 7: Helt uenig / Strongly disagree … Helt enig / Strongly agree |
-| C1-02 | `c1_02` | Lineær skala 1 to 7 | No | Usikkerheten i en klinisk situasjon er tydelig kommunisert i dashbordet. / The uncertainty in a clinical situation is clearly communicated in the dashboard. | 1 to 7: Helt uenig / Strongly disagree … Helt enig / Strongly agree |
+| C1-01 | `c1_01` | Lineær skala 1 to 7 | No | ATLAS gir meg informasjon som kan hjelpe meg å ta mer kalibrerte henvisningsbeslutninger over tid. / ATLAS provides information that could help me make more calibrated referral decisions over time. | 1 to 7: Helt uenig / Strongly disagree … Helt enig / Strongly agree |
+| C1-02 | `c1_02` | Lineær skala 1 to 7 | No | Usikkerheten i en klinisk situasjon er tydelig kommunisert i ATLAS. / The uncertainty in a clinical situation is clearly communicated in ATLAS. | 1 to 7: Helt uenig / Strongly disagree … Helt enig / Strongly agree |
 | C1-03 | `c1_03` | Lineær skala 1 to 7 | No | Informasjonen om usikkerhet hjelper meg å ta bedre beslutninger. / The uncertainty information helps me make better decisions. | 1 to 7: Helt uenig / Strongly disagree … Helt enig / Strongly agree |
 | C1-04 | `c1_04` | Lineær skala 1 to 7 | No | Oversikten over henvisningsmønstrene i opptaksområdet (kalibrering) er nyttig. / The overview of the referral patterns in the catchment area (calibration) is useful. (DPS wording, a draft for the owner's approval) | 1 to 7: Helt uenig / Strongly disagree … Helt enig / Strongly agree |
 | C1-05 | `c1_05` | Tekstsvar (langt), at most 3,800 characters | Obligatorisk | Forklar vurderingen din (1-3 setninger). Hva fungerer? Hva fungerer ikke? Hva mangler? / Please explain your rating (1-3 sentences). What works? What does not work? What is missing? |  |
-| C2-01 | `c2_01` | Lineær skala 1 to 7 | No | Dashbordet gjør det tydeligere for meg hva spesialisten (eller fastlegen) vurderer når de håndterer en henvisning. / The dashboard makes it clearer to me what the specialist (or GP) considers when handling a referral. | 1 to 7: Helt uenig / Strongly disagree … Helt enig / Strongly agree |
+| C2-01 | `c2_01` | Lineær skala 1 to 7 | No | ATLAS gjør det tydeligere for meg hva spesialisten (eller fastlegen) vurderer når de håndterer en henvisning. / ATLAS makes it clearer to me what the specialist (or GP) considers when handling a referral. | 1 to 7: Helt uenig / Strongly disagree … Helt enig / Strongly agree |
 | C2-02 | `c2_02` | Lineær skala 1 to 7 | No | Informasjonsguiden ville redusere behovet for strategisk dokumentasjon. / The information completeness guide would reduce the need for strategic documentation. | 1 to 7: Helt uenig / Strongly disagree … Helt enig / Strongly agree |
 | C2-03 | `c2_03` | Tekstsvar (langt), at most 3,800 characters | Obligatorisk | Forklar vurderingen din (1-3 setninger). Ville synlige kriterier endre hvordan du skriver eller vurderer henvisninger? / Please explain your rating (1-3 sentences). Would visible criteria change how you write or assess referrals? |  |
-| C3-01 | `c3_01` | Lineær skala 1 to 7 | No | Dashbordet ivaretar behovene til både fastleger og spesialister. / The dashboard serves the needs of both GPs and specialists. | 1 to 7: Helt uenig / Strongly disagree … Helt enig / Strongly agree |
+| C3-01 | `c3_01` | Lineær skala 1 to 7 | No | ATLAS ivaretar behovene til både fastleger og spesialister. / ATLAS serves the needs of both GPs and specialists. | 1 to 7: Helt uenig / Strongly disagree … Helt enig / Strongly agree |
 | C3-02 | `c3_02` | Lineær skala 1 to 7 | No | Den delte oversikten (kalibrering, dialog) ville forbedre samhandlingen mellom fastleger og DPS. / The shared overview (calibration, dialogue) would improve the interaction between GPs and DPS. | 1 to 7: Helt uenig / Strongly disagree … Helt enig / Strongly agree |
-| C3-03 | `c3_03` | Tekstsvar (langt), at most 3,800 characters | Obligatorisk | Hvordan vurderer du dashbordets evne til å ivareta behovene til den andre siden (fastleger eller spesialister)? Hva fungerer? Hva mangler? (1-3 setninger) / How do you assess the dashboard's ability to serve the needs of the other side (GPs or specialists)? What works? What is missing? (1-3 sentences) |  |
-| C4-01 | `c4_01` | Lineær skala 1 to 7 | No | Jeg kunne brukt dette dashbordet innenfor mine vanlige arbeidsrutiner uten vesentlig ekstra tidsbruk. / I could use this dashboard within my usual work routines without significant additional time. | 1 to 7: Helt uenig / Strongly disagree … Helt enig / Strongly agree |
+| C3-03 | `c3_03` | Tekstsvar (langt), at most 3,800 characters | Obligatorisk | Hvordan vurderer du evnen ATLAS har til å ivareta behovene til den andre siden (fastleger eller spesialister)? Hva fungerer? Hva mangler? (1-3 setninger) / How do you assess ATLAS's ability to serve the needs of the other side (GPs or specialists)? What works? What is missing? (1-3 sentences) |  |
+| C4-01 | `c4_01` | Lineær skala 1 to 7 | No | Jeg kunne brukt ATLAS innenfor mine vanlige arbeidsrutiner uten vesentlig ekstra tidsbruk. / I could use ATLAS within my usual work routines without significant additional time. | 1 to 7: Helt uenig / Strongly disagree … Helt enig / Strongly agree |
 | C4-02 | `c4_02` | Tekstsvar (langt), at most 3,800 characters | No | Forklar vurderingen din (1-3 setninger). Hva ville gjøre det lettere eller vanskeligere å bruke dette i din hverdag? / Please explain your rating (1-3 sentences). What would make it easier or harder to use this in your daily practice? |  |
-| C5-01 | `c5_01` | Lineær skala 1 to 7 | No | Dashbordet gjør det tydelig at jeg fortsatt har det endelige kliniske ansvaret. / The dashboard makes it clear that I still have the final clinical responsibility. | 1 to 7: Helt uenig / Strongly disagree … Helt enig / Strongly agree |
-| C5-02 | `c5_02` | Lineær skala 1 to 7 | No | Jeg ville følt meg presset til å følge dashbordets indikasjon. / I would feel pressured to follow the dashboard's indication. | 1 to 7: Helt uenig / Strongly disagree … Helt enig / Strongly agree |
+| C5-01 | `c5_01` | Lineær skala 1 to 7 | No | ATLAS gjør det tydelig at jeg fortsatt har det endelige kliniske ansvaret. / ATLAS makes it clear that I still have the final clinical responsibility. | 1 to 7: Helt uenig / Strongly disagree … Helt enig / Strongly agree |
+| C5-02 | `c5_02` | Lineær skala 1 to 7 | No | Jeg ville følt meg presset til å følge indikasjonen fra ATLAS. / I would feel pressured to follow the indication from ATLAS. | 1 to 7: Helt uenig / Strongly disagree … Helt enig / Strongly agree |
 | C5-03 | `c5_03` | Tekstsvar (langt), at most 3,800 characters | Obligatorisk | Ser du noen risiko for at dette verktøyet kan påvirke din vurdering på uønskede måter? (1-3 setninger) / Do you see any risk that this tool could influence your judgement in undesirable ways? (1-3 sentences) |  |
 | C-CUCF-01 | `c_cucf_01` | Lineær skala 1 to 7 | No | Tilbakemeldingene om henvisningsutfall ville hjelpe meg å kalibrere mine fremtidige beslutninger. / The feedback on referral outcomes would help me calibrate my future decisions. | 1 to 7: Helt uenig / Strongly disagree … Helt enig / Strongly agree |
 | C-CUCF-02 | `c_cucf_02` | Tekstsvar (langt), at most 3,800 characters | No | Hva ville denne tilbakemeldingen bety for din praksis over tid? (1-3 setninger) / What would this feedback mean for your practice over time? (1-3 sentences) |  |
@@ -390,10 +392,34 @@ Each case form has three pages. Page 1 holds B1, marked «Obligatorisk». Page 2
 | steg | `steg` | Tekstsvar (kort), locked |  | Steg / Step |  |
 | vignett | `vignett` | Tekstsvar (kort), locked |  | Vignett / Vignette |  |
 | versjon | `versjon` | Tekstsvar (kort), locked |  | Versjon / Version |  |
-| D-V5-01 | `d_v5_01` | Tekstsvar (langt), at most 3,800 characters | No | Ville en erfaren fastlege og en ny fastlege bruke dette dashbordet forskjellig? Hvordan? / Would an experienced GP and a new GP use this dashboard differently? How? |  |
+| D-V5-01 | `d_v5_01` | Tekstsvar (langt), at most 3,800 characters | No | Ville en erfaren fastlege og en ny fastlege bruke ATLAS forskjellig? Hvordan? / Would an experienced GP and a new GP use ATLAS differently? How? |  |
 | D-V5-02 | `d_v5_02` | Tekstsvar (langt), at most 3,800 characters | No | Er det en risiko for at kalibreringsdata kan virke demotiverende for erfarne fastleger med synkende henvisningsrate? / Is there a risk that calibration data could be discouraging for experienced GPs with declining referral rates? |  |
 
 - **Receipt:** «Takk, svarene er sendt. Gå tilbake til ATLAS for å fortsette.» / "Thank you, the answers have been sent. Go back to ATLAS to continue."
+
+### S9: «Tilbakemelding underveis» / "Feedback along the way"
+
+- **Used by:** Any study page after S1, per part of a screen (optional feedback along the way), both roles; no step.
+- **Address goes in:** `forms["S9"]` in `app/public/atlas-config.json`.
+- **Locked fields:** `rolle`, `studienavn`, `side`, `seksjon`, `versjon`.
+- **Intro:** «Dette skjemaet gjelder delen av ATLAS du nettopp har sett. Det er frivillig og tar under ett minutt. Kritikk er like nyttig som ros. Ved å sende skjemaet samtykker du i at de anonyme svarene brukes i forskningsprosjektet.» / "This form is about the part of ATLAS you have just seen. It is voluntary and takes less than a minute. Criticism is as useful as praise. By sending the form, you consent to the anonymous answers being used in the research project."
+
+**Page**
+
+| ID | Codebook | Type | Required | Text (nb / en) | Scale or options |
+|---|---|---|---|---|---|
+| rolle | `rolle` | Tekstsvar (kort), locked |  | Rolle / Role |  |
+| studienavn | `studienavn` | Tekstsvar (kort), locked |  | Studienavn / Study name |  |
+| side | `side` | Tekstsvar (kort), locked |  | Side i ATLAS / Page in ATLAS |  |
+| seksjon | `seksjon` | Tekstsvar (kort), locked |  | Seksjon / Section |  |
+| versjon | `versjon` | Tekstsvar (kort), locked |  | Versjon / Version |  |
+| S9-01 | `s9_01` | Tekstsvar (langt), at most 3,800 characters | No | Hva la du merke til her? Noe som var uklart, nyttig eller i veien? / What did you notice here? Anything unclear, useful or in the way? |  |
+| S9-02 | `s9_02` | Lineær skala 1 to 5 | No | Hvor tydelig var denne delen? / How clear was this part? | 1 to 5: Svært utydelig / Very unclear … Svært tydelig / Very clear |
+| S9-03 | `s9_03` | Tekstsvar (langt), at most 3,800 characters | No | Hva ville du endret? / What would you change? |  |
+| S9-04 | `s9_04` | Flervalg (én) | No | Leste du noe her som et råd om hva du skulle gjøre? / Did you read anything here as advice on what to do? | Ja / Yes; Nei / No; Usikker / Unsure |
+| S9-05 | `s9_05` | Tekstsvar (langt), at most 3,800 characters | No | Hva? / What? |  |
+
+- **Receipt:** «Takk, tilbakemeldingen er sendt. Gå tilbake til ATLAS for å fortsette.» / "Thank you, the feedback has been sent. Go back to ATLAS to continue."
 
 ### R1: «Gjennomgang» / "Review"
 

@@ -28,6 +28,9 @@ export function useNotice() {
   return { notice, show, clear, bind };
 }
 
+/** Most notices confirm what was done; these two say something did not happen as asked, so they are not green. */
+const INTENT: Partial<Record<StringKey, 'info' | 'warning'>> = { feedbackOpenedTab: 'info', feedbackNotReady: 'warning' };
+
 export function NoticeBar({ notice, onDismiss, onBind }: { notice: Notice | null; onDismiss: () => void; onBind: (path: string) => void }) {
   const { s } = useLang();
   const route = useRoute();
@@ -54,7 +57,7 @@ export function NoticeBar({ notice, onDismiss, onBind }: { notice: Notice | null
     window.requestAnimationFrame(() => focusInView(document.querySelector<HTMLElement>('h1[tabindex="-1"]')));
   };
   return (
-    <MessageBar intent="success" politeness="polite">
+    <MessageBar intent={INTENT[notice.key] ?? 'success'} politeness="polite">
       <MessageBarBody>{s(notice.key)}</MessageBarBody>
       <MessageBarActions containerAction={<Button appearance="transparent" aria-label={s('close')} icon={<Dismiss16Regular />} onClick={close} />} />
     </MessageBar>

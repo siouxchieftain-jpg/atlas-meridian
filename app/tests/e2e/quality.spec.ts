@@ -1,6 +1,6 @@
 import { expect, test, type Page } from '@playwright/test';
 import { mockNettskjema, configWithoutForms } from './mock';
-import { caseOnlyThenAtlas, place, sendForm, startStudy } from './helpers';
+import { caseOnlyThenAtlas, openCurrentCase, place, sendForm, startStudy, toHome } from './helpers';
 
 // No check depends on the addresses the site holds: with none, review mode gives feedback in its preview forms.
 // A check that needs forms routes them to the stand-in (mockNettskjema), which takes precedence.
@@ -97,18 +97,28 @@ test('English coverage: no Norwegian left in English mode, review and study', as
   await startStudy(page, 'Fastlege');
   await english('om deg');
   await sendForm(page);
-  await page.getByRole('button', { name: 'Gå til omvisningen' }).click();
-  await english('omvisning, first step');
-  for (let i = 0; i < 20; i++) {
-    if (await page.getByRole('button', { name: 'Ja, gå videre' }).isVisible()) break;
-    await page.getByRole('button', { name: /^(Neste|Neste del|Se oversikten)$/ }).click();
-    if (i === 4) await english('omvisning, a later step');
+  await toHome(page);
+  await english('hjem, before the tour');
+  // The card before the tour is a modal dialog: the toggle is outside it, so switch first and read it in English.
+  await page.getByRole('button', { name: 'English', exact: true }).click();
+  await page.locator('[data-start-tour]').click();
+  await expect(page.getByRole('dialog')).toBeVisible();
+  for (const d of await page.locator('[data-tour-start] details').all()) await d.locator('summary').click();
+  found.push(...(await englishLeftovers(page, 'studie tour start card')));
+  await page.getByRole('dialog').getByRole('button', { name: 'Not now' }).click();
+  await page.getByRole('button', { name: 'Norsk', exact: true }).click();
+  await page.locator('[data-start-tour]').click();
+  await page.getByRole('dialog').getByRole('button', { name: 'Start omvisningen' }).click();
+  await english('omvisning, the study part');
+  for (let i = 0; i < 30; i++) {
+    if (await page.locator('[data-tour-prompt], [data-tour-end]').first().isVisible()) break;
+    await page.getByRole('button', { name: /^(Neste|Neste del|Avslutt omvisningen)$/ }).click();
+    if (i === 2 || i === 4 || i === 9) await english(`omvisning, step ${i + 2}`);
   }
   await english('omvisning, the end');
-  await page.getByRole('button', { name: 'Ja, gå videre' }).click();
-  await english('helhet');
-  await sendForm(page);
-  await page.getByRole('button', { name: 'Gå til den første saken' }).click();
+  await page.getByRole('button', { name: 'Til oversikten' }).click();
+  await english('hjem, after the tour');
+  await openCurrentCase(page);
   await english('kari briefing');
   await caseOnlyThenAtlas(page);
   await english('kari atlas');
@@ -116,6 +126,19 @@ test('English coverage: no Norwegian left in English mode, review and study', as
   await english('kari placed');
   await page.goto('/#/studie/steg');
   await english('stepper');
+  // Helhet comes after the three cases: the session moved on to it in storage, then read in English.
+  await page.evaluate(() => {
+    const sent = (steg: string) => ({ status: 'sent', at: '2026-10-12T10:00:00Z', steg, via: 'panel' });
+    const st = JSON.parse(localStorage.getItem('atlas.study.v2') ?? '{}');
+    st.furthest = 'helhet';
+    st.ledger = { ...st.ledger, S3: sent('S3'), S4: sent('S4'), S5: sent('S5') };
+    st.phase = { ...st.phase, kari: 'done', erlend: 'done', astrid: 'done' };
+    localStorage.setItem('atlas.study.v2', JSON.stringify(st));
+  });
+  await page.reload();
+  await page.goto('/#/studie/helhet');
+  await expect(page.getByRole('heading', { level: 1, name: 'Helhetsinntrykk' })).toBeVisible();
+  await english('helhet');
   expect([...new Set(found)], [...new Set(found)].join('\n')).toEqual([]);
 });
 
@@ -178,7 +201,7 @@ test('privacy: the only third-party request is the Nettskjema form; nothing else
   await mockNettskjema(page);
   await startStudy(page, 'Fastlege');
   await sendForm(page);
-  await page.getByRole('button', { name: 'Gå til omvisningen' }).click();
+  await toHome(page);
   await page.goto('/#/gjennomgang/fastlege/sak/kari/konsultasjon');
   await page.goto('/#/gjennomgang/dps/sak/kari/vurdering');
   await page.goto('/#/gjennomgang/fastlege/monster');

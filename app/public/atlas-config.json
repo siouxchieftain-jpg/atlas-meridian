@@ -1,5 +1,6 @@
 {
-  "_comment": "Nettskjema addresses for each form (for example https://nettskjema.no/a/123456). An empty address shows «Dette skjemaet er ikke klart ennå.» in the study. Edit this file only; no code change is needed.",
+  "_comment": "Nettskjema addresses for each form (for example https://nettskjema.no/a/123456). An empty address shows «Dette skjemaet er ikke klart ennå.» in the study. \"round\" is \"pilot\" or \"study\": in the pilot round the study forms come from \"pilotForms\", and every answer carries a version ending in -pilot; set \"round\" to \"study\" when the pilot is over. \"studyPeriod\" holds the first and last day of the study (YYYY-MM-DD); after the last day the welcome page says the study has ended. Edit this file only; no code change is needed.",
+  "round": "pilot",
   "forms": {
     "S1": "https://nettskjema.no/a/661821",
     "S2.fastlege": "https://nettskjema.no/a/661822",
@@ -12,8 +13,27 @@
     "S6": "https://nettskjema.no/a/661829",
     "S7.fastlege": "https://nettskjema.no/a/661830",
     "S8": "https://nettskjema.no/a/661831",
+    "S9": "",
     "R1": "https://nettskjema.no/a/661832",
     "R2": "https://nettskjema.no/a/661833"
+  },
+  "pilotForms": {
+    "S1": "",
+    "S2.fastlege": "",
+    "S2.dps": "",
+    "S3": "",
+    "S4.fastlege": "",
+    "S4.dps": "",
+    "S5.fastlege": "",
+    "S5.dps": "",
+    "S6": "",
+    "S7.fastlege": "",
+    "S8": "",
+    "S9": ""
+  },
+  "studyPeriod": {
+    "opens": "",
+    "closes": ""
   },
   "informationLetter": "",
   "contact": {

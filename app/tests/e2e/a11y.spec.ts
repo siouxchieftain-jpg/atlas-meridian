@@ -1,7 +1,7 @@
 import AxeBuilder from '@axe-core/playwright';
 import { expect, test, type Page } from '@playwright/test';
 import { mockNettskjema, configWithoutForms } from './mock';
-import { doTour, panel, place, sendForm, startStudy, toStopPage } from './helpers';
+import { clickThroughTour, finishCaseHome, openCurrentCase, panel, place, sendForm, startStudy, toHome, toStopPage } from './helpers';
 
 // No check depends on the addresses the site holds: with none, review mode gives feedback in its preview forms.
 // A check that needs forms routes them to the stand-in (mockNettskjema), which takes precedence.
@@ -31,6 +31,8 @@ async function scan(page: Page, where: string, found: string[]) {
 }
 
 test('study screens have no serious or critical axe violations', async ({ page }) => {
+  // Some forty scans, one per state of the journey.
+  test.setTimeout(300_000);
   const found: string[] = [];
   await mockNettskjema(page);
   await page.goto('/');
@@ -38,21 +40,35 @@ test('study screens have no serious or critical axe violations', async ({ page }
   await startStudy(page, 'Fastlege');
   await scan(page, 'om-deg with S1', found);
   await sendForm(page);
-  await page.getByRole('button', { name: 'Gå til omvisningen' }).click();
+  await scan(page, 'om-deg sent', found);
+  await toHome(page);
+  await scan(page, 'home before the tour', found);
+  await page.locator('[data-study-card] [data-name-what]').click();
+  await scan(page, 'study name popover', found);
+  await page.keyboard.press('Escape');
+  await page.locator('[data-start-tour]').click();
+  await expect(page.getByRole('dialog')).toBeVisible();
+  await page.getByRole('dialog').getByText('Bestemmer ATLAS for meg?').click();
+  await scan(page, 'tour card', found);
+  await page.getByRole('dialog').getByRole('button', { name: 'Start omvisningen' }).click();
+  await scan(page, 'tour: the overview', found);
+  for (let i = 0; i < 3; i++) {
+    await page.getByRole('button', { name: /^(Neste|Neste del)$/ }).click();
+    await scan(page, `tour: study step ${i + 2}`, found);
+  }
+  await page.getByRole('button', { name: 'Neste del' }).click();
   await scan(page, 'tour timeliste', found);
   for (let i = 0; i < 3; i++) await page.getByRole('button', { name: /^(Neste|Neste del)$/ }).click();
   await place(page, 2);
   await scan(page, 'tour band placed', found);
-  await page.goto('/#/studie/omvisning');
-  for (let i = 0; i < 20; i++) {
-    if (await page.getByRole('button', { name: 'Ja, gå videre' }).isVisible()) break;
-    await page.getByRole('button', { name: /^(Neste|Neste del|Se oversikten)$/ }).click();
-  }
+  await clickThroughTour(page);
   await scan(page, 'tour end', found);
-  await page.getByRole('button', { name: 'Ja, gå videre' }).click();
-  await scan(page, 'helhet', found);
-  await sendForm(page);
-  await page.getByRole('button', { name: 'Gå til den første saken' }).click();
+  await page.getByRole('button', { name: 'Til oversikten' }).click();
+  await scan(page, 'home after the tour', found);
+  await page.locator('[data-feedback-tab]').click();
+  await scan(page, 'feedback parts on home', found);
+  await page.keyboard.press('Escape');
+  await openCurrentCase(page);
   await scan(page, 'kari briefing', found);
   await page.getByRole('button', { name: 'Start saken' }).click();
   await toStopPage(page);
@@ -75,11 +91,39 @@ test('study screens have no serious or critical axe violations', async ({ page }
   await scan(page, 'kari dialog', found);
   await page.getByRole('button', { name: 'Ikke svar nå' }).click();
   await page.getByRole('button', { name: 'Gå til oppsummeringen' }).click();
-  await scan(page, 'kari summary', found);
+  await scan(page, 'kari summary with its question', found);
+  await page.locator('[data-prompt-feedback]').click();
+  await scan(page, 'case parts', found);
+  await page.locator('[data-feedback-part="hele"]').click();
+  await expect(panel(page)).toBeVisible();
+  await scan(page, 'S9 in the panel', found);
+  await sendForm(page);
+  await expect(page.getByText('Takk. Tilbakemeldingen er registrert.')).toBeVisible();
+  await scan(page, 'S9 sent', found);
+  await finishCaseHome(page);
+  await scan(page, 'home after kari', found);
   await page.goto('/#/studie/steg');
   await scan(page, 'stepper', found);
-  await page.goto('/#/studie/liste');
-  await scan(page, 'timeliste', found);
+  await page.goto('/#/studie/velkommen');
+  await scan(page, 'velkommen, back', found);
+  await page.getByRole('button', { name: 'Ikke deg? Start som ny deltaker' }).click();
+  await scan(page, 'new participant dialog', found);
+  expect(found, found.join('\n')).toEqual([]);
+});
+
+test('the DPS overview and the closed study have no serious or critical axe violations', async ({ page }) => {
+  const found: string[] = [];
+  await mockNettskjema(page);
+  await startStudy(page, 'DPS-kliniker');
+  await sendForm(page);
+  await toHome(page);
+  await scan(page, 'dps home', found);
+  await page.unroute('**/atlas-config.json*');
+  await mockNettskjema(page, { closes: '2026-02-27', opens: '2026-01-05' });
+  await page.goto('/#/studie/velkommen');
+  await page.reload();
+  await expect(page.getByRole('heading', { name: 'Studien er avsluttet' })).toBeVisible();
+  await scan(page, 'velkommen, closed', found);
   expect(found, found.join('\n')).toEqual([]);
 });
 

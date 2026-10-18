@@ -2,7 +2,7 @@ import { createContext, useCallback, useContext, useEffect, useMemo, useRef, typ
 import type { CaseId, CoreCaseId } from '../content/types';
 import { cases } from '../content';
 import { useLang } from '../i18n/i18n';
-import { STEP_CASE, buildFormUrl, formKeyFor, getConfig, prefersNewTab, previewFlag, stegValue, studyLocked } from '../engine/forms';
+import { STEP_CASE, buildFormUrl, feedbackLocked, formKeyFor, getConfig, prefersNewTab, previewFlag, stegValue, studyLocked } from '../engine/forms';
 import { navigate } from '../router/router';
 import { readJSON, writeJSON } from '../state/persist';
 import { PENDING_KEY, SENDT_KEY, stepIndex, useStudy } from '../state/study';
@@ -10,6 +10,9 @@ import { CASE_FORM, type FormStep, type StepId } from '../state/types';
 import type { StudyWorkActions } from '../state/work';
 import { useAtlasAnnounce } from '../patterns/announce';
 import { useFormHost, type CaseFormStage, type FormRoute, type OpenForm } from './formHost';
+
+/** The overview, «Min dag» or «Inntaket i dag»: home between the steps (v3.1). */
+export const HOME_PATH = '/studie/hjem';
 
 /** Where each study step lives. */
 export const STEP_PATH: Record<StepId, string> = {
@@ -34,7 +37,7 @@ export const STEP_FORM: Partial<Record<StepId, FormStep>> = {
   avslutning: 'S6',
 };
 
-const CASE_NEXT: Record<CoreCaseId, StepId> = { kari: 'erlend', erlend: 'astrid', astrid: 'avslutning' };
+const CASE_NEXT: Record<CoreCaseId, StepId> = { kari: 'erlend', erlend: 'astrid', astrid: 'helhet' };
 
 export type FormStatus = 'sent' | 'skipped' | 'open' | 'notready' | 'closed';
 
@@ -50,6 +53,11 @@ export interface StudyController {
   stepDone: (step: FormStep) => boolean;
   goToStep: (step: StepId) => void;
   currentPath: () => string;
+  /**
+   * S9, the feedback form, about one part of one screen. It never replaces a step form that is open (its answers would
+   * be lost, a case form's page 1 among them): then it opens in a new tab instead.
+   */
+  openFeedback: (side: string, seksjon: string) => 'panel' | 'tab' | 'preview' | 'notready';
   work: StudyWorkActions;
 }
 
@@ -76,6 +84,7 @@ export function StudyControllerProvider({ children }: { children: ReactNode }) {
     const address = getConfig().forms[formKeyFor(step, role)];
     if (!address) return 'notready';
     if (step === 'S1') return prefersNewTab() ? 'tab' : 'panel';
+    // Every later form, S9 among them, follows S1: the panel where S1 was sent in the panel, else a new tab.
     if (st.route === 'panel' && !prefersNewTab()) return 'panel';
     return 'tab';
   }, []);
@@ -133,11 +142,12 @@ export function StudyControllerProvider({ children }: { children: ReactNode }) {
   );
 
   // Events from the form host: "submitFinished" from the panel's own iframe, or a preview send.
+  // S9 (feedback) is no step: StudyShell takes its sends.
   useEffect(
     () =>
       host.register({
         onSent: (form: OpenForm, via) => {
-          if (form.review) return;
+          if (form.review || form.feedback) return;
           markSent(form.step, via === 'preview' ? 'preview' : 'panel', form.locked.steg ?? form.step);
         },
       }),
@@ -150,7 +160,7 @@ export function StudyControllerProvider({ children }: { children: ReactNode }) {
       const sent = readJSON<{ form: FormStep; steg: string; at: string; sentAt?: string }>(SENDT_KEY);
       if (!sent?.form) return;
       const st = ref.current.state;
-      if (st.ledger[sent.form]?.status === 'sent') return;
+      if (sent.form === 'S9' || st.ledger[sent.form]?.status === 'sent') return;
       const open = hostRef.current.form;
       const matches = (open && open.step === sent.form) || st.pendingTab?.form === sent.form;
       if (!matches) return;
@@ -173,7 +183,16 @@ export function StudyControllerProvider({ children }: { children: ReactNode }) {
       return routeFor(step) === 'notready' ? 'notready' : 'closed';
     };
     const stepDone = (step: FormStep) => !!st.ledger[step];
-    const currentPath = () => STEP_PATH[st.furthest];
+    // Between the steps the participant is at home; a case in progress is where they left it.
+    const currentPath = () => {
+      const f = st.furthest;
+      if (f === 'omvisning') return st.tour.started && !st.tour.done ? STEP_PATH.omvisning : HOME_PATH;
+      if (f === 'kari' || f === 'erlend' || f === 'astrid') {
+        const phase = st.phase[f] ?? 'briefing';
+        return phase === 'briefing' || phase === 'done' ? HOME_PATH : STEP_PATH[f];
+      }
+      return STEP_PATH[f];
+    };
     const goToStep = (step: StepId) => {
       study.advanceTo(step);
       navigate(STEP_PATH[step]);
@@ -246,8 +265,11 @@ export function StudyControllerProvider({ children }: { children: ReactNode }) {
       },
       finishCase: (caseId) => {
         study.setPhase(caseId, 'done');
-        if (isCore(caseId)) goToStep(CASE_NEXT[caseId]);
-        else navigate('/studie/ekstra');
+        // Back home after every case: the next case, or the last part, starts from the overview (v3.1).
+        if (isCore(caseId)) {
+          study.advanceTo(CASE_NEXT[caseId]);
+          navigate(HOME_PATH);
+        } else navigate('/studie/ekstra');
       },
     };
 
@@ -277,6 +299,11 @@ export function StudyControllerProvider({ children }: { children: ReactNode }) {
         if (!open || (open.route !== 'tab' && open.route !== 'panel')) return;
         const address = getConfig().forms[open.formKey];
         if (!address) return;
+        // S9 is no step: its tab is never the pending form that sendt.html marks.
+        if (open.feedback) {
+          window.open(buildFormUrl(address, open.locked, false), '_blank', 'noopener');
+          return;
+        }
         // Built at the click: a case form opened again after «Vis ATLAS» carries its -etter value.
         const locked = open.caseId ? studyLocked(open.step, st.roleChoice, st.intervju, st.visAtlas, st.studienavn) : open.locked;
         window.open(buildFormUrl(address, locked, false), '_blank', 'noopener');
@@ -286,6 +313,25 @@ export function StudyControllerProvider({ children }: { children: ReactNode }) {
       stepDone,
       goToStep,
       currentPath,
+      openFeedback: (side, seksjon) => {
+        const role = study.role ?? 'gp';
+        const formKey = formKeyFor('S9', role);
+        const locked = feedbackLocked(st.roleChoice, st.studienavn, side, seksjon);
+        const address = getConfig().forms[formKey];
+        const open = host.form;
+        // A step form still open (shown, held during the ATLAS work, or waiting for its tab): S9 goes to a tab of its own.
+        const stepFormOpen = !!open && open.step !== 'S9' && !open.review && !st.ledger[open.step];
+        if (stepFormOpen && !previewFlag()) {
+          if (!address) return 'notready';
+          window.open(buildFormUrl(address, locked, false), '_blank', 'noopener');
+          return 'tab';
+        }
+        const route = routeFor('S9');
+        // No address yet: say so and open nothing (an empty panel would only hold its place).
+        if (route === 'notready') return 'notready';
+        host.open({ step: 'S9', formKey, locked, route, feedback: true, force: true });
+        return route;
+      },
       work,
     };
   }, [study, host, routeFor, openStepForm, afterFormDone, markSent, announce, s, t]);

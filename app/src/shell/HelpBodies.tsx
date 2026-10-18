@@ -3,6 +3,7 @@ import {
   ArrowDown16Regular,
   ArrowRight16Regular,
   Beaker20Regular,
+  CommentEdit20Regular,
   DataBarVertical20Regular,
   History20Regular,
   PanelRight20Regular,
@@ -12,7 +13,6 @@ import {
 } from '@fluentui/react-icons';
 import { Fragment, type ReactNode } from 'react';
 import { useLang } from '../i18n/i18n';
-import type { StepId } from '../state/types';
 import { guide } from '../theme/constants';
 
 const useStyles = makeStyles({
@@ -20,7 +20,7 @@ const useStyles = makeStyles({
   block: { display: 'flex', flexDirection: 'column', gap: tokens.spacingVerticalM },
   h3: { ...typographyStyles.subtitle2, margin: 0 },
   note: { ...typographyStyles.caption1, margin: 0, color: tokens.colorNeutralForeground2 },
-  // The nine steps: a row on a wide dialog, a list on a narrow one.
+  // The three parts: a row on a wide dialog, a list on a narrow one.
   steps: {
     listStyle: 'none',
     margin: 0,
@@ -28,7 +28,7 @@ const useStyles = makeStyles({
     display: 'grid',
     gridTemplateColumns: 'minmax(0, 1fr)',
     gap: tokens.spacingVerticalS,
-    '@media (min-width: 900px)': { gridTemplateColumns: 'repeat(9, minmax(0, 1fr))', gap: '4px' },
+    '@media (min-width: 640px)': { gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', gap: '12px' },
   },
   step: {
     display: 'flex',
@@ -36,8 +36,9 @@ const useStyles = makeStyles({
     gap: tokens.spacingHorizontalS,
     ...typographyStyles.caption1,
     color: tokens.colorNeutralForeground2,
-    '@media (min-width: 900px)': { flexDirection: 'column', alignItems: 'center', textAlign: 'center', gap: '6px' },
+    '@media (min-width: 640px)': { flexDirection: 'column', alignItems: 'flex-start', textAlign: 'start', gap: '6px' },
   },
+  partText: { display: 'block', ...typographyStyles.caption1, color: tokens.colorNeutralForeground2, marginBlockStart: '2px' },
   stepNow: { ...typographyStyles.caption1Strong, color: tokens.colorNeutralForeground1 },
   stepNum: {
     flex: '0 0 28px',
@@ -54,8 +55,7 @@ const useStyles = makeStyles({
     color: tokens.colorNeutralForeground1,
   },
   stepNumNow: { border: 'none', background: guide.mark, boxShadow: `0 0 0 3px ${guide.peach}` },
-  // A long compound breaks only where a soft hyphen allows it («Helhets-inntrykk»).
-  stepLabel: { minWidth: 0, overflowWrap: 'break-word', hyphens: 'manual' },
+  stepLabel: { minWidth: 0, overflowWrap: 'break-word' },
   here: { display: 'block', ...typographyStyles.caption1Strong, color: guide.ink },
   // One case's form: four stages, in a row on a wide dialog.
   flow: {
@@ -117,24 +117,6 @@ const useStyles = makeStyles({
   tileText: { ...typographyStyles.body1, margin: 0, color: tokens.colorNeutralForeground2 },
 });
 
-const STUDY_STEPS: StepId[] = ['velkommen', 'om-deg', 'omvisning', 'helhet', 'kari', 'erlend', 'astrid', 'avslutning', 'ekstra'];
-const STEP_KEY = {
-  velkommen: 'stepVelkommen',
-  'om-deg': 'stepOmDeg',
-  omvisning: 'stepOmvisning',
-  helhet: 'stepHelhet',
-  kari: 'stepKari',
-  erlend: 'stepErlend',
-  astrid: 'stepAstrid',
-  avslutning: 'stepAvslutning',
-  ekstra: 'stepEkstra',
-} as const;
-
-/** Where a narrow column may break a long Norwegian compound. */
-function softHyphens(label: string): string {
-  return label.replace('Helhetsinntrykk', 'Helhets\u00ADinntrykk').replace('Avslutning', 'Avslut\u00ADning');
-}
-
 function Row({ icon, children }: { icon: ReactNode; children: ReactNode }) {
   const cls = useStyles();
   return (
@@ -147,10 +129,15 @@ function Row({ icon, children }: { icon: ReactNode; children: ReactNode }) {
   );
 }
 
-/** Hjelp › Slik foregår evalueringen (study mode): the nine steps, one case's form, and three things to know. */
-export function HowItWorksBody({ current }: { current?: StepId }) {
+/** Hjelp › Slik foregår evalueringen (study mode): the three parts, one case's form, and four things to know. */
+export function HowItWorksBody({ current, role }: { current?: 1 | 2 | 3; role: 'gp' | 'dps' }) {
   const cls = useStyles();
   const { s } = useLang();
+  const parts: { n: 1 | 2 | 3; title: string; text: string }[] = [
+    { n: 1, title: s('partIntro'), text: s('helpPart1Text') },
+    { n: 2, title: s(role === 'gp' ? 'partCasesGp' : 'partCasesDps'), text: s('helpPart2Text') },
+    { n: 3, title: s('partEnd'), text: s('helpPart3Text') },
+  ];
   const stages = [
     { atlas: false, title: s('helpFlow1Title'), text: s('helpFlow1Text') },
     { atlas: false, title: s('helpFlow2Title'), text: s('helpFlow2Text') },
@@ -159,25 +146,26 @@ export function HowItWorksBody({ current }: { current?: StepId }) {
   ];
   return (
     <div className={cls.stack}>
-      <section className={cls.block} aria-label={s('helpStepsTitle')}>
-        <h3 className={cls.h3}>{s('helpStepsTitle')}</h3>
-        <ol className={cls.steps} aria-label={s('helpStepsList')}>
-          {STUDY_STEPS.map((step, i) => {
-            const now = step === current;
+      <section className={cls.block} aria-label={s('helpPartsTitle')}>
+        <h3 className={cls.h3}>{s('helpPartsTitle')}</h3>
+        <ol className={cls.steps} aria-label={s('partsLabel')}>
+          {parts.map((p) => {
+            const now = p.n === current;
             return (
-              <li key={step} className={mergeClasses(cls.step, now && cls.stepNow)} aria-current={now ? 'step' : undefined}>
+              <li key={p.n} className={mergeClasses(cls.step, now && cls.stepNow)} aria-current={now ? 'step' : undefined}>
                 <span className={mergeClasses(cls.stepNum, now && cls.stepNumNow)} aria-hidden="true">
-                  {i + 1}
+                  {p.n}
                 </span>
                 <span className={cls.stepLabel}>
-                  {softHyphens(s(STEP_KEY[step as keyof typeof STEP_KEY]))}
+                  {p.title}
                   {now && <span className={cls.here}>{s('helpYouAreHere')}</span>}
+                  <span className={cls.partText}>{p.text}</span>
                 </span>
               </li>
             );
           })}
         </ol>
-        <p className={cls.note}>{s('helpStepsNote')}</p>
+        <p className={cls.note}>{s('helpPartsNote')}</p>
       </section>
       <section className={cls.block} aria-label={s('helpCaseFormTitle')}>
         <h3 className={cls.h3}>{s('helpCaseFormTitle')}</h3>
@@ -205,6 +193,7 @@ export function HowItWorksBody({ current }: { current?: StepId }) {
       </section>
       <div className={cls.rows}>
         <Row icon={<PanelRight20Regular />}>{s('helpRowPanel')}</Row>
+        <Row icon={<CommentEdit20Regular />}>{s('helpRowFeedback')}</Row>
         <Row icon={<SkipForwardTab20Regular />}>{s('helpRowSkip')}</Row>
         <Row icon={<History20Regular />}>{s('helpHow5')}</Row>
       </div>

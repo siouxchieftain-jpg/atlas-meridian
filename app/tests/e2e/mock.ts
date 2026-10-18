@@ -8,7 +8,8 @@ import type { BrowserContext, Page } from '@playwright/test';
  * forms have three pages (B1, the stop page, the rest). No request ever
  * leaves the test.
  */
-export const FORM_KEYS = ['S1', 'S2.fastlege', 'S2.dps', 'S3', 'S4.fastlege', 'S4.dps', 'S5.fastlege', 'S5.dps', 'S6', 'S7.fastlege', 'S8', 'R1', 'R2'];
+export const STUDY_KEYS = ['S1', 'S2.fastlege', 'S2.dps', 'S3', 'S4.fastlege', 'S4.dps', 'S5.fastlege', 'S5.dps', 'S6', 'S7.fastlege', 'S8', 'S9'];
+export const FORM_KEYS = [...STUDY_KEYS, 'R1', 'R2'];
 const THREE_PAGES = new Set(['S3', 'S4.fastlege', 'S4.dps', 'S5.fastlege', 'S5.dps']);
 
 export interface MockOptions {
@@ -16,15 +17,20 @@ export interface MockOptions {
   failOnce?: string[];
   /** Form keys left out of the configuration («ikke klart ennå»). */
   missing?: string[];
+  /** The pilot round: the study forms come from «pilotForms» (addresses /a/pilot-<key>). */
+  round?: 'pilot' | 'study';
+  /** The study period (ISO dates). */
+  opens?: string;
+  closes?: string;
 }
 
 function mockHtml(key: string, failOnce: boolean): string {
-  const pages = THREE_PAGES.has(key) ? 3 : 1;
+  const pages = THREE_PAGES.has(key.replace(/^pilot-/, '')) ? 3 : 1;
   return `<!doctype html><html lang="nb"><head><meta charset="utf-8"><title>Mock ${key}</title>
 <style>body{font:14px/20px sans-serif;margin:16px}button{margin:8px 8px 0 0;padding:6px 12px}</style></head>
 <body><h1>Mock Nettskjema ${key}</h1><p id="page"></p><p id="fields"></p><div id="body"></div>
 <button id="back" type="button">Tilbake</button><button id="next" type="button">Neste</button><button id="send" type="button">Send</button>
-<p id="receipt" hidden>Takk for svaret. <a id="receipt-link" href="http://localhost:4173/sendt.html">Tilbake til ATLAS</a></p>
+<p id="receipt" hidden>Takk for svaret. <a id="receipt-link" href="http://localhost:4173/sendt.html?skjema=${key.replace(/^pilot-/, '').split('.')[0]}">Tilbake til ATLAS</a></p>
 <script>
   var pages=${pages}, page=1, sent=false, failOnce=${failOnce ? 'true' : 'false'};
   var params=new URLSearchParams(location.search);
@@ -54,10 +60,24 @@ function mockHtml(key: string, failOnce: boolean): string {
 export async function mockNettskjema(target: Page | BrowserContext, opts: MockOptions = {}) {
   const failOnce = new Set(opts.failOnce ?? []);
   const forms: Record<string, string> = {};
-  for (const k of FORM_KEYS) forms[k] = opts.missing?.includes(k) ? '' : `https://nettskjema.no/a/${encodeURIComponent(k)}`;
-  await target.route('**/atlas-config.json*', (route) =>
-    route.fulfill({ contentType: 'application/json', body: JSON.stringify({ forms, informationLetter: 'https://example.org/info.pdf', contact: { nb: 'Prosjektleder, UiA', en: 'Project lead, UiA' } }) }),
-  );
+  const pilotForms: Record<string, string> = {};
+  const pilot = opts.round === 'pilot';
+  for (const k of FORM_KEYS) {
+    const address = opts.missing?.includes(k) ? '' : `https://nettskjema.no/a/${encodeURIComponent(k)}`;
+    if (pilot && STUDY_KEYS.includes(k)) {
+      forms[k] = '';
+      pilotForms[k] = opts.missing?.includes(k) ? '' : `https://nettskjema.no/a/pilot-${encodeURIComponent(k)}`;
+    } else forms[k] = address;
+  }
+  const config = {
+    round: opts.round ?? 'study',
+    forms,
+    pilotForms,
+    studyPeriod: { opens: opts.opens ?? '', closes: opts.closes ?? '' },
+    informationLetter: 'https://example.org/info.pdf',
+    contact: { nb: 'Prosjektleder, UiA', en: 'Project lead, UiA' },
+  };
+  await target.route('**/atlas-config.json*', (route) => route.fulfill({ contentType: 'application/json', body: JSON.stringify(config) }));
   await target.route('https://nettskjema.no/**', (route) => {
     const url = new URL(route.request().url());
     const key = decodeURIComponent(url.pathname.replace(/^\/a\//, ''));

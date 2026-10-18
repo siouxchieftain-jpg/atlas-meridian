@@ -1,6 +1,6 @@
 import { expect, test } from '@playwright/test';
 import { mockNettskjema, recordSubmissions, submissions, configWithoutForms } from './mock';
-import { caseOnlyThenAtlas, doTour, frame, frameSteg, panel, place, sendForm, startStudy } from './helpers';
+import { caseOnlyThenAtlas, doTour, finishCaseHome, frame, frameSteg, openCurrentCase, panel, place, sendForm, startStudy, toHome } from './helpers';
 
 // No check depends on the addresses the site holds: with none, review mode gives feedback in its preview forms.
 // A check that needs forms routes them to the stand-in (mockNettskjema), which takes precedence.
@@ -14,12 +14,13 @@ test('a GP completes the whole study on the panel route, with the right locked v
   await startStudy(page, 'Fastlege', 'Nei');
   expect(await frameSteg(page)).toBe('S1');
   await sendForm(page);
-  await expect(page.getByRole('button', { name: 'Gå til omvisningen' })).toBeVisible();
+  // v3.1: after the first form, the overview; the cases wait for the tour, which starts from its card.
+  await toHome(page);
+  await expect(page.locator('[data-home-case="kari"]').getByText('Etter omvisningen')).toBeVisible();
   await doTour(page);
-  await sendForm(page);
-  await page.getByRole('button', { name: 'Gå til den første saken' }).click();
 
-  // Kari: case only, page 1, stop page, «Vis ATLAS», own work, the rest of the form, the reply.
+  // Kari: from the overview, case only, page 1, stop page, «Vis ATLAS», own work, the rest of the form, the reply.
+  await openCurrentCase(page);
   await caseOnlyThenAtlas(page);
   await expect(panel(page)).toBeHidden();
   await expect(page.getByText('Resten av skjemaet åpnes når du har gjort saken ferdig', { exact: false })).toBeVisible();
@@ -35,14 +36,20 @@ test('a GP completes the whole study on the panel route, with the right locked v
   // The reply from DPS is held until the last page is sent.
   await expect(page.getByText('Svaret fra den andre siden vises når du har sendt resten av skjemaet.')).toBeVisible();
   await expect(frame(page).locator('#page')).toHaveText('Side 2 av 3');
+  // No question about the screens inside the measurement: the summary has not been reached.
+  await expect(page.locator('[data-case-prompt]')).toHaveCount(0);
   await sendForm(page);
   await page.getByRole('button', { name: 'Fortsett' }).click();
   await expect(page.getByText('Be om mer informasjon').first()).toBeVisible();
   await page.getByRole('button', { name: 'Ikke svar nå' }).click();
   await page.getByRole('button', { name: 'Gå til oppsummeringen' }).click();
-  await page.getByRole('button', { name: 'Gå til neste steg' }).click();
+  // The end of the case asks once about its screens, after the form is sent.
+  await expect(page.locator('[data-case-prompt="kari"]')).toContainText('Før du går videre til Erlend');
+  await finishCaseHome(page);
+  await expect(page.locator('[data-home-case="kari"]').getByText('Ferdig')).toBeVisible();
 
   // Erlend: the GP starts in the referral draft after «Vis ATLAS».
+  await openCurrentCase(page);
   await caseOnlyThenAtlas(page);
   await expect(page.getByRole('heading', { name: 'Ny henvisning', level: 1 })).toBeVisible();
   await expect(page.getByRole('textbox', { name: 'Funksjonsfall' })).toHaveValue('');
@@ -54,9 +61,10 @@ test('a GP completes the whole study on the panel route, with the right locked v
   await page.getByRole('button', { name: 'Lagre plan' }).click();
   await page.getByRole('button', { name: 'Gå til oppsummeringen' }).click();
   await expect(page.getByText('utkastet ble lagret og ikke sendt').first()).toBeVisible();
-  await page.getByRole('button', { name: 'Gå til neste steg' }).click();
+  await finishCaseHome(page);
 
   // Astrid: the structured return, a question, the answer, Din plan.
+  await openCurrentCase(page);
   await caseOnlyThenAtlas(page);
   await expect(page.getByRole('heading', { name: 'Retur med råd fra DPS' })).toBeVisible();
   await page.locator('[data-section="composer"] textarea').fill('Hva manglet i henvisningen?');
@@ -66,20 +74,28 @@ test('a GP completes the whole study on the panel route, with the right locked v
   await page.getByLabel('Følg opp i allmennpraksis').check({ force: true });
   await page.getByRole('button', { name: 'Lagre plan' }).click();
   await page.getByRole('button', { name: 'Gå til oppsummeringen' }).click();
-  await page.getByRole('button', { name: 'Gå til neste steg' }).click();
+  await expect(page.locator('[data-case-prompt="astrid"]')).toContainText('Før du går videre: vil du si noe');
+  await finishCaseHome(page);
 
-  // Avslutning, then Takk: the reasons open only here.
+  // S2 now comes after the three cases (decision 3), then S6, then Takk: the reasons open only there.
+  await page.locator('[data-study-card]').getByRole('button', { name: 'Gå til avslutningen' }).click();
+  await expect(page.getByRole('heading', { level: 1, name: 'Helhetsinntrykk' })).toBeVisible();
+  await sendForm(page);
+  await page.getByRole('button', { name: 'Gå videre til avslutningen' }).click();
   await sendForm(page);
   await page.getByRole('button', { name: 'Avslutt', exact: true }).click();
   await expect(page.getByRole('heading', { name: 'Hvorfor ATLAS ser slik ut' })).toBeVisible();
 
   const sent = await submissions(page);
   const steg = Object.fromEntries(sent.map((s) => [s.key, s.fields.steg]));
-  expect(steg).toEqual({ S1: 'S1', 'S2.fastlege': 'S2', S3: 'S3', 'S4.fastlege': 'S4', 'S5.fastlege': 'S5', S6: 'S6' });
+  expect(steg).toEqual({ S1: 'S1', S3: 'S3', 'S4.fastlege': 'S4', 'S5.fastlege': 'S5', 'S2.fastlege': 'S2', S6: 'S6' });
+  // The order of the forms is the v3.1 order: the overall impression after the cases.
+  expect(sent.map((s) => s.key)).toEqual(['S1', 'S3', 'S4.fastlege', 'S5.fastlege', 'S2.fastlege', 'S6']);
   for (const s of sent) {
     expect(s.fields.rolle).toBe('Fastlege');
     expect(s.fields.intervju).toBe('Nei');
-    expect(s.fields.versjon).toMatch(/^3\.0\.0-/);
+    expect(s.fields.versjon).toMatch(/^3\.1\.0-/);
+    expect(s.fields.versjon).not.toMatch(/-pilot$/);
   }
   expect(sent.find((s) => s.key === 'S3')?.fields.vignett).toBe('V1');
   expect(sent.find((s) => s.key === 'S4.fastlege')?.fields.vignett).toBe('V3');

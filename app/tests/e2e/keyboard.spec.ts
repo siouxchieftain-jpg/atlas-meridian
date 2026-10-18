@@ -1,6 +1,6 @@
 import { expect, test, type Locator, type Page } from '@playwright/test';
 import { mockNettskjema, configWithoutForms } from './mock';
-import { frame, panel, startStudy, sendForm, toStopPage, doTour } from './helpers';
+import { clickThroughTour, frame, panel, startStudy, sendForm, toStopPage } from './helpers';
 
 // No check depends on the addresses the site holds: with none, review mode gives feedback in its preview forms.
 // A check that needs forms routes them to the stand-in (mockNettskjema), which takes precedence.
@@ -93,13 +93,30 @@ test('keyboard only, DPS: place, choose an outcome, write the question and send'
   await expect(page).toHaveURL(/\/sendt$/);
 });
 
-test('keyboard only, study: the form panel and «Vis ATLAS», and the tour', async ({ page }) => {
+test('keyboard only, study: the overview, the tour card, the form panel and «Vis ATLAS»', async ({ page }) => {
   await mockNettskjema(page);
   await startStudy(page, 'Fastlege');
   await sendForm(page);
-  await doTour(page);
-  await sendForm(page);
-  await tabTo(page, page.getByRole('button', { name: 'Gå til den første saken' }));
+  await tabTo(page, page.getByRole('button', { name: 'Til oversikten' }));
+  await page.keyboard.press('Enter');
+  // The card before the tour opens from the study card and starts the tour from the keyboard.
+  await tabTo(page, page.locator('[data-start-tour]'));
+  await page.keyboard.press('Enter');
+  const dialog = page.getByRole('dialog');
+  await expect(dialog).toBeVisible();
+  await tabTo(page, dialog.getByRole('button', { name: 'Ikke nå' }));
+  await page.keyboard.press('Enter');
+  await expect(dialog).toBeHidden();
+  // «Ikke nå» gives focus back to the button that opened the card.
+  await expect(page.locator('[data-start-tour]')).toBeFocused();
+  await page.keyboard.press('Enter');
+  await tabTo(page, dialog.getByRole('button', { name: 'Start omvisningen' }));
+  await page.keyboard.press('Enter');
+  await expect(page.getByRole('heading', { level: 1, name: 'Oversikten' })).toBeVisible();
+  await clickThroughTour(page);
+  await tabTo(page, page.getByRole('button', { name: 'Til oversikten' }));
+  await page.keyboard.press('Enter');
+  await tabTo(page, page.locator('[data-study-card] [data-open-case]'));
   await page.keyboard.press('Enter');
   await tabTo(page, page.getByRole('button', { name: 'Start saken' }));
   await page.keyboard.press('Enter');

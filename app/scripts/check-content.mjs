@@ -184,7 +184,8 @@ for (const { path, t } of texts) for (const r of retired) if (`${t.nb} ${t.en}`.
 
 /* ---------- 4. Instrument and configuration ---------- */
 
-const FORM_KEYS = ['S1', 'S2.fastlege', 'S2.dps', 'S3', 'S4.fastlege', 'S4.dps', 'S5.fastlege', 'S5.dps', 'S6', 'S7.fastlege', 'S8', 'R1', 'R2'];
+const STUDY_KEYS = ['S1', 'S2.fastlege', 'S2.dps', 'S3', 'S4.fastlege', 'S4.dps', 'S5.fastlege', 'S5.dps', 'S6', 'S7.fastlege', 'S8', 'S9'];
+const FORM_KEYS = [...STUDY_KEYS, 'R1', 'R2'];
 const instrument = files['instrument.json'];
 if (instrument) {
   const keys = instrument.forms.map((f) => f.key);
@@ -209,7 +210,22 @@ if (instrument) {
   }
 }
 const config = readJson(join(root, 'public', 'atlas-config.json'));
-if (config) for (const k of FORM_KEYS) if (!(k in (config.forms ?? {}))) fail(`public/atlas-config.json: form ${k} is missing`);
+if (config) {
+  for (const k of FORM_KEYS) if (!(k in (config.forms ?? {}))) fail(`public/atlas-config.json: form ${k} is missing`);
+  // The round picks the set the study answers into: the pilot set must hold every study form, so none falls back to a study form.
+  if (config.round !== 'pilot' && config.round !== 'study') fail('public/atlas-config.json: "round" must be "pilot" or "study"');
+  for (const k of STUDY_KEYS) if (!(k in (config.pilotForms ?? {}))) fail(`public/atlas-config.json: pilot form ${k} is missing`);
+  // A pilot address that is also a study address would put pilot answers in a study form.
+  const studyAddresses = new Set(Object.values(config.forms ?? {}).map((v) => String(v).trim()).filter(Boolean));
+  for (const [k, v] of Object.entries(config.pilotForms ?? {})) {
+    if (String(v).trim() && studyAddresses.has(String(v).trim())) fail(`public/atlas-config.json: pilot form ${k} has the address of a study form`);
+  }
+  for (const k of ['opens', 'closes']) {
+    const v = config.studyPeriod?.[k];
+    if (v === undefined) fail(`public/atlas-config.json: studyPeriod.${k} is missing`);
+    else if (v !== '' && !/^\d{4}-\d{2}-\d{2}$/.test(v)) fail(`public/atlas-config.json: studyPeriod.${k} is not a date (YYYY-MM-DD)`);
+  }
+}
 
 /* ---------- 5. Reused text: sources.json reproduces the app text ---------- */
 // Every entry names a text the build reuses from the earlier prototype or the

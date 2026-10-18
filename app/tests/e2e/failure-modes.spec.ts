@@ -1,6 +1,6 @@
 import { expect, test, type Page } from '@playwright/test';
 import { mockNettskjema, recordSubmissions, submissions, configWithoutForms } from './mock';
-import { caseOnlyThenAtlas, doTour, frame, frameSteg, panel, place, sendForm, startStudy, toStopPage } from './helpers';
+import { caseOnlyThenAtlas, frame, frameSteg, openCurrentCase, panel, place, sendForm, startStudy, toFirstCase, toStopPage } from './helpers';
 
 // No check depends on the addresses the site holds: with none, review mode gives feedback in its preview forms.
 // A check that needs forms routes them to the stand-in (mockNettskjema), which takes precedence.
@@ -8,13 +8,9 @@ test.beforeEach(async ({ context }) => {
   await configWithoutForms(context);
 });
 
-/** S1, the tour and S2, ready for Kari. */
+/** S1, the overview and the tour, ready for Kari (v3.1). */
 async function toKari(page: Page, role: 'Fastlege' | 'DPS-kliniker' = 'Fastlege') {
-  await startStudy(page, role);
-  await sendForm(page);
-  await doTour(page);
-  await sendForm(page);
-  await page.getByRole('button', { name: 'Gå til den første saken' }).click();
+  await toFirstCase(page, role);
 }
 
 async function kariDecision(page: Page) {
@@ -57,7 +53,7 @@ test('a failed send offers a retry in the same form, and the retry counts', asyn
   await sendForm(page);
   await expect(panel(page).getByText('Sendingen feilet. Prøv igjen i skjemaet, eller åpne det i en ny fane.')).toBeVisible();
   await frame(page).locator('#send').click();
-  await expect(page.getByRole('button', { name: 'Gå til omvisningen' })).toBeVisible();
+  await expect(page.getByRole('button', { name: 'Til oversikten' })).toBeVisible();
   expect((await submissions(page)).map((s) => s.key)).toEqual(['S1']);
 });
 
@@ -139,24 +135,33 @@ test('a form without an address is not ready: no skip, no way past it', async ({
   await startStudy(page, 'Fastlege').catch(() => undefined);
   await expect(panel(page).getByText('Dette skjemaet er ikke klart ennå.')).toBeVisible();
   await expect(panel(page).getByText('Hopp over skjemaet')).toHaveCount(0);
-  await expect(page.getByRole('button', { name: 'Gå til omvisningen' })).toHaveCount(0);
+  await expect(page.getByRole('button', { name: 'Til oversikten' })).toHaveCount(0);
   await page.goto('/#/studie/omvisning');
+  await expect(page).toHaveURL(/#\/studie\/om-deg$/);
+  await page.goto('/#/studie/hjem');
   await expect(page).toHaveURL(/#\/studie\/om-deg$/);
 });
 
-test('a participant who edits the address to review mode returns to the study; the bare address opens the current step', async ({ page }) => {
+test('a participant who edits the address to review mode returns to the study; the bare address asks first (welcome back)', async ({ page }) => {
   await mockNettskjema(page);
   await startStudy(page, 'DPS-kliniker');
   await sendForm(page);
-  await expect(page.getByRole('button', { name: 'Gå til omvisningen' })).toBeVisible();
-  // Once S1 is sent, the current step is the tour.
+  await expect(page.getByRole('button', { name: 'Til oversikten' })).toBeVisible();
+  // Once S1 is sent, the participant is at home: the overview, where the tour starts from its card.
   await page.goto('/#/gjennomgang/fastlege/timeliste');
-  await expect(page).toHaveURL(/#\/studie\/omvisning$/);
+  await expect(page).toHaveURL(/#\/studie\/hjem$/);
+  // The study link again: Velkommen asks whether it is the same person (decision 11), then goes on from where it was.
   await page.goto('/');
-  await expect(page).toHaveURL(/#\/studie\/omvisning$/);
+  await expect(page).toHaveURL(/#\/studie\/velkommen\?tilbake$/);
+  await page.getByRole('button', { name: 'Fortsett der du slapp' }).click();
+  await expect(page).toHaveURL(/#\/studie\/hjem$/);
   await page.goto('/#/studie/steg');
   await page.getByRole('link', { name: /ATLAS/ }).first().click();
-  await expect(page).toHaveURL(/#\/studie\/omvisning$/);
+  await expect(page).toHaveURL(/#\/studie\/hjem$/);
+  // The tour's address leads to its card first, never straight into the tour.
+  await page.goto('/#/studie/omvisning');
+  await expect(page).toHaveURL(/#\/studie\/hjem$/);
+  await expect(page.getByRole('dialog')).toContainText('Før du starter: en kort omvisning');
 });
 
 test('restarting unfinished steps keeps the sent ledger, the role and the «Vis ATLAS» record', async ({ page }) => {
@@ -166,9 +171,10 @@ test('restarting unfinished steps keeps the sent ledger, the role and the «Vis 
   await page.getByRole('button', { name: 'Hjelp' }).click();
   await page.getByRole('menuitem', { name: 'Start ufullførte steg på nytt' }).click();
   await page.getByRole('button', { name: 'Ja, start på nytt' }).click();
-  // Kari starts again from the briefing; S1 and S2 stay sent, the role stays.
-  await expect(page).toHaveURL(/#\/studie\/sak\/kari\/orientering$/);
+  // Kari starts again from the overview; S1 stays sent, the role stays, the tour stays done.
+  await expect(page).toHaveURL(/#\/studie\/hjem$/);
   await expect(page.getByText('Fastlege', { exact: true }).first()).toBeVisible();
+  await openCurrentCase(page);
   await page.getByRole('button', { name: 'Start saken' }).click();
   // ATLAS was shown before, so the form opens as S3-etter.
   expect(await frameSteg(page)).toBe('S3-etter');

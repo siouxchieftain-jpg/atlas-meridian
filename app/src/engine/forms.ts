@@ -3,10 +3,25 @@ import type { FormStep, Intervju, RoleChoice } from '../state/types';
 import { readSession, removeSession, writeSession } from '../state/persist';
 import { rolleValue } from '../state/study';
 
+/** The pilot round answers into its own copy of the study forms; the study round into the study forms. */
+export type Round = 'pilot' | 'study';
+
+/** The study's own forms. R1 and R2 (review mode) are the same in both rounds. */
+export const STUDY_FORM_KEYS: FormKey[] = ['S1', 'S2.fastlege', 'S2.dps', 'S3', 'S4.fastlege', 'S4.dps', 'S5.fastlege', 'S5.dps', 'S6', 'S7.fastlege', 'S8', 'S9'];
+
 /** Runtime configuration, edited by the owner in public/atlas-config.json. */
 export interface AtlasConfig {
-  /** Nettskjema addresses, for example https://nettskjema.no/a/123456. Empty = not ready. */
+  /**
+   * The addresses in use, for example https://nettskjema.no/a/123456. Empty = not ready. In the pilot round the
+   * study forms come from `pilotForms`, so no pilot answer ever lands in a study form.
+   */
   forms: Partial<Record<FormKey, string>>;
+  /** «pilot» until the owner switches to «study» in atlas-config.json. A missing value is the study round. */
+  round: Round;
+  /** The first day of the study (ISO date), shown in the closed message. */
+  opens?: string;
+  /** The last day the study takes answers (ISO date). After it, Velkommen says the study has ended (study round only). */
+  closes?: string;
   /** The information letter Velkommen links to. */
   informationLetter?: string;
   /** Contact lines shown on Velkommen. */
@@ -15,28 +30,73 @@ export interface AtlasConfig {
 
 export const NETTSKJEMA_ORIGIN = 'https://nettskjema.no';
 
-let config: AtlasConfig = { forms: {} };
+let config: AtlasConfig = { forms: {}, round: 'study' };
 let loaded = false;
+
+/** The file as the owner writes it. */
+interface ConfigFile {
+  round?: string;
+  forms?: Record<string, unknown>;
+  pilotForms?: Record<string, unknown>;
+  studyPeriod?: { opens?: unknown; closes?: unknown };
+  informationLetter?: string;
+  contact?: { nb?: string; en?: string };
+}
+
+const isoDate = (v: unknown): string | undefined => (typeof v === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(v.trim()) ? v.trim() : undefined);
+
+/** The configuration from the file's shape: the round picks the study forms; R1 and R2 come from `forms` in both rounds. */
+export function resolveConfig(json: ConfigFile): AtlasConfig {
+  const round: Round = json.round === 'pilot' ? 'pilot' : 'study';
+  const pick = (set: Record<string, unknown> | undefined, k: string) => {
+    const v = set?.[k];
+    return typeof v === 'string' && v.trim() ? v.trim() : undefined;
+  };
+  const forms: AtlasConfig['forms'] = {};
+  const keys = new Set([...Object.keys(json.forms ?? {}), ...STUDY_FORM_KEYS]);
+  keys.forEach((k) => {
+    const study = (STUDY_FORM_KEYS as string[]).includes(k);
+    const v = study && round === 'pilot' ? pick(json.pilotForms, k) : pick(json.forms, k);
+    if (v) forms[k as FormKey] = v;
+  });
+  const contact = json.contact && (json.contact.nb?.trim() || json.contact.en?.trim()) ? { nb: json.contact.nb ?? '', en: json.contact.en ?? '' } : undefined;
+  const informationLetter = json.informationLetter?.trim() ? json.informationLetter.trim() : undefined;
+  return { forms, round, opens: isoDate(json.studyPeriod?.opens), closes: isoDate(json.studyPeriod?.closes), informationLetter, contact };
+}
 
 export async function loadConfig(): Promise<AtlasConfig> {
   if (loaded) return config;
   try {
     const res = await fetch(`./atlas-config.json?v=${encodeURIComponent(__ATLAS_VERSJON__)}`, { cache: 'no-store' });
-    if (res.ok) {
-      const json = (await res.json()) as Partial<AtlasConfig>;
-      const forms: AtlasConfig['forms'] = {};
-      Object.entries(json.forms ?? {}).forEach(([k, v]) => {
-        if (typeof v === 'string' && v.trim()) forms[k as FormKey] = v.trim();
-      });
-      const contact = json.contact && (json.contact.nb?.trim() || json.contact.en?.trim()) ? json.contact : undefined;
-      const informationLetter = json.informationLetter?.trim() ? json.informationLetter.trim() : undefined;
-      config = { forms, informationLetter, contact };
-    }
+    if (res.ok) config = resolveConfig((await res.json()) as ConfigFile);
   } catch {
-    config = { forms: {} };
+    config = { forms: {}, round: 'study' };
   }
   loaded = true;
   return config;
+}
+
+/** The locked `versjon`: the build, and «-pilot» on every answer collected in the pilot round. */
+export function versjonValue(): string {
+  return config.round === 'pilot' ? `${__ATLAS_VERSJON__}-pilot` : __ATLAS_VERSJON__;
+}
+
+/**
+ * True once the study's last day has passed: Velkommen then says the study has ended and starts nothing. Never in the
+ * pilot round, and never without a closing date.
+ */
+export function studyClosed(today: string = osloToday()): boolean {
+  return config.round === 'study' && !!config.closes && today > config.closes;
+}
+
+/** Today's date in Norway (YYYY-MM-DD), so the study closes at Norwegian midnight whatever the computer's clock zone. */
+export function osloToday(now: Date = new Date()): string {
+  try {
+    // sv-SE writes dates as YYYY-MM-DD.
+    return new Intl.DateTimeFormat('sv-SE', { timeZone: 'Europe/Oslo', year: 'numeric', month: '2-digit', day: '2-digit' }).format(now);
+  } catch {
+    return now.toISOString().slice(0, 10);
+  }
 }
 
 export function getConfig(): AtlasConfig {
@@ -64,6 +124,8 @@ export function formKeyFor(step: FormStep, role: Role): FormKey {
       return 'S7.fastlege';
     case 'S8':
       return 'S8';
+    case 'S9':
+      return 'S9';
   }
 }
 
@@ -100,8 +162,16 @@ export function studyLocked(
   };
   const vignett = STEP_VIGNETT[step];
   if (vignett) fields.vignett = vignett;
-  fields.versjon = __ATLAS_VERSJON__;
+  fields.versjon = versjonValue();
   return fields;
+}
+
+/**
+ * The locked context for S9, the feedback form: who (role and study name), where (`side`, the screen, and `seksjon`,
+ * the part) and the build. No step, so one person can send it as often as they like.
+ */
+export function feedbackLocked(roleChoice: RoleChoice | undefined, studienavn: string | undefined, side: string, seksjon: string): LockedFields {
+  return { rolle: rolleValue(roleChoice), studienavn: studienavn ?? '', side, seksjon, versjon: versjonValue() };
 }
 
 /**

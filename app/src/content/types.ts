@@ -283,9 +283,16 @@ export interface TourStep {
   bridge?: T;
 }
 
+export interface TourPart {
+  title: T;
+  steps: TourStep[];
+  /** «Slik foregår studien»: how the study runs. In the participant's tour only, never in review mode or «Se igjen». */
+  studyOnly?: boolean;
+}
+
 export interface TourContent {
-  gp: { parts: { title: T; steps: TourStep[] }[] };
-  dps: { parts: { title: T; steps: TourStep[] }[] };
+  gp: { parts: TourPart[] };
+  dps: { parts: TourPart[] };
   closing: { title: T; body: T; seenTitle: T };
 }
 
@@ -345,6 +352,7 @@ export type FormKey =
   | 'S6'
   | 'S7.fastlege'
   | 'S8'
+  | 'S9'
   | 'R1'
   | 'R2';
 

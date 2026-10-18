@@ -30,7 +30,7 @@ test('Safari starts on the new-tab route; sendt.html marks the step as sent', as
   await tab.locator('#receipt-link').click();
   await expect(tab.getByText('Takk. Skjemaet er sendt.')).toBeVisible();
   // The storage event reaches ATLAS in the first tab.
-  await expect(page.getByRole('button', { name: 'Gå til omvisningen' })).toBeVisible();
+  await expect(page.getByRole('button', { name: 'Til oversikten' })).toBeVisible();
 });
 
 test('on the tab route «Jeg har sendt skjemaet» also marks the step', async ({ page, context }) => {
@@ -40,5 +40,5 @@ test('on the tab route «Jeg har sendt skjemaet» also marks the step', async ({
   await page.getByLabel('Nei', { exact: true }).check({ force: true });
   await page.getByRole('button', { name: 'Lagre og åpne skjemaet' }).click();
   await panel(page).getByRole('button', { name: 'Jeg har sendt skjemaet' }).click();
-  await expect(page.getByRole('button', { name: 'Gå til omvisningen' })).toBeVisible();
+  await expect(page.getByRole('button', { name: 'Til oversikten' })).toBeVisible();
 });

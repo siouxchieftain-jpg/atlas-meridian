@@ -3,6 +3,79 @@
     "parts": [
       {
         "title": {
+          "nb": "Slik foregår studien",
+          "en": "How the study works"
+        },
+        "studyOnly": true,
+        "steps": [
+          {
+            "id": "gp-studien-oversikt",
+            "title": {
+              "nb": "Oversikten",
+              "en": "The overview"
+            },
+            "body": {
+              "nb": "Oversikten er dagen din i ATLAS: timelisten, innboksen og henvisningene. Hver del av studien starter herfra, og du kommer tilbake hit etter hver sak. Kortet til venstre viser neste steg, og med «Gi tilbakemelding» ved høyre kant kan du når som helst si hva du mener om et skjermbilde.",
+              "en": "The overview is your day in ATLAS: the appointment list, the inbox and the referrals. Each part of the study starts here, and you come back here after each case. The card on the left shows the next step, and with ‘Give feedback’ on the right edge you can say what you think about a screen at any time."
+            },
+            "reason": {
+              "nb": "Et utgangspunkt som likner en vanlig arbeidsdag, gjør det lettere å vite hvor du er og hva som kommer etterpå.",
+              "en": "A starting point that looks like an ordinary working day makes it easier to know where you are and what comes next."
+            },
+            "frame": "studyMap"
+          },
+          {
+            "id": "gp-studien-sak",
+            "title": {
+              "nb": "Slik går en sak",
+              "en": "How a case runs"
+            },
+            "body": {
+              "nb": "Hver sak starter med en kort orientering. Du ser saken først uten ATLAS og svarer på første side av skjemaet. Så trykker du på «Vis ATLAS», gjør saken ferdig og svarer på resten. Til slutt kommer en oppsummering, og du går tilbake til oversikten.",
+              "en": "Each case starts with a short briefing. You see the case first without ATLAS and answer the first page of the form. Then you press ‘Show ATLAS’, finish the case and answer the rest. Finally there is a summary, and you go back to the overview."
+            },
+            "reason": {
+              "nb": "Svar både før og etter ATLAS viser hva som endrer seg når ATLAS er med, og hva som ikke gjør det.",
+              "en": "Answers both before and after ATLAS show what changes when ATLAS is there, and what does not."
+            },
+            "frame": "studyCase"
+          },
+          {
+            "id": "gp-studien-stopp",
+            "title": {
+              "nb": "Stoppsiden i skjemaet",
+              "en": "The stop page in the form"
+            },
+            "body": {
+              "nb": "Skjemaet for hver sak har en side som sier «Stopp her». Der går du tilbake til ATLAS og trykker på «Vis ATLAS». Resten av skjemaet åpnes når du har gjort saken ferdig.",
+              "en": "The form for each case has a page that says ‘Stop here’. There you go back to ATLAS and press ‘Show ATLAS’. The rest of the form opens once you have finished the case."
+            },
+            "reason": {
+              "nb": "Stoppsiden holder svarene uten ATLAS adskilt fra svarene med ATLAS.",
+              "en": "The stop page keeps the answers without ATLAS apart from the answers with ATLAS."
+            },
+            "frame": "studyStop"
+          },
+          {
+            "id": "gp-studien-navn",
+            "title": {
+              "nb": "Studienavnet",
+              "en": "The study name"
+            },
+            "body": {
+              "nb": "ATLAS har gitt deg et tilfeldig studienavn. Det står ferdig utfylt øverst i hvert skjema, sammen med rollen din, slik at svarene dine holdes sammen uten navnet ditt.",
+              "en": "ATLAS has given you a random study name. It is filled in at the top of every form, with your role, so that your answers are kept together without your name."
+            },
+            "reason": {
+              "nb": "Et tilfeldig navn gjør at svarene kan sorteres per deltaker, uten at noen kan se hvem som har svart.",
+              "en": "A random name lets the answers be sorted by participant, without anyone being able to see who answered."
+            },
+            "frame": "studyName"
+          }
+        ]
+      },
+      {
+        "title": {
           "nb": "Timeliste og konsultasjon",
           "en": "Appointments and consultation"
         },
@@ -25,11 +98,7 @@
               "nb": "En liste sortert etter en score ville ført blikket dit systemet mener det haster. Klokkeslettet holder rekkefølgen din.",
               "en": "A list sorted by a score would draw the eye to where the system thinks it is urgent. The time of day keeps your own order."
             },
-            "frame": "timeliste",
-            "bridge": {
-              "nb": "Spørsmålene i skjemaene kaller ATLAS for «dashbordet» eller «ATLAS-dashbordet».",
-              "en": "The questions in the forms call ATLAS ‘the dashboard’ or ‘the ATLAS dashboard’."
-            }
+            "frame": "timeliste"
           },
           {
             "id": "gp-profil",
@@ -99,8 +168,8 @@
             },
             "frame": "bandReading",
             "bridge": {
-              "nb": "Spørsmålene kaller systemets lesning for «dashbordets indikasjon».",
-              "en": "The questions call the system’s reading ‘the dashboard’s indication’."
+              "nb": "Spørsmålene kaller systemets lesning for «indikasjonen fra ATLAS».",
+              "en": "The questions call the system’s reading ‘the indication from ATLAS’."
             }
           },
           {
@@ -315,6 +384,79 @@
     "parts": [
       {
         "title": {
+          "nb": "Slik foregår studien",
+          "en": "How the study works"
+        },
+        "studyOnly": true,
+        "steps": [
+          {
+            "id": "dps-studien-oversikt",
+            "title": {
+              "nb": "Oversikten",
+              "en": "The overview"
+            },
+            "body": {
+              "nb": "Oversikten er dagen din i inntaket: de mottatte henvisningene, fristene og meldingene. Hver del av studien starter herfra, og du kommer tilbake hit etter hver sak. Kortet til venstre viser neste steg, og med «Gi tilbakemelding» ved høyre kant kan du når som helst si hva du mener om et skjermbilde.",
+              "en": "The overview is your day in intake: the referrals received, the deadlines and the messages. Each part of the study starts here, and you come back here after each case. The card on the left shows the next step, and with ‘Give feedback’ on the right edge you can say what you think about a screen at any time."
+            },
+            "reason": {
+              "nb": "Et utgangspunkt som likner en vanlig arbeidsdag, gjør det lettere å vite hvor du er og hva som kommer etterpå.",
+              "en": "A starting point that looks like an ordinary working day makes it easier to know where you are and what comes next."
+            },
+            "frame": "studyMap"
+          },
+          {
+            "id": "dps-studien-sak",
+            "title": {
+              "nb": "Slik går en sak",
+              "en": "How a case runs"
+            },
+            "body": {
+              "nb": "Hver sak starter med en kort orientering. Du ser saken først uten ATLAS og svarer på første side av skjemaet. Så trykker du på «Vis ATLAS», gjør saken ferdig og svarer på resten. Til slutt kommer en oppsummering, og du går tilbake til oversikten.",
+              "en": "Each case starts with a short briefing. You see the case first without ATLAS and answer the first page of the form. Then you press ‘Show ATLAS’, finish the case and answer the rest. Finally there is a summary, and you go back to the overview."
+            },
+            "reason": {
+              "nb": "Svar både før og etter ATLAS viser hva som endrer seg når ATLAS er med, og hva som ikke gjør det.",
+              "en": "Answers both before and after ATLAS show what changes when ATLAS is there, and what does not."
+            },
+            "frame": "studyCase"
+          },
+          {
+            "id": "dps-studien-stopp",
+            "title": {
+              "nb": "Stoppsiden i skjemaet",
+              "en": "The stop page in the form"
+            },
+            "body": {
+              "nb": "Skjemaet for hver sak har en side som sier «Stopp her». Der går du tilbake til ATLAS og trykker på «Vis ATLAS». Resten av skjemaet åpnes når du har gjort saken ferdig.",
+              "en": "The form for each case has a page that says ‘Stop here’. There you go back to ATLAS and press ‘Show ATLAS’. The rest of the form opens once you have finished the case."
+            },
+            "reason": {
+              "nb": "Stoppsiden holder svarene uten ATLAS adskilt fra svarene med ATLAS.",
+              "en": "The stop page keeps the answers without ATLAS apart from the answers with ATLAS."
+            },
+            "frame": "studyStop"
+          },
+          {
+            "id": "dps-studien-navn",
+            "title": {
+              "nb": "Studienavnet",
+              "en": "The study name"
+            },
+            "body": {
+              "nb": "ATLAS har gitt deg et tilfeldig studienavn. Det står ferdig utfylt øverst i hvert skjema, sammen med rollen din, slik at svarene dine holdes sammen uten navnet ditt.",
+              "en": "ATLAS has given you a random study name. It is filled in at the top of every form, with your role, so that your answers are kept together without your name."
+            },
+            "reason": {
+              "nb": "Et tilfeldig navn gjør at svarene kan sorteres per deltaker, uten at noen kan se hvem som har svart.",
+              "en": "A random name lets the answers be sorted by participant, without anyone being able to see who answered."
+            },
+            "frame": "studyName"
+          }
+        ]
+      },
+      {
+        "title": {
           "nb": "Køen og henvisningen",
           "en": "The queue and the referral"
         },
@@ -337,11 +479,7 @@
               "nb": "Sortering etter systemets vurdering ville gjort ATLAS til portvakt. Rekkefølgen og fristen er de samme som uten ATLAS.",
               "en": "Sorting by the system’s assessment would make ATLAS a gatekeeper. The order and the deadline are the same as without ATLAS."
             },
-            "frame": "queue",
-            "bridge": {
-              "nb": "Spørsmålene i skjemaene kaller ATLAS for «dashbordet» eller «ATLAS-dashbordet».",
-              "en": "The questions in the forms call ATLAS ‘the dashboard’ or ‘the ATLAS dashboard’."
-            }
+            "frame": "queue"
           },
           {
             "id": "dps-usikkerhet",
@@ -411,8 +549,8 @@
             },
             "frame": "dpsBandReading",
             "bridge": {
-              "nb": "Spørsmålene kaller systemets lesning for «dashbordets indikasjon».",
-              "en": "The questions call the system’s reading ‘the dashboard’s indication’."
+              "nb": "Spørsmålene kaller systemets lesning for «indikasjonen fra ATLAS».",
+              "en": "The questions call the system’s reading ‘the indication from ATLAS’."
             }
           },
           {

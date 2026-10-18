@@ -108,6 +108,8 @@ export interface FormPanelActions {
   onConfirmSent: () => void;
   /** «Hopp over skjemaet» (not offered when the form is not ready) */
   onSkip?: () => void;
+  /** The skip link's words, when they are not «Hopp over skjemaet» (S9: «Lukk uten å sende»). */
+  skipLabel?: string;
   /** «Jeg har svart på side 1» (case forms, stage page1) */
   onPage1?: () => void;
   page1Confirmed?: boolean;
@@ -417,7 +419,7 @@ export function FormPanel({ actions }: { actions: FormPanelActions | null }) {
             </div>
             {actions.onSkip && (
               <Link as="button" className={cls.quiet} onClick={actions.onSkip}>
-                {s('formSkip')}
+                {actions.skipLabel ?? s('formSkip')}
               </Link>
             )}
           </div>

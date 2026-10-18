@@ -12,14 +12,16 @@ import {
   type GpWork,
   type Intervju,
   type LedgerEntry,
+  type PromptKey,
   type RoleChoice,
   type StepId,
   type StudyState,
 } from './types';
 
-export const STUDY_KEY = 'atlas.study.v1';
+/** v3.1 starts a fresh store: its step order differs from v3's, so a v3 record is never read into it. */
+export const STUDY_KEY = 'atlas.study.v2';
 /** The three records that survive a reset, a store migration and a redeploy. */
-export const KEEP_KEY = 'atlas.study.keep';
+export const KEEP_KEY = 'atlas.study.keep.v2';
 /** Written when a form opens, read by sendt.html. */
 export const PENDING_KEY = 'atlas.study.pending';
 /** Written by sendt.html when Nettskjema's receipt button brings the participant back. */
@@ -36,7 +38,7 @@ interface KeepRecord {
 
 export function initialStudy(): StudyState {
   return {
-    v: 1,
+    v: 2,
     furthest: 'velkommen',
     ledger: {},
     visAtlas: {},
@@ -46,7 +48,14 @@ export function initialStudy(): StudyState {
     dps: {},
     tour: { part: 0, step: 0, done: false },
     extra: {},
+    prompts: {},
+    feedbackSent: [],
   };
+}
+
+/** The tour comes before every case, so a case form or S2 in the ledger means the tour was done. */
+function tourDoneByLedger(ledger: StudyState['ledger']): boolean {
+  return !!(ledger.S3 || ledger.S4 || ledger.S5 || ledger.S2);
 }
 
 const STEP_FORM: Partial<Record<StepId, FormStep>> = {
@@ -62,7 +71,7 @@ const STEP_FORM: Partial<Record<StepId, FormStep>> = {
 export function loadStudy(): StudyState {
   const stored = readJSON<StudyState>(STUDY_KEY);
   const keep = readJSON<KeepRecord>(KEEP_KEY);
-  let s: StudyState = stored && stored.v === 1 ? { ...initialStudy(), ...stored } : initialStudy();
+  let s: StudyState = stored && stored.v === 2 ? { ...initialStudy(), ...stored } : initialStudy();
   if (keep) {
     s = {
       ...s,
@@ -77,18 +86,35 @@ export function loadStudy(): StudyState {
   }
   // A role chosen before study names existed gets one now, so its next form carries it.
   if (s.roleChoice && !isStudienavn(s.studienavn)) s = { ...s, studienavn: makeStudienavn() };
-  // Every step whose form is in the ledger is behind the participant.
+  // Every step whose form is in the ledger is behind the participant, except a case still under way: after its form
+  // is sent or skipped the case goes on (the reply, the plan, the summary), and it ends only when its phase is done.
+  // A case form in the ledger with no phase at all comes from the keep record alone: that case counts as done.
   let minIndex = STEP_ORDER.indexOf(s.furthest);
   STEP_ORDER.forEach((step, i) => {
     const f = STEP_FORM[step];
-    if (f && s.ledger[f] && i + 1 > minIndex) minIndex = i + 1;
+    if (!f || !s.ledger[f]) return;
+    if (step === 'kari' || step === 'erlend' || step === 'astrid') {
+      const phase = s.phase[step];
+      if (phase === undefined) s = { ...s, phase: { ...s.phase, [step]: 'done' } };
+      else if (phase !== 'done') return;
+    }
+    if (i + 1 > minIndex) minIndex = i + 1;
   });
   const furthest = STEP_ORDER[Math.min(minIndex, STEP_ORDER.length - 1)];
-  if (furthest !== s.furthest) {
-    s = { ...s, furthest };
-    if (s.ledger.S2) s = { ...s, tour: { ...s.tour, done: true } };
-  }
+  if (furthest !== s.furthest) s = { ...s, furthest };
+  if (tourDoneByLedger(s.ledger) && !s.tour.done) s = { ...s, tour: { ...s.tour, started: true, done: true } };
   return s;
+}
+
+/**
+ * The study link opened again in a browser that holds a session (decision 11). Velkommen then asks first whether it is
+ * the same person, so the next participant on a shared computer never goes on under someone else's study name. Only the
+ * bare link: a reload or an address inside the study keeps its place.
+ */
+export function studyEntryPath(hash: string): string | null {
+  const bare = hash.replace(/^#/, '').replace(/\/+$/, '');
+  if (bare !== '' && bare !== '/studie') return null;
+  return loadStudy().roleChoice ? '/studie/velkommen?tilbake' : null;
 }
 
 export function roleOf(choice: RoleChoice | undefined): Role | undefined {
@@ -129,7 +155,13 @@ export interface StudyApi {
   updateGp: (caseId: CaseId, patch: Partial<GpWork> | ((w: GpWork) => Partial<GpWork>)) => void;
   updateDps: (caseId: CaseId, patch: Partial<DpsWork> | ((w: DpsWork) => Partial<DpsWork>)) => void;
   setTour: (patch: Partial<StudyState['tour']>) => void;
+  /** The tour is done: the cases open, and the overview leads to Kari. */
+  finishTour: () => void;
   setExtra: (patch: Partial<StudyState['extra']>) => void;
+  /** A natural-break prompt was answered: asked once. */
+  setPrompt: (key: PromptKey, value: 'sent' | 'later') => void;
+  /** S9 was sent about this part. */
+  markFeedback: (part: string) => void;
   setPendingTab: (p: StudyState['pendingTab']) => void;
   setPreviewRun: () => void;
   resetUnsent: () => void;
@@ -201,7 +233,15 @@ export function StudyProvider({ children }: { children: ReactNode }) {
           return { ...s, dps: { ...s.dps, [caseId]: { ...cur, ...p } } };
         }),
       setTour: (patch) => update((s) => ({ ...s, tour: { ...s.tour, ...patch } })),
+      finishTour: () =>
+        update((s) => ({
+          ...s,
+          tour: { ...s.tour, started: true, done: true },
+          furthest: stepIndex('kari') > stepIndex(s.furthest) ? 'kari' : s.furthest,
+        })),
       setExtra: (patch) => update((s) => ({ ...s, extra: { ...s.extra, ...patch } })),
+      setPrompt: (key, value) => update((s) => (s.prompts[key] ? s : { ...s, prompts: { ...s.prompts, [key]: value } })),
+      markFeedback: (part) => update((s) => (s.feedbackSent.includes(part) ? s : { ...s, feedbackSent: [...s.feedbackSent, part] })),
       setPendingTab: (p) => update((s) => ({ ...s, pendingTab: p })),
       setPreviewRun: () => update((s) => (s.previewRun ? s : { ...s, previewRun: true })),
       resetUnsent: () =>
@@ -217,6 +257,9 @@ export function StudyProvider({ children }: { children: ReactNode }) {
             studienavn: s.ledger.S1 ? s.studienavn : undefined,
             route: s.ledger.S1 ? s.route : undefined,
             previewRun: s.previewRun,
+            // Feedback already sent stays sent; a prompt already answered is not asked again.
+            prompts: s.prompts,
+            feedbackSent: s.feedbackSent,
           };
           // Cases whose form is in the ledger keep their work and stay done.
           (['kari', 'erlend', 'astrid'] as CoreCaseId[]).forEach((c) => {
@@ -227,7 +270,8 @@ export function StudyProvider({ children }: { children: ReactNode }) {
               if (s.dps[c]) kept.dps[c] = s.dps[c];
             }
           });
-          if (s.ledger.S2) kept.tour = { ...s.tour, done: true };
+          // The tour sends nothing, so a finished tour is never unfinished: it stays done, and the cases stay open.
+          if (s.tour.done || tourDoneByLedger(s.ledger)) kept.tour = { ...s.tour, started: true, done: true };
           // Recompute the furthest step from the ledger.
           let idx = 0;
           STEP_ORDER.forEach((step, i) => {
@@ -235,6 +279,7 @@ export function StudyProvider({ children }: { children: ReactNode }) {
             if (f && s.ledger[f]) idx = Math.max(idx, i + 1);
           });
           if (s.ledger.S1 && idx < stepIndex('omvisning')) idx = stepIndex('omvisning');
+          if (kept.tour.done && idx < stepIndex('kari')) idx = stepIndex('kari');
           kept.furthest = STEP_ORDER[Math.min(idx, STEP_ORDER.length - 1)];
           return kept;
         }),
