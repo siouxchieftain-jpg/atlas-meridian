@@ -279,7 +279,12 @@ async function verifyForm(c, form, formId) {
  * and S9's receipt marks none. A receipt without the name would mark whatever step is waiting.
  */
 export function receiptProblems(receiptText, key) {
-  const text = String(receiptText ?? '');
+  // Nettskjema stores the link with character references (`skjema&#61;S1`); the browser reads them as `skjema=S1`.
+  const text = String(receiptText ?? '')
+    .replace(/&#(\d+);/g, (_, n) => String.fromCodePoint(Number(n)))
+    .replace(/&#x([0-9a-f]+);/gi, (_, h) => String.fromCodePoint(parseInt(h, 16)))
+    .replace(/&quot;/g, '"')
+    .replace(/&amp;/g, '&');
   if (!text.includes(`${SITE}sendt.html`)) return ['receipt: the button back to ATLAS is missing'];
   const link = `${SITE}sendt.html?skjema=${stepOf(key)}"`;
   if (text.includes(link)) return [];

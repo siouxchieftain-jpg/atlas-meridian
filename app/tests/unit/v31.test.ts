@@ -198,6 +198,9 @@ describe('the receipt names its form (nettskjema.mjs verify)', () => {
     const site = 'https://siouxchieftain-jpg.github.io/atlas-meridian/';
     for (const f of instrument.forms) expect(m.receiptProblems(m.formSettings(f, []).receiptText, f.key), f.key).toEqual([]);
     expect(m.receiptProblems(`<a href="${site}sendt.html?skjema=S2" rel="x">`, 'S2.dps')).toEqual([]);
+    // As Nettskjema stores it: the equals sign as a character reference, which the browser reads as «=».
+    expect(m.receiptProblems(`<a class="receipt-link-as-button" href="${site}sendt.html?skjema&#61;S9">Tilbake til ATLAS</a>`, 'S9')).toEqual([]);
+    expect(m.receiptProblems(`<a href="${site}sendt.html?skjema&#61;S1">`, 'S9')).toHaveLength(1);
     expect(m.receiptProblems(`<a href="${site}sendt.html" rel="x">`, 'S9')).toHaveLength(1);
     expect(m.receiptProblems(`<a href="${site}sendt.html?skjema=S1" rel="x">`, 'S9')).toHaveLength(1);
     expect(m.receiptProblems('', 'S1')[0]).toMatch(/missing/);
