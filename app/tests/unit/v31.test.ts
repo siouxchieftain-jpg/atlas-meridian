@@ -176,7 +176,7 @@ describe('coming back (decision 11) and the case under way', () => {
     expect(studyEntryPath('')).toBeNull();
     store({ ...base, furthest: 'om-deg', ledger: {}, phase: {} });
     for (const h of ['', '#', '#/', '#/studie', '#/studie/']) expect(studyEntryPath(h), h).toBe('/studie/velkommen?tilbake');
-    for (const h of ['#/studie/hjem', '#/studie/sak/kari/konsultasjon', '#/studie?forhandsvisning', '#/gjennomgang']) expect(studyEntryPath(h), h).toBeNull();
+    for (const h of ['#/studie/hjem', '#/studie/sak/kari/konsultasjon', '#/studie?forhandsvisning', '#/studie?kvittering', '#/gjennomgang']) expect(studyEntryPath(h), h).toBeNull();
   });
 });
 

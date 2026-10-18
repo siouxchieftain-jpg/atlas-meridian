@@ -30,13 +30,14 @@
       </span>
       <h1 id="title">Takk. Skjemaet er sendt.</h1>
       <p id="body"></p>
-      <p id="back"><a href="./#/studie" id="backlink">Tilbake til ATLAS</a></p>
+      <p id="back"><a href="./#/studie?kvittering" id="backlink">Tilbake til ATLAS</a></p>
       <p id="close" hidden><button type="button" id="closebtn">Lukk fanen</button></p>
       <p class="quiet" id="note"></p>
     </main>
     <script>
       (function () {
         // Nettskjema's receipt button lands here. Record that the pending form was sent, so ATLAS can mark the step.
+        // The way back carries ?kvittering, so ATLAS goes on where the participant is instead of asking «Ikke deg?».
         var lang = 'nb';
         try { lang = JSON.parse(window.localStorage.getItem('atlas.settings.lang') || '"nb"') === 'en' ? 'en' : 'nb'; } catch (e) {}
         var framed = false;

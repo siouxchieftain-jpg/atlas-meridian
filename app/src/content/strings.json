@@ -2387,6 +2387,10 @@
     "nb": "Tilbakemelding gitt",
     "en": "Feedback given"
   },
+  "feedbackPartSent": {
+    "nb": "(tilbakemelding sendt)",
+    "en": "(feedback sent)"
+  },
   "feedbackSwitchTitle": {
     "nb": "Bytte skjema?",
     "en": "Switch form?"

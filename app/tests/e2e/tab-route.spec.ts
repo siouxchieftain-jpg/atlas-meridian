@@ -31,6 +31,9 @@ test('Safari starts on the new-tab route; sendt.html marks the step as sent', as
   await expect(tab.getByText('Takk. Skjemaet er sendt.')).toBeVisible();
   // The storage event reaches ATLAS in the first tab.
   await expect(page.getByRole('button', { name: 'Til oversikten' })).toBeVisible();
+  // The receipt's way back goes on where the participant is; it does not ask «Ikke deg?».
+  await tab.getByRole('link', { name: 'Tilbake til ATLAS' }).click();
+  await expect(tab).toHaveURL(/#\/studie\/hjem$/);
 });
 
 test('on the tab route «Jeg har sendt skjemaet» also marks the step', async ({ page, context }) => {

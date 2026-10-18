@@ -10,13 +10,23 @@ test.beforeEach(async ({ context }) => {
 });
 
 // Scan settled states: a toast caught mid-fade reads as low contrast. Fluent's motion honours reduced motion.
-test.use({ reducedMotion: 'reduce' });
+// (A context option: a bare `reducedMotion` in test.use is not one, and was silently ignored.)
+test.use({ contextOptions: { reducedMotion: 'reduce' } });
 
 /** Serious and critical axe violations in ATLAS's own markup (the Nettskjema frame is outside it). */
 async function scan(page: Page, where: string, found: string[]) {
   await page.waitForTimeout(200);
   // A toast fades in over about 100 ms; axe reads it mid-fade as low contrast, so let it settle.
   if (await page.locator('.fui-Toast').count()) await page.waitForTimeout(600);
+  // Any fade or transition still running ends first: axe blends a part-faded panel into its colours (a CI run read a
+  // brand button at 4.47:1 mid-fade, 4.62:1 at rest).
+  await page.evaluate(() => {
+    const ending = document
+      .getAnimations()
+      .filter((a) => Number.isFinite(Number(a.effect?.getComputedTiming().endTime)))
+      .map((a) => a.finished.catch(() => undefined));
+    return Promise.race([Promise.all(ending), new Promise((done) => setTimeout(done, 2000))]);
+  });
   const result = await new AxeBuilder({ page })
     .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa'])
     .exclude('iframe')
@@ -25,7 +35,12 @@ async function scan(page: Page, where: string, found: string[]) {
     .analyze();
   for (const v of result.violations) {
     if (v.impact === 'serious' || v.impact === 'critical') {
-      found.push(`${where}: ${v.id} (${v.impact}) ${v.nodes.slice(0, 3).map((n) => n.target.join(' ')).join(' | ')}`);
+      // The colours axe read go with a contrast finding, so a failure in CI says what it saw.
+      const detail = (n: (typeof v.nodes)[number]) => {
+        const d = n.any[0]?.data as { fgColor?: string; bgColor?: string; contrastRatio?: number } | undefined;
+        return d?.fgColor ? ` [${d.fgColor} on ${d.bgColor}, ${d.contrastRatio}:1]` : '';
+      };
+      found.push(`${where}: ${v.id} (${v.impact}) ${v.nodes.slice(0, 3).map((n) => `${n.target.join(' ')}${detail(n)} ${n.html.slice(0, 80)}`).join(' | ')}`);
     }
   }
 }

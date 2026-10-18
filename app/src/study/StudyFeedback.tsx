@@ -159,7 +159,7 @@ function PartsList({ side, onPick, isOpen }: { side: string; onPick: (seksjon: s
               onClick={() => onPick(sec.id)}
             >
               {s(sec.label)}
-              {given && <SrOnly>{`, ${s('feedbackGiven')}`}</SrOnly>}
+              {given && <SrOnly>{` ${s('feedbackPartSent')}`}</SrOnly>}
               {isOpen(side, sec.id) && <span className={cls.openNow}>{s('feedbackOpenNow')}</span>}
             </Button>
           </li>
