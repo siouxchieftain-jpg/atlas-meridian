@@ -1,4 +1,4 @@
-// Builds the 13 Nettskjema forms from src/content/instrument.json through the Nettskjema API v3, the same
+// Builds the 14 Nettskjema forms from src/content/instrument.json through the Nettskjema API v3, the same
 // file the build sheet and the app's preview forms come from.
 //
 //   node scripts/nettskjema.mjs plan     what would be created; no login, nothing is sent
@@ -6,11 +6,20 @@
 //                                        into public/atlas-config.json, then checks each one (--only S1,S3 limits it)
 //   node scripts/nettskjema.mjs update   brings existing forms in line with the instrument; refuses a form with answers
 //   node scripts/nettskjema.mjs verify   reads every form back and compares it with the instrument
-//   node scripts/nettskjema.mjs status   answers per form
+//   node scripts/nettskjema.mjs status   answers per form, open or closed
+//   node scripts/nettskjema.mjs open --until 2026-11-30
+//                                        opens the forms for answers from now through that day (Norwegian time);
+//                                        the study set also needs --study, so it is never opened by a slip
+//   node scripts/nettskjema.mjs close    closes the forms now (a form with answers keeps them)
+//
+// --round pilot works on the pilot set instead: a copy of the study forms (S1 to S9, not R1 and R2), titled
+// «(pilot)», whose addresses go under «pilotForms» in atlas-config.json. While the config says "round": "pilot", the
+// app answers into this set, so no pilot answer ever lands in a study form.
 //
 // The API client's ID and secret are read from a file only the owner keeps (default
 // %USERPROFILE%/nettskjema-api/atlas.json, or NETTSKJEMA_CREDENTIALS): {"clientId": "...", "clientSecret": "...",
-// "editor": "<Nettskjema username>"}. The script never prints the secret or the token, never sends an answer and
+// "editor": "<Nettskjema username>"}; without "editor" (or --editor), create and update take the person who already
+// edits the forms the config names. The script never prints the secret or the token, never sends an answer and
 // never deletes anything: test answers are deleted by the owner in Nettskjema («Slett alle svar»).
 import { readFileSync, writeFileSync, existsSync } from 'node:fs';
 import { homedir } from 'node:os';
@@ -37,18 +46,27 @@ const flag = (name) => {
   return i >= 0 ? rest[i + 1] : undefined;
 };
 
+/** The set this run works on: the study forms, or the pilot copy of them. */
+const ROUND = flag('round') === 'pilot' ? 'pilot' : 'study';
+const SET = ROUND === 'pilot' ? 'pilotForms' : 'forms';
+const inRound = (form) => ROUND === 'study' || /^S\d/.test(form.key);
+const roundForms = () => instrument.forms.filter(inRound);
+
+/** The step a form belongs to (S2.fastlege → S2): sendt.html marks only the form its receipt names. */
+const stepOf = (key) => key.split('.')[0];
+
 /* ---------- From the instrument to Nettskjema elements ---------- */
 
 const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 const para = (s) => `<p>${esc(s)}</p>`;
 const both = (t) => (t.nb === t.en ? t.nb : `${t.nb} / ${t.en}`);
 
-export function formTitle(form) {
+export function formTitle(form, round = ROUND) {
   const variant = form.key.split('.')[1];
   const role = variant ? ROLE_LABEL[variant] : undefined;
   const nb = role ? `${form.title.nb}, ${role.nb}` : form.title.nb;
   const en = role ? `${form.title.en}, ${role.en}` : form.title.en;
-  return `ATLAS: ${nb === en ? nb : `${nb} / ${en}`}`;
+  return `ATLAS: ${nb === en ? nb : `${nb} / ${en}`}${round === 'pilot' ? ' (pilot)' : ''}`;
 }
 
 // Nettskjema's rule for a form title (the API schema's pattern, written so a JavaScript expression accepts it):
@@ -143,7 +161,7 @@ export function formSettings(form, editors) {
     sendingReceiptToRespondent: false,
     offeringReceiptToRespondent: false,
     editorsSubmissionEmailType: 'NONE',
-    receiptText: `${para(form.receipt.nb)}${para(form.receipt.en)}<div><a class="receipt-link-as-button" href="${SITE}sendt.html" rel="noopener noreferrer">Tilbake til ATLAS</a></div>`,
+    receiptText: `${para(form.receipt.nb)}${para(form.receipt.en)}<div><a class="receipt-link-as-button" href="${SITE}sendt.html?skjema=${stepOf(form.key)}" rel="noopener noreferrer">Tilbake til ATLAS</a></div>`,
     editors: editors.map((username) => ({ username })),
   };
 }
@@ -194,10 +212,32 @@ const formIdOf = (address) => {
   const m = /^https:\/\/nettskjema\.no\/a\/(\d+)\/?$/.exec(String(address || '').trim());
   return m ? Number(m[1]) : undefined;
 };
+const addressOf = (cfg, key) => (cfg[SET] ?? {})[key];
 function saveAddress(key, formId) {
   const cfg = readConfig();
-  cfg.forms[key] = ANSWER_URL(formId);
+  cfg[SET] = { ...(cfg[SET] ?? {}), [key]: ANSWER_URL(formId) };
   writeFileSync(configPath, `${JSON.stringify(cfg, null, 2)}\n`);
+}
+
+/**
+ * The person who edits the forms beside the API client: --editor, the credentials file's "editor", or else the person
+ * already editing the forms this config names (the first editor that is not an API client). Only a username, never a
+ * secret, is printed.
+ */
+async function editorFor(c) {
+  if (c.editor) return c.editor;
+  const cfg = readConfig();
+  for (const [key, address] of Object.entries({ ...(cfg.forms ?? {}), ...(cfg.pilotForms ?? {}) })) {
+    const id = formIdOf(address);
+    if (!id) continue;
+    const s = await api(c, 'GET', `/form/${id}/settings`);
+    const human = (s?.editors ?? []).map((e) => e?.username).find((u) => u && !/@apiclient$/.test(u));
+    if (human) {
+      console.log(`Editor: ${human} (the editor of ${key}, form ${id})`);
+      return human;
+    }
+  }
+  return undefined;
 }
 
 /* ---------- Verify: the form as stored against the instrument ---------- */
@@ -234,8 +274,27 @@ async function verifyForm(c, form, formId) {
   for (const k of ['title', 'respondentGroup', 'collectsPersonalData', 'sensitivePersonalDataCollected', 'codebookActivated']) {
     if (s?.[k] !== ws[k]) problems.push(`setting ${k}: ${JSON.stringify(s?.[k])}, expected ${JSON.stringify(ws[k])}`);
   }
-  if (!String(s?.receiptText ?? '').includes(`${SITE}sendt.html`)) problems.push('receipt: the button back to ATLAS is missing');
+  problems.push(...receiptProblems(s?.receiptText, form.key));
   return problems;
+}
+
+/**
+ * The receipt must lead back with the form's own name (`sendt.html?skjema=S3`): sendt.html then marks only that step,
+ * and S9's receipt marks none. A receipt without the name would mark whatever step is waiting.
+ */
+export function receiptProblems(receiptText, key) {
+  // Nettskjema stores the link with character references (`skjema&#61;S1`); the browser reads them as `skjema=S1`.
+  const text = String(receiptText ?? '')
+    .replace(/&#(\d+);/g, (_, n) => String.fromCodePoint(Number(n)))
+    .replace(/&#x([0-9a-f]+);/gi, (_, h) => String.fromCodePoint(parseInt(h, 16)))
+    .replace(/&quot;/g, '"')
+    .replace(/&amp;/g, '&');
+  if (!text.includes(`${SITE}sendt.html`)) return ['receipt: the button back to ATLAS is missing'];
+  const link = `${SITE}sendt.html?skjema=${stepOf(key)}"`;
+  if (text.includes(link)) return [];
+  const at = text.indexOf(`${SITE}sendt.html`);
+  const found = text.slice(at + SITE.length, at + SITE.length + 40).replace(/\s+/g, ' ');
+  return [`receipt: the button back to ATLAS does not name the form (sendt.html?skjema=${stepOf(key)}); it reads «${found}»`];
 }
 
 /* ---------- Modes ---------- */
@@ -251,7 +310,7 @@ function summaryRow(form) {
 
 async function plan() {
   const editors = ['<API-klienten>@apiclient', '<din Nettskjema-bruker>'];
-  const all = instrument.forms.map((f) => ({ key: f.key, body: payload(f, editors) }));
+  const all = roundForms().map((f) => ({ key: f.key, body: payload(f, editors) }));
   let schemaNote = 'not checked against the API schema (run with --spec <api-docs.json>)';
   const specPath = flag('spec');
   if (specPath) {
@@ -276,7 +335,7 @@ async function plan() {
     schemaNote = bad.length ? `${bad.length} problems against the API schema` : `${all.length} of ${all.length} match the API schema`;
   }
   // The schema check leaves out text patterns, so the title rule is checked here.
-  const titles = instrument.forms.map((f) => [f.key, titleProblem(formTitle(f))]).filter(([, p]) => p);
+  const titles = roundForms().map((f) => [f.key, titleProblem(formTitle(f))]).filter(([, p]) => p);
   if (titles.length) {
     console.error(titles.map(([k, p]) => `${k}: ${p}`).join('\n'));
     process.exitCode = 1;
@@ -284,20 +343,21 @@ async function plan() {
   const out = flag('out');
   if (out) writeFileSync(out, `${JSON.stringify(all, null, 2)}\n`);
   console.log('Nettskjema plan: nothing is created and nothing is sent.');
-  console.log(`Source: app/src/content/instrument.json, ${instrument.forms.length} forms. Payloads: ${schemaNote}.`);
+  console.log(`Source: app/src/content/instrument.json, ${roundForms().length} forms (${ROUND === 'pilot' ? 'the pilot set, under pilotForms' : 'the study set, under forms'}). Payloads: ${schemaNote}.`);
   console.log('');
   console.log(`${pad('Form', 12)} ${pad('Title in Nettskjema', 62)} ${pad('Pages', 5)} ${pad('Questions', 9)} ${pad('Required', 8)} Locked fields`);
-  for (const f of instrument.forms) console.log(summaryRow(f));
+  for (const f of roundForms()) console.log(summaryRow(f));
 }
 
 async function create() {
   const c = credentials();
-  if (!c.editor) throw new Error('no editor: add "editor" to the credentials file or pass --editor <Nettskjema username>');
+  const editor = await editorFor(c);
+  if (!editor) throw new Error('no editor: add "editor" to the credentials file or pass --editor <Nettskjema username>');
   const only = flag('only')?.split(',').map((s) => s.trim());
-  const editors = [`${c.id}@apiclient`, c.editor];
-  for (const form of instrument.forms) {
+  const editors = [`${c.id}@apiclient`, editor];
+  for (const form of roundForms()) {
     if (only && !only.includes(form.key)) continue;
-    const existing = formIdOf(readConfig().forms[form.key]);
+    const existing = formIdOf(addressOf(readConfig(), form.key));
     if (existing) {
       console.log(`${pad(form.key, 12)} already has an address (form ${existing}); left as it is`);
       continue;
@@ -332,14 +392,15 @@ async function create() {
 /** Brings forms that already exist in line with the instrument. Refuses a form that has answers. */
 async function update() {
   const c = credentials();
-  if (!c.editor) throw new Error('no editor: add "editor" to the credentials file or pass --editor <Nettskjema username>');
+  const editor = await editorFor(c);
+  if (!editor) throw new Error('no editor: add "editor" to the credentials file or pass --editor <Nettskjema username>');
   const only = flag('only')?.split(',').map((s) => s.trim());
-  const editors = [`${c.id}@apiclient`, c.editor];
+  const editors = [`${c.id}@apiclient`, editor];
   const mine = await api(c, 'GET', '/form/me');
   const answers = new Map((mine ?? []).map((f) => [f.formId, f.numberOfDeliveredSubmissions ?? 0]));
-  for (const form of instrument.forms) {
+  for (const form of roundForms()) {
     if (only && !only.includes(form.key)) continue;
-    const id = formIdOf(readConfig().forms[form.key]);
+    const id = formIdOf(addressOf(readConfig(), form.key));
     if (!id) {
       console.log(`${pad(form.key, 12)} no address yet: use create`);
       continue;
@@ -359,8 +420,8 @@ async function verify() {
   const c = credentials();
   const cfg = readConfig();
   let bad = 0;
-  for (const form of instrument.forms) {
-    const id = formIdOf(cfg.forms[form.key]);
+  for (const form of roundForms()) {
+    const id = formIdOf(addressOf(cfg, form.key));
     if (!id) {
       console.log(`${pad(form.key, 12)} no address yet`);
       continue;
@@ -377,18 +438,73 @@ async function status() {
   const cfg = readConfig();
   const mine = await api(c, 'GET', '/form/me');
   const byId = new Map((mine ?? []).map((f) => [f.formId, f]));
-  for (const form of instrument.forms) {
-    const id = formIdOf(cfg.forms[form.key]);
+  for (const form of roundForms()) {
+    const id = formIdOf(addressOf(cfg, form.key));
     const f = id ? byId.get(id) : undefined;
     console.log(`${pad(form.key, 12)} ${id ? (f ? `${f.numberOfDeliveredSubmissions ?? 0} answers, ${f.open ? 'open' : 'closed'}` : `form ${id} is not visible to the client`) : 'no address yet'}`);
   }
 }
 
-const modes = { plan, create, update, verify, status };
+/**
+ * The end of a day in Norway as ISO 8601 with its offset (23:59 on 2026-11-30 is 2026-11-30T23:59:00+01:00), or
+ * undefined for anything that is not a date.
+ */
+export function osloEndOfDay(day) {
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(String(day ?? ''))) return undefined;
+  const noon = new Date(`${day}T12:00:00Z`);
+  if (Number.isNaN(noon.getTime()) || noon.toISOString().slice(0, 10) !== day) return undefined;
+  const name = new Intl.DateTimeFormat('en-GB', { timeZone: 'Europe/Oslo', timeZoneName: 'longOffset' })
+    .formatToParts(noon)
+    .find((p) => p.type === 'timeZoneName')?.value;
+  const offset = /^GMT([+-]\d{2}:\d{2})$/.exec(name ?? '')?.[1] ?? '+01:00';
+  return `${day}T23:59:00${offset}`;
+}
+
+/** Sets the open period of every form in the set (--only limits it), then reads back whether each is open. */
+async function setOpenPeriod(c, period, label) {
+  const cfg = readConfig();
+  const only = flag('only')?.split(',').map((s) => s.trim());
+  for (const form of roundForms()) {
+    if (only && !only.includes(form.key)) continue;
+    const id = formIdOf(addressOf(cfg, form.key));
+    if (!id) {
+      console.log(`${pad(form.key, 12)} no address yet`);
+      continue;
+    }
+    // Only the open period changes: the API takes one or more settings and leaves the rest as they are. It answers
+    // 204 when all are set, and 207 with the reasons when some are not.
+    const partly = await api(c, 'PATCH', `/form/${id}/settings`, period);
+    if (partly) {
+      process.exitCode = 1;
+      console.log(`${pad(form.key, 12)} not every setting was changed: ${JSON.stringify(partly).slice(0, 300)}`);
+    }
+  }
+  const mine = await api(c, 'GET', '/form/me');
+  const byId = new Map((mine ?? []).map((f) => [f.formId, f]));
+  for (const form of roundForms()) {
+    if (only && !only.includes(form.key)) continue;
+    const id = formIdOf(addressOf(cfg, form.key));
+    const f = id ? byId.get(id) : undefined;
+    if (id) console.log(`${pad(form.key, 12)} ${label}: ${f ? (f.open ? 'open' : 'closed') : 'not visible to the client'}${f?.openTo ? `, open to ${f.openTo}` : ''}`);
+  }
+}
+
+async function open() {
+  const openTo = osloEndOfDay(flag('until'));
+  if (!openTo) throw new Error('open needs --until YYYY-MM-DD: the last day the forms take answers (Norwegian time)');
+  if (ROUND === 'study' && !rest.includes('--study')) throw new Error('this would open the study forms: add --study if that is meant, or use --round pilot');
+  await setOpenPeriod(credentials(), { openFrom: new Date().toISOString(), openTo }, `opened through ${flag('until')}`);
+}
+
+async function close() {
+  await setOpenPeriod(credentials(), { openTo: new Date().toISOString() }, 'closed now');
+}
+
+const modes = { plan, create, update, verify, status, open, close };
 const isMain = process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1];
 if (isMain) {
   if (!modes[mode]) {
-    console.error(`unknown mode «${mode}»: use plan, create, update, verify or status`);
+    console.error(`unknown mode «${mode}»: use plan, create, update, verify, status, open or close`);
     process.exit(2);
   }
   modes[mode]().catch((e) => {

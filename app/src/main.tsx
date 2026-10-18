@@ -5,12 +5,18 @@ import { mediaQueryOrder } from './theme/constants';
 import { LanguageProvider } from './i18n/i18n';
 import { App } from './App';
 import { loadConfig } from './engine/forms';
+import { navigate } from './router/router';
+import { studyEntryPath } from './state/study';
 
 const renderer = createDOMRenderer(document, {
   compareMediaQueries: (a, b) => mediaQueryOrder.indexOf(a) - mediaQueryOrder.indexOf(b),
 });
 
 loadConfig().finally(() => {
+  // The study link in a browser that holds a session opens the welcome back first (decision 11). After the
+  // configuration: a session belongs to its round, and the round is read from it.
+  const entry = studyEntryPath(window.location.hash);
+  if (entry) navigate(entry, { replace: true });
   createRoot(document.getElementById('root')!).render(
     <RendererProvider renderer={renderer} targetDocument={document}>
       <FluentProvider theme={atlasLightTheme} style={{ minHeight: '100dvh', backgroundColor: 'transparent' }}>

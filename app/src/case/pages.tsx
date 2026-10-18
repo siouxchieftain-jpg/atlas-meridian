@@ -2,7 +2,7 @@ import { Button, Field, makeStyles, tokens, typographyStyles } from '@fluentui/r
 import { ArrowRight16Regular, ArrowRight20Regular, DocumentEdit20Regular, Home20Regular, Send28Regular } from '@fluentui/react-icons';
 import { useEffect, useId } from 'react';
 import type { StringKey } from '../i18n/strings';
-import type { CaseId, Outcome, T } from '../content/types';
+import type { CaseId, CoreCaseId, Outcome, T } from '../content/types';
 import { cases, vocab } from '../content';
 import { formatDate, useLang } from '../i18n/i18n';
 import { DPS_TODAY, GP_TODAY, laterOf } from '../engine/clock';
@@ -24,6 +24,9 @@ import { OtherSideButton } from './CaseChrome';
 import { receivedReferral } from './dpsParts';
 import { atlasLine, draftSections } from './ReferralEditor';
 import { useCaseStatus } from './useCaseStatus';
+import { CaseEndPrompt } from '../study/CaseEndPrompt';
+
+const isCore = (c: CaseId): c is CoreCaseId => c === 'kari' || c === 'erlend' || c === 'astrid';
 
 const useStyles = makeStyles({
   h2: { ...typographyStyles.subtitle1, margin: 0 },
@@ -515,11 +518,16 @@ export function DebriefPage({ caseId }: { caseId: CaseId }) {
         </p>
       )}
       <DesignNote id="oppsummering" show={work.notes} />
-      <Actions>
-        <SheenButton icon={<ArrowRight20Regular />} iconPosition="after" onClick={() => work.finishCase(caseId)}>
-          {work.mode === 'study' ? s('goToNextStep') : s('backToList')}
-        </SheenButton>
-      </Actions>
+      {/* Study: the one optional question at the end of a case (decision 4), then back to the overview (v3.1). */}
+      {work.mode === 'study' && isCore(caseId) ? (
+        <CaseEndPrompt caseId={caseId} onContinue={() => work.finishCase(caseId)} />
+      ) : (
+        <Actions>
+          <SheenButton icon={<ArrowRight20Regular />} iconPosition="after" onClick={() => work.finishCase(caseId)}>
+            {work.mode === 'study' ? s('goToNextStep') : s('backToList')}
+          </SheenButton>
+        </Actions>
+      )}
     </GuidePage>
   );
 }

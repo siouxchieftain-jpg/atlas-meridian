@@ -192,6 +192,8 @@ const useStyles = makeStyles({
     color: tokens.colorNeutralForeground3,
     paddingInline: tokens.spacingHorizontalL,
     paddingBlock: tokens.spacingVerticalM,
+    // A short window (a 1280 x 720 laptop with the browser's own bars) keeps the pages one screen tall (Meridian).
+    '@media (max-height: 640px)': { paddingBlock: tokens.spacingVerticalXS },
     display: 'flex',
     flexWrap: 'wrap',
     alignItems: 'flex-end',
@@ -225,6 +227,7 @@ const NAV_PREF = 'atlas.settings.navExpanded';
 
 export function AppShell({
   headerStart,
+  headerCenter,
   headerEnd,
   banner,
   notice,
@@ -236,6 +239,8 @@ export function AppShell({
   navEnd,
 }: {
   headerStart: ReactNode;
+  /** Between the start and the end of the header (study mode: the three parts of the study). */
+  headerCenter?: ReactNode;
   headerEnd: ReactNode;
   banner?: ReactNode;
   /** Velkommen only: the credit line under the disclaimer and the UiA logo in the corner. */
@@ -323,6 +328,8 @@ export function AppShell({
           )}
           {headerStart}
           <span style={{ flexGrow: 1 }} />
+          {headerCenter}
+          {headerCenter && <span style={{ flexGrow: 1 }} />}
           {headerEnd}
         </div>
         {banner}

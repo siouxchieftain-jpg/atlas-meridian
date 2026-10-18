@@ -1262,7 +1262,7 @@ export const HELD_OUT: HeldItem[] = [
   { set: 3, lang: "nb", section: "funksjon", label: 1, text: "Pensjonist og enkemann. Har sluttet å gå på kafé med de faste karene og takker nei når datteren vil komme på besøk." },
   { set: 3, lang: "nb", section: "tidligere", label: 0, text: "Ukjent." },
   { set: 3, lang: "nb", section: "tidligere", label: 0, text: "Husker ikke om hun har gått til psykolog før." },
-  { set: 3, lang: "nb", section: "tidligere", label: 0, text: "Vennligst sjekk kjernejournal og DIPS." },
+  { set: 3, lang: "nb", section: "tidligere", label: 0, text: "Vennligst sjekk kjernejournal og journalsystemet." },
   { set: 3, lang: "nb", section: "tidligere", label: 0, text: "Har diagnosen tilbakevendende depressiv lidelse, F33.1." },
   { set: 3, lang: "nb", section: "tidligere", label: 0, text: "Henvisningen gjelder økende angst etter fødselen i mai." },
   { set: 3, lang: "nb", section: "tidligere", label: 0, text: "Jeg overtok listen i fjor og har ikke fått journalen fra forrige fastlege ennå." },

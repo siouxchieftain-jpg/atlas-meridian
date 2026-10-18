@@ -35,6 +35,8 @@ export interface OpenForm {
   height: number;
   /** Review form: section and page context. */
   review?: boolean;
+  /** S9, the study's feedback form: no step, never in the ledger, never the pending form sendt.html marks. */
+  feedback?: boolean;
 }
 
 export interface OpenRequest {
@@ -48,6 +50,7 @@ export interface OpenRequest {
   /** Show the panel at once (default true). */
   show?: boolean;
   review?: boolean;
+  feedback?: boolean;
   /** Re-create the form even if the same one is open (its locked values changed before anything was sent). */
   force?: boolean;
 }
@@ -102,12 +105,14 @@ export function FormHostProvider({ children }: { children: ReactNode }) {
     const active = document.activeElement as HTMLElement | null;
     const inPanel = !active || active === document.body || !!active.closest('[data-form-panel]');
     if (!inPanel) return;
+    // Read before the frame: by then a closed form is gone from the ref.
+    const fromTab = !!(formRef.current?.review || formRef.current?.feedback);
     window.requestAnimationFrame(() => {
       const prev = lastOutside.current;
       const usable = prev && prev.isConnected && prev.getClientRects().length > 0 && !prev.closest('[hidden]');
-      // A review form was opened from the «Gi tilbakemelding» tab, which is always in view: focus goes back to it,
-      // and the page keeps its place (r6A-03).
-      const tab = formRef.current?.review ? document.querySelector<HTMLElement>('[data-feedback-tab]') : null;
+      // A review or feedback form was opened from the «Gi tilbakemelding» tab, which is always in view: focus goes back
+      // to it, and the page keeps its place (r6A-03).
+      const tab = fromTab ? document.querySelector<HTMLElement>('[data-feedback-tab]') : null;
       const target = usable ? prev : tab ?? document.querySelector<HTMLElement>('#main h1') ?? document.getElementById('main');
       focusInView(target);
     });
@@ -147,8 +152,10 @@ export function FormHostProvider({ children }: { children: ReactNode }) {
       pageChanges: 0,
       height: 640,
       review: req.review,
+      feedback: req.feedback,
     };
-    if (route === 'panel' || route === 'tab') {
+    // sendt.html marks the pending form as sent; feedback is never a pending step (it could be taken for one).
+    if ((route === 'panel' || route === 'tab') && !req.feedback && !req.review) {
       writeJSON(PENDING_KEY, { form: req.step, steg: req.locked.steg ?? '', at: new Date().toISOString() });
     }
     setForm(opened);

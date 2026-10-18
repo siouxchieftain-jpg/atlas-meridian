@@ -11,6 +11,7 @@ const instrument = JSON.parse(readFileSync(join(app, 'src/content/instrument.jso
 const config = JSON.parse(readFileSync(join(app, 'public/atlas-config.json'), 'utf8'));
 
 const SITE = 'https://siouxchieftain-jpg.github.io/atlas-meridian/';
+const VERSION = JSON.parse(readFileSync(join(app, 'package.json'), 'utf8')).version;
 
 /** How each item type is built in Nettskjema. */
 const TYPE = {
@@ -31,8 +32,8 @@ const TYPE = {
 /** Which step and role use each form, and the vignette it carries. */
 const USE = {
   S1: 'Step S1, both roles',
-  'S2.fastlege': 'Step S2, GPs',
-  'S2.dps': 'Step S2, DPS participants',
+  'S2.fastlege': 'Step S2 (after the three cases), GPs',
+  'S2.dps': 'Step S2 (after the three cases), DPS participants',
   S3: 'Step S3 (V1 Kari), both roles',
   'S4.fastlege': 'Step S4 (V3 Erlend), GPs',
   'S4.dps': 'Step S4 (V3 Erlend), DPS participants',
@@ -41,6 +42,7 @@ const USE = {
   S6: 'Step S6, both roles',
   'S7.fastlege': 'Step S7 (V2 Torbjørn, optional), GPs',
   S8: 'Step S8 (V5 two GPs, optional), both roles',
+  S9: 'Any study page after S1, per part of a screen (optional feedback along the way), both roles; no step',
   R1: 'Review mode, per part of a screen',
   R2: 'Review mode, the wrap-up',
 };
@@ -73,11 +75,15 @@ push(
   `- At the top of every form: «${instrument.consentLine.nb}» / "${instrument.consentLine.en}", and «${instrument.privacyLine.nb}» / "${instrument.privacyLine.en}".`,
   `- Above every long text question: «${instrument.privacyLine.nb}» / "${instrument.privacyLine.en}".`,
   '- Long text answers take at most 3,800 characters.',
-  `- «Melding på kvitteringsside etter levert svar»: the form's receipt text below, then a button back to the site, written as Nettskjema documents it: \`<div><a class="receipt-link-as-button" href="${SITE}sendt.html" rel="noopener noreferrer">Tilbake til ATLAS</a></div>\`. \`sendt.html\` marks the step as sent and leads back to the study. Check in the pilot that Nettskjema keeps the button.`,
+  `- «Melding på kvitteringsside etter levert svar»: the form's receipt text below, then a button back to the site, written as Nettskjema documents it: \`<div><a class="receipt-link-as-button" href="${SITE}sendt.html?skjema=<step>" rel="noopener noreferrer">Tilbake til ATLAS</a></div>\`, where \`<step>\` is the form's step (\`S1\` to \`S9\`; both versions of S2 name \`S2\`). \`sendt.html\` marks the step it names as sent, when that step is the one waiting, and leads back to the study; S9's receipt marks no step and offers to close its tab. \`node scripts/nettskjema.mjs verify\` checks the link. Check in the pilot that Nettskjema keeps the button.`,
   '- A closing date.',
   `- Locked fields: one «Tekstsvar» per field, under the heading «${instrument.lockedHeading.nb}» / "${instrument.lockedHeading.en}". ATLAS fills and locks each from the form's address (\`CB<codebook>=<value>&LCK<codebook>=true\`); in the panel the address also carries \`embed=1\`.`,
   '- When the form is open for answers, copy its address from «Innhent svar» (it looks like `https://nettskjema.no/a/123456`) into `app/public/atlas-config.json` under the key given for the form.',
   '- Before the first invitation, delete every test answer with «Slett alle svar».',
+  '',
+  '## The pilot set',
+  '',
+  'The pilot answers into a copy of the twelve study forms (S1 to S9, not R1 and R2), titled «(pilot)»: `node scripts/nettskjema.mjs create --round pilot` makes them and writes their addresses under `pilotForms` in `app/public/atlas-config.json`. While that file says `"round": "pilot"`, the app opens these forms, and every `versjon` ends in `-pilot`, so no pilot answer lands in a study form.',
   '',
   '## Locked values',
   '',
@@ -89,8 +95,8 @@ push(
   '| `intervju` | `Ja`, `Nei`, `Vil ikke svare` |',
   '| `steg` | `S1` to `S8`; `S3-etter`, `S4-etter` or `S5-etter` when a case form is opened again after «Vis ATLAS» |',
   '| `vignett` | `V1` (S3), `V3` (S4), `V4` (S5), `V2` (S7), `V5` (S8) |',
-  '| `versjon` | The build: `3.0.0-` and the commit |',
-  '| `side`, `seksjon` | R1 only: the screen (for example `fastlege/kari/konsultasjon`) and the part of it |',
+  `| \`versjon\` | The build: the package version and the commit (for example \`${VERSION}-66ca8de\`); in the pilot round it ends in \`-pilot\` |`,
+  '| `side`, `seksjon` | R1 and S9: the screen (for example `fastlege/kari/konsultasjon`, or `fastlege/kari/saken` for a case as a whole) and the part of it |',
   '',
   '## The case forms (S3, S4, S5)',
   '',

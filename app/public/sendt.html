@@ -16,7 +16,9 @@
       p { margin: 0; }
       a { color: #5649B0; }
       a:hover { color: #4A3F99; }
-      a:focus-visible { outline: 2px solid #000000; outline-offset: 2px; border-radius: 2px; }
+      a:focus-visible, button:focus-visible { outline: 2px solid #000000; outline-offset: 2px; border-radius: 2px; }
+      button { font: inherit; color: #ffffff; background: #5649B0; border: 0; border-radius: 4px; padding: 6px 14px; cursor: pointer; }
+      button:hover { background: #4A3F99; }
       .quiet { color: #616161; font-size: 12px; line-height: 16px; }
       .mark { width: 32px; height: 32px; border-radius: 50%; background: #F9F8FE; border: 1px solid #D2CCF8; display: inline-flex; align-items: center; justify-content: center; }
     </style>
@@ -28,12 +30,14 @@
       </span>
       <h1 id="title">Takk. Skjemaet er sendt.</h1>
       <p id="body"></p>
-      <p id="back"><a href="./#/studie" id="backlink">Tilbake til ATLAS</a></p>
+      <p id="back"><a href="./#/studie?kvittering" id="backlink">Tilbake til ATLAS</a></p>
+      <p id="close" hidden><button type="button" id="closebtn">Lukk fanen</button></p>
       <p class="quiet" id="note"></p>
     </main>
     <script>
       (function () {
         // Nettskjema's receipt button lands here. Record that the pending form was sent, so ATLAS can mark the step.
+        // The way back carries ?kvittering, so ATLAS goes on where the participant is instead of asking «Ikke deg?».
         var lang = 'nb';
         try { lang = JSON.parse(window.localStorage.getItem('atlas.settings.lang') || '"nb"') === 'en' ? 'en' : 'nb'; } catch (e) {}
         var framed = false;
@@ -54,6 +58,19 @@
             doc: 'The form has been sent · ATLAS'
           }
         }[lang];
+        // The feedback form (S9) is no step: its receipt thanks for the feedback and says nothing about a step.
+        var named = null;
+        try { named = new URLSearchParams(window.location.search).get('skjema'); } catch (e) {}
+        // It opened in a tab of its own beside ATLAS, so it leads nowhere but closed: a second ATLAS here could open
+        // a case form twice.
+        var feedback = named === 'S9';
+        if (feedback) {
+          T.title = lang === 'en' ? 'Thank you. The feedback has been sent.' : 'Takk. Tilbakemeldingen er sendt.';
+          T.body = lang === 'en' ? 'You can close this tab. ATLAS is still open in the tab you came from.' : 'Du kan lukke denne fanen. ATLAS er fortsatt åpent i fanen du kom fra.';
+          T.note = lang === 'en' ? 'The answers are stored in Nettskjema.' : 'Svarene er lagret i Nettskjema.';
+          T.doc = lang === 'en' ? 'The feedback has been sent · ATLAS' : 'Tilbakemeldingen er sendt · ATLAS';
+          T.close = lang === 'en' ? 'Close the tab' : 'Lukk fanen';
+        }
         document.documentElement.lang = lang;
         document.title = T.doc;
         document.getElementById('title').textContent = T.title;
@@ -64,10 +81,20 @@
         } else {
           document.getElementById('body').textContent = T.body;
           document.getElementById('backlink').textContent = T.back;
+          if (feedback) {
+            document.getElementById('back').style.display = 'none';
+            var closer = document.getElementById('close');
+            closer.hidden = false;
+            var btn = document.getElementById('closebtn');
+            btn.textContent = T.close;
+            btn.addEventListener('click', function () { window.close(); });
+          }
         }
         try {
           var pending = JSON.parse(window.localStorage.getItem('atlas.study.pending') || 'null');
-          if (pending && pending.form) {
+          // A receipt that names its form (?skjema=S3) marks only that form: the feedback form (S9) and a form from
+          // another tab never mark the step that is pending. A receipt without the name keeps the old behaviour.
+          if (pending && pending.form && (!named || named === pending.form)) {
             window.localStorage.setItem(
               'atlas.study.sendt',
               JSON.stringify({ form: pending.form, steg: pending.steg || '', at: pending.at || '', sentAt: new Date().toISOString() })

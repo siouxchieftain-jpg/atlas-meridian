@@ -5,6 +5,7 @@ import { cases } from '../content';
 import { useLang } from '../i18n/i18n';
 import { Breadcrumbs, type Crumb } from '../patterns/layout';
 import { PageHeading } from '../shell/PageHeading';
+import { useWork } from '../state/work';
 
 const useStyles = makeStyles({
   card: {
@@ -69,10 +70,15 @@ export function CaseTitle({
 }) {
   const cls = useStyles();
   const { s, t } = useLang();
+  const work = useWork();
   const c = cases[caseId];
+  // Study mode: the list crumb leads to the overview, and is named for it («Min dag», «Inntaket i dag»).
+  const items = work.mode === 'study' && !work.sandbox
+    ? crumbs.map((x, i) => (i === 0 && x.to === work.listPath ? { ...x, label: s(work.viewer === 'gp' ? 'homeGpTitle' : 'homeDpsTitle') } : x))
+    : crumbs;
   return (
     <section className={cls.card} aria-label={s('patientLabel')}>
-      <Breadcrumbs items={crumbs} label={s('breadcrumbs')} />
+      <Breadcrumbs items={items} label={s('breadcrumbs')} />
       <div className={cls.row}>
         <span className={cls.avatar} aria-hidden="true">
           {c.patient.initials}

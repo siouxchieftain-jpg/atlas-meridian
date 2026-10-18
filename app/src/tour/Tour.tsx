@@ -21,14 +21,14 @@ import {
   Map16Regular,
 } from '@fluentui/react-icons';
 import { useId, useState, type ReactNode } from 'react';
-import type { Role, TourStep } from '../content/types';
-import { tour } from '../content';
+import type { Role, TourPart, TourStep } from '../content/types';
+import { tour, tourParts } from '../content';
 import { useLang } from '../i18n/i18n';
 import { GuideImage, SheenButton } from '../patterns/basics';
 import { Actions, Body, Lead } from '../patterns/layout';
 import { PageHeading } from '../shell/PageHeading';
 import { atlasDawn, guide, size } from '../theme/constants';
-import { SandboxFrame, useSandbox, type Sandbox } from './frames';
+import { SandboxFrame, isStudyFrame, useSandbox, type Sandbox } from './frames';
 
 const useStyles = makeStyles({
   // The guide layer's stage: the dawn and the image, the progress on top, the panel and the live window in the middle.
@@ -43,7 +43,8 @@ const useStyles = makeStyles({
     paddingInline: 'clamp(16px, 3vw, 36px)',
     paddingBlockStart: 'clamp(16px, 2vw, 22px)',
     paddingBlockEnd: 'clamp(20px, 3vw, 32px)',
-    minHeight: `calc(100dvh - var(--atlas-header-h, 48px) - ${size.panelInset * 2}px - 64px)`,
+    '@media (max-height: 640px)': { paddingBlockStart: '12px', paddingBlockEnd: '16px', rowGap: '16px' },
+    minHeight: `calc(100dvh - var(--atlas-header-h, 48px) - ${size.panelInset * 2}px - 66px)`,
     boxSizing: 'border-box',
     display: 'grid',
     gridTemplateColumns: 'minmax(0, 1fr)',
@@ -181,7 +182,8 @@ const useStyles = makeStyles({
   winBody: {
     paddingInline: 'clamp(12px, 2vw, 24px)',
     paddingBlock: tokens.spacingVerticalL,
-    maxHeight: 'min(72vh, 760px)',
+    // The stage stays one screen tall on a laptop: the live window scrolls inside itself (Meridian, «One screen tall»).
+    maxHeight: 'min(72vh, 760px, max(240px, calc(100dvh - 340px)))',
     overflowY: 'auto',
     ':focus-visible': { outline: `2px solid ${tokens.colorStrokeFocus2}`, outlineOffset: '-2px' },
   },
@@ -205,14 +207,23 @@ const useStyles = makeStyles({
   coachReturn: {
     '& [data-section="vurdering"] fieldset': { outline: `2px solid ${tokens.colorBrandStroke1}`, outlineOffset: '6px', borderRadius: tokens.borderRadiusMedium },
   },
-  seen: { listStyle: 'none', margin: 0, padding: 0, display: 'flex', flexDirection: 'column' },
+  // «Dette har du sett»: in two columns where there is room, so the closing screen stays one screen tall.
+  seen: {
+    listStyle: 'none',
+    margin: 0,
+    padding: 0,
+    display: 'flex',
+    flexDirection: 'column',
+    '@media only screen and (min-width: 1024px)': { display: 'block', columns: 2, columnGap: '24px' },
+  },
   seenItem: {
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
     gap: tokens.spacingHorizontalM,
-    paddingBlock: tokens.spacingVerticalXS,
+    paddingBlock: '2px',
     borderBottom: `1px solid ${tokens.colorNeutralStroke2}`,
+    breakInside: 'avoid',
     ...typographyStyles.body1,
   },
   question: {
@@ -260,10 +271,9 @@ export function FramedWindow({ title, children, coach }: { title: string; childr
 const COACH: Record<string, string> = { 'gp-lesning': 'reading', 'dps-markorer': 'reading', 'gp-margin': 'margin', 'dps-retur': 'return' };
 
 /** The stage's top row: «Omvisning», where you are, and the progress by part. */
-function StageTop({ role, flatIndex, done }: { role: Role; flatIndex: number; done?: boolean }) {
+function StageTop({ role, parts, flatIndex, done }: { role: Role; parts: TourPart[]; flatIndex: number; done?: boolean }) {
   const cls = useStyles();
   const { s } = useLang();
-  const parts = tour[role].parts;
   const total = parts.reduce((n, p) => n + p.steps.length, 0);
   const roleLabel = role === 'gp' ? s('roleGp') : s('roleDps');
   let k = 0;
@@ -359,6 +369,7 @@ export function TourView({
   showReasons,
   ending,
   notes,
+  withStudy = false,
 }: {
   role: Role;
   pos: TourPosition | 'end';
@@ -367,17 +378,19 @@ export function TourView({
   /** What the closing screen offers. */
   ending: ReactNode;
   notes: boolean;
+  /** The participant's tour: it starts with «Slik foregår studien». */
+  withStudy?: boolean;
 }) {
   const cls = useStyles();
   const { s, t } = useLang();
   const sandbox = useSandbox(role, notes);
-  const parts = tour[role].parts;
+  const parts = tourParts(role, withStudy);
   const all = parts.flatMap((p, pi) => p.steps.map((st, si) => ({ st, pi, si })));
   if (pos === 'end') {
     return (
       <div className={cls.surface} data-tour-stage="">
         <GuideImage variant="stage" />
-        <StageTop role={role} flatIndex={all.length - 1} done />
+        <StageTop role={role} parts={parts} flatIndex={all.length - 1} done />
         <div className={cls.text}>
           <PageHeading title={s('stepOmvisning')} guide>
             {t(tour.closing.title)}
@@ -419,7 +432,7 @@ export function TourView({
   return (
     <div className={cls.surface} data-tour-stage="">
       <GuideImage variant="stage" />
-      <StageTop role={role} flatIndex={flatIndex} />
+      <StageTop role={role} parts={parts} flatIndex={flatIndex} />
       <div className={cls.text} key={step.id}>
         <StepText step={step} showReason={showReasons} partLine={s('tourPart', { n: pos.part + 1, total: parts.length, title: t(part.title) })} />
         <div className={cls.nav}>
@@ -449,7 +462,8 @@ export function TourView({
         <FramedWindow title={t(step.title)} coach={COACH[step.id]}>
           <SandboxFrame sandbox={sandbox} frame={step.frame} role={role} />
         </FramedWindow>
-        <p className={cls.frameNote}>{s('tourFrameNote')}</p>
+        {/* The study's own frames are drawings of ATLAS, not the practice patient. */}
+        <p className={cls.frameNote}>{isStudyFrame(step.frame) ? s('tourStudyFrameNote') : s('tourFrameNote')}</p>
       </div>
     </div>
   );
@@ -479,7 +493,7 @@ function StepDialogBody({ step, role, showReason }: { step: TourStep; role: Role
 export function TourStepDialog({ role, stepId, onClose, showReason = false }: { role: Role; stepId: string | null; onClose: () => void; showReason?: boolean }) {
   const cls = useStyles();
   const { s } = useLang();
-  const step = stepId ? tour[role].parts.flatMap((p) => p.steps).find((x) => x.id === stepId) : undefined;
+  const step = stepId ? tourParts(role, true).flatMap((p) => p.steps).find((x) => x.id === stepId) : undefined;
   return (
     <Dialog open={!!step} onOpenChange={(_, d) => !d.open && onClose()}>
       <DialogSurface className={cls.dialogSurface}>

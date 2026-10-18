@@ -68,6 +68,40 @@ export const VIEW_SECTIONS: Record<string, ReviewSection[]> = {
   'dps/omvisning': [whole],
   'fastlege/to-fastleger': [whole],
   'dps/to-fastleger': [whole],
+  // Study mode (S9): the home screens, the case as a whole from its summary page, and the study's own pages.
+  'fastlege/hjem': [
+    whole,
+    { id: 'studiekort', label: 'secStudyCard' },
+    { id: 'timeliste', label: 'homeTimelisteTitle' },
+    { id: 'innboks', label: 'homeInboxTitle' },
+    { id: 'henvisninger', label: 'homeReferralsTitle' },
+    { id: 'monster', label: 'navPattern' },
+    { id: 'delt', label: 'navShared' },
+  ],
+  'dps/hjem': [
+    whole,
+    { id: 'studiekort', label: 'secStudyCard' },
+    { id: 'mottatte', label: 'navQueue' },
+    { id: 'frister', label: 'homeDeadlinesTitle' },
+    { id: 'meldinger', label: 'homeMessagesTitle' },
+    { id: 'delt', label: 'navShared' },
+  ],
+  'fastlege/saken': [
+    { id: 'hele', label: 'secWholeCase' },
+    { id: 'orientering', label: 'secBriefing' },
+    { id: 'konsultasjon', label: 'secConsultation' },
+    { id: 'atlas', label: 'secAtlasPanel' },
+    { id: 'henvisning', label: 'secReferralPart' },
+    { id: 'svaret', label: 'secReplyFromDps' },
+  ],
+  'dps/saken': [
+    { id: 'hele', label: 'secWholeCase' },
+    { id: 'orientering', label: 'secBriefing' },
+    { id: 'henvisning', label: 'secReferralPart' },
+    { id: 'atlas', label: 'secAtlasPanel' },
+    { id: 'vurdering', label: 'secAssessmentPart' },
+    { id: 'dialog', label: 'secDialogWithGp' },
+  ],
 };
 
 /** The screen's name in the reader's language, for the overview (the route name is what the form receives). */
@@ -85,6 +119,14 @@ const SCREEN_LABEL: Record<string, StringKey> = {
   delt: 'navShared',
   omvisning: 'reviewTour',
   'to-fastleger': 'reviewV5',
+  hjem: 'navHome',
+  saken: 'secWholeCase',
+  'om-deg': 'omDegTitle',
+  helhet: 'helhetTitle',
+  avslutning: 'avslutningTitle',
+  ekstra: 'ekstraTitle',
+  takk: 'stepTakk',
+  studien: 'stepperTitle',
 };
 
 /** The screen key (`role/view`) and the case of a `side` value. */
@@ -141,6 +183,8 @@ export function sectionsFor(side: string, second = false): ReviewSection[] {
     if (key === 'fastlege/konsultasjon' && caseId === 'erlend') return sec.id !== 'beslutning';
     if (key === 'fastlege/henvisning') return caseId === 'astrid' || second ? !['fra-atlas', 'band'].includes(sec.id) : sec.id !== 'rad';
     if (key === 'dps/vurdering' && caseId === 'astrid') return !['band', 'lesning', 'usikker', 'vurdering'].includes(sec.id);
+    // The case as a whole (study): DPS's Astrid case is the GP's question and the answer, with no assessment of its own.
+    if (key === 'dps/saken' && caseId === 'astrid') return sec.id !== 'vurdering';
     return true;
   });
 }

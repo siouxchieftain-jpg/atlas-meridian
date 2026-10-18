@@ -204,8 +204,8 @@
         "en": "Overall impression"
       },
       "intro": {
-        "nb": "Dette skjemaet spør om helhetsinntrykket ditt av ATLAS etter omvisningen. Kritikk er like nyttig som ros. Ved å sende skjemaet samtykker du i at de anonyme svarene brukes i forskningsprosjektet.",
-        "en": "This form asks about your overall impression of ATLAS after the tour. Criticism is as useful as praise. By sending the form, you consent to the anonymous answers being used in the research project."
+        "nb": "Dette skjemaet spør om helhetsinntrykket ditt av ATLAS etter de tre sakene. Kritikk er like nyttig som ros. Ved å sende skjemaet samtykker du i at de anonyme svarene brukes i forskningsprosjektet.",
+        "en": "This form asks about your overall impression of ATLAS after the three cases. Criticism is as useful as praise. By sending the form, you consent to the anonymous answers being used in the research project."
       },
       "locked": [
         "rolle",
@@ -268,32 +268,12 @@
               "required": false
             },
             {
-              "id": "B-02",
-              "type": "choice",
-              "codebook": "b_02",
-              "text": {
-                "nb": "Har du sett gjennom alle skjermbildene i ATLAS-dashbordet?",
-                "en": "Have you reviewed all the screens in the ATLAS dashboard?"
-              },
-              "options": [
-                {
-                  "nb": "Ja",
-                  "en": "Yes"
-                },
-                {
-                  "nb": "Nei, jeg trenger mer tid",
-                  "en": "No, I need more time"
-                }
-              ],
-              "required": false
-            },
-            {
               "id": "C1-01",
               "type": "agree7",
               "codebook": "c1_01",
               "text": {
-                "nb": "Dashbordet gir meg informasjon som kan hjelpe meg å ta mer kalibrerte henvisningsbeslutninger over tid.",
-                "en": "The dashboard provides information that could help me make more calibrated referral decisions over time."
+                "nb": "ATLAS gir meg informasjon som kan hjelpe meg å ta mer kalibrerte henvisningsbeslutninger over tid.",
+                "en": "ATLAS provides information that could help me make more calibrated referral decisions over time."
               },
               "anchors": {
                 "low": {
@@ -312,8 +292,8 @@
               "type": "agree7",
               "codebook": "c1_02",
               "text": {
-                "nb": "Usikkerheten i en klinisk situasjon er tydelig kommunisert i dashbordet.",
-                "en": "The uncertainty in a clinical situation is clearly communicated in the dashboard."
+                "nb": "Usikkerheten i en klinisk situasjon er tydelig kommunisert i ATLAS.",
+                "en": "The uncertainty in a clinical situation is clearly communicated in ATLAS."
               },
               "anchors": {
                 "low": {
@@ -383,8 +363,8 @@
               "type": "agree7",
               "codebook": "c2_01",
               "text": {
-                "nb": "Dashbordet gjør det tydeligere for meg hva spesialisten (eller fastlegen) vurderer når de håndterer en henvisning.",
-                "en": "The dashboard makes it clearer to me what the specialist (or GP) considers when handling a referral."
+                "nb": "ATLAS gjør det tydeligere for meg hva spesialisten (eller fastlegen) vurderer når de håndterer en henvisning.",
+                "en": "ATLAS makes it clearer to me what the specialist (or GP) considers when handling a referral."
               },
               "anchors": {
                 "low": {
@@ -434,8 +414,8 @@
               "type": "agree7",
               "codebook": "c3_01",
               "text": {
-                "nb": "Dashbordet ivaretar behovene til både fastleger og spesialister.",
-                "en": "The dashboard serves the needs of both GPs and specialists."
+                "nb": "ATLAS ivaretar behovene til både fastleger og spesialister.",
+                "en": "ATLAS serves the needs of both GPs and specialists."
               },
               "anchors": {
                 "low": {
@@ -474,8 +454,8 @@
               "type": "longtext",
               "codebook": "c3_03",
               "text": {
-                "nb": "Hvordan vurderer du dashbordets evne til å ivareta behovene til den andre siden (fastleger eller spesialister)? Hva fungerer? Hva mangler? (1-3 setninger)",
-                "en": "How do you assess the dashboard's ability to serve the needs of the other side (GPs or specialists)? What works? What is missing? (1-3 sentences)"
+                "nb": "Hvordan vurderer du evnen ATLAS har til å ivareta behovene til den andre siden (fastleger eller spesialister)? Hva fungerer? Hva mangler? (1-3 setninger)",
+                "en": "How do you assess ATLAS's ability to serve the needs of the other side (GPs or specialists)? What works? What is missing? (1-3 sentences)"
               },
               "required": true,
               "privacyLine": true
@@ -485,8 +465,8 @@
               "type": "agree7",
               "codebook": "c4_01",
               "text": {
-                "nb": "Jeg kunne brukt dette dashbordet innenfor mine vanlige arbeidsrutiner uten vesentlig ekstra tidsbruk.",
-                "en": "I could use this dashboard within my usual work routines without significant additional time."
+                "nb": "Jeg kunne brukt ATLAS innenfor mine vanlige arbeidsrutiner uten vesentlig ekstra tidsbruk.",
+                "en": "I could use ATLAS within my usual work routines without significant additional time."
               },
               "anchors": {
                 "low": {
@@ -516,8 +496,8 @@
               "type": "agree7",
               "codebook": "c5_01",
               "text": {
-                "nb": "Dashbordet gjør det tydelig at jeg fortsatt har det endelige kliniske ansvaret.",
-                "en": "The dashboard makes it clear that I still have the final clinical responsibility."
+                "nb": "ATLAS gjør det tydelig at jeg fortsatt har det endelige kliniske ansvaret.",
+                "en": "ATLAS makes it clear that I still have the final clinical responsibility."
               },
               "anchors": {
                 "low": {
@@ -536,8 +516,8 @@
               "type": "agree7",
               "codebook": "c5_02",
               "text": {
-                "nb": "Jeg ville følt meg presset til å følge dashbordets indikasjon.",
-                "en": "I would feel pressured to follow the dashboard's indication."
+                "nb": "Jeg ville følt meg presset til å følge indikasjonen fra ATLAS.",
+                "en": "I would feel pressured to follow the indication from ATLAS."
               },
               "anchors": {
                 "low": {
@@ -608,8 +588,8 @@
         "en": "Overall impression"
       },
       "intro": {
-        "nb": "Dette skjemaet spør om helhetsinntrykket ditt av ATLAS etter omvisningen. Kritikk er like nyttig som ros. Ved å sende skjemaet samtykker du i at de anonyme svarene brukes i forskningsprosjektet.",
-        "en": "This form asks about your overall impression of ATLAS after the tour. Criticism is as useful as praise. By sending the form, you consent to the anonymous answers being used in the research project."
+        "nb": "Dette skjemaet spør om helhetsinntrykket ditt av ATLAS etter de tre sakene. Kritikk er like nyttig som ros. Ved å sende skjemaet samtykker du i at de anonyme svarene brukes i forskningsprosjektet.",
+        "en": "This form asks about your overall impression of ATLAS after the three cases. Criticism is as useful as praise. By sending the form, you consent to the anonymous answers being used in the research project."
       },
       "locked": [
         "rolle",
@@ -672,32 +652,12 @@
               "required": false
             },
             {
-              "id": "B-02",
-              "type": "choice",
-              "codebook": "b_02",
-              "text": {
-                "nb": "Har du sett gjennom alle skjermbildene i ATLAS-dashbordet?",
-                "en": "Have you reviewed all the screens in the ATLAS dashboard?"
-              },
-              "options": [
-                {
-                  "nb": "Ja",
-                  "en": "Yes"
-                },
-                {
-                  "nb": "Nei, jeg trenger mer tid",
-                  "en": "No, I need more time"
-                }
-              ],
-              "required": false
-            },
-            {
               "id": "C1-01",
               "type": "agree7",
               "codebook": "c1_01",
               "text": {
-                "nb": "Dashbordet gir meg informasjon som kan hjelpe meg å ta mer kalibrerte henvisningsbeslutninger over tid.",
-                "en": "The dashboard provides information that could help me make more calibrated referral decisions over time."
+                "nb": "ATLAS gir meg informasjon som kan hjelpe meg å ta mer kalibrerte henvisningsbeslutninger over tid.",
+                "en": "ATLAS provides information that could help me make more calibrated referral decisions over time."
               },
               "anchors": {
                 "low": {
@@ -716,8 +676,8 @@
               "type": "agree7",
               "codebook": "c1_02",
               "text": {
-                "nb": "Usikkerheten i en klinisk situasjon er tydelig kommunisert i dashbordet.",
-                "en": "The uncertainty in a clinical situation is clearly communicated in the dashboard."
+                "nb": "Usikkerheten i en klinisk situasjon er tydelig kommunisert i ATLAS.",
+                "en": "The uncertainty in a clinical situation is clearly communicated in ATLAS."
               },
               "anchors": {
                 "low": {
@@ -788,8 +748,8 @@
               "type": "agree7",
               "codebook": "c2_01",
               "text": {
-                "nb": "Dashbordet gjør det tydeligere for meg hva spesialisten (eller fastlegen) vurderer når de håndterer en henvisning.",
-                "en": "The dashboard makes it clearer to me what the specialist (or GP) considers when handling a referral."
+                "nb": "ATLAS gjør det tydeligere for meg hva spesialisten (eller fastlegen) vurderer når de håndterer en henvisning.",
+                "en": "ATLAS makes it clearer to me what the specialist (or GP) considers when handling a referral."
               },
               "anchors": {
                 "low": {
@@ -839,8 +799,8 @@
               "type": "agree7",
               "codebook": "c3_01",
               "text": {
-                "nb": "Dashbordet ivaretar behovene til både fastleger og spesialister.",
-                "en": "The dashboard serves the needs of both GPs and specialists."
+                "nb": "ATLAS ivaretar behovene til både fastleger og spesialister.",
+                "en": "ATLAS serves the needs of both GPs and specialists."
               },
               "anchors": {
                 "low": {
@@ -879,8 +839,8 @@
               "type": "longtext",
               "codebook": "c3_03",
               "text": {
-                "nb": "Hvordan vurderer du dashbordets evne til å ivareta behovene til den andre siden (fastleger eller spesialister)? Hva fungerer? Hva mangler? (1-3 setninger)",
-                "en": "How do you assess the dashboard's ability to serve the needs of the other side (GPs or specialists)? What works? What is missing? (1-3 sentences)"
+                "nb": "Hvordan vurderer du evnen ATLAS har til å ivareta behovene til den andre siden (fastleger eller spesialister)? Hva fungerer? Hva mangler? (1-3 setninger)",
+                "en": "How do you assess ATLAS's ability to serve the needs of the other side (GPs or specialists)? What works? What is missing? (1-3 sentences)"
               },
               "required": true,
               "privacyLine": true
@@ -890,8 +850,8 @@
               "type": "agree7",
               "codebook": "c4_01",
               "text": {
-                "nb": "Jeg kunne brukt dette dashbordet innenfor mine vanlige arbeidsrutiner uten vesentlig ekstra tidsbruk.",
-                "en": "I could use this dashboard within my usual work routines without significant additional time."
+                "nb": "Jeg kunne brukt ATLAS innenfor mine vanlige arbeidsrutiner uten vesentlig ekstra tidsbruk.",
+                "en": "I could use ATLAS within my usual work routines without significant additional time."
               },
               "anchors": {
                 "low": {
@@ -921,8 +881,8 @@
               "type": "agree7",
               "codebook": "c5_01",
               "text": {
-                "nb": "Dashbordet gjør det tydelig at jeg fortsatt har det endelige kliniske ansvaret.",
-                "en": "The dashboard makes it clear that I still have the final clinical responsibility."
+                "nb": "ATLAS gjør det tydelig at jeg fortsatt har det endelige kliniske ansvaret.",
+                "en": "ATLAS makes it clear that I still have the final clinical responsibility."
               },
               "anchors": {
                 "low": {
@@ -941,8 +901,8 @@
               "type": "agree7",
               "codebook": "c5_02",
               "text": {
-                "nb": "Jeg ville følt meg presset til å følge dashbordets indikasjon.",
-                "en": "I would feel pressured to follow the dashboard's indication."
+                "nb": "Jeg ville følt meg presset til å følge indikasjonen fra ATLAS.",
+                "en": "I would feel pressured to follow the indication from ATLAS."
               },
               "anchors": {
                 "low": {
@@ -2469,8 +2429,8 @@
               "type": "longtext",
               "codebook": "d_v5_01",
               "text": {
-                "nb": "Ville en erfaren fastlege og en ny fastlege bruke dette dashbordet forskjellig? Hvordan?",
-                "en": "Would an experienced GP and a new GP use this dashboard differently? How?"
+                "nb": "Ville en erfaren fastlege og en ny fastlege bruke ATLAS forskjellig? Hvordan?",
+                "en": "Would an experienced GP and a new GP use ATLAS differently? How?"
               },
               "required": false,
               "privacyLine": true
@@ -2492,6 +2452,161 @@
       "receipt": {
         "nb": "Takk, svarene er sendt. Gå tilbake til ATLAS for å fortsette.",
         "en": "Thank you, the answers have been sent. Go back to ATLAS to continue."
+      }
+    },
+    {
+      "key": "S9",
+      "title": {
+        "nb": "Tilbakemelding underveis",
+        "en": "Feedback along the way"
+      },
+      "intro": {
+        "nb": "Dette skjemaet gjelder delen av ATLAS du nettopp har sett. Det er frivillig og tar under ett minutt. Kritikk er like nyttig som ros. Ved å sende skjemaet samtykker du i at de anonyme svarene brukes i forskningsprosjektet.",
+        "en": "This form is about the part of ATLAS you have just seen. It is voluntary and takes less than a minute. Criticism is as useful as praise. By sending the form, you consent to the anonymous answers being used in the research project."
+      },
+      "locked": [
+        "rolle",
+        "studienavn",
+        "side",
+        "seksjon",
+        "versjon"
+      ],
+      "pages": [
+        {
+          "items": [
+            {
+              "id": "rolle",
+              "type": "locked",
+              "codebook": "rolle",
+              "text": {
+                "nb": "Rolle",
+                "en": "Role"
+              },
+              "required": false
+            },
+            {
+              "id": "studienavn",
+              "type": "locked",
+              "codebook": "studienavn",
+              "text": {
+                "nb": "Studienavn",
+                "en": "Study name"
+              },
+              "required": false
+            },
+            {
+              "id": "side",
+              "type": "locked",
+              "codebook": "side",
+              "text": {
+                "nb": "Side i ATLAS",
+                "en": "Page in ATLAS"
+              },
+              "required": false
+            },
+            {
+              "id": "seksjon",
+              "type": "locked",
+              "codebook": "seksjon",
+              "text": {
+                "nb": "Seksjon",
+                "en": "Section"
+              },
+              "required": false
+            },
+            {
+              "id": "versjon",
+              "type": "locked",
+              "codebook": "versjon",
+              "text": {
+                "nb": "Versjon",
+                "en": "Version"
+              },
+              "required": false
+            },
+            {
+              "id": "S9-01",
+              "type": "longtext",
+              "codebook": "s9_01",
+              "text": {
+                "nb": "Hva la du merke til her? Noe som var uklart, nyttig eller i veien?",
+                "en": "What did you notice here? Anything unclear, useful or in the way?"
+              },
+              "required": false,
+              "privacyLine": true
+            },
+            {
+              "id": "S9-02",
+              "type": "clarity5",
+              "codebook": "s9_02",
+              "text": {
+                "nb": "Hvor tydelig var denne delen?",
+                "en": "How clear was this part?"
+              },
+              "anchors": {
+                "low": {
+                  "nb": "Svært utydelig",
+                  "en": "Very unclear"
+                },
+                "high": {
+                  "nb": "Svært tydelig",
+                  "en": "Very clear"
+                }
+              },
+              "required": false
+            },
+            {
+              "id": "S9-03",
+              "type": "longtext",
+              "codebook": "s9_03",
+              "text": {
+                "nb": "Hva ville du endret?",
+                "en": "What would you change?"
+              },
+              "required": false,
+              "privacyLine": true
+            },
+            {
+              "id": "S9-04",
+              "type": "choice",
+              "codebook": "s9_04",
+              "text": {
+                "nb": "Leste du noe her som et råd om hva du skulle gjøre?",
+                "en": "Did you read anything here as advice on what to do?"
+              },
+              "options": [
+                {
+                  "nb": "Ja",
+                  "en": "Yes"
+                },
+                {
+                  "nb": "Nei",
+                  "en": "No"
+                },
+                {
+                  "nb": "Usikker",
+                  "en": "Unsure"
+                }
+              ],
+              "required": false
+            },
+            {
+              "id": "S9-05",
+              "type": "longtext",
+              "codebook": "s9_05",
+              "text": {
+                "nb": "Hva?",
+                "en": "What?"
+              },
+              "required": false,
+              "privacyLine": true
+            }
+          ]
+        }
+      ],
+      "receipt": {
+        "nb": "Takk, tilbakemeldingen er sendt. Gå tilbake til ATLAS for å fortsette.",
+        "en": "Thank you, the feedback has been sent. Go back to ATLAS to continue."
       }
     },
     {

@@ -82,7 +82,8 @@ export function StudyWorkProvider({ actions, children }: { actions: StudyWorkAct
       viewer,
       base: '/studie',
       casePath: (caseId, view) => `/studie/sak/${caseId}${view ? `/${view}` : ''}`,
-      listPath: '/studie/liste',
+      // v3.1: the overview («Min dag», «Inntaket i dag») is where a case is opened from and returned to.
+      listPath: '/studie/hjem',
       go: (path) => navigate(path),
       gp: study.gp,
       dps: study.dps,

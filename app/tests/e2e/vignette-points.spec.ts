@@ -1,6 +1,6 @@
 import { expect, test, type Page } from '@playwright/test';
 import { mockNettskjema, recordSubmissions, submissions, configWithoutForms } from './mock';
-import { frame, frameSteg, panel, place, sendForm, toStopPage } from './helpers';
+import { HOME_HEADING, frame, frameSteg, openCurrentCase, panel, place, sendForm, toStopPage } from './helpers';
 
 // No check depends on the addresses the site holds: with none, review mode gives feedback in its preview forms.
 // A check that needs forms routes them to the stand-in (mockNettskjema), which takes precedence.
@@ -26,7 +26,7 @@ const BEFORE: Record<Vignette, Vignette[]> = { kari: [], erlend: ['kari'], astri
 
 function seedState(role: Role, v: Vignette) {
   const sent = (steg: string) => ({ status: 'sent', at: '2026-10-12T10:00:00Z', steg, via: 'panel' });
-  const ledger: Record<string, object> = { S1: sent('S1'), S2: sent('S2') };
+  const ledger: Record<string, object> = { S1: sent('S1') };
   const visAtlas: Record<string, boolean> = {};
   const phase: Record<string, string> = {};
   for (const b of BEFORE[v]) {
@@ -35,7 +35,7 @@ function seedState(role: Role, v: Vignette) {
     phase[b] = 'done';
   }
   return {
-    v: 1,
+    v: 2,
     roleChoice: role === 'gp' ? 'fastlege' : 'dps-kliniker',
     intervju: 'Nei',
     furthest: v,
@@ -46,8 +46,10 @@ function seedState(role: Role, v: Vignette) {
     phase,
     gp: {},
     dps: {},
-    tour: { part: 4, step: 0, done: true },
+    tour: { part: 5, step: 0, done: true, started: true },
     extra: {},
+    prompts: {},
+    feedbackSent: [],
   };
 }
 
@@ -56,7 +58,7 @@ async function seed(page: Page, role: Role, v: Vignette) {
   await page.addInitScript((s) => {
     // Seed once: a reload must keep what the test did after the seed.
     if (!window.sessionStorage.getItem('seeded')) {
-      window.localStorage.setItem('atlas.study.v1', JSON.stringify(s));
+      window.localStorage.setItem('atlas.study.v2', JSON.stringify(s));
       window.sessionStorage.setItem('seeded', '1');
     }
   }, state);
@@ -95,7 +97,10 @@ async function ownDecision(page: Page, role: Role, v: Vignette) {
 }
 
 async function startCase(page: Page) {
-  await page.goto('/#/studie');
+  // v3.1: between steps the study opens on the overview; the case opens from its card.
+  await page.goto('/#/studie/hjem');
+  await expect(page.getByRole('heading', { level: 1, name: HOME_HEADING })).toBeVisible();
+  await openCurrentCase(page);
   await page.getByRole('button', { name: 'Start saken' }).click();
   await expect(page.getByText('Uten ATLAS', { exact: true }).first()).toBeVisible();
 }
@@ -172,7 +177,9 @@ for (const [role, v] of CASES) {
       await page.getByRole('button', { name: 'Hjelp' }).click();
       await page.getByRole('menuitem', { name: 'Start ufullførte steg på nytt' }).click();
       await page.getByRole('button', { name: 'Ja, start på nytt' }).click();
-      await expect(page).toHaveURL(new RegExp(`#/studie/sak/${v}/orientering$`));
+      // The case is no longer in progress: back on the overview, with the case on its card.
+      await expect(page).toHaveURL(/#\/studie\/hjem$/);
+      await openCurrentCase(page);
       await page.getByRole('button', { name: 'Start saken' }).click();
       expect(await frameSteg(page)).toBe(`${steg}-etter`);
     });

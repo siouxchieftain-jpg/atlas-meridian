@@ -27,6 +27,16 @@ export default defineConfig({
     target: 'es2022',
     sourcemap: false,
     chunkSizeWarningLimit: 1400,
+    rollupOptions: {
+      output: {
+        // React and Fluent change far less often than ATLAS: in a file of their own, a participant's browser keeps them
+        // from one deploy to the next, and ATLAS's own file stays small.
+        manualChunks(id) {
+          if (id.includes('/node_modules/')) return 'vendor';
+          return undefined;
+        },
+      },
+    },
   },
   test: {
     environment: 'jsdom',

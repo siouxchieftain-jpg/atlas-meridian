@@ -20,7 +20,7 @@ const useStyles = makeStyles({
     paddingBlock: 'clamp(16px, 3vw, 28px)',
     minWidth: 0,
     boxSizing: 'border-box',
-    minHeight: `calc(100dvh - var(--atlas-header-h, 48px) - ${size.panelInset * 2}px - 64px)`,
+    minHeight: `calc(100dvh - var(--atlas-header-h, 48px) - ${size.panelInset * 2}px - 66px)`,
     display: 'flex',
     flexDirection: 'column',
     gap: tokens.spacingVerticalL,
@@ -30,7 +30,7 @@ const useStyles = makeStyles({
   narrowCol: { maxWidth: '880px' },
   guideWrap: {
     marginBlockStart: `${size.panelInset}px`,
-    minHeight: `calc(100dvh - var(--atlas-header-h, 48px) - ${size.panelInset * 2}px - 64px)`,
+    minHeight: `calc(100dvh - var(--atlas-header-h, 48px) - ${size.panelInset * 2}px - 66px)`,
     display: 'flex',
     flexDirection: 'column',
   },

@@ -90,16 +90,21 @@ const useStyles = makeStyles({
   helpExtra: { minWidth: 0 },
 });
 
-export function Wordmark({ to, extra }: { to: string; extra?: string }) {
+export function Wordmark({ to, extra }: { to: string; extra?: string | string[] }) {
   const cls = useStyles();
   const { s } = useLang();
+  const extras = extra === undefined ? [] : Array.isArray(extra) ? extra : [extra];
   return (
     <span style={{ display: 'inline-flex', alignItems: 'center', gap: 8 }}>
       <RouterLink to={to} className={cls.wordmark} aria-label={`${s('wordmark')}, ${s('prototype')}`}>
         {s('wordmark')}
       </RouterLink>
       <span className={mergeClasses(cls.chip, cls.hideSmall)}>{s('prototype')}</span>
-      {extra && <span className={mergeClasses(cls.chip, cls.hideSmall)}>{extra}</span>}
+      {extras.map((x) => (
+        <span key={x} className={mergeClasses(cls.chip, cls.hideSmall)} data-header-chip="">
+          {x}
+        </span>
+      ))}
     </span>
   );
 }

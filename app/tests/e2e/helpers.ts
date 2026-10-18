@@ -38,14 +38,55 @@ export async function startStudy(page: Page, role: 'Fastlege' | 'DPS-kliniker', 
   await expect(page.locator('iframe[data-form-frame]')).toBeVisible();
 }
 
-export async function doTour(page: Page) {
-  await page.getByRole('button', { name: 'Gå til omvisningen' }).click();
-  for (let i = 0; i < 20; i++) {
-    const end = page.getByRole('button', { name: 'Ja, gå videre' });
-    if (await end.isVisible()) break;
-    await page.getByRole('button', { name: /^(Neste|Neste del|Se oversikten)$/ }).click();
+/** The overview's heading, for either role. */
+export const HOME_HEADING = /^(Min dag|Inntaket i dag)$/;
+
+/** After S1 is sent: on to the overview (v3.1). */
+export async function toHome(page: Page) {
+  await page.getByRole('button', { name: 'Til oversikten' }).click();
+  await expect(page.getByRole('heading', { level: 1, name: HOME_HEADING })).toBeVisible();
+}
+
+/** Through the tour, from the next button to the closing screen (the study's part first, then ATLAS's). */
+export async function clickThroughTour(page: Page) {
+  for (let i = 0; i < 30; i++) {
+    if (await page.locator('[data-tour-prompt], [data-tour-end]').first().isVisible()) break;
+    await page.getByRole('button', { name: /^(Neste|Neste del|Avslutt omvisningen)$/ }).click();
   }
-  await page.getByRole('button', { name: 'Ja, gå videre' }).click();
+}
+
+/**
+ * From the overview after S1: the card before the tour, the tour to its end, and back to the overview with the cases
+ * open. The question about the tour is left unanswered («Til oversikten» answers «later»).
+ */
+export async function doTour(page: Page) {
+  await page.locator('[data-start-tour]').click();
+  await page.getByRole('dialog').getByRole('button', { name: 'Start omvisningen' }).click();
+  await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
+  await clickThroughTour(page);
+  await page.getByRole('button', { name: 'Til oversikten' }).click();
+  await expect(page.getByRole('heading', { level: 1, name: HOME_HEADING })).toBeVisible();
+}
+
+/** From the overview: the current case's briefing, from the study card. */
+export async function openCurrentCase(page: Page) {
+  await page.locator('[data-study-card] [data-open-case]').click();
+  await expect(page.getByRole('button', { name: /^(Start saken|Fortsett saken)$/ })).toBeVisible();
+}
+
+/** S1, the overview, the tour and Kari's briefing: ready for the first case (v3.1). */
+export async function toFirstCase(page: Page, role: 'Fastlege' | 'DPS-kliniker' = 'Fastlege', intervju: 'Ja' | 'Nei' | 'Vil ikke svare' = 'Nei') {
+  await startStudy(page, role, intervju);
+  await sendForm(page);
+  await toHome(page);
+  await doTour(page);
+  await openCurrentCase(page);
+}
+
+/** The summary's way on: past the question about the case, back to the overview. */
+export async function finishCaseHome(page: Page) {
+  await page.getByRole('button', { name: 'Til oversikten' }).click();
+  await expect(page.getByRole('heading', { level: 1, name: HOME_HEADING })).toBeVisible();
 }
 
 /** Place the case with the visible band control (below 1024 px it sits in the ATLAS overlay). */

@@ -1,6 +1,6 @@
 import { expect, test, type Page } from '@playwright/test';
 import { mockNettskjema, configWithoutForms } from './mock';
-import { caseOnlyThenAtlas, doTour, panel, place, sendForm, startStudy, toStopPage } from './helpers';
+import { caseOnlyThenAtlas, finishCaseHome, openCurrentCase, panel, place, sendForm, startStudy, toFirstCase, toStopPage } from './helpers';
 
 // No check depends on the addresses the site holds: with none, review mode gives feedback in its preview forms.
 // A check that needs forms routes them to the stand-in (mockNettskjema), which takes precedence.
@@ -14,11 +14,7 @@ test.beforeEach(async ({ context }) => {
  */
 
 async function toKari(page: Page, role: 'Fastlege' | 'DPS-kliniker' = 'Fastlege') {
-  await startStudy(page, role);
-  await sendForm(page);
-  await doTour(page);
-  await sendForm(page);
-  await page.getByRole('button', { name: 'Gå til den første saken' }).click();
+  await toFirstCase(page, role);
 }
 
 /** Move within the app without a reload, as the in-app links do. */
@@ -67,7 +63,8 @@ test('G-15: resetting unfinished steps is confirmed on the page it leads to, wit
   await page.getByRole('button', { name: 'Hjelp' }).click();
   await page.getByRole('menuitem', { name: 'Start ufullførte steg på nytt' }).click();
   await page.getByRole('button', { name: 'Ja, start på nytt' }).click();
-  await expect(page).toHaveURL(/#\/studie\/sak\/kari\/orientering$/);
+  // v3.1: the case starts again from the overview.
+  await expect(page).toHaveURL(/#\/studie\/hjem$/);
   await expect(page.getByText('Ufullførte steg er startet på nytt.')).toBeVisible();
   await expect(page.locator('.fui-Toast')).toHaveCount(0);
   // Once the page has settled, the notice belongs to that page only.
@@ -148,12 +145,12 @@ test('MF-03: the compact band names every marker it draws', async ({ page }) => 
 async function seedGpAtAstrid(page: Page) {
   const sent = (steg: string) => ({ status: 'sent', at: '2026-10-12T10:00:00Z', steg, via: 'panel' });
   const state = {
-    v: 1,
+    v: 2,
     roleChoice: 'fastlege',
     intervju: 'Nei',
     furthest: 'astrid',
     route: 'panel',
-    ledger: { S1: sent('S1'), S2: sent('S2'), S3: sent('S3-etter'), S4: sent('S4-etter') },
+    ledger: { S1: sent('S1'), S3: sent('S3-etter'), S4: sent('S4-etter') },
     visAtlas: { kari: true, erlend: true },
     page1: {},
     phase: { kari: 'done', erlend: 'done' },
@@ -164,7 +161,7 @@ async function seedGpAtAstrid(page: Page) {
   };
   await page.addInitScript((s) => {
     if (!window.sessionStorage.getItem('seeded')) {
-      window.localStorage.setItem('atlas.study.v1', JSON.stringify(s));
+      window.localStorage.setItem('atlas.study.v2', JSON.stringify(s));
       window.sessionStorage.setItem('seeded', '1');
     }
   }, state);
@@ -173,7 +170,8 @@ async function seedGpAtAstrid(page: Page) {
 test('R2GP-01: Astrid «Henvis på nytt» then «Send henvisning» leads on to the summary and Avslutning', async ({ page }) => {
   await mockNettskjema(page);
   await seedGpAtAstrid(page);
-  await page.goto('/#/studie');
+  await page.goto('/#/studie/hjem');
+  await openCurrentCase(page);
   await page.getByRole('button', { name: 'Start saken' }).click();
   await toStopPage(page);
   await panel(page).getByRole('button', { name: 'Jeg har svart på side 1' }).click();
@@ -194,8 +192,9 @@ test('R2GP-01: Astrid «Henvis på nytt» then «Send henvisning» leads on to t
   await page.getByRole('button', { name: 'Fortsett' }).click();
   await expect(page).toHaveURL(/#\/studie\/sak\/astrid\/oppsummering$/);
   await expect(page.getByText(/henvis på nytt/i).first()).toBeVisible();
-  await page.getByRole('button', { name: 'Gå til neste steg' }).click();
-  await expect(page).toHaveURL(/#\/studie\/avslutning$/);
+  // v3.1: back to the overview, where the closing part waits.
+  await finishCaseHome(page);
+  await expect(page.locator('[data-study-card]').getByRole('button', { name: 'Gå til avslutningen' })).toBeVisible();
   // Back in the dialogue the plan stays as it was, with the way on to the summary.
   await page.goto('/#/studie/sak/astrid/dialog');
   await expect(page.getByText('Planen kan ikke endres etter at den nye henvisningen er skrevet.').or(page.getByText(/Planen er lagret og kan ikke endres/))).toBeVisible();
@@ -264,12 +263,12 @@ test('R2V-02: the DPS Astrid case-only line asks how to answer the GP, not for a
   await mockNettskjema(page);
   const sent = (steg: string) => ({ status: 'sent', at: '2026-10-12T10:00:00Z', steg, via: 'panel' });
   const state = {
-    v: 1,
+    v: 2,
     roleChoice: 'dps-kliniker',
     intervju: 'Nei',
     furthest: 'astrid',
     route: 'panel',
-    ledger: { S1: sent('S1'), S2: sent('S2'), S3: sent('S3-etter'), S4: sent('S4-etter') },
+    ledger: { S1: sent('S1'), S3: sent('S3-etter'), S4: sent('S4-etter') },
     visAtlas: { kari: true, erlend: true },
     page1: {},
     phase: { kari: 'done', erlend: 'done' },
@@ -280,11 +279,12 @@ test('R2V-02: the DPS Astrid case-only line asks how to answer the GP, not for a
   };
   await page.addInitScript((s) => {
     if (!window.sessionStorage.getItem('seeded')) {
-      window.localStorage.setItem('atlas.study.v1', JSON.stringify(s));
+      window.localStorage.setItem('atlas.study.v2', JSON.stringify(s));
       window.sessionStorage.setItem('seeded', '1');
     }
   }, state);
-  await page.goto('/#/studie');
+  await page.goto('/#/studie/hjem');
+  await openCurrentCase(page);
   await page.getByRole('button', { name: 'Start saken' }).click();
   await expect(page.getByText(/Tenk gjennom hvordan du ville svart fastlegen/)).toBeVisible();
   await expect(page.getByText(/hvilket utfall du ville valgt/)).toHaveCount(0);
@@ -374,7 +374,7 @@ test('R3A-03: at 400 % zoom the feedback popover stays inside the window', async
 async function seedGpAtTakk(page: Page) {
   const sent = (steg: string) => ({ status: 'sent', at: '2026-10-12T10:00:00Z', steg, via: 'panel' });
   const state = {
-    v: 1,
+    v: 2,
     roleChoice: 'fastlege',
     intervju: 'Nei',
     furthest: 'takk',
@@ -390,7 +390,7 @@ async function seedGpAtTakk(page: Page) {
   };
   await page.addInitScript((s) => {
     if (!window.sessionStorage.getItem('seeded')) {
-      window.localStorage.setItem('atlas.study.v1', JSON.stringify(s));
+      window.localStorage.setItem('atlas.study.v2', JSON.stringify(s));
       window.sessionStorage.setItem('seeded', '1');
     }
   }, state);
@@ -417,7 +417,7 @@ test('R3F-02: the Takk dialog gives focus back on cancel, and to the Velkommen h
   await expect(h1).toBeVisible();
   await expect(h1).toBeFocused();
   // The study starts again from nothing: the app writes only a fresh, empty state on load.
-  const stored = await page.evaluate(() => JSON.parse(window.localStorage.getItem('atlas.study.v1') ?? '{}'));
+  const stored = await page.evaluate(() => JSON.parse(window.localStorage.getItem('atlas.study.v2') ?? '{}'));
   expect(stored.furthest).toBe('velkommen');
   expect(stored.ledger).toEqual({});
   expect(stored.intervju).toBeUndefined();
@@ -652,7 +652,8 @@ test('r5F-04: the GP’s summary says whether the GP replied to DPS, and whether
 test('r5F-05: Astrid’s new referral is dated after the last message in the thread', async ({ page }) => {
   await mockNettskjema(page);
   await seedGpAtAstrid(page);
-  await page.goto('/#/studie');
+  await page.goto('/#/studie/hjem');
+  await openCurrentCase(page);
   await page.getByRole('button', { name: 'Start saken' }).click();
   await toStopPage(page);
   await panel(page).getByRole('button', { name: 'Jeg har svart på side 1' }).click();

@@ -126,21 +126,28 @@ export type StepId =
   | 'ekstra'
   | 'takk';
 
+/**
+ * v3.1: the participant comes home to the overview after «Om deg», starts the tour from there, works the three cases
+ * from there, and answers «ATLAS som helhet» (S2) after the cases, when there is something to judge.
+ */
 export const STEP_ORDER: StepId[] = [
   'velkommen',
   'om-deg',
   'omvisning',
-  'helhet',
   'kari',
   'erlend',
   'astrid',
+  'helhet',
   'avslutning',
   'ekstra',
   'takk',
 ];
 
-/** The study's form steps (`steg` values without the `-etter` suffix). */
-export type FormStep = 'S1' | 'S2' | 'S3' | 'S4' | 'S5' | 'S6' | 'S7' | 'S8';
+/** The study's form steps (`steg` values without the `-etter` suffix), and S9, the feedback form, which is no step. */
+export type FormStep = 'S1' | 'S2' | 'S3' | 'S4' | 'S5' | 'S6' | 'S7' | 'S8' | 'S9';
+
+/** The natural breaks where ATLAS asks once for feedback: the end of the tour and the end of each case. */
+export type PromptKey = 'tour' | CoreCaseId;
 
 export const CASE_FORM: Record<CoreCaseId, FormStep> = { kari: 'S3', erlend: 'S4', astrid: 'S5' };
 export const CASE_VIGNETT: Record<CaseId, string> = { kari: 'V1', erlend: 'V3', astrid: 'V4', torbjorn: 'V2', sofie: 'P' };
@@ -156,7 +163,9 @@ export type RoleChoice = 'fastlege' | 'dps-kliniker' | 'annen';
 export type Intervju = 'Ja' | 'Nei' | 'Vil ikke svare';
 
 export interface StudyState {
-  v: 1;
+  v: 2;
+  /** The round the session began in. A session from the other round is never carried over (see loadStudy). */
+  round?: 'pilot' | 'study';
   roleChoice?: RoleChoice;
   intervju?: Intervju;
   /** The random study name («Rolig elg 27»), made when the role is chosen; a locked field in every study form. */
@@ -173,8 +182,13 @@ export interface StudyState {
   phase: Partial<Record<CaseId, CasePhase>>;
   gp: Partial<Record<CaseId, GpWork>>;
   dps: Partial<Record<CaseId, DpsWork>>;
-  tour: { part: number; step: number; done: boolean; navAnswer?: 'ja' | 'nei' };
+  /** `started`: past the card before the tour («Start omvisningen»). */
+  tour: { part: number; step: number; done: boolean; started?: boolean };
   extra: { v5Seen?: boolean; finished?: boolean };
+  /** What the participant did with each natural-break prompt: it is asked once («sent» or «later»). */
+  prompts: Partial<Record<PromptKey, 'sent' | 'later'>>;
+  /** S9 sent from this browser: the parts, as `side#seksjon`, for «Sendt» marks in the feedback list. */
+  feedbackSent: string[];
   /** A form opened in a new tab and not yet confirmed. */
   pendingTab?: { form: FormStep; steg: string; at: string };
   /** Progress made with the preview flag (a reviewer's trial run, never a participant's). */

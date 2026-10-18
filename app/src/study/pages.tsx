@@ -1,63 +1,32 @@
-import {
-  Button,
-  Link,
-  MessageBar,
-  MessageBarActions,
-  MessageBarBody,
-  makeStyles,
-  mergeClasses,
-  tokens,
-  typographyStyles,
-} from '@fluentui/react-components';
-import {
-  ArrowRight20Regular,
-  CheckmarkCircle20Regular,
-  Circle20Regular,
-  Clock20Regular,
-  Delete20Regular,
-  DocumentArrowDown20Regular,
-  Form20Regular,
-  People20Regular,
-  RecordStop20Regular,
-  ShieldCheckmark20Regular,
-  Stethoscope20Regular,
-} from '@fluentui/react-icons';
-import { useEffect, useId, useRef, useState, type ReactNode } from 'react';
+import { Button, makeStyles, mergeClasses, tokens, typographyStyles } from '@fluentui/react-components';
+import { ArrowRight20Regular, CheckmarkCircle20Regular, Circle20Regular, Delete20Regular, Form20Regular, RecordStop20Regular } from '@fluentui/react-icons';
+import { useRef, useState, type ReactNode } from 'react';
 import type { CaseId, CoreCaseId } from '../content/types';
-import { cases, tour, v5 } from '../content';
+import { cases, tour, tourParts, v5 } from '../content';
 import { useLang } from '../i18n/i18n';
-import { getConfig, previewFlag } from '../engine/forms';
-import { Redirect, RouterLink, navigate } from '../router/router';
+import { previewFlag } from '../engine/forms';
+import { navigate } from '../router/router';
 import { stepIndex, useStudy } from '../state/study';
-import { STEP_ORDER, type FormStep, type Intervju, type RoleChoice, type StepId } from '../state/types';
-import { ChoiceGroup } from '../patterns/ChoiceGroup';
-import { GuideImage, Panel, SheenButton } from '../patterns/basics';
-import { atlasDawn, size } from '../theme/constants';
-import { focusAfterOverlay, Silent } from '../patterns/announce';
-import { Actions, Body, Card, Eyebrow, GuidePage, Lead, Muted, PageCard } from '../patterns/layout';
+import { STEP_ORDER, type FormStep, type StepId } from '../state/types';
+import { Panel } from '../patterns/basics';
+import { focusAfterOverlay } from '../patterns/announce';
+import { Actions, Body, Card, GuidePage, Lead, Muted, PageCard } from '../patterns/layout';
 import { FOCUS_HEADING_ON_LOAD, PageHeading } from '../shell/PageHeading';
 import { ConfirmDialog } from '../shell/HeaderParts';
 import { V5View } from '../overview/V5View';
-import { useFormHost } from './formHost';
-import { FormNotReadyBar } from './FormPanel';
 import { STEP_FORM, STEP_PATH, stepReachable, useStudyController } from './controller';
+import { FormStepCard, FormWaiting } from './FormStepCard';
 import { TourStepDialog } from '../tour/Tour';
+import { partOf, partTwoLabel } from './parts';
 
 const useStyles = makeStyles({
-  list: { margin: 0, paddingInlineStart: '20px', display: 'flex', flexDirection: 'column', gap: tokens.spacingVerticalXS, ...typographyStyles.body1 },
   h2: { ...typographyStyles.subtitle1, margin: 0 },
   section: { display: 'flex', flexDirection: 'column', gap: tokens.spacingVerticalS },
-  formCard: {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: tokens.spacingVerticalS,
-    paddingInline: tokens.spacingHorizontalL,
-    paddingBlock: tokens.spacingVerticalM,
-    borderRadius: tokens.borderRadiusLarge,
-    border: `1px solid ${tokens.colorNeutralStroke2}`,
-  },
-  formHead: { display: 'flex', alignItems: 'center', gap: tokens.spacingHorizontalS, ...typographyStyles.body1Strong },
   steps: { listStyle: 'none', margin: 0, padding: 0, display: 'flex', flexDirection: 'column', gap: tokens.spacingVerticalS },
+  // «Studien» by the study's three parts, side by side where there is room, so the page fits one laptop screen.
+  stepParts: { display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 290px), 1fr))', gap: tokens.spacingHorizontalL, alignItems: 'start' },
+  stepPart: { display: 'flex', flexDirection: 'column', gap: tokens.spacingVerticalS, minWidth: 0 },
+  partTitle: { ...typographyStyles.subtitle2, margin: 0 },
   stepRow: {
     display: 'grid',
     gridTemplateColumns: '24px minmax(0, 1fr) auto',
@@ -91,449 +60,11 @@ const useStyles = makeStyles({
     borderBottom: `1px solid ${tokens.colorNeutralStroke3}`,
     ...typographyStyles.body1,
   },
-  missing: {
-    ...typographyStyles.body1,
-    margin: 0,
-    paddingInline: tokens.spacingHorizontalS,
-    paddingBlock: tokens.spacingVerticalXS,
-    borderRadius: tokens.borderRadiusMedium,
-    border: `1px dashed ${tokens.colorNeutralStroke1}`,
-    color: tokens.colorNeutralForeground1,
-  },
 });
 
-/* ---------- The form block on a step page ---------- */
+export { OmDegPage, VelkommenPage } from './WelcomePages';
 
-export function FormStepCard({ step, autoOpen, intro }: { step: FormStep; autoOpen?: boolean; intro?: string }) {
-  const cls = useStyles();
-  const { s } = useLang();
-  const ctl = useStudyController();
-  const host = useFormHost();
-  const status = ctl.formStatus(step);
-  useEffect(() => {
-    if (autoOpen && status === 'closed') ctl.openStepForm(step);
-  }, [autoOpen, status, step, ctl]);
-  return (
-    <section className={cls.formCard} aria-label={s('formStatusTitle')} data-form-step={step}>
-      <span className={cls.formHead}>
-        <Form20Regular aria-hidden="true" />
-        {s('formStatusTitle')}
-      </span>
-      {intro && status !== 'sent' && <Body>{intro}</Body>}
-      {/* States that last: said once when the form is sent or skipped, not again on every visit (G-32, R3A-04). */}
-      <Silent>
-        {status === 'sent' && (
-          <MessageBar intent="success">
-            <MessageBarBody>{s('formStepDone')}</MessageBarBody>
-          </MessageBar>
-        )}
-        {status === 'skipped' && (
-          <MessageBar intent="info">
-            <MessageBarBody>{s('formStepSkipped')}</MessageBarBody>
-            <MessageBarActions>
-              <Button size="small" onClick={() => ctl.answerAnyway(step)}>
-                {s('formAnswerAnyway')}
-              </Button>
-            </MessageBarActions>
-          </MessageBar>
-        )}
-        {/* Once only: while the panel shows this form, the panel says it is not ready (R2A-11). */}
-        {status === 'notready' && !(host.form?.step === step && host.visible) && <FormNotReadyBar />}
-      </Silent>
-      {status === 'open' && (
-        <Actions>
-          <Body>{host.form?.route === 'tab' ? s('formIsOpenTab') : s('formIsOpenPanel')}</Body>
-          {!host.visible && <Button onClick={host.show}>{s('formShow')}</Button>}
-        </Actions>
-      )}
-      {status === 'closed' && (
-        <Actions>
-          <Button appearance="primary" icon={<Form20Regular />} onClick={() => ctl.openStepForm(step, { show: true })}>
-            {s('formOpenButton')}
-          </Button>
-        </Actions>
-      )}
-    </section>
-  );
-}
-
-/** «Send eller hopp over skjemaet …», except for a form that is not ready, which can be neither (r4A-05). */
-function FormWaiting({ step }: { step: FormStep }) {
-  const { s } = useLang();
-  const ctl = useStudyController();
-  return ctl.formStatus(step) === 'notready' ? null : <Muted>{s('formWaiting')}</Muted>;
-}
-
-/* ---------- 1 Velkommen ---------- */
-
-const useVelkommen = makeStyles({
-  wrap: { marginBlockStart: `${size.panelInset}px`, display: 'flex', flexDirection: 'column', gap: tokens.spacingVerticalS },
-  // A guide surface (B6): the dawn, with the guide layer's image on top of it.
-  hero: {
-    position: 'relative',
-    isolation: 'isolate',
-    overflow: 'hidden',
-    background: atlasDawn,
-    borderRadius: tokens.borderRadiusLarge,
-    boxShadow: tokens.shadow2,
-    paddingInline: 'clamp(16px, 4vw, 48px)',
-    paddingBlock: 'clamp(24px, 4vw, 48px)',
-    display: 'flex',
-    flexWrap: 'wrap',
-    alignItems: 'flex-start',
-    columnGap: '56px',
-    rowGap: '40px',
-    boxSizing: 'border-box',
-    // On the guide surface, captions use foreground 2 (WCAG 1.4.3, G-24).
-    '& [data-muted]': { color: tokens.colorNeutralForeground2 },
-    '@media print': { background: '#FFFFFF', boxShadow: 'none' },
-    '@media (forced-colors: active)': { background: 'Canvas', border: '1px solid CanvasText' },
-  },
-  text: { flex: '1 1 420px', minWidth: 0, maxWidth: '620px', display: 'flex', flexDirection: 'column', gap: tokens.spacingVerticalM },
-  roles: {
-    flex: '1 1 480px',
-    minWidth: 0,
-    display: 'flex',
-    flexDirection: 'column',
-    gap: tokens.spacingVerticalM,
-    '@media (min-width: 1024px)': { paddingBlockStart: '32px' },
-  },
-  cards: { display: 'flex', flexWrap: 'wrap', gap: tokens.spacingHorizontalL },
-  card: {
-    flex: '1 1 240px',
-    minWidth: 0,
-    display: 'flex',
-    flexDirection: 'column',
-    gap: tokens.spacingVerticalM,
-    padding: '24px',
-    backgroundColor: tokens.colorNeutralBackground1,
-    border: `1px solid ${tokens.colorNeutralStroke2}`,
-    borderRadius: tokens.borderRadiusLarge,
-    boxShadow: tokens.shadow2,
-    boxSizing: 'border-box',
-    '@media (forced-colors: active)': { border: '1px solid CanvasText' },
-  },
-  // The role already chosen, before S1 is sent: a brand edge, as a selected item has (G-20).
-  cardChosen: { border: `2px solid ${tokens.colorBrandStroke1}`, padding: '23px' },
-  cardIcon: {
-    width: '44px',
-    height: '44px',
-    flexShrink: 0,
-    borderRadius: tokens.borderRadiusCircular,
-    backgroundColor: tokens.colorBrandBackground2,
-    border: `1px solid ${tokens.colorBrandStroke2}`,
-    color: tokens.colorBrandForeground2,
-    display: 'inline-flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    boxSizing: 'border-box',
-  },
-  cardTitle: { ...typographyStyles.subtitle1, margin: 0 },
-  cardText: { ...typographyStyles.body1, margin: 0, color: tokens.colorNeutralForeground2 },
-  cardNote: { ...typographyStyles.caption1, margin: 0, color: tokens.colorNeutralForeground3 },
-  cardStart: { marginBlockStart: 'auto', alignSelf: 'flex-start' },
-  // Over the image: a white backing keeps the caption readable wherever the fabric is darker.
-  caption: {
-    ...typographyStyles.caption1,
-    margin: 0,
-    alignSelf: 'flex-start',
-    paddingInline: tokens.spacingHorizontalS,
-    paddingBlock: '2px',
-    borderRadius: tokens.borderRadiusMedium,
-    backgroundColor: 'rgba(255,255,255,0.88)',
-    color: tokens.colorNeutralForeground2,
-  },
-  good: {
-    backgroundColor: tokens.colorNeutralBackground1,
-    borderRadius: tokens.borderRadiusLarge,
-    boxShadow: tokens.shadow2,
-    paddingInline: 'clamp(16px, 4vw, 48px)',
-    paddingBlock: '28px',
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '20px',
-    '@media (forced-colors: active)': { border: '1px solid CanvasText' },
-  },
-  tiles: { display: 'flex', flexWrap: 'wrap', columnGap: '48px', rowGap: tokens.spacingVerticalXL },
-  tile: { flex: '1 1 260px', minWidth: 0, display: 'flex', gap: '14px', alignItems: 'flex-start' },
-  tileIcon: {
-    flex: '0 0 36px',
-    width: '36px',
-    height: '36px',
-    borderRadius: tokens.borderRadiusCircular,
-    backgroundColor: tokens.colorBrandBackground2,
-    border: `1px solid ${tokens.colorBrandStroke2}`,
-    color: tokens.colorBrandForeground2,
-    display: 'inline-flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    boxSizing: 'border-box',
-  },
-  tileBody: { display: 'flex', flexDirection: 'column', gap: tokens.spacingVerticalXS, minWidth: 0 },
-  tileTitle: { ...typographyStyles.body1Strong, margin: 0 },
-  tileText: { ...typographyStyles.body1, margin: 0, color: tokens.colorNeutralForeground2 },
-  tileNote: { ...typographyStyles.caption1, margin: 0, color: tokens.colorNeutralForeground3 },
-});
-
-function GoodTile({ icon, title, children }: { icon: ReactNode; title: string; children: ReactNode }) {
-  const v = useVelkommen();
-  return (
-    <div className={v.tile}>
-      <span className={v.tileIcon} aria-hidden="true">
-        {icon}
-      </span>
-      <div className={v.tileBody}>
-        <h3 className={v.tileTitle}>{title}</h3>
-        {children}
-      </div>
-    </div>
-  );
-}
-
-export function VelkommenPage() {
-  const cls = useStyles();
-  const v = useVelkommen();
-  const { s, t } = useLang();
-  const study = useStudy();
-  const ctl = useStudyController();
-  const cfg = getConfig();
-  const goodId = useId();
-  const st = study.state;
-  // Once S1 is in the ledger the role is fixed: Velkommen offers the way back instead of the role cards.
-  const roleFixed = !!st.ledger.S1;
-  const roleLabel = study.role === 'gp' ? s('roleGp') : s('roleDps');
-  const roleCards: { choice: RoleChoice; role: 'gp' | 'dps'; title: string; text: string; note: string; start: string }[] = [
-    { choice: 'fastlege', role: 'gp', title: s('velkommenRoleGpTitle'), text: s('velkommenRoleGpText'), note: s('velkommenRoleGpNote'), start: s('velkommenRoleGpStart') },
-    { choice: 'dps-kliniker', role: 'dps', title: s('velkommenRoleDpsTitle'), text: s('velkommenRoleDpsText'), note: s('velkommenRoleDpsNote'), start: s('velkommenRoleDpsStart') },
-  ];
-  return (
-    <div className={v.wrap}>
-      <section className={v.hero} aria-label={s('velkommenTitle')} data-guide-surface="">
-        <GuideImage variant="hero" />
-        <div className={v.text}>
-          <Eyebrow>{s('velkommenEyebrow')}</Eyebrow>
-          <PageHeading title={s('stepVelkommen')} guide>
-            {s('velkommenTitle')}
-          </PageHeading>
-          <Lead>{s('velkommenStudy')}</Lead>
-          <Body>{s('velkommenPrototype')}</Body>
-          <Body>{s('velkommenImagine')}</Body>
-          <div className={cls.section}>
-            <h2 className={cls.h2}>{s('velkommenHowTitle')}</h2>
-            <ol className={cls.list}>
-              <li>{s('velkommenHow1')}</li>
-              <li>{s('velkommenHow2')}</li>
-              <li>{s('velkommenHow3')}</li>
-              <li>{s('velkommenHow4')}</li>
-            </ol>
-          </div>
-          <Body>
-            <strong>{s('velkommenNoRight')}</strong>
-          </Body>
-        </div>
-        <div className={v.roles}>
-          {roleFixed ? (
-            <>
-              <h2 className={cls.h2}>{s('velkommenResumeTitle')}</h2>
-              <Body>{s('velkommenResumeText', { role: roleLabel })}</Body>
-              <Actions>
-                <SheenButton icon={<ArrowRight20Regular />} iconPosition="after" onClick={() => navigate(ctl.currentPath())}>
-                  {s('velkommenResume')}
-                </SheenButton>
-              </Actions>
-            </>
-          ) : (
-            <>
-              <h2 className={cls.h2}>{s('velkommenRolesTitle')}</h2>
-              <div className={v.cards}>
-                {roleCards.map((c) => (
-                  <article
-                    key={c.choice}
-                    className={mergeClasses(v.card, study.role === c.role && v.cardChosen)}
-                    aria-labelledby={`rolle-${c.role}`}
-                    data-role-card={c.role}
-                  >
-                    <span className={v.cardIcon} aria-hidden="true">
-                      {c.role === 'gp' ? <Stethoscope20Regular /> : <People20Regular />}
-                    </span>
-                    <h3 id={`rolle-${c.role}`} className={v.cardTitle}>
-                      {c.title}
-                    </h3>
-                    <p className={v.cardText}>{c.text}</p>
-                    <p className={v.cardNote}>{c.note}</p>
-                    <SheenButton
-                      className={v.cardStart}
-                      icon={<ArrowRight20Regular />}
-                      iconPosition="after"
-                      onClick={() => {
-                        study.chooseRole(c.choice);
-                        ctl.goToStep('om-deg');
-                      }}
-                    >
-                      {c.start}
-                    </SheenButton>
-                  </article>
-                ))}
-              </div>
-              <p className={v.caption}>{s('velkommenRoleCaption')}</p>
-            </>
-          )}
-        </div>
-      </section>
-      <section className={v.good} aria-labelledby={goodId}>
-        <h2 id={goodId} className={cls.h2}>
-          {s('velkommenGoodTitle')}
-        </h2>
-        <div className={v.tiles}>
-          <GoodTile icon={<Clock20Regular />} title={s('velkommenTimeTitle')}>
-            <p className={v.tileText}>{s('velkommenTimeText')}</p>
-            <p className={v.tileNote}>{s('velkommenDevice')}</p>
-          </GoodTile>
-          <GoodTile icon={<ShieldCheckmark20Regular />} title={s('velkommenAnonTitle')}>
-            <p className={v.tileText}>{s('velkommenAnonText')}</p>
-          </GoodTile>
-          <GoodTile icon={<DocumentArrowDown20Regular />} title={s('velkommenLetterTitle')}>
-            <p className={v.tileText}>{s('velkommenLetterText')}</p>
-            {/* A missing letter or contact is said, never hidden: the release check (S9) confirms both are set. */}
-            {cfg.informationLetter ? (
-              <p style={{ margin: 0 }}>
-                <Link href={cfg.informationLetter} target="_blank" rel="noopener noreferrer">
-                  {s('velkommenLetter')}
-                </Link>
-              </p>
-            ) : (
-              <p className={cls.missing}>{s('velkommenLetterMissing')}</p>
-            )}
-            {cfg.contact ? (
-              <p className={v.tileNote}>
-                {s('velkommenContact')} {t(cfg.contact)}
-              </p>
-            ) : (
-              <p className={cls.missing}>{s('velkommenContactMissing')}</p>
-            )}
-          </GoodTile>
-        </div>
-      </section>
-    </div>
-  );
-}
-
-/* ---------- 2 Om deg ---------- */
-
-const useOmDeg = makeStyles({
-  fact: { display: 'flex', flexWrap: 'wrap', alignItems: 'baseline', columnGap: tokens.spacingHorizontalM, rowGap: tokens.spacingVerticalXS },
-  factLabel: { ...typographyStyles.body1Strong, margin: 0 },
-  factValue: { ...typographyStyles.body1, margin: 0 },
-  name: {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: tokens.spacingVerticalXS,
-    paddingInline: tokens.spacingHorizontalL,
-    paddingBlock: tokens.spacingVerticalM,
-    borderRadius: tokens.borderRadiusLarge,
-    backgroundColor: tokens.colorBrandBackground2,
-    border: `1px solid ${tokens.colorBrandStroke2}`,
-    '@media (forced-colors: active)': { border: '1px solid CanvasText' },
-  },
-  nameValue: { ...typographyStyles.subtitle1, margin: 0, color: tokens.colorNeutralForeground1 },
-});
-
-export function OmDegPage() {
-  const o = useOmDeg();
-  const { s } = useLang();
-  const study = useStudy();
-  const ctl = useStudyController();
-  const reasonId = useId();
-  const nameId = useId();
-  const st = study.state;
-  const locked = !!st.ledger.S1;
-  const role = st.roleChoice;
-  const [intervju, setIntervju] = useState<Intervju | undefined>(st.intervju);
-  const [pendingOpen, setPendingOpen] = useState(false);
-  const saved = !!role && !!st.intervju;
-  const changed = intervju !== st.intervju;
-  // Open (or re-create) S1 once the stored answer carries the new value, so its locked fields are right.
-  useEffect(() => {
-    if (pendingOpen && st.intervju === intervju) {
-      setPendingOpen(false);
-      ctl.openStepForm('S1', { force: true, show: true });
-    }
-  }, [pendingOpen, st.intervju, intervju, ctl]);
-  // The role is chosen on Velkommen; without one, that is where the study starts.
-  if (!role) return <Redirect to="/studie/velkommen" />;
-  const s1Done = ctl.stepDone('S1');
-  return (
-    <PageCard narrow>
-      <PageHeading title={s('omDegTitle')}>{s('omDegTitle')}</PageHeading>
-      <Body>{s('omDegIntro')}</Body>
-      <div className={o.fact}>
-        <p className={o.factLabel}>{s('omDegRole')}:</p>
-        <p className={o.factValue}>{role === 'fastlege' ? s('roleGp') : s('roleDps')}</p>
-        {!locked && <RouterLink to="/studie/velkommen">{s('omDegRoleChange')}</RouterLink>}
-      </div>
-      {st.studienavn && (
-        <section className={o.name} aria-labelledby={nameId} data-studienavn="">
-          <h2 id={nameId} className={o.factLabel}>
-            {s('omDegNameTitle')}
-          </h2>
-          <p className={o.nameValue} lang="nb">
-            {st.studienavn}
-          </p>
-          <Muted>{s('omDegNameText')}</Muted>
-        </section>
-      )}
-      <ChoiceGroup<Intervju>
-        legend={s('interviewQuestion')}
-        layout="row"
-        value={intervju}
-        disabled={locked}
-        onChange={setIntervju}
-        choices={[
-          { value: 'Ja', label: s('intervjuJa') },
-          { value: 'Nei', label: s('intervjuNei') },
-          { value: 'Vil ikke svare', label: s('intervjuVilIkke') },
-        ]}
-      />
-      {locked ? (
-        <Muted>{s('omDegLocked')}</Muted>
-      ) : (
-        (!saved || changed) && (
-          <div>
-            <Button
-              appearance={intervju ? 'primary' : 'secondary'}
-              disabledFocusable={!intervju}
-              aria-describedby={!intervju ? reasonId : undefined}
-              onClick={() => {
-                if (!intervju) return;
-                study.setRole(role, intervju);
-                setPendingOpen(true);
-              }}
-            >
-              {s('omDegSave')}
-            </Button>
-            {!intervju && (
-              <p id={reasonId} style={{ ...typographyStyles.caption1, color: tokens.colorNeutralForeground3, margin: '8px 0 0' }}>
-                {s('omDegSaveReason')}
-              </p>
-            )}
-          </div>
-        )
-      )}
-      {saved && !changed && <FormStepCard step="S1" intro={s('s1Intro')} />}
-      {s1Done ? (
-        <Actions>
-          <Button appearance="primary" icon={<ArrowRight20Regular />} iconPosition="after" onClick={() => ctl.goToStep('omvisning')}>
-            {s('goToTour')}
-          </Button>
-        </Actions>
-      ) : (
-        saved && <FormWaiting step="S1" />
-      )}
-    </PageCard>
-  );
-}
-
-/* ---------- 4 Helhetsinntrykk ---------- */
+/* ---------- Helhetsinntrykk: after the three cases (v3.1) ---------- */
 
 export function HelhetPage() {
   const cls = useStyles();
@@ -542,7 +73,7 @@ export function HelhetPage() {
   const ctl = useStudyController();
   const role = study.role ?? 'gp';
   const [open, setOpen] = useState<string | null>(null);
-  const steps = tour[role].parts.flatMap((p) => p.steps);
+  const steps = tourParts(role).flatMap((p) => p.steps);
   return (
     <PageCard narrow>
       <PageHeading title={s('helhetTitle')}>{s('helhetTitle')}</PageHeading>
@@ -574,7 +105,7 @@ export function HelhetPage() {
       />
       {ctl.stepDone('S2') ? (
         <Actions>
-          <Button appearance="primary" icon={<ArrowRight20Regular />} iconPosition="after" onClick={() => ctl.goToStep('kari')}>
+          <Button appearance="primary" icon={<ArrowRight20Regular />} iconPosition="after" onClick={() => ctl.goToStep('avslutning')}>
             {s('helhetGoOn')}
           </Button>
         </Actions>
@@ -698,7 +229,7 @@ export function TakkPage() {
   const { s, t } = useLang();
   const study = useStudy();
   const role = study.role ?? 'gp';
-  const steps = tour[role].parts.flatMap((p) => p.steps);
+  const steps = tourParts(role).flatMap((p) => p.steps);
   const caseIds: CaseId[] = ['kari', 'erlend', 'astrid'];
   if (role === 'gp' && study.state.ledger.S7) caseIds.push('torbjorn');
   return (
@@ -827,7 +358,7 @@ export function StepperPage() {
   const study = useStudy();
   const ctl = useStudyController();
   const furthest = study.state.furthest;
-  const rows: ReactNode[] = STEP_ORDER.map((step) => {
+  const row = (step: StepId): ReactNode => {
     const idx = stepIndex(step);
     const now = step === furthest;
     const done = idx < stepIndex(furthest);
@@ -870,11 +401,26 @@ export function StepperPage() {
         </span>
       </li>
     );
-  });
+  };
+  const role = study.role ?? 'gp';
+  const parts: { n: 1 | 2 | 3; title: string; steps: StepId[] }[] = [
+    { n: 1, title: s('partIntro'), steps: STEP_ORDER.filter((x) => partOf(x) === 1) },
+    { n: 2, title: s(partTwoLabel(role)), steps: STEP_ORDER.filter((x) => partOf(x) === 2) },
+    { n: 3, title: s('partEnd'), steps: STEP_ORDER.filter((x) => partOf(x) === 3) },
+  ];
   return (
-    <PageCard narrow>
+    <PageCard>
       <PageHeading title={s('stepperTitle')}>{s('stepperTitle')}</PageHeading>
-      <ol className={cls.steps}>{rows}</ol>
+      <div className={cls.stepParts}>
+        {parts.map((p) => (
+          <section key={p.n} className={cls.stepPart} aria-labelledby={`step-part-${p.n}`}>
+            <h2 className={cls.partTitle} id={`step-part-${p.n}`}>
+              {s('partCompact', { n: p.n, title: p.title })}
+            </h2>
+            <ol className={cls.steps}>{p.steps.map(row)}</ol>
+          </section>
+        ))}
+      </div>
     </PageCard>
   );
 }

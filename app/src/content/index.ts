@@ -8,6 +8,7 @@ import type {
   PatternData,
   SharedOverview,
   TourContent,
+  TourPart,
   V5Content,
   Vocab,
 } from './types';
@@ -39,6 +40,14 @@ export const cases: Record<CaseId, CaseContent> = {
 export const vocab = vocabJson as unknown as Vocab;
 export const instrument = instrumentJson as unknown as Instrument;
 export const tour = tourJson as unknown as TourContent;
+
+/**
+ * The tour's parts for a role. The participant's tour starts with «Slik foregår studien»; review mode, «Se igjen» and
+ * the reasons on Takk show ATLAS's own parts only.
+ */
+export function tourParts(role: 'gp' | 'dps', withStudy = false): TourPart[] {
+  return withStudy ? tour[role].parts : tour[role].parts.filter((p) => !p.studyOnly);
+}
 export const notes = notesJson as unknown as Record<string, DesignNote>;
 export const glossary = glossaryJson as unknown as GlossaryEntry[];
 export const pattern = patternJson as unknown as PatternData;

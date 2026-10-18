@@ -532,7 +532,8 @@ describe('a section with one criterion: what says nothing about it does not coun
 
 describe('the screens promise no more than the reader does (r7F-01, r7F-07)', () => {
   it('say that the guide tries to skip what was not assessed and can still count it, in the tour and the design note', () => {
-    const margin = tour.gp.parts[2].steps[2].body;
+    const step = (id: string) => tour.gp.parts.flatMap((p) => p.steps).find((x) => x.id === id)!;
+    const margin = step('gp-margin').body;
     const note = notes.informasjonsguiden.text;
     for (const t of [margin, note]) {
       expect(t.nb).toContain('prøver å hoppe over');
@@ -541,6 +542,6 @@ describe('the screens promise no more than the reader does (r7F-01, r7F-07)', ()
       expect(t.en).toContain('can still count them');
       expect(t.nb).not.toContain('men ikke at noe ikke er vurdert');
     }
-    expect(tour.gp.parts[1].steps[3].reason.en).toContain('what it finds mentioned');
+    expect(step('gp-guide').reason.en).toContain('what it finds mentioned');
   });
 });
