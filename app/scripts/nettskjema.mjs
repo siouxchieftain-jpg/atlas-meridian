@@ -471,8 +471,13 @@ async function setOpenPeriod(c, period, label) {
       console.log(`${pad(form.key, 12)} no address yet`);
       continue;
     }
-    // Only the open period changes: the rest of the settings stay as they are.
-    await api(c, 'PATCH', `/form/${id}/settings`, period);
+    // Only the open period changes: the API takes one or more settings and leaves the rest as they are. It answers
+    // 204 when all are set, and 207 with the reasons when some are not.
+    const partly = await api(c, 'PATCH', `/form/${id}/settings`, period);
+    if (partly) {
+      process.exitCode = 1;
+      console.log(`${pad(form.key, 12)} not every setting was changed: ${JSON.stringify(partly).slice(0, 300)}`);
+    }
   }
   const mine = await api(c, 'GET', '/form/me');
   const byId = new Map((mine ?? []).map((f) => [f.formId, f]));
