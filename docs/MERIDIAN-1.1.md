@@ -15,7 +15,7 @@ Meridian 1.0 is the ATLAS design language as exported from the design tool on 20
 
 | ID | Rule | In ATLAS v3 |
 |---|---|---|
-| G-01 | Layout by size class: one column below 640 px, with the navigation as a drawer; a 48 px rail from 640 px; the ATLAS side panel inline from 1024 px and an end overlay below that; Meridian's 260 px navigation from 1366 px. Where the ATLAS panel is an overlay, a compact band sits at the top of the content. | As stated. No screen scrolls sideways at 320 px. |
+| G-01 | Layout by size class: one column below 640 px, with the navigation as a drawer; a 48 px rail from 640 px; the ATLAS side panel inline from 1024 px and an end overlay below that; Meridian's 260 px navigation from 1366 px. Where the ATLAS panel is an overlay, a compact band sits at the top of the content. | As stated. No screen scrolls sideways at 320 px. Study mode starts on the rail; its toggle opens the 260 px navigation from 1366 px. |
 | G-02 | Targets are at least 24 × 24 px for a fine pointer and 44 × 44 px for touch. | Every target is at least 24 × 24 px, quiet ones too («Hopp over skjemaet», «Ikke svar nå» are small transparent buttons since 3.2); the study recommends a laptop, and the touch sizes are not set. |
 | G-03 | Tabs, toolbars, breadcrumbs and tables keep their order when narrow and never make the page scroll sideways. | As stated. |
 | G-04 | Every view has a title («`<view>` · ATLAS»), one `h1` and the landmarks header, navigation, main and the ATLAS aside; on a route change focus moves to the `h1`. No patient name in a title. | As stated, in both languages. |
@@ -38,7 +38,7 @@ Meridian 1.0 is the ATLAS design language as exported from the design tool on 20
 | G-21 | The 48 px rail: icon links with `aria-current`, a 4 px brand indicator, a tooltip with the item's name and arrow-key movement. | As stated. |
 | G-22 | Fixed icon meanings, with no clashes: «Rett til helsehjelp» uses `arrow_enter`; «Fiktiv pasient» uses `beaker`; status icons mean system state only. | As stated. |
 | G-23 | Print shows the content without the shell, panels, the feedback tab or the dawn; the band prints with its caption and sentence. | As stated. |
-| G-24 | Text on the dawn uses Foreground 1, Foreground 2 or brand 60 only. | As stated. |
+| G-24 | Text on the dawn uses Foreground 1, Foreground 2 or brand 60 only. | As stated, and `guide-ink` for small text on guide surfaces: 6.8:1 on white, at least 5.0:1 on the dawn's and the guide card's warm stops, at least 4.7:1 on the study name's mark (measured in 3.3). |
 | G-25 | The band is an `aria-hidden` SVG beside its sentence; the other clinician's outline is `#616161`. | As stated. |
 | G-26 | Clinical content is third person and describes; interface mechanics may use short imperatives; guide surfaces may say «du» to describe options, never to advise. | As stated. |
 | G-27 | Fluent's English strings are replaced in Norwegian; dates and numbers use `nb-NO` formats; English lines carry `lang="en"`. | As stated; every text also exists in English, and the language toggle switches all of it. |
@@ -48,7 +48,7 @@ Meridian 1.0 is the ATLAS design language as exported from the design tool on 20
 | G-31 | A live framed window runs the real component in a sandbox, on a solid white card. | The tour's frames: nothing done in a frame is saved. |
 | G-32 | One announcer at the root; one announcement per user event; nothing said on a revisit or a language switch. | As stated. |
 | G-33 | A text area grows with its content up to 60 % of the window, then scrolls. | As stated. |
-| G-34 | Role avatars show a role icon on brand tint with a 1 px tint border, never initials. | As stated. |
+| G-34 | Role avatars show a role icon on brand tint with a 1 px tint border, never initials. | As stated. The study name's mark (3.3) is not a role avatar: it stands for the participant's own study name, its initials on the warm gradient, with the name always written beside it. |
 
 ## Two inconsistencies in the 1.0 pages, for the next export
 

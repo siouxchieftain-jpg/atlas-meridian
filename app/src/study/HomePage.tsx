@@ -1,10 +1,9 @@
-import { Button, Popover, PopoverSurface, PopoverTrigger, makeStyles, mergeClasses, tokens, typographyStyles } from '@fluentui/react-components';
+import { Button, Popover, PopoverSurface, PopoverTrigger, SearchBox, makeStyles, mergeClasses, tokens, typographyStyles } from '@fluentui/react-components';
 import {
   ArrowRight16Regular,
   ArrowRight20Regular,
   CheckmarkCircle16Filled,
   Clock16Regular,
-  Info16Regular,
   LockClosed16Regular,
   Map16Regular,
   PeopleCommunity20Regular,
@@ -16,20 +15,23 @@ import { formatDateWithWeekday, formatDayMonth, useLang } from '../i18n/i18n';
 import { DPS_TODAY, GP_TODAY, isWeekday } from '../engine/clock';
 import { navigate, useRoute } from '../router/router';
 import { useStudy } from '../state/study';
-import { StartButton, SrOnly, StatusChip } from '../patterns/basics';
-import { neutralBar } from '../theme/constants';
+import { GuideImage, SheenButton, SrOnly, StatusChip, StudyNameMark, guideCardSurface } from '../patterns/basics';
+import { guide, neutralBar } from '../theme/constants';
 import { PageHeading } from '../shell/PageHeading';
 import { TourStepDialog } from '../tour/Tour';
-import { focusAfterOverlay } from '../patterns/announce';
+import { focusAfterOverlay, useAtlasAnnounce } from '../patterns/announce';
 import { HOME_PATH, useStudyController } from './controller';
 import { CORE, caseInProgress, casesDone, currentCase, partTwoLabel } from './parts';
 import { TourStartDialog } from './TourStart';
 
 const useStyles = makeStyles({
   page: { marginBlockStart: '8px', display: 'flex', flexDirection: 'column', gap: '16px', minWidth: 0 },
-  head: { display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between', columnGap: '16px', rowGap: '8px' },
+  // The title, the day and its counts on the left; the patient search on the right (board 4a), under them when narrow.
+  head: { display: 'flex', flexWrap: 'wrap', alignItems: 'flex-end', justifyContent: 'space-between', columnGap: '24px', rowGap: '10px' },
+  headText: { display: 'flex', flexDirection: 'column', gap: '4px', minWidth: 0 },
   titleRow: { display: 'flex', flexWrap: 'wrap', alignItems: 'baseline', columnGap: '14px', rowGap: '2px', minWidth: 0 },
   day: { ...typographyStyles.body1, margin: 0, color: tokens.colorNeutralForeground2 },
+  search: { flex: '0 1 360px', minWidth: '240px', maxWidth: '100%' },
   // The day's counts as one line of plain text («6 timer · 3 med henvisningssak · 2 nye i innboksen»): facts, not buttons.
   counts: { listStyle: 'none', margin: 0, padding: 0, display: 'flex', flexWrap: 'wrap', columnGap: '8px', rowGap: '2px' },
   count: {
@@ -51,6 +53,10 @@ const useStyles = makeStyles({
   cols2: { gridTemplateColumns: '272px minmax(0, 1fr)' },
   cols3: { gridTemplateColumns: '272px minmax(0, 1fr) 320px' },
   cols3Dps: { gridTemplateColumns: '272px minmax(0, 1fr) 360px' },
+  // With the room of a laptop window, the side column splits in two, as board 8b draws «Min dag»: the inbox and the
+  // referrals beside the pattern and Delt oversikt, so the day fits one screen more often.
+  cols4: { gridTemplateColumns: '272px minmax(440px, 1fr) 240px 240px' },
+  cols4Dps: { gridTemplateColumns: '272px minmax(440px, 1fr) 360px 240px' },
   colStudy: { display: 'flex', flexDirection: 'column', gap: '12px', minWidth: 0 },
   colMain: { minWidth: 0 },
   colSide: {
@@ -62,6 +68,9 @@ const useStyles = makeStyles({
   },
   colSideUnder: { gridColumn: '1 / -1' },
   colSideBeside: { gridTemplateColumns: 'minmax(0, 1fr)' },
+  // Four columns: the side column's two groups take a grid column each.
+  colSideSplit: { display: 'contents' },
+  sideGroup: { display: 'flex', flexDirection: 'column', gap: '12px', minWidth: 0 },
   card: {
     backgroundColor: tokens.colorNeutralBackground1,
     borderRadius: tokens.borderRadiusLarge,
@@ -146,6 +155,7 @@ const useStyles = makeStyles({
   doneMark: { ...typographyStyles.caption1, color: tokens.colorNeutralForeground2, display: 'inline-flex', alignItems: 'center', gap: '4px', whiteSpace: 'nowrap' },
   doneIcon: { color: tokens.colorNeutralForeground2, display: 'inline-flex' },
   foot: { ...typographyStyles.caption1, margin: 0, paddingInline: '16px', paddingBlock: '10px', color: tokens.colorNeutralForeground3 },
+  empty: { ...typographyStyles.body1, margin: 0, paddingInline: '16px', paddingBlock: '16px', color: tokens.colorNeutralForeground2, borderBottom: `1px solid ${tokens.colorNeutralStroke3}` },
   items: { listStyle: 'none', margin: 0, padding: 0 },
   item: {
     position: 'relative',
@@ -278,71 +288,115 @@ const useStyles = makeStyles({
   dlList: { margin: 0 },
   dt: { ...typographyStyles.body1Strong },
   dd: { margin: 0, ...typographyStyles.body1 },
-  // The study card: a white card like the rest of the day, with the study's next step and one primary action.
+  // The study card: a guide card (boards 4a and 8b), the artwork fading in from the top, the study's next step with its
+  // one sheen action, the three cases with «Nå», and the study name. The study around the work, beside the day.
   study: {
+    ...guideCardSurface,
     display: 'flex',
     flexDirection: 'column',
     gap: '12px',
-    padding: '20px',
-    borderRadius: tokens.borderRadiusLarge,
-    backgroundColor: tokens.colorNeutralBackground1,
-    border: `1px solid ${tokens.colorNeutralStroke3}`,
+    paddingInline: '20px',
+    paddingBlockStart: '64px',
+    paddingBlockEnd: '20px',
     boxShadow: tokens.shadow2,
-    boxSizing: 'border-box',
-    '@media (forced-colors: active)': { border: '1px solid CanvasText' },
   },
-  eyebrow: { ...typographyStyles.caption1Strong, margin: 0, color: tokens.colorNeutralForeground2 },
+  studyBand: { height: '84px' },
+  eyebrow: { ...typographyStyles.caption1Strong, margin: 0, color: guide.ink },
   studyTitle: { ...typographyStyles.subtitle1, margin: 0, color: tokens.colorNeutralForeground1 },
   studyText: { ...typographyStyles.body1, margin: 0, color: tokens.colorNeutralForeground2 },
   studyMeta: { display: 'flex', alignItems: 'flex-start', gap: '6px', ...typographyStyles.body1, margin: 0, color: tokens.colorNeutralForeground2 },
-  studyMetaIcon: { flexShrink: 0, marginTop: '2px', color: tokens.colorNeutralForeground2, display: 'inline-flex' },
-  start: { alignSelf: 'flex-start', maxWidth: '100%', height: 'auto', minHeight: '32px', whiteSpace: 'normal', textAlign: 'start' },
+  studyMetaIcon: { flexShrink: 0, marginTop: '2px', color: guide.ink, display: 'inline-flex' },
+  start: { alignSelf: 'flex-start', maxWidth: '100%', height: 'auto', minHeight: '40px', whiteSpace: 'normal', textAlign: 'start' },
   tourLink: {
     alignSelf: 'flex-start',
     minWidth: 0,
     height: 'auto',
+    minHeight: '24px',
     paddingInline: 0,
-    color: tokens.colorBrandForegroundLink,
-    ':hover': { color: tokens.colorBrandForegroundLinkHover, textDecoration: 'underline' },
-    ':hover:active': { color: tokens.colorBrandForegroundLinkPressed },
+    ...typographyStyles.body1Strong,
+    color: guide.ink,
+    ':hover': { color: guide.ink, textDecoration: 'underline' },
+    ':hover:active': { color: guide.ink },
   },
-  // «Studienavnet ditt» with a small «Hva er dette?» button beside it, and the name below.
-  nameBox: {
+  // The three cases (board 4a): an empty ring to come, a coral dot and «Nå» for the current one, a tick when done.
+  cases: {
+    listStyle: 'none',
+    margin: 0,
+    paddingBlockStart: '12px',
+    paddingInline: 0,
+    borderTop: `1px solid ${guide.track}`,
     display: 'flex',
     flexDirection: 'column',
-    gap: '2px',
-    marginBlockStart: '4px',
-    paddingInline: '12px',
-    paddingBlock: '8px',
-    borderRadius: tokens.borderRadiusMedium,
-    border: `1px solid ${tokens.colorNeutralStroke2}`,
-    backgroundColor: tokens.colorNeutralBackground2,
+    gap: '10px',
+  },
+  caseRow: { display: 'flex', alignItems: 'center', gap: '10px', ...typographyStyles.body1, color: tokens.colorNeutralForeground2 },
+  caseNow: { ...typographyStyles.body1Strong, color: tokens.colorNeutralForeground1 },
+  caseDot: {
+    flex: '0 0 12px',
+    width: '12px',
+    height: '12px',
+    borderRadius: tokens.borderRadiusCircular,
+    boxSizing: 'border-box',
+    border: `1px solid ${tokens.colorNeutralStroke1}`,
+    backgroundColor: tokens.colorNeutralBackground1,
     '@media (forced-colors: active)': { border: '1px solid CanvasText' },
   },
+  caseDotNow: { border: 'none', backgroundColor: guide.coral, '@media (forced-colors: active)': { backgroundColor: 'Highlight' } },
+  caseDone: { flex: '0 0 16px', color: guide.ink, display: 'inline-flex', marginInline: '-2px' },
+  caseName: { flex: '1 1 auto', minWidth: 0 },
+  caseStatus: { ...typographyStyles.caption1Strong, color: guide.ink },
+  caseStatusDone: { ...typographyStyles.caption1, color: tokens.colorNeutralForeground2 },
+  // «Studienavnet ditt»: the name's mark, the label with a small «Hva er dette?» beside it, and the name below.
+  nameBox: {
+    display: 'grid',
+    gridTemplateColumns: '32px minmax(0, 1fr)',
+    alignItems: 'start',
+    columnGap: '10px',
+    marginBlockStart: '4px',
+    paddingInlineStart: '10px',
+    paddingInlineEnd: '6px',
+    paddingBlock: '8px',
+    borderRadius: tokens.borderRadiusLarge,
+    border: `1px solid ${guide.cardEdge}`,
+    backgroundColor: 'rgba(255,255,255,0.86)',
+    '@media (forced-colors: active)': { border: '1px solid CanvasText' },
+  },
+  nameStack: { display: 'flex', flexDirection: 'column', gap: '0', minWidth: 0 },
   nameLabel: { ...typographyStyles.caption1, color: tokens.colorNeutralForeground2 },
-  nameValue: { ...typographyStyles.body1Strong },
-  nameHead: { display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '4px' },
-  nameWhat: { minWidth: '24px', width: '24px', height: '24px', padding: 0, color: tokens.colorNeutralForeground2 },
+  nameValue: { ...typographyStyles.body1Strong, overflowWrap: 'anywhere' },
+  nameWhat: {
+    alignSelf: 'flex-start',
+    minWidth: 0,
+    height: '24px',
+    paddingInline: 0,
+    marginBlockStart: '2px',
+    ...typographyStyles.caption1Strong,
+    color: guide.ink,
+    ':hover': { color: guide.ink, textDecoration: 'underline' },
+    ':hover:active': { color: guide.ink },
+  },
   namePop: { maxWidth: '300px', display: 'flex', flexDirection: 'column', gap: '8px' },
   namePopTitle: { ...typographyStyles.body1Strong, margin: 0 },
   namePopText: { ...typographyStyles.body1, margin: 0 },
 });
 
-/** The least widths of the overview's grid for two and three columns: the study card 272 px, the day's list 472 or
- * 480 px, the side column 320 px (360 px for DPS, whose deadline strip needs it), and the 16 px gaps. */
+/** The least widths of the overview's grid for two, three and four columns: the study card 272 px, the day's list 472
+ * or 480 px (440 px beside two side columns), the side column 320 px (360 px for DPS, whose deadline strip needs it) or
+ * two of 240 px (as board 8b at 1366 px), and 16 px gaps. */
 const TWO_COLUMNS = 760;
 const THREE_COLUMNS: Record<Role, number> = { gp: 1104, dps: 1144 };
+const FOUR_COLUMNS: Record<Role, number> = { gp: 1240, dps: 1360 };
 
 /** How many columns the overview has room for, from its own measured width. */
-function useColumns(role: Role): [RefObject<HTMLDivElement | null>, 1 | 2 | 3] {
+function useColumns(role: Role): [RefObject<HTMLDivElement | null>, 1 | 2 | 3 | 4] {
   const ref = useRef<HTMLDivElement>(null);
-  const [cols, setCols] = useState<1 | 2 | 3>(1);
+  const [cols, setCols] = useState<1 | 2 | 3 | 4>(1);
   useLayoutEffect(() => {
     const el = ref.current;
     if (!el) return;
     const measure = () => {
       const w = el.getBoundingClientRect().width;
-      setCols(w >= THREE_COLUMNS[role] ? 3 : w >= TWO_COLUMNS ? 2 : 1);
+      setCols(w >= FOUR_COLUMNS[role] ? 4 : w >= THREE_COLUMNS[role] ? 3 : w >= TWO_COLUMNS ? 2 : 1);
     };
     measure();
     const ro = new ResizeObserver(measure);
@@ -372,13 +426,20 @@ export function HomePage() {
   }, [route.query]);
   const openStep = (id: string) => setStepDialog(id);
   const [colsRef, ncols] = useColumns(role);
-  const side = mergeClasses(cls.colSide, ncols === 2 && cls.colSideUnder, ncols === 3 && cls.colSideBeside);
+  const side = mergeClasses(cls.colSide, ncols === 2 && cls.colSideUnder, ncols === 3 && cls.colSideBeside, ncols === 4 && cls.colSideSplit);
+  // The patient search filters the day's list (board 4a); the rest of the day stays as it is.
+  const [query, setQuery] = useState('');
   return (
     <div className={cls.page}>
-      <HomeHead role={role} />
+      <HomeHead role={role} query={query} onQuery={setQuery} />
       <div
         ref={colsRef}
-        className={mergeClasses(cls.cols, ncols === 2 && cls.cols2, ncols === 3 && (role === 'dps' ? cls.cols3Dps : cls.cols3))}
+        className={mergeClasses(
+          cls.cols,
+          ncols === 2 && cls.cols2,
+          ncols === 3 && (role === 'dps' ? cls.cols3Dps : cls.cols3),
+          ncols === 4 && (role === 'dps' ? cls.cols4Dps : cls.cols4),
+        )}
         data-columns={ncols}
       >
         <div className={cls.colStudy}>
@@ -387,26 +448,34 @@ export function HomePage() {
         {role === 'gp' ? (
           <>
             <div className={cls.colMain}>
-              <Timeliste />
+              <Timeliste query={query} />
             </div>
             <div className={side}>
-              <GpInbox />
-              <GpReferrals />
-              <GpPattern onOpen={st.tour.done ? () => openStep('gp-monster') : undefined} />
-              <SharedCard role="gp" onOpen={st.tour.done ? () => openStep('gp-kalibrering') : undefined} />
-              <Pause />
+              <div className={cls.sideGroup}>
+                <GpInbox />
+                <GpReferrals />
+              </div>
+              <div className={cls.sideGroup}>
+                <GpPattern onOpen={st.tour.done ? () => openStep('gp-monster') : undefined} />
+                <SharedCard role="gp" onOpen={st.tour.done ? () => openStep('gp-kalibrering') : undefined} />
+                <Pause />
+              </div>
             </div>
           </>
         ) : (
           <>
             <div className={cls.colMain}>
-              <Queue />
+              <Queue query={query} />
             </div>
             <div className={side}>
-              <Deadlines />
-              <DpsMessages />
-              <SharedCard role="dps" onOpen={st.tour.done ? () => openStep('dps-kalibrering') : undefined} />
-              <Pause />
+              <div className={cls.sideGroup}>
+                <Deadlines />
+                <DpsMessages />
+              </div>
+              <div className={cls.sideGroup}>
+                <SharedCard role="dps" onOpen={st.tour.done ? () => openStep('dps-kalibrering') : undefined} />
+                <Pause />
+              </div>
             </div>
           </>
         )}
@@ -431,11 +500,28 @@ export function HomePage() {
   );
 }
 
-function HomeHead({ role }: { role: Role }) {
+/** A patient matches the search by name, or by the start of the national identity number (board 4a, as review mode). */
+function matches(query: string, name: string, fnr: string): boolean {
+  const needle = query.trim().toLocaleLowerCase('nb');
+  if (!needle) return true;
+  const digits = needle.replace(/\D/g, '');
+  return name.toLocaleLowerCase('nb').includes(needle) || (digits !== '' && fnr.replace(/\D/g, '').startsWith(digits));
+}
+
+function HomeHead({ role, query, onQuery }: { role: Role; query: string; onQuery: (q: string) => void }) {
   const cls = useStyles();
   const { s, lang } = useLang();
   const study = useStudy();
+  const announce = useAtlasAnnounce();
   const st = study.state;
+  // How many patients match is said once typing pauses (G-28), through the app's one announcer (G-32).
+  const all = role === 'gp' ? [...CORE.map((c) => cases[c].patient), ...ordinary] : CORE.map((c) => cases[c].patient);
+  const found = all.filter((p) => matches(query, p.name, p.fnr)).length;
+  useEffect(() => {
+    if (!query.trim()) return;
+    const id = window.setTimeout(() => announce(found ? s('homeSearchFound', { n: found, m: all.length }) : s('noMatches')), 1000);
+    return () => window.clearTimeout(id);
+  }, [query, found, all.length, announce, s]);
   const day = formatDateWithWeekday(role === 'gp' ? GP_TODAY : DPS_TODAY, lang);
   const counts: { n: string; text: string }[] = [];
   if (role === 'gp') {
@@ -451,18 +537,29 @@ function HomeHead({ role }: { role: Role }) {
   }
   return (
     <div className={cls.head}>
-      <div className={cls.titleRow}>
-        <PageHeading title={s(role === 'gp' ? 'homeGpTitle' : 'homeDpsTitle')}>{s(role === 'gp' ? 'homeGpTitle' : 'homeDpsTitle')}</PageHeading>
-        <p className={cls.day}>{s('homeDayLabel', { date: day })}</p>
+      <div className={cls.headText}>
+        <div className={cls.titleRow}>
+          <PageHeading title={s(role === 'gp' ? 'homeGpTitle' : 'homeDpsTitle')}>{s(role === 'gp' ? 'homeGpTitle' : 'homeDpsTitle')}</PageHeading>
+          <p className={cls.day}>{s('homeDayLabel', { date: day })}</p>
+        </div>
+        <ul className={cls.counts} aria-label={s('homeCountsLabel')}>
+          {counts.map((c) => (
+            <li key={c.text} className={cls.count}>
+              {c.n && <span className={cls.countNum}>{c.n}</span>}
+              {c.text}
+            </li>
+          ))}
+        </ul>
       </div>
-      <ul className={cls.counts} aria-label={s('homeCountsLabel')}>
-        {counts.map((c) => (
-          <li key={c.text} className={cls.count}>
-            {c.n && <span className={cls.countNum}>{c.n}</span>}
-            {c.text}
-          </li>
-        ))}
-      </ul>
+      <SearchBox
+        className={cls.search}
+        value={query}
+        onChange={(_, d) => onQuery(d.value)}
+        placeholder={s('searchPatients')}
+        aria-label={s('searchPatients')}
+        dismiss={{ 'aria-label': s('clearSearch') }}
+        data-home-search=""
+      />
     </div>
   );
 }
@@ -498,13 +595,13 @@ function StudyCard({ onStartTour }: { onStartTour: () => void }) {
       </>
     );
     action = st.tour.started ? (
-      <StartButton size="medium" className={cls.start} icon={<ArrowRight20Regular />} iconPosition="after" onClick={() => navigate('/studie/omvisning')}>
+      <SheenButton className={cls.start} icon={<ArrowRight20Regular />} iconPosition="after" onClick={() => navigate('/studie/omvisning')}>
         {s('studyCardTourGoOn')}
-      </StartButton>
+      </SheenButton>
     ) : (
-      <StartButton size="medium" className={cls.start} icon={<ArrowRight20Regular />} iconPosition="after" onClick={onStartTour} data-start-tour="">
+      <SheenButton className={cls.start} icon={<ArrowRight20Regular />} iconPosition="after" onClick={onStartTour} data-start-tour="">
         {s('studyCardStartTour')}
-      </StartButton>
+      </SheenButton>
     );
   } else if (current) {
     const n = CORE.indexOf(current) + 1;
@@ -534,14 +631,9 @@ function StudyCard({ onStartTour }: { onStartTour: () => void }) {
       </>
     );
     action = (
-      <>
-        <StartButton size="medium" className={cls.start} icon={<ArrowRight20Regular />} iconPosition="after" onClick={() => navigate(`/studie/sak/${current}`)} data-open-case={current}>
-          {inProgress ? s('continueCase') : role === 'gp' ? s('listOpenCase') : s('listOpenReferral')}
-        </StartButton>
-        <Button appearance="transparent" className={cls.tourLink} icon={<Map16Regular />} onClick={() => navigate('/studie/omvisning?igjen')}>
-          {s('guideTourAgain')}
-        </Button>
-      </>
+      <SheenButton className={cls.start} icon={<ArrowRight20Regular />} iconPosition="after" onClick={() => navigate(`/studie/sak/${current}`)} data-open-case={current}>
+        {inProgress ? s('continueCase') : role === 'gp' ? s('listOpenCase') : s('listOpenReferral')}
+      </SheenButton>
     );
   } else {
     eyebrow = s('studyCardEyebrow', { n: 3, title: s('partEnd') });
@@ -549,21 +641,60 @@ function StudyCard({ onStartTour }: { onStartTour: () => void }) {
     body = <p className={cls.studyText}>{s('studyCardDoneText')}</p>;
     const atHelhet = st.furthest === 'helhet';
     action = (
-      <StartButton size="medium" className={cls.start} icon={<ArrowRight20Regular />} iconPosition="after" onClick={() => (atHelhet ? ctl.goToStep('helhet') : navigate(ctl.currentPath()))}>
+      <SheenButton className={cls.start} icon={<ArrowRight20Regular />} iconPosition="after" onClick={() => (atHelhet ? ctl.goToStep('helhet') : navigate(ctl.currentPath()))}>
         {atHelhet ? s('studyCardToEnd') : s('continue')}
-      </StartButton>
+      </SheenButton>
     );
   }
   return (
-    <section className={cls.study} aria-labelledby={titleId} data-study-card="">
+    <section className={cls.study} aria-labelledby={titleId} data-study-card="" data-guide-card="">
+      <GuideImage variant="band" className={cls.studyBand} />
       <p className={cls.eyebrow}>{eyebrow}</p>
       <h2 id={titleId} className={cls.studyTitle}>
         {title}
       </h2>
       {body}
       {action}
+      <StudyCases />
+      {/* After the tour, the tour again from where the cases are (board 4a). */}
+      {st.tour.done && (
+        <Button appearance="transparent" className={cls.tourLink} icon={<Map16Regular />} onClick={() => navigate('/studie/omvisning?igjen')}>
+          {s('guideTourAgain')}
+        </Button>
+      )}
       <StudyName />
     </section>
+  );
+}
+
+/** The three cases and where the participant is: «Nå» on the current one after the tour, a tick on each one done (4a). */
+function StudyCases() {
+  const cls = useStyles();
+  const { s } = useLang();
+  const study = useStudy();
+  const st = study.state;
+  const current = st.tour.done ? currentCase(st) : undefined;
+  return (
+    <ol className={cls.cases} aria-label={s('guideCasesLabel')} data-study-cases="">
+      {CORE.map((c, i) => {
+        const done = st.phase[c] === 'done';
+        const now = c === current;
+        return (
+          <li key={c} className={mergeClasses(cls.caseRow, now && cls.caseNow)} aria-current={now ? 'step' : undefined} data-study-case={c}>
+            {done ? (
+              <span className={cls.caseDone} aria-hidden="true">
+                <CheckmarkCircle16Filled />
+              </span>
+            ) : (
+              <span className={mergeClasses(cls.caseDot, now && cls.caseDotNow)} aria-hidden="true" />
+            )}
+            <span className={cls.caseName}>{s('guideCaseRow', { n: i + 1, name: cases[c].patient.name })}</span>
+            {now && <span className={cls.caseStatus}>{s('guideNow')}</span>}
+            {done && <span className={cls.caseStatusDone}>{s('chipDone')}</span>}
+          </li>
+        );
+      })}
+    </ol>
   );
 }
 
@@ -572,15 +703,25 @@ function StudyName() {
   const { s } = useLang();
   const study = useStudy();
   const titleId = useId();
+  const labelId = useId();
   const name = study.state.studienavn;
   if (!name) return null;
   return (
     <div className={cls.nameBox} data-studienavn="">
-      <span className={cls.nameHead}>
-        <span className={cls.nameLabel}>{s('omDegNameTitle')}</span>
+      <StudyNameMark name={name} size={32} />
+      <span className={cls.nameStack}>
+        <span className={cls.nameLabel} id={labelId}>
+          {s('omDegNameTitle')}
+        </span>
+        <span className={cls.nameValue} lang="nb" data-studienavn-value="">
+          {name}
+        </span>
+        {/* «Hva er dette?» as a quiet link in the guide's ink (board 8b); it opens what the name is for. */}
         <Popover withArrow positioning="above" trapFocus>
           <PopoverTrigger disableButtonEnhancement>
-            <Button appearance="transparent" size="small" className={cls.nameWhat} icon={<Info16Regular />} aria-label={s('studyNameWhat')} title={s('studyNameWhat')} data-name-what="" />
+            <Button appearance="transparent" size="small" className={cls.nameWhat} aria-describedby={labelId} data-name-what="">
+              {s('studyNameWhat')}
+            </Button>
           </PopoverTrigger>
           <PopoverSurface aria-labelledby={titleId} tabIndex={-1}>
             <div className={cls.namePop}>
@@ -591,9 +732,6 @@ function StudyName() {
             </div>
           </PopoverSurface>
         </Popover>
-      </span>
-      <span className={cls.nameValue} lang="nb" data-studienavn-value="">
-        {name}
       </span>
     </div>
   );
@@ -652,7 +790,7 @@ function CaseStatus({ caseId }: { caseId: CoreCaseId }) {
   );
 }
 
-function Timeliste() {
+function Timeliste({ query }: { query: string }) {
   const cls = useStyles();
   const { s, t } = useLang();
   const study = useStudy();
@@ -661,7 +799,7 @@ function Timeliste() {
   const current = st.tour.done ? currentCase(st) : undefined;
   const next = currentCase(st);
   const rows: { time: string; node: ReactNode; key: string }[] = [
-    ...CORE.map((c) => {
+    ...CORE.filter((c) => matches(query, cases[c].patient.name, cases[c].patient.fnr)).map((c) => {
       const x = cases[c];
       // The visit and the case's first status, on one line (board 8b).
       const line = [t(x.gp.timeliste.visit), ...x.gp.timeliste.chips.slice(0, 1).map((ch) => t(ch.label))].join(' · ');
@@ -683,7 +821,7 @@ function Timeliste() {
         ),
       };
     }),
-    ...ordinary.map((o) => ({
+    ...ordinary.filter((o) => matches(query, o.name, o.fnr)).map((o) => ({
       time: o.time,
       key: o.id,
       node: (
@@ -714,7 +852,7 @@ function Timeliste() {
         <Clock16Regular aria-hidden="true" />
         {next ? s('homeNext', { name: cases[next].patient.name, time: cases[next].gp.timeliste.time }) : s('guideAllDoneTitle')}
       </p>
-      <ul className={cls.rows}>{rows.map((r) => r.node)}</ul>
+      {rows.length ? <ul className={cls.rows}>{rows.map((r) => r.node)}</ul> : <p className={cls.empty}>{s('noMatches')}</p>}
       <p className={cls.foot}>{s('homeRoutineNote')}</p>
     </section>
   );
@@ -900,7 +1038,7 @@ function Pause() {
 
 /* ---------- DPS: Mottatte henvisninger, Frister, Meldinger ---------- */
 
-function Queue() {
+function Queue({ query }: { query: string }) {
   const cls = useStyles();
   const { s, t, lang } = useLang();
   const study = useStudy();
@@ -908,7 +1046,9 @@ function Queue() {
   const st = study.state;
   const current = st.tour.done ? currentCase(st) : undefined;
   // Newest first; the same day keeps the study's order.
-  const rows = [...CORE].sort((a, b) => cases[b].dps!.queue.received.localeCompare(cases[a].dps!.queue.received));
+  const rows = CORE.filter((c) => matches(query, cases[c].patient.name, cases[c].patient.fnr)).sort((a, b) =>
+    cases[b].dps!.queue.received.localeCompare(cases[a].dps!.queue.received),
+  );
   return (
     <section className={cls.card} aria-labelledby={titleId} data-home-part="mottatte">
       <div className={cls.cardHead}>
@@ -916,7 +1056,8 @@ function Queue() {
           {s('navQueue')}
         </h2>
       </div>
-      <ul className={cls.rows} style={{ borderTop: `1px solid ${tokens.colorNeutralStroke3}` }}>
+      {!rows.length && <p className={cls.empty}>{s('noMatches')}</p>}
+      <ul className={cls.rows} style={{ borderTop: `1px solid ${tokens.colorNeutralStroke3}` }} hidden={!rows.length}>
         {rows.map((c) => {
           const x = cases[c];
           const q = x.dps!.queue;

@@ -22,10 +22,10 @@ import { readSession, writeSession } from '../state/persist';
 import { useStudy } from '../state/study';
 import type { Intervju, RoleChoice } from '../state/types';
 import { ChoiceGroup } from '../patterns/ChoiceGroup';
-import { GuideImage, SheenButton } from '../patterns/basics';
+import { GuideImage, SheenButton, StudyNameMark, guideCardSurface } from '../patterns/basics';
 import { focusAfterOverlay } from '../patterns/announce';
 import { Actions, Body, Eyebrow, Lead, Muted } from '../patterns/layout';
-import { atlasDawn, size } from '../theme/constants';
+import { atlasDawn, guide, size } from '../theme/constants';
 import { FOCUS_HEADING_ON_LOAD, PageHeading } from '../shell/PageHeading';
 import { ConfirmDialog } from '../shell/HeaderParts';
 import { HOME_PATH, useStudyController } from './controller';
@@ -36,9 +36,12 @@ import { CORE, caseInProgress, casesDone, currentCase, partOf, partTwoLabel } fr
 /* ---------- 1 Velkommen ---------- */
 
 const useVelkommen = makeStyles({
-  wrap: { marginBlockStart: `${size.panelInset}px`, display: 'flex', flexDirection: 'column', gap: tokens.spacingVerticalS },
-  // A guide surface (B6): the dawn, with the guide layer's image on top of it. The height its content needs.
+  wrap: { flexGrow: 1, marginBlockStart: `${size.panelInset}px`, display: 'flex', flexDirection: 'column', gap: tokens.spacingVerticalS },
+  // A guide surface (B6): the dawn, with the guide layer's image on top of it. It reaches down to the footer when its
+  // content is shorter than the window, with the content in the middle (board 10b), and grows when it is longer.
   hero: {
+    flexGrow: 1,
+    alignContent: 'center',
     position: 'relative',
     isolation: 'isolate',
     overflow: 'hidden',
@@ -171,6 +174,8 @@ const useVelkommen = makeStyles({
     justifyContent: 'center',
     ...typographyStyles.caption1Strong,
   },
+  // The tour is the participant's own step: a solid coral mark, its number in foreground 1 (7.4:1, board 10b).
+  stepNumTour: { backgroundColor: guide.coral, color: tokens.colorNeutralForeground1, '@media (forced-colors: active)': { border: '1px solid CanvasText' } },
   stepTitle: { ...typographyStyles.body1Strong, display: 'block' },
   stepText: { ...typographyStyles.caption1, color: tokens.colorNeutralForeground2, display: 'block' },
   // Welcome back: where the participant is, in the three parts.
@@ -197,7 +202,8 @@ const useVelkommen = makeStyles({
     display: 'inline-flex',
     alignItems: 'center',
     gap: '8px',
-    paddingInline: '12px',
+    paddingInlineStart: '4px',
+    paddingInlineEnd: '14px',
     paddingBlock: '4px',
     borderRadius: tokens.borderRadiusCircular,
     border: `1px solid ${tokens.colorNeutralStroke2}`,
@@ -337,9 +343,8 @@ function RoleCards() {
             </span>
             <p className={v.cardText}>{c.text}</p>
             <p className={v.cardNote}>{c.note}</p>
-            {/* Two equal choices: secondary, the same size and weight (Meridian: the sheen is for one start action only). */}
-            <Button
-              size="large"
+            {/* Each card is its own surface with its one start action, so each has the sheen, the same size (board 10b). */}
+            <SheenButton
               className={v.cardStart}
               icon={<ArrowRight20Regular />}
               iconPosition="after"
@@ -349,7 +354,7 @@ function RoleCards() {
               }}
             >
               {c.start}
-            </Button>
+            </SheenButton>
           </article>
         ))}
       </div>
@@ -380,7 +385,7 @@ function FiveSteps() {
       <ol className={v.stepList}>
         {steps.map(([title, text], i) => (
           <li key={title} className={v.step}>
-            <span className={v.stepNum} aria-hidden="true">
+            <span className={mergeClasses(v.stepNum, i === 2 && v.stepNumTour)} aria-hidden="true">
               {i + 1}
             </span>
             <span>
@@ -426,6 +431,7 @@ function WelcomeBack() {
       </Lead>
       {study.state.studienavn && (
         <span className={v.nameChip}>
+          <StudyNameMark name={study.state.studienavn} size={24} />
           {s('omDegNameTitle')}
           <span className={v.nameValue} lang="nb">
             {study.state.studienavn}
@@ -568,13 +574,15 @@ export function VelkommenPage() {
 
 const useOmDeg = makeStyles({
   // The two panels share the width, two to one, and stack when the content is narrow (beside an open form panel too).
-  wrap: { marginBlockStart: `${size.panelInset}px`, display: 'flex', flexWrap: 'wrap', alignItems: 'flex-start', gap: `${size.panelInset}px` },
+  // Side by side they reach down to the footer together (board 8a); each grows with its content.
+  wrap: { flexGrow: 1, marginBlockStart: `${size.panelInset}px`, display: 'flex', flexWrap: 'wrap', alignItems: 'stretch', gap: `${size.panelInset}px` },
+  // Its content sits in the middle of the panel when there is room, as board 8a draws it.
   main: {
     flex: '2 1 460px',
     minWidth: 0,
-    alignSelf: 'flex-start',
     display: 'flex',
     flexDirection: 'column',
+    justifyContent: 'center',
     gap: '14px',
     backgroundColor: tokens.colorNeutralBackground1,
     borderRadius: tokens.borderRadiusLarge,
@@ -620,29 +628,39 @@ const useOmDeg = makeStyles({
   },
   nextIcon: { marginTop: '2px', color: tokens.colorNeutralForeground2, display: 'inline-flex' },
   reason: { ...typographyStyles.caption1, color: tokens.colorNeutralForeground3, margin: '8px 0 0' },
-  // The study name: a white card beside the form, the name large, what it is for, and three short facts.
+  // The study name as the participant's profile card (board 8a): a guide card with the artwork as its cover, the name's
+  // mark over the cover's edge, the name large, what it is for, and three short facts.
   name: {
+    ...guideCardSurface,
     flex: '1 1 300px',
     minWidth: 0,
-    alignSelf: 'flex-start',
     display: 'flex',
     flexDirection: 'column',
+    justifyContent: 'center',
     gap: '12px',
-    padding: tokens.spacingHorizontalL,
-    '@media only screen and (min-width: 640px)': { padding: tokens.spacingHorizontalXXL },
-    borderRadius: tokens.borderRadiusLarge,
-    backgroundColor: tokens.colorNeutralBackground1,
+    paddingInline: 'clamp(20px, 2.2vw, 32px)',
+    paddingBlockStart: '120px',
+    paddingBlockEnd: '28px',
     boxShadow: tokens.shadow2,
-    boxSizing: 'border-box',
+  },
+  nameEyebrow: { ...typographyStyles.caption1Strong, margin: 0, color: guide.ink },
+  nameValue: { ...typographyStyles.title2, margin: 0, color: tokens.colorNeutralForeground1, overflowWrap: 'anywhere' },
+  nameText: { ...typographyStyles.body1, margin: 0, color: tokens.colorNeutralForeground1, maxWidth: '52ch' },
+  facts: { listStyle: 'none', margin: 0, padding: 0, display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: '8px' },
+  fact: {
+    display: 'inline-flex',
+    alignItems: 'center',
+    gap: '6px',
+    paddingInline: '10px',
+    paddingBlock: '3px',
+    borderRadius: tokens.borderRadiusCircular,
+    border: `1px solid ${guide.cardEdge}`,
+    backgroundColor: 'rgba(255,255,255,0.9)',
+    ...typographyStyles.body1,
+    color: tokens.colorNeutralForeground1,
     '@media (forced-colors: active)': { border: '1px solid CanvasText' },
   },
-  nameEyebrow: { ...typographyStyles.caption1Strong, margin: 0, color: tokens.colorNeutralForeground2 },
-  // Prominent in its card, never above the page's own title.
-  nameValue: { ...typographyStyles.subtitle1, margin: 0, color: tokens.colorNeutralForeground1, overflowWrap: 'anywhere' },
-  nameText: { ...typographyStyles.body1, margin: 0, color: tokens.colorNeutralForeground1 },
-  facts: { listStyle: 'none', margin: 0, padding: 0, display: 'flex', flexDirection: 'column', gap: '8px' },
-  fact: { display: 'flex', alignItems: 'flex-start', gap: '8px', ...typographyStyles.body1, color: tokens.colorNeutralForeground1 },
-  factIcon: { color: tokens.colorNeutralForeground2, display: 'inline-flex', marginTop: '2px' },
+  factIcon: { color: guide.ink, display: 'inline-flex' },
 });
 
 export function OmDegPage() {
@@ -748,6 +766,8 @@ export function OmDegPage() {
       </div>
       {st.studienavn && (
         <aside className={o.name} aria-labelledby={nameId} data-studienavn="">
+          <GuideImage variant="cover" />
+          <StudyNameMark name={st.studienavn} size={64} ring />
           <p className={o.nameEyebrow} id={nameId}>
             {s('omDegNameTitle')}
           </p>

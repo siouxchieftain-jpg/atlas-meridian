@@ -17,17 +17,21 @@ import { size } from '../theme/constants';
 import { vocab } from '../content';
 
 const useStyles = makeStyles({
+  // The case and its ATLAS panel reach down to the footer when the case is shorter than the window (ATLAS 3.3): the
+  // case column stretches and its last card grows; the panel keeps its own height, so it stays sticky.
   root: {
+    flexGrow: 1,
     display: 'flex',
-    alignItems: 'flex-start',
+    alignItems: 'stretch',
     gap: `${size.panelInset}px`,
     paddingBlockStart: `${size.panelInset}px`,
     minWidth: 0,
     // Print stacks the case and then the ATLAS panel (the screen queries do not apply on paper).
     '@media print': { display: 'block' },
   },
-  main: { flexGrow: 1, minWidth: 0, display: 'flex', flexDirection: 'column', gap: `${size.panelInset}px` },
+  main: { flexGrow: 1, minWidth: 0, display: 'flex', flexDirection: 'column', gap: `${size.panelInset}px`, '& > :last-child': { flexGrow: 1 } },
   side: {
+    alignSelf: 'flex-start',
     display: 'none',
     flexShrink: 0,
     width: `${size.atlasPanel}px`,
@@ -59,7 +63,15 @@ const useStyles = makeStyles({
   },
   compactBand: { '@media only screen and (min-width: 1024px)': { display: 'none' }, '@media print': { display: 'none' } },
   // Without the ATLAS panel (the case-only state in the study) the panels keep the same 8 px between them.
-  noSideRoot: { paddingBlockStart: `${size.panelInset}px`, display: 'flex', flexDirection: 'column', gap: `${size.panelInset}px`, minWidth: 0 },
+  noSideRoot: {
+    flexGrow: 1,
+    paddingBlockStart: `${size.panelInset}px`,
+    display: 'flex',
+    flexDirection: 'column',
+    gap: `${size.panelInset}px`,
+    minWidth: 0,
+    '& > :last-child': { flexGrow: 1 },
+  },
 });
 
 /** The ATLAS panel's header: the name and the caption on every instance. */

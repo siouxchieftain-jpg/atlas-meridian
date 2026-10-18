@@ -12,18 +12,25 @@ import {
   MenuList,
   MenuPopover,
   MenuTrigger,
+  SearchBox,
+  Tab,
+  TabList,
   ToggleButton,
   makeStyles,
   mergeClasses,
   tokens,
   typographyStyles,
 } from '@fluentui/react-components';
-import { ArrowCounterclockwise20Regular, BookOpen20Regular, ChevronDown16Regular, Info20Regular, QuestionCircle20Regular } from '@fluentui/react-icons';
+import { ArrowCounterclockwise20Regular, BookOpen20Regular, ChevronDown16Regular, Dismiss20Regular, Info20Regular, QuestionCircle20Regular } from '@fluentui/react-icons';
 import { Fragment, useEffect, useId, useRef, useState, type ReactElement, type ReactNode } from 'react';
 import { glossary } from '../content';
+import type { GlossaryEntry, GlossaryGroup } from '../content/types';
+import type { StringKey } from '../i18n/strings';
 import { useLang } from '../i18n/i18n';
 import { RouterLink } from '../router/router';
-import { useSelectedToggle } from '../patterns/basics';
+import { GuideImage, SheenButton, SrOnly, useSelectedToggle } from '../patterns/basics';
+import { useAtlasAnnounce } from '../patterns/announce';
+import { guide } from '../theme/constants';
 
 const useStyles = makeStyles({
   wordmark: {
@@ -47,38 +54,66 @@ const useStyles = makeStyles({
   lang: { display: 'inline-flex', gap: '2px' },
   langBtn: { minWidth: 'auto', paddingInline: tokens.spacingHorizontalS },
   dialogText: { ...typographyStyles.body1, margin: `0 0 ${tokens.spacingVerticalM}` },
-  gTerm: { ...typographyStyles.body1Strong, marginTop: tokens.spacingVerticalS },
-  gText: { ...typographyStyles.body1, margin: 0, color: tokens.colorNeutralForeground2 },
   badge: { ...typographyStyles.body1Strong, whiteSpace: 'nowrap' },
   step: { ...typographyStyles.caption1, color: tokens.colorNeutralForeground3, whiteSpace: 'nowrap' },
-  // A help dialog is a plain Fluent dialog, as Help is in any Microsoft 365 app (ATLAS 3.2: the guide layer is for
-  // Velkommen and the tour only).
+  // A help dialog is part of the guide layer (boards 7b and 7c): the artwork in its header, fading into the white body.
+  // On a short window only the body scrolls: the header with its close button and «Lukk» stay in view.
   helpSurface: {
     padding: 0,
     width: '100%',
-    maxWidth: 'min(680px, calc(100vw - 32px))',
-    overflowY: 'auto',
-  },
-  helpHead: {
-    boxSizing: 'border-box',
-    paddingInline: tokens.spacingHorizontalXXL,
-    paddingBlockStart: tokens.spacingVerticalXXL,
-    paddingBlockEnd: tokens.spacingVerticalS,
+    maxWidth: 'min(760px, calc(100vw - 32px))',
+    maxHeight: 'calc(100dvh - 32px)',
+    borderRadius: tokens.borderRadiusXLarge,
     display: 'flex',
     flexDirection: 'column',
-    gap: '2px',
+    overflow: 'hidden',
+    // Below 400 px of height (a phone on its side, 400 % zoom) the whole dialog scrolls instead (WCAG 1.4.10).
+    '@media (max-height: 399px)': { overflowY: 'auto', display: 'block' },
   },
-  helpEyebrow: { ...typographyStyles.caption1Strong, margin: 0, color: tokens.colorNeutralForeground2 },
-  helpTitle: { ...typographyStyles.subtitle1, margin: 0 },
-  helpContent: { paddingInline: tokens.spacingHorizontalXXL, paddingBlockStart: tokens.spacingVerticalS, paddingBlockEnd: tokens.spacingVerticalXXL },
+  // The glossary lays its terms out in columns, so it takes more width and less height.
+  helpSurfaceWide: { maxWidth: 'min(920px, calc(100vw - 32px))' },
+  helpHead: {
+    position: 'relative',
+    isolation: 'isolate',
+    overflow: 'hidden',
+    flexShrink: 0,
+    minHeight: '104px',
+    boxSizing: 'border-box',
+    paddingInline: 'clamp(20px, 4vw, 28px)',
+    paddingBlockStart: '22px',
+    paddingBlockEnd: '14px',
+    display: 'flex',
+    alignItems: 'flex-end',
+    justifyContent: 'space-between',
+    gap: '12px',
+    // The guide card's warm stops (guide-card-warm, -pink, -lavender), fading to the white body.
+    background: `linear-gradient(180deg,rgba(255,255,255,0) 35%,#FFFFFF 100%), ${guide.card}`,
+    '@media (forced-colors: active)': { background: 'Canvas' },
+  },
+  helpHeadText: { display: 'flex', flexDirection: 'column', gap: '4px', minWidth: 0 },
+  helpClose: { alignSelf: 'flex-start', flexShrink: 0, backgroundColor: 'rgba(255,255,255,0.7)' },
+  helpEyebrow: { ...typographyStyles.caption1Strong, margin: 0, color: guide.ink },
+  helpTitle: { ...typographyStyles.title3, margin: 0 },
+  helpContent: {
+    flexGrow: 1,
+    minHeight: 0,
+    overflowY: 'auto',
+    paddingInline: 'clamp(20px, 4vw, 28px)',
+    paddingBlockStart: tokens.spacingVerticalS,
+    paddingBlockEnd: '20px',
+    ':focus-visible': { outline: `2px solid ${tokens.colorStrokeFocus2}`, outlineOffset: '-2px' },
+  },
   helpActions: {
+    flexShrink: 0,
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'space-between',
     flexWrap: 'wrap',
     gap: tokens.spacingHorizontalM,
-    paddingInline: tokens.spacingHorizontalXXL,
-    paddingBlockEnd: tokens.spacingVerticalXXL,
+    paddingInline: 'clamp(20px, 4vw, 28px)',
+    paddingBlockStart: tokens.spacingVerticalM,
+    paddingBlockEnd: '20px',
+    borderTop: `1px solid ${tokens.colorNeutralStroke3}`,
   },
   helpExtra: { minWidth: 0 },
 });
@@ -149,8 +184,8 @@ export interface HelpItem {
   icon?: ReactNode;
   onSelect?: () => void;
   href?: string;
-  /** `extra` sits beside «Lukk», for example «Se omvisningen igjen»; it gets the dialog's close. */
-  dialog?: { title: string; body: ReactNode; extra?: (close: () => void) => ReactNode };
+  /** `extra` sits beside «Lukk», for example «Se omvisningen igjen»; it gets the dialog's close. `wide` for the glossary. */
+  dialog?: { title: string; body: ReactNode; extra?: (close: () => void) => ReactNode; wide?: boolean };
   /** A divider before the item: an action that changes something, set apart from the help that only shows. */
   divider?: boolean;
 }
@@ -205,25 +240,41 @@ export function HelpMenu({ items }: { items: HelpItem[] }) {
           returnFocusToHelp();
         }}
       >
-        <DialogSurface className={cls.helpSurface}>
+        <DialogSurface className={mergeClasses(cls.helpSurface, dialog?.wide && cls.helpSurfaceWide)} data-help-dialog="">
           <div className={cls.helpHead}>
-            <p className={cls.helpEyebrow}>{s('helpEyebrow')}</p>
-            <DialogTitle as="h2" className={cls.helpTitle}>
-              {dialog?.title}
-            </DialogTitle>
+            <GuideImage variant="header" />
+            <div className={cls.helpHeadText}>
+              <p className={cls.helpEyebrow}>{s('helpEyebrow')}</p>
+              <DialogTitle as="h2" className={cls.helpTitle}>
+                {dialog?.title}
+              </DialogTitle>
+            </div>
+            <Button
+              appearance="subtle"
+              className={cls.helpClose}
+              icon={<Dismiss20Regular />}
+              aria-label={s('close')}
+              onClick={() => {
+                setDialog(null);
+                returnFocusToHelp();
+              }}
+            />
           </div>
-          <div className={cls.helpContent}>{dialog?.body}</div>
+          {/* The body scrolls on its own on a short window, so it is a tab stop then (WCAG 2.1.1). */}
+          <HelpBody className={cls.helpContent} label={dialog?.title ?? ''}>
+            {dialog?.body}
+          </HelpBody>
           <div className={cls.helpActions}>
             <div className={cls.helpExtra}>{dialog?.extra?.(() => setDialog(null))}</div>
-            <Button
-              appearance="primary"
+            {/* The dialog's only action: the sheen, as boards 7b and 7c draw it. */}
+            <SheenButton
               onClick={() => {
                 setDialog(null);
                 returnFocusToHelp();
               }}
             >
               {s('close')}
-            </Button>
+            </SheenButton>
           </div>
         </DialogSurface>
       </Dialog>
@@ -231,20 +282,166 @@ export function HelpMenu({ items }: { items: HelpItem[] }) {
   );
 }
 
-export function GlossaryBody() {
-  const cls = useStyles();
+/** A help dialog's body: it scrolls on its own on a short window, and is a tab stop only then, so the keyboard can
+ * scroll it (WCAG 2.1.1). */
+function HelpBody({ className, label, children }: { className: string; label: string; children: ReactNode }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const [scrolls, setScrolls] = useState(false);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const measure = () => setScrolls(el.scrollHeight > el.clientHeight + 1);
+    measure();
+    const ro = new ResizeObserver(measure);
+    ro.observe(el);
+    for (const child of Array.from(el.children)) ro.observe(child);
+    return () => ro.disconnect();
+  }, [children]);
+  return (
+    <div ref={ref} className={className} tabIndex={scrolls ? 0 : undefined} role={scrolls ? 'region' : undefined} aria-label={scrolls ? label : undefined}>
+      {children}
+    </div>
+  );
+}
+
+const GLOSSARY_GROUPS: { key: GlossaryGroup; label: StringKey }[] = [
+  { key: 'roller', label: 'glossaryGroupRoles' },
+  { key: 'henvisning', label: 'glossaryGroupReferral' },
+  { key: 'atlas', label: 'glossaryGroupAtlas' },
+];
+
+const useGlossary = makeStyles({
+  root: { display: 'flex', flexDirection: 'column', gap: tokens.spacingVerticalM },
+  // The groups as Fluent tabs on the left and the search on the right, on one line over a rule, as a 365 help pane.
+  bar: {
+    display: 'flex',
+    flexWrap: 'wrap',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    columnGap: '16px',
+    rowGap: '8px',
+    minHeight: '44px',
+    borderBottom: `1px solid ${tokens.colorNeutralStroke2}`,
+    paddingBlockEnd: '4px',
+    // When the dialog's body scrolls, the groups and the search stay at its top.
+    position: 'sticky',
+    top: 0,
+    zIndex: 1,
+    backgroundColor: tokens.colorNeutralBackground1,
+  },
+  // On a narrow window the three tabs wrap onto a second line rather than run past the dialog (G-03).
+  tabs: { marginInlineStart: '-10px', flexWrap: 'wrap', minWidth: 0 },
+  found: { ...typographyStyles.body1Strong, margin: 0 },
+  search: { flex: '0 1 280px', minWidth: '200px', maxWidth: '100%' },
+  count: { ...typographyStyles.caption1, color: tokens.colorNeutralForeground3, marginInlineStart: '2px' },
+  // The terms as cards in columns, so a group reads at a glance instead of down a long list.
+  grid: { margin: 0, display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 248px), 1fr))', gap: '8px' },
+  card: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '4px',
+    paddingInline: '14px',
+    paddingBlock: '10px',
+    borderRadius: tokens.borderRadiusLarge,
+    border: `1px solid ${guide.cardEdge}`,
+    backgroundColor: guide.cardTop,
+    '@media (forced-colors: active)': { border: '1px solid CanvasText' },
+  },
+  term: { ...typographyStyles.body1Strong, margin: 0 },
+  text: { ...typographyStyles.body1, margin: 0, color: tokens.colorNeutralForeground2 },
+  groupHead: { ...typographyStyles.caption1Strong, margin: 0, color: guide.ink },
+  results: { display: 'flex', flexDirection: 'column', gap: tokens.spacingVerticalS },
+  panel: { borderRadius: tokens.borderRadiusMedium, ':focus-visible': { outline: `2px solid ${tokens.colorStrokeFocus2}`, outlineOffset: '2px' } },
+  empty: { ...typographyStyles.body1, margin: 0, color: tokens.colorNeutralForeground2 },
+});
+
+function GlossaryCards({ entries }: { entries: GlossaryEntry[] }) {
+  const g = useGlossary();
   const { t } = useLang();
   return (
-    <dl style={{ margin: 0 }}>
-      {glossary.map((g) => (
-        <div key={g.term.nb}>
-          <dt className={cls.gTerm}>{t(g.term)}</dt>
-          <dd className={cls.gText} style={{ marginInlineStart: 0 }}>
-            {t(g.text)}
-          </dd>
+    <dl className={g.grid}>
+      {entries.map((e) => (
+        <div key={e.term.nb} className={g.card} data-glossary-term="">
+          <dt className={g.term}>{t(e.term)}</dt>
+          <dd className={g.text}>{t(e.text)}</dd>
         </div>
       ))}
     </dl>
+  );
+}
+
+/**
+ * Hjelp → Ordliste: the fifteen terms in three groups as tabs, each group as cards in columns, and a search across all
+ * of them (ATLAS 3.3). Matches show under their group's name; how many is said once typing pauses (G-28).
+ */
+export function GlossaryBody() {
+  const g = useGlossary();
+  const { s, t } = useLang();
+  const announce = useAtlasAnnounce();
+  const [group, setGroup] = useState<GlossaryGroup>('roller');
+  const [query, setQuery] = useState('');
+  const tabsId = useId();
+  const needle = query.trim().toLocaleLowerCase('nb');
+  const hits = needle ? glossary.filter((e) => `${t(e.term)} ${t(e.text)} ${e.term.nb}`.toLocaleLowerCase('nb').includes(needle)) : [];
+  useEffect(() => {
+    if (!needle) return;
+    const id = window.setTimeout(() => announce(hits.length ? s('glossaryFound', { n: hits.length }) : s('glossaryNoMatch')), 1000);
+    return () => window.clearTimeout(id);
+  }, [needle, hits.length, announce, s]);
+  return (
+    <div className={g.root} data-glossary="">
+      <div className={g.bar}>
+        {needle ? (
+          <p className={g.found}>{hits.length ? s('glossaryFound', { n: hits.length }) : s('glossaryNoMatch')}</p>
+        ) : (
+          <TabList className={g.tabs} selectedValue={group} onTabSelect={(_, d) => setGroup(d.value as GlossaryGroup)} aria-label={s('helpGlossary')}>
+            {GLOSSARY_GROUPS.map((x) => (
+              <Tab key={x.key} value={x.key} id={`${tabsId}-${x.key}`} aria-controls={`${tabsId}-panel`}>
+                {s(x.label)}{' '}
+                <span className={g.count}>
+                  {glossary.filter((e) => e.group === x.key).length}
+                  <SrOnly>{` ${s('glossaryWords')}`}</SrOnly>
+                </span>
+              </Tab>
+            ))}
+          </TabList>
+        )}
+        <SearchBox
+          className={g.search}
+          value={query}
+          onChange={(_, d) => setQuery(d.value)}
+          // Esc in a search with text clears the search; only the next Esc closes the dialog.
+          onKeyDown={(e) => {
+            if (e.key === 'Escape' && query) {
+              e.stopPropagation();
+              e.preventDefault();
+              setQuery('');
+            }
+          }}
+          placeholder={s('glossarySearch')}
+          aria-label={s('glossarySearch')}
+          dismiss={{ 'aria-label': s('clearSearch') }}
+        />
+      </div>
+      {needle ? (
+        hits.length ? (
+          <div className={g.results}>
+            {GLOSSARY_GROUPS.filter((x) => hits.some((e) => e.group === x.key)).map((x) => (
+              <section key={x.key} className={g.results} aria-label={s(x.label)}>
+                <h3 className={g.groupHead}>{s(x.label)}</h3>
+                <GlossaryCards entries={hits.filter((e) => e.group === x.key)} />
+              </section>
+            ))}
+          </div>
+        ) : (
+          <p className={g.empty}>{s('glossaryEmptyHint')}</p>
+        )
+      ) : (
+        <div role="tabpanel" id={`${tabsId}-panel`} aria-labelledby={`${tabsId}-${group}`} tabIndex={0} className={g.panel}>
+          <GlossaryCards entries={glossary.filter((e) => e.group === group)} />
+        </div>
+      )}
+    </div>
   );
 }
 

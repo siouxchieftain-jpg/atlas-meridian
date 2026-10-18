@@ -224,7 +224,25 @@ export const GrowingTextarea = forwardRef<HTMLTextAreaElement, TextareaProps>(fu
   );
 });
 
-/* ---------- The sheen button (guide surfaces) ---------- */
+/* ---------- The guide card, the sheen button and the study name's mark ---------- */
+
+/**
+ * A guide card's surface (Meridian, two registers): the dawn in a card with a warm edge. Spread into a component's own
+ * class; the artwork's band needs `position: relative` and `isolation: isolate`, which this gives.
+ */
+export const guideCardSurface = {
+  position: 'relative',
+  isolation: 'isolate',
+  overflow: 'hidden',
+  borderRadius: tokens.borderRadiusXLarge,
+  border: `1px solid ${guide.cardEdge}`,
+  background: guide.card,
+  boxSizing: 'border-box',
+  // On a guide card, captions use foreground 2: foreground 3 falls below 4.5:1 on the warm end (G-24).
+  '& [data-muted]': { color: tokens.colorNeutralForeground2 },
+  '@media print': { background: '#FFFFFF' },
+  '@media (forced-colors: active)': { background: 'Canvas', border: '1px solid CanvasText' },
+} as const;
 
 const useGuide = makeStyles({
   sheen: {
@@ -264,6 +282,33 @@ const useGuideImage = makeStyles({
       backgroundImage: `linear-gradient(180deg,rgba(255,255,255,0.9) 0%,rgba(255,255,255,0.8) 60%,rgba(255,255,255,0.6) 100%), ${guideImage}`,
     },
   },
+  // The top band of a guide card: the artwork fades into the card's own first colour, so there is no edge.
+  band: {
+    bottom: 'auto',
+    height: '104px',
+    backgroundImage: `linear-gradient(180deg,rgba(255,244,238,0) 45%,${guide.cardTop} 100%), ${guideImage}`,
+    backgroundPosition: 'right 38%',
+    opacity: 0.85,
+  },
+  // A profile card's cover (Om deg's study name): a taller band, as the picture over an account card in Microsoft 365.
+  cover: {
+    bottom: 'auto',
+    // Taller with a taller card, so the fabric fills the top of it as board 8a draws it.
+    height: 'max(168px, 44%)',
+    backgroundImage: `linear-gradient(180deg,rgba(255,244,238,0) 55%,${guide.cardTop} 100%), ${guideImage}`,
+    backgroundPosition: 'right 36%',
+    opacity: 0.9,
+  },
+  // The briefing's task card: the fabric on the right, with a longer white wash, so the task's lines always end on white
+  // (on a narrow window a wash covers it all, as on Velkommen).
+  brief: {
+    backgroundImage: `linear-gradient(90deg,#FFFFFF 0%,rgba(255,255,255,0.94) 50%,rgba(255,255,255,0) 80%), ${guideImage}`,
+    backgroundPosition: 'right 40%',
+    opacity: 0.9,
+    '@media (max-width: 1023px)': {
+      backgroundImage: `linear-gradient(180deg,rgba(255,255,255,0.92) 0%,rgba(255,255,255,0.82) 60%,rgba(255,255,255,0.62) 100%), ${guideImage}`,
+    },
+  },
   // The tour stage: the whole surface.
   stage: { backgroundImage: guideImage, backgroundPosition: 'right 40%', opacity: 0.8, '@media (max-width: 1023px)': { opacity: 0.45 } },
   // A dialog or panel header: white behind the title on the left, and the image fades out at the bottom into the body.
@@ -280,20 +325,74 @@ const useGuideImage = makeStyles({
  * The guide layer's image behind a guide surface. Its parent needs
  * `position: relative` and `isolation: isolate`. Decoration only.
  */
-export function GuideImage({ variant, className }: { variant: 'hero' | 'stage' | 'header'; className?: string }) {
+export function GuideImage({ variant, className }: { variant: 'hero' | 'brief' | 'band' | 'cover' | 'stage' | 'header'; className?: string }) {
   const cls = useGuideImage();
   return <div aria-hidden="true" className={mergeClasses(cls.base, cls[variant], className)} data-guide-image={variant} />;
 }
 
-/** The one start action on a guide surface: Velkommen only (never in clinical views). */
+/**
+ * The one start action on a guide surface (Meridian: «Sheen»): a role card's start, «Fortsett der du slapp», the study
+ * card's next step, the tour's way on, the briefing's «Start saken». Never in a clinical view.
+ */
 export function SheenButton(props: ButtonProps) {
   const cls = useGuide();
   return <Button appearance="primary" size="large" {...props} className={mergeClasses(cls.sheen, props.className)} />;
 }
 
-/** The one main action of a working page (briefing, summary, overview, tour): a solid primary, as in any Fluent app. */
+/** The one action of a working page (a form page, «Sendt»): a solid primary, as in any Fluent app. */
 export function StartButton(props: ButtonProps) {
   return <Button appearance="primary" {...props} />;
+}
+
+const useNameMark = makeStyles({
+  mark: {
+    display: 'inline-flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    flexShrink: 0,
+    borderRadius: tokens.borderRadiusCircular,
+    background: guide.nameMark,
+    border: `1px solid ${guide.cardEdge}`,
+    color: guide.ink,
+    fontWeight: tokens.fontWeightSemibold,
+    letterSpacing: '0.02em',
+    boxSizing: 'border-box',
+    userSelect: 'none',
+    '@media (forced-colors: active)': { background: 'Canvas', color: 'CanvasText', border: '1px solid CanvasText' },
+    '@media print': { background: '#FFFFFF' },
+  },
+  // A white ring where the mark sits on the cover's artwork, as an account picture sits on its banner.
+  ring: { boxShadow: `0 0 0 3px ${tokens.colorNeutralBackground1}, ${tokens.shadow4}` },
+});
+
+/** «Stødig hval 54» → «SH»: the first letter of each of the name's two words. */
+export function studyNameInitials(name: string): string {
+  return name
+    .split(/\s+/)
+    .filter((w) => /\p{L}/u.test(w))
+    .slice(0, 2)
+    .map((w) => w.charAt(0).toLocaleUpperCase('nb'))
+    .join('');
+}
+
+const MARK_TEXT: Record<number, string> = { 24: '10px', 28: '11px', 32: '12px', 40: '14px', 64: '22px' };
+
+/**
+ * The study name's mark: its initials on the guide's warm gradient, like the picture on an account in Microsoft 365.
+ * It stands for the participant's study name, never a person, and is decoration: the name is always written beside it.
+ */
+export function StudyNameMark({ name, size = 32, ring, className }: { name: string; size?: 24 | 28 | 32 | 40 | 64; ring?: boolean; className?: string }) {
+  const cls = useNameMark();
+  return (
+    <span
+      aria-hidden="true"
+      className={mergeClasses(cls.mark, ring && cls.ring, className)}
+      style={{ width: size, height: size, fontSize: MARK_TEXT[size], lineHeight: 1 }}
+      data-name-mark=""
+    >
+      {studyNameInitials(name)}
+    </span>
+  );
 }
 
 /* ---------- Design note (Merknader, review mode only) ---------- */

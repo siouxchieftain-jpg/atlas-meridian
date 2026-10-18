@@ -5,7 +5,8 @@ import { useLang } from '../i18n/i18n';
 import type { StringKey } from '../i18n/strings';
 import { navigate } from '../router/router';
 import { useStudy } from '../state/study';
-import { StartButton } from '../patterns/basics';
+import { GuideImage, SheenButton } from '../patterns/basics';
+import { guide } from '../theme/constants';
 
 const useStyles = makeStyles({
   surface: {
@@ -16,20 +17,25 @@ const useStyles = makeStyles({
     overflowY: 'auto',
     maxHeight: 'calc(100dvh - 32px)',
   },
-  // A plain dialog header, as in any Fluent dialog.
+  // The guide layer's header (board 9a): the artwork on the right, fading into the white body.
   head: {
+    position: 'relative',
+    isolation: 'isolate',
+    overflow: 'hidden',
     display: 'flex',
     alignItems: 'flex-start',
     justifyContent: 'space-between',
     gap: '16px',
     paddingInline: 'clamp(20px, 3vw, 28px)',
-    paddingBlockStart: '24px',
-    paddingBlockEnd: '12px',
+    paddingBlockStart: '28px',
+    paddingBlockEnd: '16px',
+    background: `linear-gradient(180deg,rgba(255,255,255,0) 35%,#FFFFFF 100%), linear-gradient(120deg,#FFF3EC 0%,#FDEDF5 52%,#F1EEFC 100%)`,
+    '@media (forced-colors: active)': { background: 'Canvas' },
   },
   headText: { display: 'flex', flexDirection: 'column', gap: '4px', minWidth: 0 },
-  eyebrow: { ...typographyStyles.caption1Strong, margin: 0, color: tokens.colorNeutralForeground2 },
-  title: { ...typographyStyles.title3, margin: 0 },
-  close: { flexShrink: 0 },
+  eyebrow: { ...typographyStyles.caption1Strong, margin: 0, color: guide.ink },
+  title: { ...typographyStyles.title2, margin: 0 },
+  close: { flexShrink: 0, backgroundColor: 'rgba(255,255,255,0.7)' },
   body: {
     display: 'grid',
     gridTemplateColumns: 'minmax(0, 1fr)',
@@ -47,19 +53,17 @@ const useStyles = makeStyles({
     columnGap: '10px',
     alignItems: 'start',
     padding: '12px',
-    borderRadius: tokens.borderRadiusMedium,
-    border: `1px solid ${tokens.colorNeutralStroke2}`,
-    backgroundColor: tokens.colorNeutralBackground2,
+    borderRadius: tokens.borderRadiusLarge,
+    border: `1px solid ${guide.cardEdge}`,
+    backgroundColor: guide.cardTop,
     '@media (forced-colors: active)': { border: '1px solid CanvasText' },
   },
   tileIcon: {
     width: '28px',
     height: '28px',
     borderRadius: tokens.borderRadiusCircular,
-    backgroundColor: tokens.colorNeutralBackground1,
-    border: `1px solid ${tokens.colorNeutralStroke2}`,
-    boxSizing: 'border-box',
-    color: tokens.colorNeutralForeground2,
+    backgroundColor: guide.peachLight,
+    color: guide.ink,
     display: 'inline-flex',
     alignItems: 'center',
     justifyContent: 'center',
@@ -139,6 +143,7 @@ export function TourStartDialog({ open, onClose }: { open: boolean; onClose: () 
     <Dialog open={open} onOpenChange={(_, d) => !d.open && onClose()}>
       <DialogSurface className={cls.surface} data-tour-start="">
         <div className={cls.head}>
+          <GuideImage variant="header" />
           <div className={cls.headText}>
             <p className={cls.eyebrow}>{s('tourStartEyebrow')}</p>
             <DialogTitle as="h2" className={cls.title}>
@@ -185,7 +190,7 @@ export function TourStartDialog({ open, onClose }: { open: boolean; onClose: () 
           <p className={cls.footNote}>{s('tourStartRequired')}</p>
           {/* Meridian: the primary goes first, left of the other action. */}
           <div className={cls.footActions}>
-            <StartButton
+            <SheenButton
               icon={<ArrowRight20Regular />}
               iconPosition="after"
               onClick={() => {
@@ -194,8 +199,10 @@ export function TourStartDialog({ open, onClose }: { open: boolean; onClose: () 
               }}
             >
               {s('studyCardStartTour')}
-            </StartButton>
-            <Button onClick={onClose}>{s('tourStartNotNow')}</Button>
+            </SheenButton>
+            <Button size="large" onClick={onClose}>
+              {s('tourStartNotNow')}
+            </Button>
           </div>
         </div>
       </DialogSurface>

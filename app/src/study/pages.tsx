@@ -271,7 +271,7 @@ export function TakkPage() {
         </Card>
       }
     >
-      <PageHeading title={s('stepTakk')}>
+      <PageHeading title={s('stepTakk')} guide>
         {s('takkTitle')}
       </PageHeading>
       <Lead>{previewFlag() ? s('takkBodyPreview') : s('takkBody')}</Lead>

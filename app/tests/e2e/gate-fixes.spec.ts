@@ -80,7 +80,12 @@ test('AX-03: a help dialog gives focus back to the Hjelp button when it closes',
   const dialog = page.getByRole('dialog');
   // Review mode says what the prototype does not do (SV-11).
   await expect(dialog.getByText('Dette gjør ikke prototypen')).toBeVisible();
-  await dialog.getByRole('button', { name: 'Lukk' }).click();
+  // «Lukk» at the foot (3.3: the header's close button has the same name and does the same).
+  await dialog.getByRole('button', { name: 'Lukk' }).last().click();
+  await expect(page.getByRole('button', { name: 'Hjelp' })).toBeFocused();
+  await page.getByRole('button', { name: 'Hjelp' }).click();
+  await page.getByRole('menuitem', { name: 'Om prototypen' }).click();
+  await page.getByRole('dialog').getByRole('button', { name: 'Lukk' }).first().click();
   await expect(page.getByRole('button', { name: 'Hjelp' })).toBeFocused();
 });
 

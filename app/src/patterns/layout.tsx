@@ -2,15 +2,19 @@ import { makeStyles, mergeClasses, tokens, typographyStyles } from '@fluentui/re
 import { ArrowLeft16Regular, Beaker16Regular, ChevronRight12Regular, Clock16Regular } from '@fluentui/react-icons';
 import type { ReactNode } from 'react';
 import { RouterLink } from '../router/router';
-import { size } from '../theme/constants';
+import { atlasDawn, size } from '../theme/constants';
 
 /**
- * Page-level layout pieces shared by both modes. Every working page sits on white panels on the frame wash, as in any
- * Microsoft 365 app; the guide layer (the dawn and the artwork) belongs to Velkommen and the tour only (ATLAS 3.2).
+ * Page-level layout pieces shared by both modes, in Meridian's two registers: the work sits on white panels on the
+ * frame wash, as in any Microsoft 365 app; the study around it (Velkommen, the study card, the tour, help, the end of
+ * the study) is a guide surface with the dawn.
  */
 const useStyles = makeStyles({
-  // One panel padding everywhere: 16 px on a phone, 24 px from 640 px. A panel is the height of its content.
+  // One panel padding everywhere: 16 px on a phone, 24 px from 640 px. A panel reaches down to the footer when its
+  // content is shorter than the window, and grows with its content when it is longer (ATLAS 3.3: no empty band under a
+  // short page). The content column is a flex column (AppShell), so the panel only has to grow.
   page: {
+    flexGrow: 1,
     marginBlockStart: `${size.panelInset}px`,
     backgroundColor: tokens.colorNeutralBackground1,
     borderRadius: tokens.borderRadiusLarge,
@@ -26,18 +30,22 @@ const useStyles = makeStyles({
     '@media print': { boxShadow: 'none' },
   },
   narrowCol: { maxWidth: '880px' },
-  // An intro page (Takk, review mode's start): a white panel the height of its content, then any cards after it.
-  introWrap: { marginBlockStart: `${size.panelInset}px`, display: 'flex', flexDirection: 'column', gap: `${size.panelInset}px` },
+  // An intro page (Takk, review mode's start): a guide surface with the dawn, down to the footer when it is short, then
+  // any white cards after it.
+  introWrap: { flexGrow: 1, marginBlockStart: `${size.panelInset}px`, display: 'flex', flexDirection: 'column', gap: `${size.panelInset}px` },
   intro: {
-    backgroundColor: tokens.colorNeutralBackground1,
+    flexGrow: 1,
+    background: atlasDawn,
     borderRadius: tokens.borderRadiusLarge,
     boxShadow: tokens.shadow2,
-    padding: tokens.spacingHorizontalL,
+    paddingInline: 'clamp(16px, 5vw, 48px)',
+    paddingBlock: 'clamp(24px, 5vw, 48px)',
     minWidth: 0,
     boxSizing: 'border-box',
-    '@media only screen and (min-width: 640px)': { padding: tokens.spacingHorizontalXXL },
-    '@media (forced-colors: active)': { border: '1px solid CanvasText' },
-    '@media print': { boxShadow: 'none' },
+    // On the dawn, captions use foreground 2: foreground 3 falls to 3.3 to 4.4:1 there (WCAG 1.4.3, G-24).
+    '& [data-muted]': { color: tokens.colorNeutralForeground2 },
+    '@media (forced-colors: active)': { background: 'Canvas', border: '1px solid CanvasText' },
+    '@media print': { background: '#FFFFFF', boxShadow: 'none' },
   },
   introColumn: { maxWidth: '720px', display: 'flex', flexDirection: 'column', gap: tokens.spacingVerticalL },
   introWide: { maxWidth: '1040px' },
@@ -113,12 +121,12 @@ export function PageCard({ children, narrow, className }: { children: ReactNode;
   return <div className={mergeClasses(cls.page, className)}>{narrow ? <div className={mergeClasses(cls.stack, cls.narrowCol)}>{children}</div> : children}</div>;
 }
 
-/** An intro page: Takk and review mode's start. One white panel, then whatever follows it. */
+/** An intro page: Takk and review mode's start. A guide surface, then whatever follows it. */
 export function IntroPage({ children, wide, after }: { children: ReactNode; wide?: boolean; after?: ReactNode }) {
   const cls = useStyles();
   return (
     <div className={cls.introWrap}>
-      <section className={cls.intro} data-intro-page="">
+      <section className={cls.intro} data-intro-page="" data-guide-surface="">
         <div className={mergeClasses(cls.introColumn, wide && cls.introWide)}>{children}</div>
       </section>
       {after}
@@ -136,7 +144,7 @@ export function Card({ children, className, 'aria-label': ariaLabel }: { childre
   );
 }
 
-/** A short label over a page title. `brand` is for the guide layer (Velkommen) only. */
+/** A short label over a page title. `brand` is for Velkommen and the intro pages, the study's own voice. */
 export function Eyebrow({ children, brand }: { children: ReactNode; brand?: boolean }) {
   const cls = useStyles();
   return <p className={mergeClasses(cls.eyebrow, brand && cls.eyebrowBrand)}>{children}</p>;

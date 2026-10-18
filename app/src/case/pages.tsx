@@ -12,7 +12,8 @@ import { navigate } from '../router/router';
 import type { DpsWork, GpWork } from '../state/types';
 import { useWork } from '../state/work';
 import { ChoiceGroup } from '../patterns/ChoiceGroup';
-import { DesignNote, ProvenanceChip, GrowingTextarea, StartButton } from '../patterns/basics';
+import { DesignNote, GuideImage, ProvenanceChip, GrowingTextarea, SheenButton, StartButton } from '../patterns/basics';
+import { atlasDawn } from '../theme/constants';
 import { Silent, useAtlasAnnounce } from '../patterns/announce';
 import { Rows } from '../patterns/clinical';
 import { Actions, Body, Card, Lead, MetaChips, Muted } from '../patterns/layout';
@@ -30,8 +31,30 @@ const isCore = (c: CaseId): c is CoreCaseId => c === 'kari' || c === 'erlend' ||
 
 const useStyles = makeStyles({
   h2: { ...typographyStyles.subtitle1, margin: 0 },
-  // A page in a case's flow: the patient banner, then the page's cards, as in the case views.
-  flow: { display: 'flex', flexDirection: 'column', gap: '8px', paddingBlockStart: '8px', minWidth: 0 },
+  // A page in a case's flow: the patient banner, then the page's cards, as in the case views. The last card reaches
+  // down to the footer when the page is shorter than the window (ATLAS 3.3: no empty band under a short page).
+  flow: { flexGrow: 1, display: 'flex', flexDirection: 'column', gap: '8px', paddingBlockStart: '8px', minWidth: 0, '& > :last-child': { flexGrow: 1 } },
+  // The briefing's task: the study speaking before the work, so a guide card (Meridian, two registers): the dawn with the
+  // artwork on the right, the task on white at the left, and the case's one sheen start.
+  brief: {
+    position: 'relative',
+    isolation: 'isolate',
+    overflow: 'hidden',
+    background: atlasDawn,
+    borderRadius: tokens.borderRadiusLarge,
+    boxShadow: tokens.shadow2,
+    paddingInline: 'clamp(16px, 3vw, 40px)',
+    paddingBlock: 'clamp(20px, 3vw, 36px)',
+    display: 'flex',
+    flexDirection: 'column',
+    gap: tokens.spacingVerticalL,
+    minWidth: 0,
+    boxSizing: 'border-box',
+    '& [data-muted]': { color: tokens.colorNeutralForeground2 },
+    '@media (forced-colors: active)': { background: 'Canvas', border: '1px solid CanvasText' },
+    '@media print': { background: '#FFFFFF', boxShadow: 'none' },
+  },
+  briefText: { display: 'flex', flexDirection: 'column', gap: tokens.spacingVerticalM, maxWidth: '680px', minWidth: 0 },
   // The summary's band and table keep a readable width inside a wide card.
   report: { display: 'flex', flexDirection: 'column', gap: tokens.spacingVerticalL, maxWidth: '760px', minWidth: 0 },
   // Anything that shows the band sits on solid white, in a box of its own (Meridian band rule).
@@ -95,16 +118,19 @@ export function BriefingPage({ caseId }: { caseId: CaseId }) {
   const startLabel = work.mode === 'study' && work.phase(caseId) !== 'briefing' ? s('continueCase') : s('startCase');
   return (
     <CaseFlow caseId={caseId} view={s('about')} sub={where}>
-      <Card>
+      <section className={cls.brief} aria-label={s('briefingTask')} data-guide-card="">
+        <GuideImage variant="brief" />
         <OtherSideButton caseId={caseId} view="orientering" />
-        <Lead>{t(b.task)}</Lead>
-        <MetaChips time={t(b.time)} fictional={s('fictionalPatient')} />
+        <div className={cls.briefText}>
+          <Lead>{t(b.task)}</Lead>
+          <MetaChips time={t(b.time)} fictional={s('fictionalPatient')} />
+        </div>
         <Actions>
-          <StartButton icon={<ArrowRight20Regular />} iconPosition="after" onClick={() => work.startCase(caseId)}>
+          <SheenButton icon={<ArrowRight20Regular />} iconPosition="after" onClick={() => work.startCase(caseId)}>
             {startLabel}
-          </StartButton>
+          </SheenButton>
         </Actions>
-      </Card>
+      </section>
       <Card aria-label={s('about')}>
         <h2 className={cls.h2}>{s('about')}</h2>
         <Rows rows={b.rows.map((r) => ({ label: t(r.label), value: t(r.value) }))} />

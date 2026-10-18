@@ -50,7 +50,7 @@ import { ReviewProvider, useReview } from '../state/review';
 import type { ReviewerRole } from '../state/types';
 import { ReviewWorkProvider, useWork } from '../state/work';
 import { ChoiceGroup } from '../patterns/ChoiceGroup';
-import { StartButton, useSelectedToggle } from '../patterns/basics';
+import { SheenButton, useSelectedToggle } from '../patterns/basics';
 import { Actions, Body, IntroPage, Muted, PageCard } from '../patterns/layout';
 import { NoticeBar, useNotice } from '../patterns/notice';
 import { Silent, focusAfterOverlay } from '../patterns/announce';
@@ -260,7 +260,7 @@ function ReviewShell() {
   const help: HelpItem[] = [
     { key: 'tour', label: s('reviewTour'), icon: <Map20Regular />, onSelect: () => navigate(`${base}/omvisning`) },
     { key: 'how', label: s('helpHowItWorks'), icon: <QuestionCircle20Regular />, dialog: { title: s('helpHowItWorks'), body: <Paragraphs items={[s('reviewHow1'), s('reviewHow2'), s('reviewHow3'), s('reviewHow4'), s('reviewHow5')]} /> } },
-    { key: 'glossary', label: s('helpGlossary'), icon: <BookOpen20Regular />, dialog: { title: s('helpGlossary'), body: <GlossaryBody /> } },
+    { key: 'glossary', label: s('helpGlossary'), icon: <BookOpen20Regular />, dialog: { title: s('helpGlossary'), body: <GlossaryBody />, wide: true } },
     { key: 'about', label: s('helpAboutPrototype'), icon: <Info20Regular />, dialog: { title: s('helpAboutPrototype'), body: <AboutReview /> } },
     { key: 'meridian', label: s('helpMeridian'), icon: <DesignIdeas20Regular />, href: './meridian/' },
   ];
@@ -582,7 +582,7 @@ function Landing() {
   const { s } = useLang();
   return (
     <IntroPage>
-      <PageHeading title={s('reviewTitle')}>
+      <PageHeading title={s('reviewTitle')} guide>
         {s('reviewTitle')}
       </PageHeading>
       <Body>{s('reviewIntro1')}</Body>
@@ -599,10 +599,14 @@ function Landing() {
         </ul>
       </section>
       <ReviewerPicker />
-      {/* Two equal choices: the same size and weight (Meridian). */}
+      {/* Two equal choices side by side: the same size and weight, and no sheen, which is for one start action (Meridian). */}
       <Actions>
-        <Button onClick={() => navigate('/gjennomgang/fastlege/timeliste')}>{s('reviewStartGp')}</Button>
-        <Button onClick={() => navigate('/gjennomgang/dps/mottatte')}>{s('reviewStartDps')}</Button>
+        <Button size="large" onClick={() => navigate('/gjennomgang/fastlege/timeliste')}>
+          {s('reviewStartGp')}
+        </Button>
+        <Button size="large" onClick={() => navigate('/gjennomgang/dps/mottatte')}>
+          {s('reviewStartDps')}
+        </Button>
       </Actions>
       <div>
         <Link href="#/studie?forhandsvisning">{s('reviewTryStudy')}</Link>
@@ -864,7 +868,7 @@ function ReviewTourPage({ role }: { role: Role }) {
       notes={review.state.notes}
       ending={
         <Actions>
-          <StartButton onClick={() => navigate(role === 'gp' ? '/gjennomgang/fastlege/timeliste' : '/gjennomgang/dps/mottatte')}>{s('reviewBack')}</StartButton>
+          <SheenButton onClick={() => navigate(role === 'gp' ? '/gjennomgang/fastlege/timeliste' : '/gjennomgang/dps/mottatte')}>{s('reviewBack')}</SheenButton>
         </Actions>
       }
     />

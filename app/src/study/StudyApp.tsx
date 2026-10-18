@@ -38,12 +38,13 @@ import { FormPanel, formTitle, type FormPanelActions } from './FormPanel';
 import { HOME_PATH, STEP_PATH, StudyControllerProvider, stepReachable, useStudyController } from './controller';
 import { AvslutningPage, EkstraPage, HelhetPage, OmDegPage, StepperPage, TakkPage, V5Page, VelkommenPage } from './pages';
 import { HomePage } from './HomePage';
-import { RoleLabel, StudyProgress } from './StudyHeader';
+import { RoleLabel, StudyAccount, StudyProgress } from './StudyHeader';
 import { StudyFeedbackTab, feedbackOpened, useStudyFeedback } from './StudyFeedback';
 import { StudyNoticeProvider, useStudyNotice } from './notice';
 import { partOf, roleSeg } from './parts';
-import { StartButton } from '../patterns/basics';
+import { SheenButton } from '../patterns/basics';
 import { Actions, Body, Muted } from '../patterns/layout';
+import { guide } from '../theme/constants';
 
 const useStyles = makeStyles({
   banner: { paddingInline: tokens.spacingHorizontalS, paddingBlockEnd: tokens.spacingVerticalXS },
@@ -66,12 +67,12 @@ const useStyles = makeStyles({
     display: 'flex',
     flexDirection: 'column',
     gap: '6px',
-    paddingInline: '16px',
-    paddingBlock: '12px',
-    borderRadius: tokens.borderRadiusMedium,
-    border: `1px solid ${tokens.colorNeutralStroke2}`,
-    backgroundColor: tokens.colorNeutralBackground2,
-    '@media (forced-colors: active)': { border: '1px solid CanvasText' },
+    paddingInline: '14px',
+    paddingBlock: '10px',
+    borderRadius: '10px',
+    border: `1px solid ${guide.cardEdge}`,
+    background: guide.card,
+    '@media (forced-colors: active)': { background: 'Canvas', border: '1px solid CanvasText' },
   },
   promptQ: { ...typographyStyles.body1Strong, margin: 0 },
 });
@@ -192,7 +193,7 @@ function StudyShell() {
         : undefined,
     },
   });
-  help.push({ key: 'glossary', label: s('helpGlossary'), icon: <BookOpen20Regular />, dialog: { title: s('helpGlossary'), body: <GlossaryBody /> } });
+  help.push({ key: 'glossary', label: s('helpGlossary'), icon: <BookOpen20Regular />, dialog: { title: s('helpGlossary'), body: <GlossaryBody />, wide: true } });
   help.push({ key: 'about', label: s('helpAboutPrototype'), icon: <Info20Regular />, dialog: { title: s('helpAboutPrototype'), body: <AboutBody /> } });
   if (stepIndex(furthest) > 0)
     help.push({ key: 'reset', label: s('helpResetUnsent'), icon: <ArrowCounterclockwise20Regular />, onSelect: () => setConfirmReset(true), divider: true });
@@ -244,6 +245,7 @@ function StudyShell() {
             <>
               <HelpMenu items={help} />
               <LanguageToggle />
+              <StudyAccount />
             </>
           }
           banner={preview ? <PreviewBanner /> : undefined}
@@ -344,7 +346,7 @@ function StudyTourPage({ igjen }: { igjen: boolean }) {
     replay && !justDone ? (
       <div data-tour-end="replay">
         <Actions>
-          <StartButton onClick={() => navigate(ctl.currentPath())}>{s('tourBackToStudy')}</StartButton>
+          <SheenButton onClick={() => navigate(ctl.currentPath())}>{s('tourBackToStudy')}</SheenButton>
         </Actions>
       </div>
     ) : (
@@ -376,7 +378,7 @@ function StudyTourPage({ igjen }: { igjen: boolean }) {
           <Muted>{s('promptAlways')}</Muted>
         )}
         <Actions>
-          <StartButton
+          <SheenButton
             icon={<ArrowRight20Regular />}
             iconPosition="after"
             onClick={() => {
@@ -386,7 +388,7 @@ function StudyTourPage({ igjen }: { igjen: boolean }) {
             }}
           >
             {s('toHome')}
-          </StartButton>
+          </SheenButton>
         </Actions>
         {fb.dialog}
       </div>

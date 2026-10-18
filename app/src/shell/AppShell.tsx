@@ -185,7 +185,8 @@ const useStyles = makeStyles({
     paddingBlockEnd: tokens.spacingVerticalS,
     ':focus': { outline: 'none' },
   },
-  content: { flexGrow: 1, minWidth: 0, maxWidth: `${size.contentMax}px`, width: '100%' },
+  // A flex column, so a page can reach down to the footer when it is shorter than the window (ATLAS 3.3).
+  content: { flexGrow: 1, minWidth: 0, maxWidth: `${size.contentMax}px`, width: '100%', display: 'flex', flexDirection: 'column' },
   notice: { maxWidth: `${size.contentMax}px`, paddingBlockStart: `${size.panelInset}px`, '@media print': { display: 'none' } },
   footer: {
     ...typographyStyles.caption1,

@@ -31,6 +31,38 @@
     "nb": "Ordliste",
     "en": "Glossary"
   },
+  "glossarySearch": {
+    "nb": "Søk i ordlisten",
+    "en": "Search the glossary"
+  },
+  "glossaryGroupRoles": {
+    "nb": "Roller og tjenester",
+    "en": "Roles and services"
+  },
+  "glossaryGroupReferral": {
+    "nb": "Henvisningen",
+    "en": "The referral"
+  },
+  "glossaryGroupAtlas": {
+    "nb": "I ATLAS",
+    "en": "In ATLAS"
+  },
+  "glossaryWords": {
+    "nb": "ord",
+    "en": "words"
+  },
+  "glossaryFound": {
+    "nb": "{{n}} ord passer søket.",
+    "en": "{{n}} words match the search."
+  },
+  "glossaryNoMatch": {
+    "nb": "Ingen ord passer søket.",
+    "en": "No word matches the search."
+  },
+  "glossaryEmptyHint": {
+    "nb": "Prøv et kortere ord, eller tøm søket for å se gruppene.",
+    "en": "Try a shorter word, or clear the search to see the groups."
+  },
   "helpAboutPrototype": {
     "nb": "Om prototypen",
     "en": "About the prototype"
@@ -254,6 +286,10 @@
   "about": {
     "nb": "Om saken",
     "en": "About the case"
+  },
+  "briefingTask": {
+    "nb": "Oppgaven",
+    "en": "The task"
   },
   "bandTitle": {
     "nb": "Usikkerhetsvisning",
@@ -1366,6 +1402,10 @@
   "searchPatients": {
     "nb": "Søk etter pasient eller fødselsnummer",
     "en": "Search for a patient or national identity number"
+  },
+  "homeSearchFound": {
+    "nb": "{{n}} av {{m}} pasienter passer søket.",
+    "en": "{{n}} of {{m}} patients match the search."
   },
   "clearSearch": {
     "nb": "Tøm søket",
@@ -2647,6 +2687,18 @@
     "nb": "Se omvisningen igjen",
     "en": "See the tour again"
   },
+  "guideCasesLabel": {
+    "nb": "Sakene i studien",
+    "en": "The cases in the study"
+  },
+  "guideCaseRow": {
+    "nb": "Sak {{n}} · {{name}}",
+    "en": "Case {{n}} · {{name}}"
+  },
+  "guideNow": {
+    "nb": "Nå",
+    "en": "Now"
+  },
   "notesMarker": {
     "nb": "Merknad {{n}}: {{title}}",
     "en": "Design note {{n}}: {{title}}"
@@ -3054,6 +3106,10 @@
   "studyNameWhat": {
     "nb": "Hva er dette?",
     "en": "What is this?"
+  },
+  "accountLabel": {
+    "nb": "Studienavnet ditt: {{name}}",
+    "en": "Your study name: {{name}}"
   },
   "tourStartEyebrow": {
     "nb": "Omvisning · Bli kjent",
