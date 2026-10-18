@@ -90,7 +90,8 @@ export function CaseTitle({
         </div>
         {side && <div className={cls.side}>{side}</div>}
       </div>
-      {c.draftFlag && (
+      {/* A note for reviewers that a case's clinical details still await a clinician's check; never in the study. */}
+      {c.draftFlag && work.mode === 'review' && (
         <p className={cls.flag}>
           <strong>{s('draftFlagLabel')}:</strong> {t(c.draftFlag)}
         </p>

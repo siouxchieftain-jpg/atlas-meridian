@@ -143,7 +143,7 @@ export function ConfidenceScale({
       <ChoiceGroup<ConfLevel>
         legend={s('confidenceTitle')}
         chip={<ProvenanceChip source="own" />}
-        layout="compact"
+        layout="scale"
         value={value}
         onChange={onChange}
         disabled={disabled}

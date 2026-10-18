@@ -1,12 +1,12 @@
 # ATLAS v3.2 on Meridian
 
-ATLAS is a concept prototype of decision support for referrals from GPs (fastleger) to specialist mental health services (DPS) in Norway. Version 3 is built on Meridian, ATLAS's design language on Fluent 2, for a formative evaluation with GPs and DPS clinicians in a PhD project at the University of Agder. Version 3.1 reworks the participant's journey: an overview for each role, a card before the tour, the overall impression after the three cases, feedback in the moment (S9) and a pilot round that keeps its answers apart from the study's. Version 3.2 makes it read as a working system: pages take the height they need and scroll down, every working page sits on Meridian's white panels, and the guide layer (the dawn and the artwork) is kept for Velkommen and the tour. It also adds the information letter.
+ATLAS is a concept prototype of decision support for referrals from GPs (fastleger) to specialist mental health services (DPS) in Norway. Version 3 is built on Meridian, ATLAS's design language on Fluent 2, for a formative evaluation with GPs and DPS clinicians in a PhD project at the University of Agder. Version 3.1 reworks the participant's journey: an overview for each role, a card before the tour, the overall impression after the three cases, feedback in the moment (S9) and a pilot round that keeps its answers apart from the study's. Version 3.2 makes it read as a working system: pages take the height they need and scroll down, every working page sits on Meridian's white panels under one case header, notices are Fluent message bars, and the guide layer (the dawn and the artwork) is kept for Velkommen and the tour. It also adds the information letter.
 
 All patients, clinicians and figures in ATLAS are fictional. ATLAS is an evaluation prototype and must not be used for clinical decisions.
 
 ## The study
 
-The study starts at **https://siouxchieftain-jpg.github.io/atlas-meridian/**. It runs in Norwegian, with English one click away, and works best on a laptop. Taking part is voluntary and anonymous: the answers go to anonymous Nettskjema forms, and ATLAS keeps only the participant's progress, in their own browser.
+The study starts at **https://siouxchieftain-jpg.github.io/atlas-meridian/**. It runs in Norwegian, with English one click away, and works best on a laptop. Taking part is voluntary, and nobody is asked for a name or contact details: the answers go to Nettskjema forms without login, and ATLAS keeps only the participant's progress, in their own browser.
 
 Review mode, for supervisors and pilot testers, has its own address, which goes to reviewers directly while data collection runs.
 
@@ -18,7 +18,7 @@ The information letter is at **https://siouxchieftain-jpg.github.io/atlas-meridi
 |---|---|
 | `app/` | The app: Vite, React 19, TypeScript and Fluent UI React v9 (`src/`, `public/`, `tests/`, `scripts/`) |
 | `app/public/atlas-config.json` | The round (`pilot` or `study`), the Nettskjema addresses for the study (`forms`) and for the pilot (`pilotForms`), the study period, the information letter's address and the contact lines |
-| `app/public/informasjonsskriv.html` | The information letter, both languages; `npm run letter` prints it to the two PDFs beside it |
+| `app/public/informasjonsskriv.html` | The information letter, both languages; `npm run letter` prints it to the two PDFs beside it (with Microsoft Edge on Windows, where Segoe UI is) |
 | `app/src/content/` | Every text, case and form, in Norwegian and English |
 | `meridian/` | The Meridian design language as exported from the design tool, unchanged; on the site at `meridian/` |
 | `docs/` | [Build note](docs/BUILD-NOTE.md), [plan](docs/PLAN.md), [Nettskjema build sheet](docs/NETTSKJEMA-BUILD-SHEET.md), [Meridian 1.1](docs/MERIDIAN-1.1.md), [clinician check](docs/CLINICIAN-CHECK.md) and [traceability](docs/TRACEABILITY.md) |
@@ -66,12 +66,12 @@ The pilot runs on the live site with forms of its own, so no pilot answer ever l
 1. Run `node scripts/nettskjema.mjs verify` (in `app/`): every study form matches the instrument, and every receipt names its form (`sendt.html?skjema=S3`).
 2. On the live site, open each form's step in the panel and in a new tab, without sending. Confirm that every study address is set, that `round` is `study`, and that every locked field shows its value.
 3. Send one test answer per form through the panel and one through a new tab. In «Se resultater», check that each locked value sits in its own column.
-4. Delete every test answer with «Slett alle svar». Anonymous answers cannot be told apart later.
+4. Delete every test answer with «Slett alle svar». Test answers cannot be told apart from participants' answers later.
 5. Invite participants with the study link above, and nothing else.
 
 ## Privacy
 
-- ATLAS collects nothing itself. Answers go only to anonymous Nettskjema forms; there is no participant code, login or name.
+- ATLAS collects nothing itself. Answers go only to Nettskjema forms without login; nobody gives a name, and the random study name is the only code.
 - The browser keeps the participant's progress, settings, the role, the «Om deg» answer and the study name. Only the role, the answer and the study name leave it, as locked fields in the forms.
 - Opening the study link again in a browser that holds a session shows «Velkommen tilbake» first, with «Ikke deg? Start som ny deltaker» for a shared computer, so the next person starts afresh with a study name of their own.
 - The site loads no analytics, trackers, fonts or scripts from third parties.

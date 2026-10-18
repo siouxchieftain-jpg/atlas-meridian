@@ -25,7 +25,7 @@ import { forwardRef, useCallback, useEffect, useLayoutEffect, useRef, type React
 import type { Role, Source } from '../content/types';
 import { notes, vocab } from '../content';
 import { useLang } from '../i18n/i18n';
-import { atlasDawn, atlasSheen, guide, guideImage } from '../theme/constants';
+import { atlasSheen, guide, guideImage } from '../theme/constants';
 import { useNotes } from './notesContext';
 
 /* ---------- Provenance label ---------- */
@@ -224,21 +224,9 @@ export const GrowingTextarea = forwardRef<HTMLTextAreaElement, TextareaProps>(fu
   );
 });
 
-/* ---------- Guide surface (dawn) and the sheen button ---------- */
+/* ---------- The sheen button (guide surfaces) ---------- */
 
 const useGuide = makeStyles({
-  surface: {
-    background: atlasDawn,
-    borderRadius: tokens.borderRadiusLarge,
-    minHeight: '100%',
-    paddingInline: 'clamp(16px, 5vw, 48px)',
-    paddingBlock: 'clamp(24px, 5vw, 48px)',
-    boxSizing: 'border-box',
-    '@media print': { background: '#FFFFFF' },
-    '@media (forced-colors: active)': { background: 'Canvas' },
-  },
-  column: { maxWidth: '640px', display: 'flex', flexDirection: 'column', gap: tokens.spacingVerticalL },
-  wide: { maxWidth: '1040px' },
   sheen: {
     backgroundImage: atlasSheen.background,
     boxShadow: atlasSheen.shadow,
@@ -249,15 +237,6 @@ const useGuide = makeStyles({
     '@media (forced-colors: active)': { backgroundImage: 'none', border: '1px solid ButtonText' },
   },
 });
-
-export function GuideSurface({ children, wide, className }: { children: ReactNode; wide?: boolean; className?: string }) {
-  const cls = useGuide();
-  return (
-    <div className={mergeClasses(cls.surface, className)} data-guide-surface="">
-      <div className={mergeClasses(cls.column, wide && cls.wide)}>{children}</div>
-    </div>
-  );
-}
 
 /* ---------- The guide layer's image ---------- */
 
@@ -285,14 +264,6 @@ const useGuideImage = makeStyles({
       backgroundImage: `linear-gradient(180deg,rgba(255,255,255,0.9) 0%,rgba(255,255,255,0.8) 60%,rgba(255,255,255,0.6) 100%), ${guideImage}`,
     },
   },
-  // The top band of a guide card: the image fades into the card's own colour, so there is no edge.
-  band: {
-    bottom: 'auto',
-    height: '104px',
-    backgroundImage: `linear-gradient(180deg,rgba(255,244,238,0) 45%,#FFF4EE 100%), ${guideImage}`,
-    backgroundPosition: 'right 38%',
-    opacity: 0.85,
-  },
   // The tour stage: the whole surface.
   stage: { backgroundImage: guideImage, backgroundPosition: 'right 40%', opacity: 0.8, '@media (max-width: 1023px)': { opacity: 0.45 } },
   // A dialog or panel header: white behind the title on the left, and the image fades out at the bottom into the body.
@@ -309,7 +280,7 @@ const useGuideImage = makeStyles({
  * The guide layer's image behind a guide surface. Its parent needs
  * `position: relative` and `isolation: isolate`. Decoration only.
  */
-export function GuideImage({ variant, className }: { variant: 'hero' | 'band' | 'stage' | 'header'; className?: string }) {
+export function GuideImage({ variant, className }: { variant: 'hero' | 'stage' | 'header'; className?: string }) {
   const cls = useGuideImage();
   return <div aria-hidden="true" className={mergeClasses(cls.base, cls[variant], className)} data-guide-image={variant} />;
 }

@@ -56,8 +56,11 @@ const useStyles = makeStyles({
     width: '18px',
     height: '64px',
     borderRadius: '6px 0 0 6px',
-    backgroundColor: tokens.colorBrandBackground,
-    color: tokens.colorNeutralForegroundOnBrand,
+    // As the real tab: white, with a neutral edge (ATLAS 3.2).
+    backgroundColor: tokens.colorNeutralBackground1,
+    border: `1px solid ${tokens.colorNeutralStroke1}`,
+    borderRightWidth: 0,
+    color: tokens.colorNeutralForeground2,
     display: 'inline-flex',
     alignItems: 'flex-start',
     justifyContent: 'center',

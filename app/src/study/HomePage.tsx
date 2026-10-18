@@ -9,7 +9,7 @@ import {
   Map16Regular,
   PeopleCommunity20Regular,
 } from '@fluentui/react-icons';
-import { useEffect, useId, useState, type ReactNode } from 'react';
+import { useEffect, useId, useLayoutEffect, useRef, useState, type ReactNode, type RefObject } from 'react';
 import type { CoreCaseId, Role } from '../content/types';
 import { cases, ordinary, pattern, vocab } from '../content';
 import { formatDateWithWeekday, formatDayMonth, useLang } from '../i18n/i18n';
@@ -17,7 +17,7 @@ import { DPS_TODAY, GP_TODAY, isWeekday } from '../engine/clock';
 import { navigate, useRoute } from '../router/router';
 import { useStudy } from '../state/study';
 import { StartButton, SrOnly, StatusChip } from '../patterns/basics';
-import { mq, neutralBar } from '../theme/constants';
+import { neutralBar } from '../theme/constants';
 import { PageHeading } from '../shell/PageHeading';
 import { TourStepDialog } from '../tour/Tour';
 import { focusAfterOverlay } from '../patterns/announce';
@@ -30,35 +30,27 @@ const useStyles = makeStyles({
   head: { display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between', columnGap: '16px', rowGap: '8px' },
   titleRow: { display: 'flex', flexWrap: 'wrap', alignItems: 'baseline', columnGap: '14px', rowGap: '2px', minWidth: 0 },
   day: { ...typographyStyles.body1, margin: 0, color: tokens.colorNeutralForeground2 },
-  counts: { listStyle: 'none', margin: 0, padding: 0, display: 'flex', flexWrap: 'wrap', gap: '8px' },
+  // The day's counts as one line of plain text («6 timer · 3 med henvisningssak · 2 nye i innboksen»): facts, not buttons.
+  counts: { listStyle: 'none', margin: 0, padding: 0, display: 'flex', flexWrap: 'wrap', columnGap: '8px', rowGap: '2px' },
   count: {
     ...typographyStyles.body1,
     display: 'inline-flex',
     alignItems: 'baseline',
-    gap: '6px',
-    paddingInline: '10px',
-    paddingBlock: '3px',
-    borderRadius: tokens.borderRadiusMedium,
-    border: `1px solid ${tokens.colorNeutralStroke2}`,
-    backgroundColor: tokens.colorNeutralBackground1,
+    gap: '4px',
     color: tokens.colorNeutralForeground2,
     whiteSpace: 'nowrap',
-    '@media (forced-colors: active)': { border: '1px solid CanvasText' },
+    // The dot is decoration: its alternative text is empty, so screen readers read the list items only.
+    ':not(:first-child)::before': { content: '"·" / ""', color: tokens.colorNeutralForeground3, marginInlineEnd: '4px' },
   },
   countNum: { ...typographyStyles.body1Strong, color: tokens.colorNeutralForeground1 },
-  // Three columns on a laptop: the study card, the day's list and the side column, each the height of its content. The
-  // page scrolls down when the day needs it; it never scrolls sideways. Narrower, the side column moves under the list
-  // and lays its cards out side by side; on a phone everything stacks.
-  cols: {
-    display: 'grid',
-    gap: '16px',
-    alignItems: 'start',
-    minWidth: 0,
-    gridTemplateColumns: 'minmax(0, 1fr)',
-    [mq.overviewTwo]: { gridTemplateColumns: '272px minmax(0, 1fr)' },
-    [mq.overviewThree]: { gridTemplateColumns: '272px minmax(0, 1fr) 320px' },
-  },
-  colsDps: { [mq.overviewThree]: { gridTemplateColumns: '272px minmax(0, 1fr) 360px' } },
+  // Three columns where the overview has the room: the study card, the day's list and the side column, each the height
+  // of its content. The page scrolls down when the day needs it; it never scrolls sideways. With less room (a narrower
+  // window, or a form panel open beside the overview) the side column moves under the list and lays its cards out side
+  // by side; with less still, everything stacks. The overview measures its own width (useColumns), never the window's.
+  cols: { display: 'grid', gap: '16px', alignItems: 'start', minWidth: 0, gridTemplateColumns: 'minmax(0, 1fr)' },
+  cols2: { gridTemplateColumns: '272px minmax(0, 1fr)' },
+  cols3: { gridTemplateColumns: '272px minmax(0, 1fr) 320px' },
+  cols3Dps: { gridTemplateColumns: '272px minmax(0, 1fr) 360px' },
   colStudy: { display: 'flex', flexDirection: 'column', gap: '12px', minWidth: 0 },
   colMain: { minWidth: 0 },
   colSide: {
@@ -67,9 +59,9 @@ const useStyles = makeStyles({
     alignItems: 'start',
     minWidth: 0,
     gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 280px), 1fr))',
-    [mq.overviewTwo]: { gridColumn: '1 / -1' },
-    [mq.overviewThree]: { gridColumn: 'auto', gridTemplateColumns: 'minmax(0, 1fr)' },
   },
+  colSideUnder: { gridColumn: '1 / -1' },
+  colSideBeside: { gridTemplateColumns: 'minmax(0, 1fr)' },
   card: {
     backgroundColor: tokens.colorNeutralBackground1,
     borderRadius: tokens.borderRadiusLarge,
@@ -89,12 +81,13 @@ const useStyles = makeStyles({
     paddingBlockEnd: '10px',
   },
   h2: { ...typographyStyles.subtitle2, margin: 0 },
+  // A count badge in brand 80, as Meridian draws it; black is kept for «Frist i dag».
   newBadge: {
     ...typographyStyles.caption1Strong,
     paddingInline: '8px',
     borderRadius: tokens.borderRadiusCircular,
-    backgroundColor: tokens.colorNeutralForeground1,
-    color: tokens.colorNeutralForegroundInverted,
+    backgroundColor: tokens.colorBrandBackground,
+    color: tokens.colorNeutralForegroundOnBrand,
     whiteSpace: 'nowrap',
     '@media (forced-colors: active)': { border: '1px solid CanvasText' },
   },
@@ -298,7 +291,7 @@ const useStyles = makeStyles({
     boxSizing: 'border-box',
     '@media (forced-colors: active)': { border: '1px solid CanvasText' },
   },
-  eyebrow: { ...typographyStyles.caption1Strong, margin: 0, color: tokens.colorBrandForeground1 },
+  eyebrow: { ...typographyStyles.caption1Strong, margin: 0, color: tokens.colorNeutralForeground2 },
   studyTitle: { ...typographyStyles.subtitle1, margin: 0, color: tokens.colorNeutralForeground1 },
   studyText: { ...typographyStyles.body1, margin: 0, color: tokens.colorNeutralForeground2 },
   studyMeta: { display: 'flex', alignItems: 'flex-start', gap: '6px', ...typographyStyles.body1, margin: 0, color: tokens.colorNeutralForeground2 },
@@ -335,6 +328,30 @@ const useStyles = makeStyles({
   namePopText: { ...typographyStyles.body1, margin: 0 },
 });
 
+/** The least widths of the overview's grid for two and three columns: the study card 272 px, the day's list 472 or
+ * 480 px, the side column 320 px (360 px for DPS, whose deadline strip needs it), and the 16 px gaps. */
+const TWO_COLUMNS = 760;
+const THREE_COLUMNS: Record<Role, number> = { gp: 1104, dps: 1144 };
+
+/** How many columns the overview has room for, from its own measured width. */
+function useColumns(role: Role): [RefObject<HTMLDivElement | null>, 1 | 2 | 3] {
+  const ref = useRef<HTMLDivElement>(null);
+  const [cols, setCols] = useState<1 | 2 | 3>(1);
+  useLayoutEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const measure = () => {
+      const w = el.getBoundingClientRect().width;
+      setCols(w >= THREE_COLUMNS[role] ? 3 : w >= TWO_COLUMNS ? 2 : 1);
+    };
+    measure();
+    const ro = new ResizeObserver(measure);
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, [role]);
+  return [ref, cols];
+}
+
 const WEEKDAY: Record<'nb' | 'en', string[]> = {
   nb: ['sø', 'ma', 'ti', 'on', 'to', 'fr', 'lø'],
   en: ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'],
@@ -354,10 +371,16 @@ export function HomePage() {
     if (route.query.has('omvisning')) navigate(HOME_PATH, { replace: true });
   }, [route.query]);
   const openStep = (id: string) => setStepDialog(id);
+  const [colsRef, ncols] = useColumns(role);
+  const side = mergeClasses(cls.colSide, ncols === 2 && cls.colSideUnder, ncols === 3 && cls.colSideBeside);
   return (
     <div className={cls.page}>
       <HomeHead role={role} />
-      <div className={mergeClasses(cls.cols, role === 'dps' && cls.colsDps)}>
+      <div
+        ref={colsRef}
+        className={mergeClasses(cls.cols, ncols === 2 && cls.cols2, ncols === 3 && (role === 'dps' ? cls.cols3Dps : cls.cols3))}
+        data-columns={ncols}
+      >
         <div className={cls.colStudy}>
           <StudyCard onStartTour={() => setTourCard(true)} />
         </div>
@@ -366,7 +389,7 @@ export function HomePage() {
             <div className={cls.colMain}>
               <Timeliste />
             </div>
-            <div className={cls.colSide}>
+            <div className={side}>
               <GpInbox />
               <GpReferrals />
               <GpPattern onOpen={st.tour.done ? () => openStep('gp-monster') : undefined} />
@@ -379,7 +402,7 @@ export function HomePage() {
             <div className={cls.colMain}>
               <Queue />
             </div>
-            <div className={cls.colSide}>
+            <div className={side}>
               <Deadlines />
               <DpsMessages />
               <SharedCard role="dps" onOpen={st.tour.done ? () => openStep('dps-kalibrering') : undefined} />

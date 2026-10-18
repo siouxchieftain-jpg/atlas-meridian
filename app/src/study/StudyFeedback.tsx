@@ -24,6 +24,8 @@ import { studySide } from './parts';
 
 const useStyles = makeStyles({
   // The same right-edge launcher as review mode's (Meridian 1.0), so «Gi tilbakemelding» is in the same place in both.
+  // A quiet, docked side tab (white, neutral stroke, foreground 2): never a second primary beside the page's own
+  // action; brand only on hover and focus, as Microsoft 365 apps show Feedback (ATLAS 3.2).
   tab: {
     position: 'fixed',
     right: 'var(--atlas-form-inline, 0px)',
@@ -41,7 +43,15 @@ const useStyles = makeStyles({
     borderRadius: `${tokens.borderRadiusLarge} 0 0 ${tokens.borderRadiusLarge}`,
     paddingBlock: tokens.spacingVerticalM,
     paddingInline: 0,
-    boxShadow: tokens.shadow8,
+    backgroundColor: tokens.colorNeutralBackground1,
+    color: tokens.colorNeutralForeground2,
+    border: `1px solid ${tokens.colorNeutralStroke1}`,
+    borderRightWidth: 0,
+    boxShadow: tokens.shadow4,
+    ':hover': { backgroundColor: tokens.colorNeutralBackground1Hover, color: tokens.colorBrandForeground1 },
+    ':hover:active': { backgroundColor: tokens.colorNeutralBackground1Pressed, color: tokens.colorBrandForeground1 },
+    ':focus-visible': { color: tokens.colorBrandForeground1 },
+    '@media (forced-colors: active)': { border: '1px solid ButtonText', borderRightWidth: 0 },
     '@media print': { display: 'none' },
     '@media (min-height: 220px) and (max-height: 300px)': { paddingBlock: tokens.spacingVerticalXXS, '& .fui-Button__icon': { display: 'none' } },
     '@media (max-height: 219px)': { paddingBlock: tokens.spacingVerticalS },
@@ -247,7 +257,7 @@ export function StudyFeedbackTab({ path, onResult }: { path: string[]; onResult:
   if (!side) return null;
   const trigger = (
     <Tooltip content={s('feedback')} relationship="label" positioning="before" withArrow visible={iconOnly && tip} onVisibleChange={(_, d) => setTip(d.visible)}>
-      <Button className={cls.tab} appearance="primary" icon={<CommentEdit20Regular />} data-feedback-tab="">
+      <Button className={cls.tab} icon={<CommentEdit20Regular />} data-feedback-tab="">
         <span className={cls.tabLabel}>{s('feedback')}</span>
       </Button>
     </Tooltip>

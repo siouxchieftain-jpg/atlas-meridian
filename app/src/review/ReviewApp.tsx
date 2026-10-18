@@ -599,11 +599,10 @@ function Landing() {
         </ul>
       </section>
       <ReviewerPicker />
+      {/* Two equal choices: the same size and weight (Meridian). */}
       <Actions>
-        <StartButton onClick={() => navigate('/gjennomgang/fastlege/timeliste')}>{s('reviewStartGp')}</StartButton>
-        <Button size="large" onClick={() => navigate('/gjennomgang/dps/mottatte')}>
-          {s('reviewStartDps')}
-        </Button>
+        <Button onClick={() => navigate('/gjennomgang/fastlege/timeliste')}>{s('reviewStartGp')}</Button>
+        <Button onClick={() => navigate('/gjennomgang/dps/mottatte')}>{s('reviewStartDps')}</Button>
       </Actions>
       <div>
         <Link href="#/studie?forhandsvisning">{s('reviewTryStudy')}</Link>

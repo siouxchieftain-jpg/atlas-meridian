@@ -27,7 +27,7 @@ const useStyles = makeStyles({
     '@media (forced-colors: active)': { border: '1px solid CanvasText' },
   },
   text: { display: 'flex', gap: '12px', alignItems: 'flex-start', flex: '1 1 380px', minWidth: 0 },
-  icon: { color: tokens.colorBrandForeground1, flexShrink: 0, marginTop: '2px', display: 'inline-flex' },
+  icon: { color: tokens.colorNeutralForeground2, flexShrink: 0, marginTop: '2px', display: 'inline-flex' },
   q: { ...typographyStyles.body1Strong, margin: 0 },
   why: { ...typographyStyles.body1, margin: 0, color: tokens.colorNeutralForeground2 },
   quiet: { ...typographyStyles.caption1, margin: 0, color: tokens.colorNeutralForeground2 },

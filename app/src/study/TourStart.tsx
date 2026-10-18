@@ -1,5 +1,5 @@
 import { Button, Dialog, DialogSurface, DialogTitle, makeStyles, tokens, typographyStyles } from '@fluentui/react-components';
-import { ArrowRight20Regular, Beaker16Regular, Dismiss20Regular, DocumentBulletList16Regular, Map16Regular, TextBulletListSquare16Regular } from '@fluentui/react-icons';
+import { ArrowRight20Regular, Beaker16Regular, ChevronRight16Regular, Dismiss20Regular, DocumentBulletList16Regular, Map16Regular, TextBulletListSquare16Regular } from '@fluentui/react-icons';
 import type { ReactNode } from 'react';
 import { useLang } from '../i18n/i18n';
 import type { StringKey } from '../i18n/strings';
@@ -27,7 +27,7 @@ const useStyles = makeStyles({
     paddingBlockEnd: '12px',
   },
   headText: { display: 'flex', flexDirection: 'column', gap: '4px', minWidth: 0 },
-  eyebrow: { ...typographyStyles.caption1Strong, margin: 0, color: tokens.colorBrandForeground1 },
+  eyebrow: { ...typographyStyles.caption1Strong, margin: 0, color: tokens.colorNeutralForeground2 },
   title: { ...typographyStyles.title3, margin: 0 },
   close: { flexShrink: 0 },
   body: {
@@ -56,8 +56,10 @@ const useStyles = makeStyles({
     width: '28px',
     height: '28px',
     borderRadius: tokens.borderRadiusCircular,
-    backgroundColor: tokens.colorBrandBackground2,
-    color: tokens.colorBrandForeground1,
+    backgroundColor: tokens.colorNeutralBackground1,
+    border: `1px solid ${tokens.colorNeutralStroke2}`,
+    boxSizing: 'border-box',
+    color: tokens.colorNeutralForeground2,
     display: 'inline-flex',
     alignItems: 'center',
     justifyContent: 'center',
@@ -66,17 +68,29 @@ const useStyles = makeStyles({
   tileText: { ...typographyStyles.body1, margin: 0, color: tokens.colorNeutralForeground2 },
   faq: { display: 'flex', flexDirection: 'column', minWidth: 0 },
   faqTitle: { ...typographyStyles.subtitle2, margin: 0, paddingBlockEnd: '8px', borderBottom: `1px solid ${tokens.colorNeutralStroke2}` },
-  details: { borderBottom: `1px solid ${tokens.colorNeutralStroke2}` },
+  // An accordion as elsewhere in ATLAS: a chevron that turns when the answer opens, not the browser's marker.
+  details: { borderBottom: `1px solid ${tokens.colorNeutralStroke2}`, '&[open] [data-chevron]': { transform: 'rotate(90deg)' } },
   summary: {
     ...typographyStyles.body1Strong,
     cursor: 'pointer',
+    display: 'flex',
+    alignItems: 'center',
+    gap: '8px',
     paddingBlock: '10px',
     paddingInline: '4px',
-    listStylePosition: 'inside',
+    listStyleType: 'none',
     borderRadius: tokens.borderRadiusSmall,
+    '::-webkit-details-marker': { display: 'none' },
     ':focus-visible': { outline: `2px solid ${tokens.colorStrokeFocus2}`, outlineOffset: '2px' },
   },
-  answer: { ...typographyStyles.body1, margin: 0, paddingInline: '4px', paddingBlockEnd: '12px', color: tokens.colorNeutralForeground2 },
+  chevron: {
+    flexShrink: 0,
+    color: tokens.colorNeutralForeground2,
+    transitionProperty: 'transform',
+    transitionDuration: tokens.durationFaster,
+    '@media (prefers-reduced-motion: reduce)': { transitionDuration: '0.01ms' },
+  },
+  answer: { ...typographyStyles.body1, margin: 0, paddingInlineStart: '28px', paddingInlineEnd: '4px', paddingBlockEnd: '12px', color: tokens.colorNeutralForeground2 },
   foot: {
     display: 'flex',
     flexWrap: 'wrap',
@@ -158,7 +172,10 @@ export function TourStartDialog({ open, onClose }: { open: boolean; onClose: () 
             {faq.map(([q, a]) => (
               // One answer open at a time where the browser supports a named group; elsewhere each opens on its own.
               <details key={q} className={cls.details} name="atlas-faq">
-                <summary className={cls.summary}>{s(q)}</summary>
+                <summary className={cls.summary}>
+                  <ChevronRight16Regular className={cls.chevron} data-chevron="" aria-hidden="true" />
+                  {s(q)}
+                </summary>
                 <p className={cls.answer}>{s(a)}</p>
               </details>
             ))}
@@ -166,10 +183,8 @@ export function TourStartDialog({ open, onClose }: { open: boolean; onClose: () 
         </div>
         <div className={cls.foot}>
           <p className={cls.footNote}>{s('tourStartRequired')}</p>
+          {/* Meridian: the primary goes first, left of the other action. */}
           <div className={cls.footActions}>
-            <Button onClick={onClose}>
-              {s('tourStartNotNow')}
-            </Button>
             <StartButton
               icon={<ArrowRight20Regular />}
               iconPosition="after"
@@ -180,6 +195,7 @@ export function TourStartDialog({ open, onClose }: { open: boolean; onClose: () 
             >
               {s('studyCardStartTour')}
             </StartButton>
+            <Button onClick={onClose}>{s('tourStartNotNow')}</Button>
           </div>
         </div>
       </DialogSurface>

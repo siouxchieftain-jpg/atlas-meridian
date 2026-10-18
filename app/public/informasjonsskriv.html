@@ -51,9 +51,9 @@
       .lang { display: inline-flex; gap: 2px; }
       .lang button[aria-pressed='true'] { border-color: var(--brand-edge); background: var(--brand-tint); color: var(--link); font-weight: 600; }
 
-      /* The document. */
+      /* The document. Opened at #nb or #en, its top stays clear of the sticky bar. */
       main { padding: 24px 16px 48px; }
-      .doc { max-width: 760px; margin: 0 auto; background: #ffffff; border-radius: 8px; box-shadow: var(--shadow4); padding: 48px 56px 56px; }
+      .doc { max-width: 760px; margin: 0 auto; background: #ffffff; border-radius: 8px; box-shadow: var(--shadow4); padding: 48px 56px 56px; scroll-margin-top: 56px; }
       .head { display: flex; align-items: flex-start; justify-content: space-between; gap: 24px; }
       .eyebrow { margin: 0; color: var(--link); font-weight: 600; }
       .logo { flex: none; display: block; }
@@ -79,7 +79,9 @@
 
       @media (max-width: 640px) {
         .bar { padding: 0 8px; }
-        .crumb, .tool .label { display: none; }
+        .crumb { display: none; }
+        /* The tools keep their names for screen readers when only the icon shows. */
+        .tool .label { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
         main { padding: 0 0 32px; }
         .doc { border-radius: 0; box-shadow: none; padding: 28px 20px 36px; }
         .head { flex-direction: column-reverse; gap: 16px; }
@@ -87,8 +89,19 @@
         dl.contacts dd { margin-bottom: 10px; }
         footer { padding: 0 20px; }
       }
+      /* Paper: A4, with the letter's name and the page number at the foot of every page, in each language. */
+      @page { size: A4; margin: 18mm 18mm 22mm; }
+      @page nb {
+        @bottom-left { content: 'Informasjonsskriv · ATLAS · Versjon 1'; font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, 'Helvetica Neue', sans-serif; font-size: 9pt; color: #616161; }
+        @bottom-right { content: 'Side ' counter(page) ' av ' counter(pages); font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, 'Helvetica Neue', sans-serif; font-size: 9pt; color: #616161; }
+      }
+      @page en {
+        @bottom-left { content: 'Information letter · ATLAS · Version 1'; font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, 'Helvetica Neue', sans-serif; font-size: 9pt; color: #616161; }
+        @bottom-right { content: 'Page ' counter(page) ' of ' counter(pages); font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, 'Helvetica Neue', sans-serif; font-size: 9pt; color: #616161; }
+      }
       @media print {
-        @page { size: A4; margin: 18mm 18mm 20mm; }
+        #nb { page: nb; }
+        #en { page: en; }
         html, body { background: #ffffff; }
         .bar, footer { display: none; }
         main { padding: 0; }
@@ -105,7 +118,7 @@
   </head>
   <body>
     <header class="bar">
-      <a class="wordmark" href="./" id="home">ATLAS</a>
+      <span class="wordmark">ATLAS</span>
       <span class="crumb" id="crumb">Informasjonsskriv</span>
       <span class="spacer"></span>
       <span class="lang" role="group" id="langgroup" aria-label="Språk">
@@ -148,35 +161,35 @@
           <li>Du velger rolle, fastlege eller DPS, og får en kort omvisning i ATLAS.</li>
           <li>Du går gjennom tre fiktive pasientsaker. Hver sak ser du først uten ATLAS og deretter med ATLAS.</li>
           <li>Underveis svarer du på korte skjemaer i Nettskjema: om rollen og arbeidet ditt, om hver sak, om ATLAS som helhet og til slutt noen avsluttende spørsmål. Det finnes ingen riktige svar.</li>
-          <li>Fastleger kan også se på to korte ekstrasaker hvis de vil, og DPS-klinikere på én kort ekstravisning. Du kan dessuten gi tilbakemelding på enkelte skjermbilder. Begge deler er frivillig.</li>
+          <li>Fastleger kan også se på to korte ekstrasaker hvis de vil, og DPS-klinikere på én kort ekstravisning. Du kan dessuten gi tilbakemelding på hvert skjermbilde underveis. Begge deler er frivillig.</li>
         </ul>
-        <p>Alle pasienter, meldinger og tall i ATLAS er fiktive. Ikke skriv opplysninger om ekte pasienter eller andre personer i skjemaene.</p>
+        <p>Alle pasienter, klinikere og tall i ATLAS er fiktive. Ikke skriv opplysninger om ekte pasienter eller andre personer i skjemaene.</p>
 
         <h2>Det er frivillig å delta</h2>
         <p>Du kan avslutte når du vil, uten å oppgi grunn, og du kan hoppe over skjemaer du ikke vil svare på. Det får ingen følger for deg.</p>
         <p>Du samtykker til å delta ved å krysse av for «Jeg har lest informasjonsskrivet og vil delta» i det første skjemaet.</p>
-        <p>Vil du trekke svarene du har sendt? Send studienavnet ditt til prosjektleder, så slettes alle svar med det navnet. Studienavnet står øverst i hvert skjema. Svar som allerede inngår i publiserte resultater, kan ikke tas ut av dem.</p>
+        <p>Har du notert studienavnet ditt, kan du trekke svarene du har sendt: send navnet til prosjektleder, så slettes alle svar med det. Studienavnet står i hvert skjema og på oversikten i ATLAS. Uten studienavnet kan vi ikke finne svarene dine, fordi de ikke er knyttet til deg. Svar som allerede inngår i publiserte resultater, kan ikke tas ut av dem.</p>
 
         <h2>Ditt personvern</h2>
         <ul>
-          <li>Evalueringen er anonym. ATLAS og skjemaene spør ikke etter navn, e-post, telefonnummer eller arbeidssted, og du logger ikke inn.</li>
-          <li>Svarene dine holdes sammen med et tilfeldig studienavn, for eksempel «Rolig elg 27». ATLAS lager det i nettleseren din når du velger rolle. Ingen har en liste som kobler studienavn til personer.</li>
-          <li>Hvert skjema får automatisk med rollen din, studienavnet, hvilket steg det gjelder og hvilken versjon av ATLAS du brukte.</li>
-          <li>Svarene lagres i Nettskjema, en tjeneste for sikker datainnsamling fra Universitetet i Oslo. Bare forskerne i prosjektet har tilgang til dem.</li>
-          <li>ATLAS husker hvor langt du har kommet, bare i nettleseren din, slik at du kan ta pause. ATLAS har ingen analyseverktøy og ingen sporing. Nettsiden ligger hos GitHub Pages, som registrerer IP-adressen til besøkende av sikkerhetshensyn. Prosjektet har ikke tilgang til dem.</li>
+          <li>ATLAS og skjemaene spør ikke etter navn, e-post, telefonnummer eller arbeidssted, og du logger ikke inn.</li>
+          <li>Svarene dine knyttes sammen av et tilfeldig studienavn, for eksempel «Rolig elg 27». ATLAS lager det i nettleseren din når du velger rolle. Ingen har en liste som kobler studienavn til personer.</li>
+          <li>Hvert skjema får automatisk med rollen din, studienavnet og hvilken versjon av ATLAS du brukte. Skjemaene i studien får også med om du deltok i et intervju i prosjektet, hvilket steg det gjelder og, for en sak eller en ekstravisning, hvilken. En tilbakemelding underveis får med hvilken side og del av ATLAS den gjelder.</li>
+          <li>Svarene lagres i Nettskjema, en tjeneste for sikker datainnsamling som drives av Universitetet i Oslo. Bare forskerne i prosjektet har tilgang til dem.</li>
+          <li>ATLAS husker hvor langt du har kommet, bare i nettleseren din, slik at du kan ta pause. ATLAS har ingen analyseverktøy og ingen sporing. Nettsiden ligger hos GitHub Pages, som registrerer IP-adressene til besøkende av sikkerhetshensyn. Prosjektet har ikke tilgang til dem.</li>
           <li>Bruker du en datamaskin som andre også bruker, kan neste person velge «Ikke deg? Start som ny deltaker» når ATLAS åpnes igjen, og få sitt eget studienavn.</li>
         </ul>
-        <p>Resultatene publiseres i doktorgradsavhandlingen og i vitenskapelige artikler, som samlede resultater og korte, anonyme sitater fra fritekstsvar.</p>
+        <p>Resultatene publiseres i doktorgradsavhandlingen og i vitenskapelige artikler, som samlede resultater og korte sitater fra fritekstsvar, uten opplysninger som kan identifisere deg.</p>
 
         <div class="note">
-          <p><strong>Pilotrunde.</strong> Før studien starter, prøves ATLAS i en pilotrunde. Svarene fra pilotrunden merkes som pilot og holdes utenfor studiens data. Mens pilotrunden pågår, står det «Pilot» øverst i ATLAS.</p>
+          <p><strong>Pilotrunde.</strong> Før studien starter, prøves ATLAS i en pilotrunde. Svarene fra pilotrunden merkes som pilot og brukes bare til å prøve ut ATLAS og skjemaene. De holdes utenfor studiens data. Mens pilotrunden pågår, står det «Pilot» øverst i ATLAS.</p>
         </div>
 
         <h2>Hva skjer med svarene når prosjektet er ferdig?</h2>
-        <p>Prosjektet skal etter planen avsluttes i januar 2027. Svarene er anonyme og kan bli lagret videre, slik at forskningen kan etterprøves.</p>
+        <p>Prosjektet skal etter planen avsluttes i januar 2027. Etter det kan svarene lagres videre i anonymisert form, slik at forskningen kan etterprøves.</p>
 
         <h2>Hvem er ansvarlig?</h2>
-        <p>Universitetet i Agder er ansvarlig for prosjektet. Evalueringen gjøres av stipendiat Jishnu Das, med veilederne Geir Inge Hausvik og Carl Erik Moe. Prosjektet er vurdert av Personverntjenester i Sikt (referanse 480551).</p>
+        <p>Universitetet i Agder er ansvarlig for prosjektet. Evalueringen gjøres av stipendiat Jishnu Das, veiledet av Geir Inge Hausvik og Carl Erik Moe. Doktorgradsprosjektet er vurdert av Personverntjenester i Sikt (referanse 480551).</p>
 
         <h2>Spørsmål?</h2>
         <p>Ta kontakt hvis du har spørsmål om evalueringen eller om personvern.</p>
@@ -224,35 +237,35 @@
           <li>You choose a role, GP or DPS, and get a short tour of ATLAS.</li>
           <li>You work through three fictional patient cases. You see each case first without ATLAS and then with ATLAS.</li>
           <li>Along the way you answer short forms in Nettskjema: about your role and work, about each case, about ATLAS as a whole, and a few closing questions. There are no right answers.</li>
-          <li>GPs can also look at two short extra cases if they wish, and DPS clinicians at one short extra view. You can also give feedback on single screens. Both are optional.</li>
+          <li>GPs can also look at two short extra cases if they wish, and DPS clinicians at one short extra view. You can also give feedback on any screen along the way. Both are optional.</li>
         </ul>
-        <p>All patients, messages and figures in ATLAS are fictional. Do not write information about real patients or other people in the forms.</p>
+        <p>All patients, clinicians and figures in ATLAS are fictional. Do not write information about real patients or other people in the forms.</p>
 
         <h2>Taking part is voluntary</h2>
         <p>You can stop whenever you like, without giving a reason, and you can skip forms you do not want to answer. This has no consequences for you.</p>
         <p>You consent to take part by ticking ‘I have read the information letter and want to take part’ in the first form.</p>
-        <p>Want to withdraw the answers you have sent? Send your study name to the project leader, and every answer with that name will be deleted. The study name is shown at the top of every form. Answers already included in published results cannot be taken out of them.</p>
+        <p>If you have noted your study name, you can withdraw the answers you have sent: send the name to the project leader, and every answer with it will be deleted. The study name is shown in every form and on the overview in ATLAS. Without the study name we cannot find your answers, because they are not linked to you. Answers already included in published results cannot be taken out of them.</p>
 
         <h2>Your privacy</h2>
         <ul>
-          <li>The evaluation is anonymous. ATLAS and the forms do not ask for your name, email, phone number or workplace, and you do not sign in.</li>
-          <li>Your answers are kept together by a random study name, for example ‘Rolig elg 27’. ATLAS makes it in your browser when you choose a role. Nobody has a list that links study names to people.</li>
-          <li>Each form automatically includes your role, the study name, which step it belongs to and which version of ATLAS you used.</li>
-          <li>The answers are stored in Nettskjema, a service for secure data collection from the University of Oslo. Only the researchers in the project have access to them.</li>
-          <li>ATLAS remembers how far you have come, only in your browser, so you can take a break. ATLAS has no analytics and no tracking. The site is hosted on GitHub Pages, which logs visitors' IP addresses for security purposes. The project has no access to them.</li>
+          <li>ATLAS and the forms do not ask for your name, email, phone number or workplace, and you do not sign in.</li>
+          <li>Your answers are linked by a random study name, for example ‘Rolig elg 27’. ATLAS makes it in your browser when you choose a role. Nobody has a list that links study names to people.</li>
+          <li>Each form automatically includes your role, the study name and which version of ATLAS you used. The study’s forms also include whether you took part in an interview in the project, which step the form belongs to and, for a case or an extra view, which one. Feedback along the way includes which page and part of ATLAS it is about.</li>
+          <li>The answers are stored in Nettskjema, a service for secure data collection run by the University of Oslo. Only the researchers in the project have access to them.</li>
+          <li>ATLAS remembers how far you have come, only in your browser, so you can take a break. ATLAS has no analytics and no tracking. The site is hosted on GitHub Pages, which logs visitors’ IP addresses for security purposes. The project has no access to them.</li>
           <li>If you use a computer that others also use, the next person can choose ‘Not you? Start as a new participant’ when ATLAS opens again, and get a study name of their own.</li>
         </ul>
-        <p>The results are published in the doctoral thesis and in scientific articles, as combined results and short, anonymous quotes from free-text answers.</p>
+        <p>The results are published in the doctoral thesis and in scientific articles, as aggregated results and short quotes from free-text answers, without anything that could identify you.</p>
 
         <div class="note">
-          <p><strong>Pilot round.</strong> Before the study starts, ATLAS is tried in a pilot round. Answers from the pilot round are marked as pilot and kept out of the study's data. While the pilot round runs, ATLAS shows ‘Pilot’ at the top.</p>
+          <p><strong>Pilot round.</strong> Before the study starts, ATLAS is tried in a pilot round. Answers from the pilot round are marked as pilot and used only to try out ATLAS and the forms. They are kept out of the study’s data. While the pilot round runs, ATLAS shows ‘Pilot’ at the top.</p>
         </div>
 
         <h2>What happens to the answers when the project ends?</h2>
-        <p>The project is planned to end in January 2027. The answers are anonymous and may be kept after that, so the research can be checked.</p>
+        <p>The project is planned to end in January 2027. After that, the answers may be kept in anonymised form, so the research can be checked.</p>
 
         <h2>Who is responsible?</h2>
-        <p>The University of Agder is responsible for the project. The evaluation is carried out by PhD research fellow Jishnu Das, with the supervisors Geir Inge Hausvik and Carl Erik Moe. The project has been assessed by Data Protection Services at Sikt (reference 480551).</p>
+        <p>The University of Agder is responsible for the project. The evaluation is carried out by PhD research fellow Jishnu Das, supervised by Geir Inge Hausvik and Carl Erik Moe. The doctoral project has been assessed by Data Protection Services at Sikt (reference 480551).</p>
 
         <h2>Questions?</h2>
         <p>Get in touch if you have questions about the evaluation or about privacy.</p>
@@ -315,6 +328,10 @@
             try { history.replaceState(null, '', '#' + next); } catch (err) {}
           });
         }
+        // A link to #en or #nb on the open letter switches it too.
+        window.addEventListener('hashchange', function () {
+          if (window.location.hash === '#en' || window.location.hash === '#nb') show(window.location.hash.slice(1));
+        });
         document.getElementById('print').addEventListener('click', function () { window.print(); });
       })();
     </script>

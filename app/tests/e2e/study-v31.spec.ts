@@ -356,7 +356,7 @@ for (const [width, height] of [
   [1280, 600],
 ] as const) {
   for (const role of ['Fastlege', 'DPS-kliniker'] as const) {
-    test(`at ${width}×${height}, ${role}: the study’s own pages scroll down when they need to, never sideways`, async ({ page }) => {
+    test(`at ${width}×${height}, ${role}: the study’s own pages never scroll sideways`, async ({ page }) => {
       await page.setViewportSize({ width, height });
       await mockNettskjema(page);
       const seen: string[] = [];
@@ -399,4 +399,37 @@ for (const [width, height] of [
       expect(seen, seen.join('\n')).toEqual([]);
     });
   }
+}
+
+// The overview measures its own width: beside an open feedback form it drops to fewer columns, so the day's list keeps
+// room for its rows (ATLAS 3.2; a sideways check cannot see a squeezed column).
+for (const [width, role] of [
+  [1280, 'Fastlege'],
+  [1366, 'Fastlege'],
+  [1280, 'DPS-kliniker'],
+  [1366, 'DPS-kliniker'],
+] as const) {
+  test(`at ${width} px, ${role}: with S9 open beside the overview, the day's list keeps room for its rows`, async ({ page }) => {
+    await page.setViewportSize({ width, height: 800 });
+    await mockNettskjema(page);
+    await startStudy(page, role);
+    await sendForm(page);
+    await toHome(page);
+    await expect(page.locator('[data-columns="3"]')).toBeVisible();
+    await page.locator('[data-feedback-tab]').click();
+    await page.locator('[data-feedback-part]').first().click();
+    await expect(panel(page)).toBeVisible();
+    await expect(panel(page)).toHaveAttribute('data-inline', 'true');
+    await expect(page.locator('[data-columns="3"]')).toHaveCount(0);
+    const list = page.locator(role === 'Fastlege' ? '[data-home-part="timeliste"]' : '[data-home-part="mottatte"]');
+    const box = await list.boundingBox();
+    expect(box!.width).toBeGreaterThanOrEqual(440);
+    // Each patient's name has a line of its own width, never a letter per line.
+    const narrowest = await list.locator('li').evaluateAll((rows) =>
+      Math.min(...rows.map((r) => (r.querySelector('span:nth-child(3)') as HTMLElement | null)?.getBoundingClientRect().width ?? 0)),
+    );
+    expect(narrowest).toBeGreaterThanOrEqual(160);
+    const [, side] = await overflow(page);
+    expect(side).toBeLessThanOrEqual(0);
+  });
 }

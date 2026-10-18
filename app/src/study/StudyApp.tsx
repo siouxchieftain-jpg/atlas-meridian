@@ -194,7 +194,8 @@ function StudyShell() {
   });
   help.push({ key: 'glossary', label: s('helpGlossary'), icon: <BookOpen20Regular />, dialog: { title: s('helpGlossary'), body: <GlossaryBody /> } });
   help.push({ key: 'about', label: s('helpAboutPrototype'), icon: <Info20Regular />, dialog: { title: s('helpAboutPrototype'), body: <AboutBody /> } });
-  if (stepIndex(furthest) > 0) help.push({ key: 'reset', label: s('helpResetUnsent'), icon: <ArrowCounterclockwise20Regular />, onSelect: () => setConfirmReset(true) });
+  if (stepIndex(furthest) > 0)
+    help.push({ key: 'reset', label: s('helpResetUnsent'), icon: <ArrowCounterclockwise20Regular />, onSelect: () => setConfirmReset(true), divider: true });
 
   const form = host.form;
   const actions: FormPanelActions | null = useMemo(() => {

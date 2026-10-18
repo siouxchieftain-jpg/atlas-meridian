@@ -9,39 +9,41 @@ import { size } from '../theme/constants';
  * Microsoft 365 app; the guide layer (the dawn and the artwork) belongs to Velkommen and the tour only (ATLAS 3.2).
  */
 const useStyles = makeStyles({
+  // One panel padding everywhere: 16 px on a phone, 24 px from 640 px. A panel is the height of its content.
   page: {
     marginBlockStart: `${size.panelInset}px`,
     backgroundColor: tokens.colorNeutralBackground1,
     borderRadius: tokens.borderRadiusLarge,
     boxShadow: tokens.shadow2,
-    paddingInline: 'clamp(16px, 3vw, 32px)',
-    paddingBlock: 'clamp(16px, 3vw, 28px)',
+    padding: tokens.spacingHorizontalL,
     minWidth: 0,
     boxSizing: 'border-box',
-    minHeight: `calc(100dvh - var(--atlas-header-h, 48px) - ${size.panelInset * 2}px - 66px)`,
     display: 'flex',
     flexDirection: 'column',
     gap: tokens.spacingVerticalL,
+    '@media only screen and (min-width: 640px)': { padding: tokens.spacingHorizontalXXL },
     '@media (forced-colors: active)': { border: '1px solid CanvasText' },
-    '@media print': { boxShadow: 'none', minHeight: 0 },
+    '@media print': { boxShadow: 'none' },
   },
   narrowCol: { maxWidth: '880px' },
-  // An intro page (briefing, sent, summary, Takk): a white panel the height of its content, then any cards after it.
+  // An intro page (Takk, review mode's start): a white panel the height of its content, then any cards after it.
   introWrap: { marginBlockStart: `${size.panelInset}px`, display: 'flex', flexDirection: 'column', gap: `${size.panelInset}px` },
   intro: {
     backgroundColor: tokens.colorNeutralBackground1,
     borderRadius: tokens.borderRadiusLarge,
     boxShadow: tokens.shadow2,
-    paddingInline: 'clamp(16px, 4vw, 40px)',
-    paddingBlock: 'clamp(20px, 4vw, 36px)',
+    padding: tokens.spacingHorizontalL,
     minWidth: 0,
     boxSizing: 'border-box',
+    '@media only screen and (min-width: 640px)': { padding: tokens.spacingHorizontalXXL },
     '@media (forced-colors: active)': { border: '1px solid CanvasText' },
     '@media print': { boxShadow: 'none' },
   },
   introColumn: { maxWidth: '720px', display: 'flex', flexDirection: 'column', gap: tokens.spacingVerticalL },
   introWide: { maxWidth: '1040px' },
-  eyebrow: { ...typographyStyles.caption1Strong, color: tokens.colorBrandForeground1, margin: 0 },
+  // On a working page an eyebrow is a quiet label in foreground 2; brand text that does nothing would read as a link.
+  eyebrow: { ...typographyStyles.caption1Strong, color: tokens.colorNeutralForeground2, margin: 0 },
+  eyebrowBrand: { color: tokens.colorBrandForeground1 },
   meta: { display: 'flex', flexWrap: 'wrap', gap: tokens.spacingHorizontalS },
   metaChip: {
     display: 'inline-flex',
@@ -95,8 +97,8 @@ const useStyles = makeStyles({
     backgroundColor: tokens.colorNeutralBackground1,
     borderRadius: tokens.borderRadiusLarge,
     boxShadow: tokens.shadow2,
-    paddingInline: tokens.spacingHorizontalXL,
-    paddingBlock: tokens.spacingVerticalL,
+    padding: tokens.spacingHorizontalL,
+    '@media only screen and (min-width: 640px)': { padding: tokens.spacingHorizontalXXL },
     display: 'flex',
     flexDirection: 'column',
     gap: tokens.spacingVerticalM,
@@ -111,7 +113,7 @@ export function PageCard({ children, narrow, className }: { children: ReactNode;
   return <div className={mergeClasses(cls.page, className)}>{narrow ? <div className={mergeClasses(cls.stack, cls.narrowCol)}>{children}</div> : children}</div>;
 }
 
-/** An intro page: briefing, sent, summary, Takk and review mode's start. One white panel, then whatever follows it. */
+/** An intro page: Takk and review mode's start. One white panel, then whatever follows it. */
 export function IntroPage({ children, wide, after }: { children: ReactNode; wide?: boolean; after?: ReactNode }) {
   const cls = useStyles();
   return (
@@ -124,7 +126,7 @@ export function IntroPage({ children, wide, after }: { children: ReactNode; wide
   );
 }
 
-/** A white card that follows an intro page (for example «Om saken»). */
+/** A white card: a page's panel in a case's flow (for example «Om saken»), or one that follows an intro page. */
 export function Card({ children, className, 'aria-label': ariaLabel }: { children: ReactNode; className?: string; 'aria-label'?: string }) {
   const cls = useStyles();
   return (
@@ -134,9 +136,10 @@ export function Card({ children, className, 'aria-label': ariaLabel }: { childre
   );
 }
 
-export function Eyebrow({ children }: { children: ReactNode }) {
+/** A short label over a page title. `brand` is for the guide layer (Velkommen) only. */
+export function Eyebrow({ children, brand }: { children: ReactNode; brand?: boolean }) {
   const cls = useStyles();
-  return <p className={cls.eyebrow}>{children}</p>;
+  return <p className={mergeClasses(cls.eyebrow, brand && cls.eyebrowBrand)}>{children}</p>;
 }
 
 export function MetaChips({ time, fictional, practice }: { time?: string; fictional?: string; practice?: string }) {

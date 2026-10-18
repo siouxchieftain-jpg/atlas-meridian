@@ -180,14 +180,15 @@ export function GpConsultation({ caseId }: { caseId: CaseId }) {
   const compact = !without && c.gp.systemReading ? <CompactBand own={gp.placement} reading={c.gp.systemReading} /> : undefined;
   return (
     <CaseLayout side={side} compactSummary={compact}>
-      <CaseModeBar caseId={caseId} />
-      <AtlasTaskBar caseId={caseId} />
       <CaseTitle
         caseId={caseId}
         docTitle={s('consultation')}
         crumbs={[{ label: s('navTimeliste'), to: work.listPath }, { label: s('consultation') }]}
         sub={visitLine(caseId, t)}
       />
+      {/* Notices sit under the title (G-16). */}
+      <CaseModeBar caseId={caseId} />
+      <AtlasTaskBar caseId={caseId} />
       {caseId === 'erlend' && without && c.gp.caseOnlyLetter && (
         <Panel aria-label={s('previousRefusalLetter')}>
           <PlainLetter letter={c.gp.caseOnlyLetter} source="dps" />
@@ -232,8 +233,6 @@ export function GpReferral({ caseId }: { caseId: CaseId }) {
   const advice = caseId === 'astrid' ? (ret ? t(ret.advice) : '') : dps.finalSent && dps.finalOutcome === 'retur' ? dps.finalAdvice : dps.sent && dps.outcome === 'retur' ? dps.advice : '';
   return (
     <CaseLayout side={side} compactSummary={compact}>
-      <CaseModeBar caseId={caseId} />
-      <AtlasTaskBar caseId={caseId} />
       <CaseTitle
         caseId={caseId}
         docTitle={s('newReferral')}
@@ -245,6 +244,9 @@ export function GpReferral({ caseId }: { caseId: CaseId }) {
         ]}
         sub={`${s('referralTo')} · ${s('patientAge', { name: c.patient.name, age: c.patient.age })}`}
       />
+      {/* Notices sit under the title (G-16). */}
+      <CaseModeBar caseId={caseId} />
+      <AtlasTaskBar caseId={caseId} />
       {caseId === 'erlend' && (
         <TabList selectedValue={tab} onTabSelect={(_, d) => setTab(d.value as 'draft' | 'record')}>
           <Tab value="draft">{s('newReferral')}</Tab>

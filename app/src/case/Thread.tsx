@@ -1,4 +1,4 @@
-import { Button, Field, Link, makeStyles, mergeClasses, tokens, typographyStyles } from '@fluentui/react-components';
+import { Button, Field, makeStyles, mergeClasses, tokens, typographyStyles } from '@fluentui/react-components';
 import { ChevronDown16Regular, ChevronRight16Regular, Delete20Regular, Send20Regular } from '@fluentui/react-icons';
 import { useEffect, useId, useRef, useState, type ReactElement } from 'react';
 import type { CaseId, Role, StructuredReturn, T } from '../content/types';
@@ -67,7 +67,7 @@ const useStyles = makeStyles({
     border: `1px dashed ${tokens.colorNeutralStroke1}`,
     color: tokens.colorNeutralForeground2,
   },
-  composer: { display: 'flex', flexDirection: 'column', gap: tokens.spacingVerticalS },
+  composer: { display: 'flex', flexDirection: 'column', gap: tokens.spacingVerticalS, maxWidth: '760px' },
   composerRow: { display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: tokens.spacingHorizontalM },
   reason: { ...typographyStyles.caption1, color: tokens.colorNeutralForeground3, margin: 0 },
   ret: { display: 'flex', flexDirection: 'column', gap: tokens.spacingVerticalS },
@@ -412,9 +412,9 @@ export function Composer({
         >
           {kind === 'dpsAnswer' ? s('sendAnswer') : s('send')}
         </Button>
-        <Link as="button" ref={skipRef} onClick={skip}>
+        <Button appearance="transparent" size="small" ref={skipRef} onClick={skip}>
           {skipLabel}
-        </Link>
+        </Button>
         <ProvenanceChip source="own" />
       </div>
       {!text.trim() && (

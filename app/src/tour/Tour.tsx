@@ -20,7 +20,7 @@ import {
   Info16Regular,
   Map16Regular,
 } from '@fluentui/react-icons';
-import { useId, useState, type ReactNode } from 'react';
+import { useId, useLayoutEffect, useRef, useState, type ReactNode } from 'react';
 import type { Role, TourPart, TourStep } from '../content/types';
 import { tour, tourParts } from '../content';
 import { useLang } from '../i18n/i18n';
@@ -35,7 +35,8 @@ const useStyles = makeStyles({
   surface: {
     position: 'relative',
     isolation: 'isolate',
-    overflow: 'hidden',
+    // Clip, not hidden: hidden would make the stage the scroll container, and the sticky text card would scroll away.
+    overflow: 'clip',
     marginBlockStart: `${size.panelInset}px`,
     background: atlasDawn,
     borderRadius: tokens.borderRadiusLarge,
@@ -72,9 +73,10 @@ const useStyles = makeStyles({
   where: { ...typographyStyles.caption1, color: tokens.colorNeutralForeground2 },
   progress: { flex: '1 1 280px', maxWidth: '520px', display: 'flex', alignItems: 'center', gap: '10px' },
   progressPart: { display: 'flex', gap: '4px' },
-  seg: { flex: '1 1 0', height: '4px', borderRadius: '2px', backgroundColor: tokens.colorNeutralStroke2, '@media (forced-colors: active)': { border: '1px solid CanvasText' } },
-  segDone: { backgroundColor: tokens.colorBrandStroke2 },
-  segNow: { backgroundColor: tokens.colorBrandBackground, '@media (forced-colors: active)': { backgroundColor: 'Highlight' } },
+  // To do in neutral stroke 1, done in brand 80, the current step in brand 40: each step reads apart from its neighbours.
+  seg: { flex: '1 1 0', height: '4px', borderRadius: '2px', backgroundColor: tokens.colorNeutralStroke1, '@media (forced-colors: active)': { border: '1px solid CanvasText' } },
+  segDone: { backgroundColor: tokens.colorBrandBackground },
+  segNow: { backgroundColor: tokens.colorBrandBackgroundPressed, '@media (forced-colors: active)': { backgroundColor: 'Highlight' } },
   // A white card over the image, so the text always reads on white.
   text: {
     display: 'flex',
@@ -240,6 +242,19 @@ const useStyles = makeStyles({
 export function FramedWindow({ title, children, coach }: { title: string; children: ReactNode; coach?: string }) {
   const cls = useStyles();
   const { s } = useLang();
+  // The window is as tall as its content; only when something is wider than a narrow window does it scroll sideways,
+  // and only then is it a tab stop, so the keyboard can scroll it (WCAG 2.1.1).
+  const bodyRef = useRef<HTMLDivElement>(null);
+  const [scrolls, setScrolls] = useState(false);
+  useLayoutEffect(() => {
+    const el = bodyRef.current;
+    if (!el) return;
+    const measure = () => setScrolls(el.scrollWidth > el.clientWidth + 1);
+    measure();
+    const ro = new ResizeObserver(measure);
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, [children]);
   return (
     <section className={cls.window} aria-label={s('tourFrameLabel', { title })} data-tour-frame="">
       <div className={cls.windowInner}>
@@ -253,7 +268,8 @@ export function FramedWindow({ title, children, coach }: { title: string; childr
             coach === 'margin' && cls.coachMargin,
             coach === 'return' && cls.coachReturn,
           )}
-          tabIndex={0}
+          ref={bodyRef}
+          tabIndex={scrolls ? 0 : undefined}
           role="region"
           aria-label={title}
         >

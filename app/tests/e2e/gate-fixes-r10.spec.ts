@@ -64,7 +64,15 @@ test('r9A-01: on the summary, the caption under the title reads on a white panel
   await expect(caption).toBeVisible();
   // Foreground 3 (#616161) is 5.7:1 on white; foreground 2 (#424242) 10:1. Either passes WCAG 1.4.3.
   expect(['rgb(97, 97, 97)', 'rgb(66, 66, 66)']).toContain(await caption.evaluate((el) => getComputedStyle(el).color));
-  expect(await caption.evaluate((el) => getComputedStyle(el.closest('[data-intro-page]')!).backgroundColor)).toBe('rgb(255, 255, 255)');
+  // The nearest painted surface behind the caption is the white card.
+  const surface = await caption.evaluate((el) => {
+    for (let n: Element | null = el; n; n = n.parentElement) {
+      const bg = getComputedStyle(n).backgroundColor;
+      if (bg !== 'rgba(0, 0, 0, 0)' && bg !== 'transparent') return bg;
+    }
+    return '';
+  });
+  expect(surface).toBe('rgb(255, 255, 255)');
 });
 
 test('r9A-02: at 320 px a tag’s definition opens above the review tab', async ({ page }) => {

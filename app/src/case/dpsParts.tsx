@@ -407,7 +407,7 @@ export function FinalChoiceSection({ caseId, thread }: { caseId: CaseId; thread:
   // No reply came: the choice is not «etter svaret fra fastlegen» (r6F-04).
   const legend = thread.gpSkipped ? s('finalChoiceNoReply') : s('finalChoice');
   return (
-    <section className={cls.section} aria-label={legend} data-section="endelig-vurdering">
+    <section className={cls.section} style={{ maxWidth: 760 }} aria-label={legend} data-section="endelig-vurdering">
       <ChoiceGroup<'rett' | 'retur'>
         legend={legend}
         layout="column"

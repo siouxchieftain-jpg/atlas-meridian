@@ -23,7 +23,7 @@ export const band = {
 /** The neutral proportion bar in Mitt henvisningsmønster: greys only, never status colours (B1). */
 export const neutralBar = ['#424242', '#8A8A8A', '#C7C7C7', '#F0F0F0'] as const;
 
-/** Guide surfaces only: welcome, tour, briefings, sent and debrief pages. */
+/** Guide surfaces only: Velkommen and the tour (ATLAS 3.2). */
 export const atlasDawn =
   'radial-gradient(22% 34% at 76% 36%,#FDCFB4 0%,rgba(253,207,180,0) 75%),' +
   'radial-gradient(44% 64% at 78% 34%,#FEE5D7 0%,rgba(254,229,215,0) 72%),' +
@@ -40,22 +40,19 @@ export const atlasDawn =
 export const guideImage = 'url(./guide-organza.webp)';
 
 /**
- * The guide layer's warm colours (tour, help, guide cards, Merknader). Buttons
+ * The guide layer's warm colours (the tour, and review mode's Merknader). Buttons
  * stay brand everywhere. Small text uses `ink` (6.8:1 on white); `coral` and
- * the rose are for marks and illustration only, never for text.
+ * `peach` are for marks and illustration only, never for text.
  */
 export const guide = {
   ink: '#9C3D1F',
   coral: '#F59E85',
   peach: '#FDCFB4',
-  rose: '#F6B8DA',
   /** A guide card: the dawn in a card, with a warm edge. */
   card: 'linear-gradient(165deg,#FFF4EE 0%,#FDEDF5 52%,#F3F0FD 100%)',
   cardEdge: '#F6D9CF',
   /** A number marker or a guide pill. */
   mark: 'linear-gradient(135deg,#FDCFB4 0%,#FBDDF0 58%,#D2CCF8 100%)',
-  /** A quiet track, as in the tour's progress. */
-  track: 'rgba(156,61,31,0.16)',
 } as const;
 
 /** The app frame behind white content panels (ATLAS's stand-in for Mica). */
@@ -85,11 +82,7 @@ export const size = {
 export const mq = {
   medium: '@media only screen and (min-width: 480px)',
   large: '@media only screen and (min-width: 640px)',
-  /** The overview: the study card beside the day's list. */
-  overviewTwo: '@media only screen and (min-width: 900px)',
   xlarge: '@media only screen and (min-width: 1024px)',
-  /** The overview: the side column beside them as well. */
-  overviewThree: '@media only screen and (min-width: 1240px)',
   xxlarge: '@media only screen and (min-width: 1366px)',
   xxxlarge: '@media only screen and (min-width: 1920px)',
   belowLarge: '@media only screen and (max-width: 639px)',
@@ -99,9 +92,7 @@ export const mq = {
 export const mediaQueryOrder = [
   'only screen and (min-width: 480px)',
   'only screen and (min-width: 640px)',
-  'only screen and (min-width: 900px)',
   'only screen and (min-width: 1024px)',
-  'only screen and (min-width: 1240px)',
   'only screen and (min-width: 1366px)',
   'only screen and (min-width: 1920px)',
   'only screen and (max-width: 1023px)',
