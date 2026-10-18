@@ -164,6 +164,8 @@ export type Intervju = 'Ja' | 'Nei' | 'Vil ikke svare';
 
 export interface StudyState {
   v: 2;
+  /** The round the session began in. A session from the other round is never carried over (see loadStudy). */
+  round?: 'pilot' | 'study';
   roleChoice?: RoleChoice;
   intervju?: Intervju;
   /** The random study name («Rolig elg 27»), made when the role is chosen; a locked field in every study form. */

@@ -1,7 +1,7 @@
 # Test, check, build and publish ATLAS v3 with its Meridian pages to GitHub Pages.
 # The site changes only when every check passes. While the repository is private the
 # publish job is skipped: GitHub Pages on a free plan needs a public repository.
-# A pull request to main runs every check and publishes nothing.
+# A pull request to main runs every check and publishes nothing, and so does a run started by hand on another branch.
 name: Test and publish
 
 on:
@@ -105,7 +105,7 @@ jobs:
   publish:
     name: Publish
     needs: build
-    if: ${{ github.event_name != 'pull_request' && !github.event.repository.private }}
+    if: ${{ github.event_name != 'pull_request' && github.ref == 'refs/heads/main' && !github.event.repository.private }}
     runs-on: ubuntu-24.04
     permissions:
       pages: write

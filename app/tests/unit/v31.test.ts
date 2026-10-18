@@ -171,6 +171,41 @@ describe('coming back (decision 11) and the case under way', () => {
     expect(s.furthest).toBe('erlend');
   });
 
+  it('starts afresh when the session began in the other round, and goes on within its own', async () => {
+    await freshForms({ round: 'study', forms: {} });
+    const { loadStudy, studyEntryPath } = await import('../../src/state/study');
+    store({ ...base, round: 'pilot', furthest: 'erlend', ledger: { S1: sent('S1'), S3: sent('S3') }, phase: { kari: 'done' } });
+    window.localStorage.setItem('atlas.study.keep.v2', JSON.stringify({ round: 'pilot', ledger: { S1: sent('S1'), S3: sent('S3') }, visAtlas: { kari: true }, roleChoice: 'fastlege', intervju: 'Nei', studienavn: 'Rolig elg 27' }));
+    const study = loadStudy('study');
+    expect(study.round).toBe('study');
+    expect(study.roleChoice).toBeUndefined();
+    expect(study.studienavn).toBeUndefined();
+    expect(study.ledger).toEqual({});
+    expect(study.visAtlas).toEqual({});
+    expect(study.furthest).toBe('velkommen');
+    // The site runs the study round: the pilot session is not offered back.
+    expect(studyEntryPath('')).toBeNull();
+    const pilot = loadStudy('pilot');
+    expect(pilot.round).toBe('pilot');
+    expect(pilot.roleChoice).toBe('fastlege');
+    expect(pilot.studienavn).toBe('Rolig elg 27');
+    expect(pilot.furthest).toBe('erlend');
+    // While the site runs the pilot round, the pilot session is offered back.
+    await freshForms({ round: 'pilot', forms: {} });
+    const inPilot = await import('../../src/state/study');
+    expect(inPilot.studyEntryPath('')).toBe('/studie/velkommen?tilbake');
+    vi.unstubAllGlobals();
+  });
+
+  it('takes a session with no round recorded as this round\'s', async () => {
+    const { loadStudy } = await import('../../src/state/study');
+    store({ ...base, furthest: 'kari', ledger: { S1: sent('S1') }, phase: {} });
+    const s = loadStudy('pilot');
+    expect(s.round).toBe('pilot');
+    expect(s.roleChoice).toBe('fastlege');
+    expect(s.furthest).toBe('kari');
+  });
+
   it('sends the bare study link to the welcome back when the browser holds a role, and nothing else', async () => {
     const { studyEntryPath } = await import('../../src/state/study');
     expect(studyEntryPath('')).toBeNull();

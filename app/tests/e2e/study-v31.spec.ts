@@ -222,6 +222,32 @@ test('before S1 the study link opened again asks too, and «Ikke deg?» starts a
   expect(second).not.toBe(first);
 });
 
+test('a pilot session asks first within the pilot, and is left behind once the site runs the study round', async ({ page, context }) => {
+  await mockNettskjema(context, { round: 'pilot' });
+  await startStudy(page, 'Fastlege');
+  await sendForm(page);
+  await toHome(page);
+  // The same link again while the pilot runs: the welcome back, so the round is read before the session.
+  const again = await context.newPage();
+  await again.goto('/');
+  await expect(again).toHaveURL(/#\/studie\/velkommen\?tilbake$/);
+  await expect(again.locator('[data-welcome="back"]')).toBeVisible();
+  await again.close();
+  // The owner switches to the study round: the pilot's session is not carried into it.
+  await mockNettskjema(context, { round: 'study' });
+  const study = await context.newPage();
+  await study.goto('/');
+  await expect(study.locator('[data-welcome="first"]')).toBeVisible();
+  await expect(study.getByRole('button', { name: 'Start som fastlege' })).toBeVisible();
+  await expect(study.locator('header').getByText('Pilot', { exact: true })).toHaveCount(0);
+  const stored = await study.evaluate(() => JSON.parse(localStorage.getItem('atlas.study.v2') ?? '{}'));
+  expect(stored.round).toBe('study');
+  expect(stored.ledger).toEqual({});
+  expect(stored.roleChoice).toBeUndefined();
+  await study.goto('/#/studie/hjem');
+  await expect(study).toHaveURL(/#\/studie\/velkommen$/);
+});
+
 test('a reload after the case form is sent keeps the case under way; the next case stays shut', async ({ page }) => {
   await mockNettskjema(page);
   await toFirstCase(page);

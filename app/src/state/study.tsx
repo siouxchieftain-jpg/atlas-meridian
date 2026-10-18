@@ -2,6 +2,7 @@ import { createContext, useCallback, useContext, useEffect, useMemo, useState, t
 import type { CaseId, CoreCaseId, Role } from '../content/types';
 import { readJSON, writeJSON } from './persist';
 import { isStudienavn, makeStudienavn } from '../engine/studienavn';
+import { getConfig } from '../engine/forms';
 import {
   STEP_ORDER,
   emptyDps,
@@ -28,6 +29,7 @@ export const PENDING_KEY = 'atlas.study.pending';
 export const SENDT_KEY = 'atlas.study.sendt';
 
 interface KeepRecord {
+  round?: StudyState['round'];
   ledger: StudyState['ledger'];
   visAtlas: StudyState['visAtlas'];
   roleChoice?: RoleChoice;
@@ -67,10 +69,17 @@ const STEP_FORM: Partial<Record<StepId, FormStep>> = {
   avslutning: 'S6',
 };
 
-/** Rebuild a coherent state from the main store and the keep record. */
-export function loadStudy(): StudyState {
-  const stored = readJSON<StudyState>(STUDY_KEY);
-  const keep = readJSON<KeepRecord>(KEEP_KEY);
+/**
+ * Rebuild a coherent state from the main store and the keep record, for the round the site runs (read from the
+ * configuration, so the configuration must be loaded first).
+ */
+export function loadStudy(round: NonNullable<StudyState['round']> = getConfig().round): StudyState {
+  // A session belongs to the round it began in. Once the round is switched (the pilot ends), a session from the other
+  // round starts afresh: going on would send its forms to the other set, under a study name made for that round. A
+  // session with no round recorded is taken as this round's.
+  const ours = <T extends { round?: StudyState['round'] }>(r: T | undefined) => (r && (r.round === undefined || r.round === round) ? r : undefined);
+  const stored = ours(readJSON<StudyState>(STUDY_KEY));
+  const keep = ours(readJSON<KeepRecord>(KEEP_KEY));
   let s: StudyState = stored && stored.v === 2 ? { ...initialStudy(), ...stored } : initialStudy();
   if (keep) {
     s = {
@@ -103,7 +112,7 @@ export function loadStudy(): StudyState {
   const furthest = STEP_ORDER[Math.min(minIndex, STEP_ORDER.length - 1)];
   if (furthest !== s.furthest) s = { ...s, furthest };
   if (tourDoneByLedger(s.ledger) && !s.tour.done) s = { ...s, tour: { ...s.tour, started: true, done: true } };
-  return s;
+  return { ...s, round };
 }
 
 /**
@@ -173,8 +182,10 @@ export function StudyProvider({ children }: { children: ReactNode }) {
   const [state, setState] = useState<StudyState>(() => loadStudy());
 
   useEffect(() => {
-    writeJSON(STUDY_KEY, state);
-    const keep: KeepRecord = { ledger: state.ledger, visAtlas: state.visAtlas };
+    // Every record carries its round, also after a reset that builds the state anew.
+    const round = state.round ?? getConfig().round;
+    writeJSON(STUDY_KEY, { ...state, round });
+    const keep: KeepRecord = { round, ledger: state.ledger, visAtlas: state.visAtlas };
     if (state.ledger.S1) {
       keep.roleChoice = state.roleChoice;
       keep.intervju = state.intervju;
@@ -250,6 +261,7 @@ export function StudyProvider({ children }: { children: ReactNode }) {
           const fresh = initialStudy();
           const kept: StudyState = {
             ...fresh,
+            round: s.round,
             ledger: s.ledger,
             visAtlas: s.visAtlas,
             roleChoice: s.ledger.S1 ? s.roleChoice : undefined,
