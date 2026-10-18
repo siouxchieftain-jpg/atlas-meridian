@@ -50,8 +50,8 @@ import { ReviewProvider, useReview } from '../state/review';
 import type { ReviewerRole } from '../state/types';
 import { ReviewWorkProvider, useWork } from '../state/work';
 import { ChoiceGroup } from '../patterns/ChoiceGroup';
-import { SheenButton, useSelectedToggle } from '../patterns/basics';
-import { Actions, Body, GuidePage, Muted, PageCard } from '../patterns/layout';
+import { StartButton, useSelectedToggle } from '../patterns/basics';
+import { Actions, Body, IntroPage, Muted, PageCard } from '../patterns/layout';
 import { NoticeBar, useNotice } from '../patterns/notice';
 import { Silent, focusAfterOverlay } from '../patterns/announce';
 import { AppShell, type NavItem } from '../shell/AppShell';
@@ -581,8 +581,8 @@ function Landing() {
   const cls = useStyles();
   const { s } = useLang();
   return (
-    <GuidePage>
-      <PageHeading title={s('reviewTitle')} guide>
+    <IntroPage>
+      <PageHeading title={s('reviewTitle')}>
         {s('reviewTitle')}
       </PageHeading>
       <Body>{s('reviewIntro1')}</Body>
@@ -600,7 +600,7 @@ function Landing() {
       </section>
       <ReviewerPicker />
       <Actions>
-        <SheenButton onClick={() => navigate('/gjennomgang/fastlege/timeliste')}>{s('reviewStartGp')}</SheenButton>
+        <StartButton onClick={() => navigate('/gjennomgang/fastlege/timeliste')}>{s('reviewStartGp')}</StartButton>
         <Button size="large" onClick={() => navigate('/gjennomgang/dps/mottatte')}>
           {s('reviewStartDps')}
         </Button>
@@ -614,7 +614,7 @@ function Landing() {
           {s('meridianLink')}
         </Link>
       </div>
-    </GuidePage>
+    </IntroPage>
   );
 }
 
@@ -865,7 +865,7 @@ function ReviewTourPage({ role }: { role: Role }) {
       notes={review.state.notes}
       ending={
         <Actions>
-          <SheenButton onClick={() => navigate(role === 'gp' ? '/gjennomgang/fastlege/timeliste' : '/gjennomgang/dps/mottatte')}>{s('reviewBack')}</SheenButton>
+          <StartButton onClick={() => navigate(role === 'gp' ? '/gjennomgang/fastlege/timeliste' : '/gjennomgang/dps/mottatte')}>{s('reviewBack')}</StartButton>
         </Actions>
       }
     />

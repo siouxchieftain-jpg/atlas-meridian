@@ -16,8 +16,8 @@ import { formatDateWithWeekday, formatDayMonth, useLang } from '../i18n/i18n';
 import { DPS_TODAY, GP_TODAY, isWeekday } from '../engine/clock';
 import { navigate, useRoute } from '../router/router';
 import { useStudy } from '../state/study';
-import { GuideImage, SheenButton, SrOnly, StatusChip } from '../patterns/basics';
-import { neutralBar, guide } from '../theme/constants';
+import { StartButton, SrOnly, StatusChip } from '../patterns/basics';
+import { mq, neutralBar } from '../theme/constants';
 import { PageHeading } from '../shell/PageHeading';
 import { TourStepDialog } from '../tour/Tour';
 import { focusAfterOverlay } from '../patterns/announce';
@@ -26,7 +26,7 @@ import { CORE, caseInProgress, casesDone, currentCase, partTwoLabel } from './pa
 import { TourStartDialog } from './TourStart';
 
 const useStyles = makeStyles({
-  page: { marginBlockStart: '8px', display: 'flex', flexDirection: 'column', gap: '12px', minWidth: 0, '@media (max-height: 640px)': { gap: '8px', marginBlockStart: '4px' } },
+  page: { marginBlockStart: '8px', display: 'flex', flexDirection: 'column', gap: '16px', minWidth: 0 },
   head: { display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between', columnGap: '16px', rowGap: '8px' },
   titleRow: { display: 'flex', flexWrap: 'wrap', alignItems: 'baseline', columnGap: '14px', rowGap: '2px', minWidth: 0 },
   day: { ...typographyStyles.body1, margin: 0, color: tokens.colorNeutralForeground2 },
@@ -46,16 +46,30 @@ const useStyles = makeStyles({
     '@media (forced-colors: active)': { border: '1px solid CanvasText' },
   },
   countNum: { ...typographyStyles.body1Strong, color: tokens.colorNeutralForeground1 },
-  // One screen tall on a laptop: the columns sit side by side from about 1240 px of content; narrower, they wrap and
-  // the page scrolls down (never sideways). The flex-basis is each column's least width, so a line breaks only when
-  // the columns do not fit (Meridian, «One screen tall»).
-  cols: { display: 'flex', flexWrap: 'wrap', alignItems: 'flex-start', gap: '16px', minWidth: 0 },
-  colStudy: { flex: '0 1 224px', minWidth: '212px', display: 'flex', flexDirection: 'column', gap: '12px' },
-  colStudyDps: { flex: '0 1 272px' },
-  colMain: { flex: '1 1 384px', minWidth: 0 },
-  colMainDps: { flex: '1 1 420px' },
-  colSide: { flex: '0 1 228px', minWidth: '212px', display: 'flex', flexDirection: 'column', gap: '12px' },
-  colSideDps: { flex: '0 1 380px', minWidth: '300px' },
+  // Three columns on a laptop: the study card, the day's list and the side column, each the height of its content. The
+  // page scrolls down when the day needs it; it never scrolls sideways. Narrower, the side column moves under the list
+  // and lays its cards out side by side; on a phone everything stacks.
+  cols: {
+    display: 'grid',
+    gap: '16px',
+    alignItems: 'start',
+    minWidth: 0,
+    gridTemplateColumns: 'minmax(0, 1fr)',
+    [mq.overviewTwo]: { gridTemplateColumns: '272px minmax(0, 1fr)' },
+    [mq.overviewThree]: { gridTemplateColumns: '272px minmax(0, 1fr) 320px' },
+  },
+  colsDps: { [mq.overviewThree]: { gridTemplateColumns: '272px minmax(0, 1fr) 360px' } },
+  colStudy: { display: 'flex', flexDirection: 'column', gap: '12px', minWidth: 0 },
+  colMain: { minWidth: 0 },
+  colSide: {
+    display: 'grid',
+    gap: '12px',
+    alignItems: 'start',
+    minWidth: 0,
+    gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 280px), 1fr))',
+    [mq.overviewTwo]: { gridColumn: '1 / -1' },
+    [mq.overviewThree]: { gridColumn: 'auto', gridTemplateColumns: 'minmax(0, 1fr)' },
+  },
   card: {
     backgroundColor: tokens.colorNeutralBackground1,
     borderRadius: tokens.borderRadiusLarge,
@@ -71,9 +85,8 @@ const useStyles = makeStyles({
     justifyContent: 'space-between',
     gap: '8px',
     paddingInline: '16px',
-    paddingBlockStart: '12px',
-    paddingBlockEnd: '8px',
-    '@media (max-height: 640px)': { paddingBlockStart: '8px', paddingBlockEnd: '6px' },
+    paddingBlockStart: '14px',
+    paddingBlockEnd: '10px',
   },
   h2: { ...typographyStyles.subtitle2, margin: 0 },
   newBadge: {
@@ -102,9 +115,8 @@ const useStyles = makeStyles({
     alignItems: 'center',
     columnGap: '10px',
     paddingInline: '16px',
-    paddingBlock: '7px',
+    paddingBlock: '10px',
     borderBottom: `1px solid ${tokens.colorNeutralStroke3}`,
-    '@media (max-height: 640px)': { paddingBlock: '5px' },
   },
   rowDps: { gridTemplateColumns: '64px 32px minmax(0, 1fr) auto' },
   rowCurrent: { backgroundColor: tokens.colorBrandBackground2, boxShadow: `inset 3px 0 0 ${tokens.colorBrandStroke1}` },
@@ -273,57 +285,51 @@ const useStyles = makeStyles({
   dlList: { margin: 0 },
   dt: { ...typographyStyles.body1Strong },
   dd: { margin: 0, ...typographyStyles.body1 },
-  // The study card: a guide card (B6), the dawn in a card with the image fading in from the top.
+  // The study card: a white card like the rest of the day, with the study's next step and one primary action.
   study: {
-    position: 'relative',
-    isolation: 'isolate',
-    overflow: 'hidden',
     display: 'flex',
     flexDirection: 'column',
-    gap: '10px',
-    paddingInline: '18px',
-    paddingBlockStart: '60px',
-    paddingBlockEnd: '16px',
-    '@media (max-height: 640px)': { paddingBlockStart: '48px', gap: '8px' },
-    borderRadius: '12px',
-    border: `1px solid ${guide.cardEdge}`,
-    background: guide.card,
+    gap: '12px',
+    padding: '20px',
+    borderRadius: tokens.borderRadiusLarge,
+    backgroundColor: tokens.colorNeutralBackground1,
+    border: `1px solid ${tokens.colorNeutralStroke3}`,
+    boxShadow: tokens.shadow2,
     boxSizing: 'border-box',
-    '@media print': { background: '#FFFFFF' },
-    '@media (forced-colors: active)': { background: 'Canvas', border: '1px solid CanvasText' },
+    '@media (forced-colors: active)': { border: '1px solid CanvasText' },
   },
-  studyBand: { height: '76px' },
-  eyebrow: { ...typographyStyles.caption1Strong, margin: 0, color: guide.ink },
+  eyebrow: { ...typographyStyles.caption1Strong, margin: 0, color: tokens.colorBrandForeground1 },
   studyTitle: { ...typographyStyles.subtitle1, margin: 0, color: tokens.colorNeutralForeground1 },
   studyText: { ...typographyStyles.body1, margin: 0, color: tokens.colorNeutralForeground2 },
   studyMeta: { display: 'flex', alignItems: 'flex-start', gap: '6px', ...typographyStyles.body1, margin: 0, color: tokens.colorNeutralForeground2 },
-  studyMetaIcon: { flexShrink: 0, marginTop: '2px', color: guide.ink, display: 'inline-flex' },
-  start: { alignSelf: 'flex-start', maxWidth: '100%', height: 'auto', minHeight: '36px', whiteSpace: 'normal', textAlign: 'start' },
+  studyMetaIcon: { flexShrink: 0, marginTop: '2px', color: tokens.colorNeutralForeground2, display: 'inline-flex' },
+  start: { alignSelf: 'flex-start', maxWidth: '100%', height: 'auto', minHeight: '32px', whiteSpace: 'normal', textAlign: 'start' },
   tourLink: {
     alignSelf: 'flex-start',
     minWidth: 0,
     height: 'auto',
     paddingInline: 0,
-    ...typographyStyles.body1Strong,
-    color: guide.ink,
-    ':hover': { color: guide.ink, textDecoration: 'underline' },
-    ':hover:active': { color: guide.ink },
+    color: tokens.colorBrandForegroundLink,
+    ':hover': { color: tokens.colorBrandForegroundLinkHover, textDecoration: 'underline' },
+    ':hover:active': { color: tokens.colorBrandForegroundLinkPressed },
   },
   // «Studienavnet ditt» with a small «Hva er dette?» button beside it, and the name below.
   nameBox: {
     display: 'flex',
     flexDirection: 'column',
     gap: '2px',
+    marginBlockStart: '4px',
     paddingInline: '12px',
     paddingBlock: '8px',
-    borderRadius: '10px',
-    border: `1px solid ${guide.cardEdge}`,
-    backgroundColor: 'rgba(255,255,255,0.86)',
+    borderRadius: tokens.borderRadiusMedium,
+    border: `1px solid ${tokens.colorNeutralStroke2}`,
+    backgroundColor: tokens.colorNeutralBackground2,
+    '@media (forced-colors: active)': { border: '1px solid CanvasText' },
   },
   nameLabel: { ...typographyStyles.caption1, color: tokens.colorNeutralForeground2 },
   nameValue: { ...typographyStyles.body1Strong },
   nameHead: { display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '4px' },
-  nameWhat: { minWidth: '24px', width: '24px', height: '24px', padding: 0, color: guide.ink, ':hover': { color: guide.ink } },
+  nameWhat: { minWidth: '24px', width: '24px', height: '24px', padding: 0, color: tokens.colorNeutralForeground2 },
   namePop: { maxWidth: '300px', display: 'flex', flexDirection: 'column', gap: '8px' },
   namePopTitle: { ...typographyStyles.body1Strong, margin: 0 },
   namePopText: { ...typographyStyles.body1, margin: 0 },
@@ -351,8 +357,8 @@ export function HomePage() {
   return (
     <div className={cls.page}>
       <HomeHead role={role} />
-      <div className={cls.cols}>
-        <div className={mergeClasses(cls.colStudy, role === 'dps' && cls.colStudyDps)}>
+      <div className={mergeClasses(cls.cols, role === 'dps' && cls.colsDps)}>
+        <div className={cls.colStudy}>
           <StudyCard onStartTour={() => setTourCard(true)} />
         </div>
         {role === 'gp' ? (
@@ -363,8 +369,6 @@ export function HomePage() {
             <div className={cls.colSide}>
               <GpInbox />
               <GpReferrals />
-            </div>
-            <div className={cls.colSide}>
               <GpPattern onOpen={st.tour.done ? () => openStep('gp-monster') : undefined} />
               <SharedCard role="gp" onOpen={st.tour.done ? () => openStep('gp-kalibrering') : undefined} />
               <Pause />
@@ -372,10 +376,10 @@ export function HomePage() {
           </>
         ) : (
           <>
-            <div className={mergeClasses(cls.colMain, cls.colMainDps)}>
+            <div className={cls.colMain}>
               <Queue />
             </div>
-            <div className={mergeClasses(cls.colSide, cls.colSideDps)}>
+            <div className={cls.colSide}>
               <Deadlines />
               <DpsMessages />
               <SharedCard role="dps" onOpen={st.tour.done ? () => openStep('dps-kalibrering') : undefined} />
@@ -471,13 +475,13 @@ function StudyCard({ onStartTour }: { onStartTour: () => void }) {
       </>
     );
     action = st.tour.started ? (
-      <SheenButton size="medium" className={cls.start} icon={<ArrowRight20Regular />} iconPosition="after" onClick={() => navigate('/studie/omvisning')}>
+      <StartButton size="medium" className={cls.start} icon={<ArrowRight20Regular />} iconPosition="after" onClick={() => navigate('/studie/omvisning')}>
         {s('studyCardTourGoOn')}
-      </SheenButton>
+      </StartButton>
     ) : (
-      <SheenButton size="medium" className={cls.start} icon={<ArrowRight20Regular />} iconPosition="after" onClick={onStartTour} data-start-tour="">
+      <StartButton size="medium" className={cls.start} icon={<ArrowRight20Regular />} iconPosition="after" onClick={onStartTour} data-start-tour="">
         {s('studyCardStartTour')}
-      </SheenButton>
+      </StartButton>
     );
   } else if (current) {
     const n = CORE.indexOf(current) + 1;
@@ -508,9 +512,9 @@ function StudyCard({ onStartTour }: { onStartTour: () => void }) {
     );
     action = (
       <>
-        <SheenButton size="medium" className={cls.start} icon={<ArrowRight20Regular />} iconPosition="after" onClick={() => navigate(`/studie/sak/${current}`)} data-open-case={current}>
+        <StartButton size="medium" className={cls.start} icon={<ArrowRight20Regular />} iconPosition="after" onClick={() => navigate(`/studie/sak/${current}`)} data-open-case={current}>
           {inProgress ? s('continueCase') : role === 'gp' ? s('listOpenCase') : s('listOpenReferral')}
-        </SheenButton>
+        </StartButton>
         <Button appearance="transparent" className={cls.tourLink} icon={<Map16Regular />} onClick={() => navigate('/studie/omvisning?igjen')}>
           {s('guideTourAgain')}
         </Button>
@@ -522,14 +526,13 @@ function StudyCard({ onStartTour }: { onStartTour: () => void }) {
     body = <p className={cls.studyText}>{s('studyCardDoneText')}</p>;
     const atHelhet = st.furthest === 'helhet';
     action = (
-      <SheenButton size="medium" className={cls.start} icon={<ArrowRight20Regular />} iconPosition="after" onClick={() => (atHelhet ? ctl.goToStep('helhet') : navigate(ctl.currentPath()))}>
+      <StartButton size="medium" className={cls.start} icon={<ArrowRight20Regular />} iconPosition="after" onClick={() => (atHelhet ? ctl.goToStep('helhet') : navigate(ctl.currentPath()))}>
         {atHelhet ? s('studyCardToEnd') : s('continue')}
-      </SheenButton>
+      </StartButton>
     );
   }
   return (
     <section className={cls.study} aria-labelledby={titleId} data-study-card="">
-      <GuideImage variant="band" className={cls.studyBand} />
       <p className={cls.eyebrow}>{eyebrow}</p>
       <h2 id={titleId} className={cls.studyTitle}>
         {title}

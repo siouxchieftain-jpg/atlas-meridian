@@ -13,6 +13,7 @@
     "preview": "vite preview --port 4173 --strictPort",
     "e2e": "playwright test",
     "docs": "node scripts/build-sheet.mjs && node scripts/traceability.mjs",
+    "letter": "node scripts/letter-pdf.mjs",
     "site": "node scripts/assemble-site.mjs"
   },
   "dependencies": {

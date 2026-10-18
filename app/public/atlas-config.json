@@ -35,9 +35,9 @@
     "opens": "",
     "closes": ""
   },
-  "informationLetter": "",
+  "informationLetter": "./informasjonsskriv.html",
   "contact": {
-    "nb": "",
-    "en": ""
+    "nb": "Jishnu Das, prosjektleder, Universitetet i Agder: jishnu.das@uia.no",
+    "en": "Jishnu Das, project leader, University of Agder: jishnu.das@uia.no"
   }
 }

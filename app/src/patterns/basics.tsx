@@ -314,10 +314,15 @@ export function GuideImage({ variant, className }: { variant: 'hero' | 'band' | 
   return <div aria-hidden="true" className={mergeClasses(cls.base, cls[variant], className)} data-guide-image={variant} />;
 }
 
-/** The one start action on a guide surface (never in clinical views). */
+/** The one start action on a guide surface: Velkommen only (never in clinical views). */
 export function SheenButton(props: ButtonProps) {
   const cls = useGuide();
   return <Button appearance="primary" size="large" {...props} className={mergeClasses(cls.sheen, props.className)} />;
+}
+
+/** The one main action of a working page (briefing, summary, overview, tour): a solid primary, as in any Fluent app. */
+export function StartButton(props: ButtonProps) {
+  return <Button appearance="primary" {...props} />;
 }
 
 /* ---------- Design note (Merknader, review mode only) ---------- */

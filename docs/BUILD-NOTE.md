@@ -1,11 +1,12 @@
 # Build note
 
-ATLAS v3.1 is a research prototype for referrals from GPs (fastleger) to specialist mental health services (DPS) in Norway, built for a formative evaluation. All patients, clinicians and figures in it are fictional. This note says what was built and how. [PLAN.md](PLAN.md) lists the screens, the steps and the forms; [MERIDIAN-1.1.md](MERIDIAN-1.1.md) gives the design rules the build added to Meridian.
+ATLAS v3.2 is a research prototype for referrals from GPs (fastleger) to specialist mental health services (DPS) in Norway, built for a formative evaluation. All patients, clinicians and figures in it are fictional. This note says what was built and how. [PLAN.md](PLAN.md) lists the screens, the steps and the forms; [MERIDIAN-1.1.md](MERIDIAN-1.1.md) gives the design rules the build added to Meridian.
 
 ## What the site holds
 
 - **The app** at the site's address. Study mode opens there. Review mode has its own address, which goes to reviewers directly; study mode never links to it.
 - **`sendt.html`**, the page Nettskjema's receipt button leads to when a form was answered in a new tab. It records in the browser that the step was sent and leads back to the study, where the participant was (its link carries `?kvittering`, so it does not ask «Ikke deg?»). A receipt that names its form (`sendt.html?skjema=S3`) marks only that step; the feedback form's receipt (`?skjema=S9`) marks none and offers to close its tab, with no link back into ATLAS (a second ATLAS in that tab could open a case form twice). The form script writes the name into every receipt and `verify` checks it; a receipt without the name marks the step that is waiting, as in v3.
+- **`informasjonsskriv.html`**, the information letter, in Norwegian and English (the language ATLAS is set to opens first), with a PDF of each language (`informasjonsskriv.pdf`, `information-letter.pdf`) printed from the page by `npm run letter`. Velkommen links to it, and S1's consent («Jeg har lest informasjonsskrivet og vil delta») refers to it.
 - **`meridian/`**, the Meridian design language as exported from the design tool, linked from review mode only. On the site its two React files are served from the site itself and checked against the integrity hashes the export pins (`app/scripts/assemble-site.mjs`); the copy in the repository is unchanged.
 
 ## Stack
@@ -49,7 +50,7 @@ ATLAS v3.1 is a research prototype for referrals from GPs (fastleger) to special
 - Preview forms are built from `instrument.json`, so they ask what the Nettskjema forms ask. They keep answers in the browser, say so on screen and export CSV. In study mode they run only when the address carries the preview flag, which no participant link carries; in review mode the feedback forms (R1, R2) are the Nettskjema forms once they have addresses, and preview forms before that.
 - The end-to-end checks never reach Nettskjema: they answer a stand-in form, or run with no form addresses.
 - In study mode the browser's storage holds progress, settings, the role, the «Om deg» answer and the study name; these leave the browser only as locked form fields. Nothing else is collected.
-- The locked field `versjon` carries the package version and the short commit the workflow built (for example `3.1.0-66ca8de`), so each answer can be traced to the build that collected it.
+- The locked field `versjon` carries the package version and the short commit the workflow built (for example `3.2.0-66ca8de`), so each answer can be traced to the build that collected it.
 - **The pilot round.** `atlas-config.json` names the round. With `"round": "pilot"`, the study forms come from `pilotForms`, the `versjon` of every study form ends in `-pilot` (R1 and R2 keep theirs), the header shows a «Pilot» chip and Velkommen says the answers are kept out of the study's data. Setting `"round": "study"` ends the pilot without a code change. A pilot form without an address is «ikke klart ennå», never the study form.
 - **The study period.** `studyPeriod` holds the first and last day. In the study round, after the last day (by the date in Norway), every address shows Velkommen saying the study has ended, and nothing starts; the pilot round never closes.
 - **Feedback along the way (S9).** After S1, a «Gi tilbakemelding» tab on the right edge of every study page asks which part of the screen the feedback is about and opens S9 with the role, the study name, the screen (`side`), the part (`seksjon`) and the build locked; S9 has no `steg`. The study asks for it at two moments only, the end of the tour and the end of each case (after its form is sent), once each. S9 never replaces a step form that is open, so the answers in it are never lost: then it opens in a new tab.
@@ -82,8 +83,9 @@ No script chunk is above 400 kB gzipped. At 3.1.0 the app's own code is about 18
 ## Known limits
 
 - Light theme only (forced colours are supported).
-- The study's own pages (Velkommen, Om deg, the overview, the card before the tour, «Studien», and the tour's first part and its end) fit one laptop screen from 1280 × 600 without scrolling; a check measures each of them. The rest of the tour is not measured: its steps with the most text scroll down, as do the case views and any page with a form open beside it. Below 1024 px wide the pages scroll down, never sideways.
-- Not built in 3.1, by decision: voice notes, replacing the information guide's count («4 av 5 kriterier omtalt») with the GP's own sentences, and a redesign of the case views.
+- Pages take the height their content needs and scroll down; nothing scrolls sideways at any width from 320 px (checked on every study and review screen). 3.2 dropped v3.1's «one screen tall», which made the study's own pages dense.
+- The guide layer (the dawn and the organza artwork) is kept for Velkommen and the tour; every other page sits on Meridian's white panels, with one solid primary action (3.2).
+- Not built, by decision: voice notes, replacing the information guide's count («4 av 5 kriterier omtalt») with the GP's own sentences, a redesign of the case views, and a suite bar that shows ATLAS as one app in a larger journal system (mocked on the design canvas and parked).
 - Every target is at least 24 × 24 px; the study recommends a laptop, and touch sizes are not set.
 - 2B-4 in the specification (patient trajectory input) is not built: no case reaches a treatment checkpoint ([TRACEABILITY.md](TRACEABILITY.md)).
 - Two Nettskjema behaviours are checked in the pilot: whether a page with text only is allowed (the stop page of the case forms) and whether the receipt page keeps the button back to ATLAS.

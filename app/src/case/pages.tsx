@@ -12,10 +12,10 @@ import { navigate } from '../router/router';
 import type { DpsWork, GpWork } from '../state/types';
 import { useWork } from '../state/work';
 import { ChoiceGroup } from '../patterns/ChoiceGroup';
-import { DesignNote, ProvenanceChip, GrowingTextarea, SheenButton } from '../patterns/basics';
+import { DesignNote, ProvenanceChip, GrowingTextarea, StartButton } from '../patterns/basics';
 import { useAtlasAnnounce } from '../patterns/announce';
 import { Rows } from '../patterns/clinical';
-import { Actions, Body, Card, Eyebrow, GuidePage, Lead, MetaChips, Muted, PageCard } from '../patterns/layout';
+import { Actions, Body, Card, Eyebrow, IntroPage, Lead, MetaChips, Muted, PageCard } from '../patterns/layout';
 import { UncertaintyBand } from '../patterns/UncertaintyBand';
 import { PageHeading } from '../shell/PageHeading';
 import { positionKey } from '../engine/placement';
@@ -76,7 +76,7 @@ export function BriefingPage({ caseId }: { caseId: CaseId }) {
   const eyebrow = index ? `${s('caseOf', { n: index })} · ${role}` : `${s('extraCase')} · ${role}`;
   const startLabel = work.mode === 'study' && work.phase(caseId) !== 'briefing' ? s('continueCase') : s('startCase');
   return (
-    <GuidePage
+    <IntroPage
       after={
         <Card aria-label={s('about')}>
           <h2 style={{ ...typographyStyles.subtitle1, margin: 0 }}>{s('about')}</h2>
@@ -86,17 +86,17 @@ export function BriefingPage({ caseId }: { caseId: CaseId }) {
     >
       <OtherSideButton caseId={caseId} view="orientering" />
       <Eyebrow>{eyebrow}</Eyebrow>
-      <PageHeading title={s('about')} guide>
+      <PageHeading title={s('about')}>
         {s('patientAge', { name: c.patient.name, age: c.patient.age })}
       </PageHeading>
       <Lead>{t(b.task)}</Lead>
       <MetaChips time={t(b.time)} fictional={s('fictionalPatient')} />
       <Actions>
-        <SheenButton icon={<ArrowRight20Regular />} iconPosition="after" onClick={() => work.startCase(caseId)}>
+        <StartButton icon={<ArrowRight20Regular />} iconPosition="after" onClick={() => work.startCase(caseId)}>
           {startLabel}
-        </SheenButton>
+        </StartButton>
       </Actions>
-    </GuidePage>
+    </IntroPage>
   );
 }
 
@@ -144,10 +144,10 @@ export function SentPage({ caseId }: { caseId: CaseId }) {
     (work.viewer === 'dps' && (dps.outcome === 'rett' || caseId === 'astrid')) || (work.viewer === 'gp' && caseId === 'torbjorn');
   const heldLine = caseId === 'torbjorn' ? s('heldOnePage') : noReply ? s('heldNoReply') : s('heldReply');
   return (
-    <GuidePage>
+    <IntroPage>
       <OtherSideButton caseId={caseId} view="sendt" />
       <Send28Regular className={cls.sentIcon} aria-hidden="true" />
-      <PageHeading title={s('sentLabel')} guide>
+      <PageHeading title={s('sentLabel')}>
         {title}
       </PageHeading>
       <Muted>{s('sentOn', { date: formatDate(date, lang) })}</Muted>
@@ -159,7 +159,7 @@ export function SentPage({ caseId }: { caseId: CaseId }) {
         </>
       ) : (
         <Actions>
-          <SheenButton
+          <StartButton
             icon={<ArrowRight20Regular />}
             iconPosition="after"
             onClick={() =>
@@ -167,11 +167,11 @@ export function SentPage({ caseId }: { caseId: CaseId }) {
             }
           >
             {s('continue')}
-          </SheenButton>
+          </StartButton>
         </Actions>
       )}
       <DesignNote id="sendt" show={work.notes} />
-    </GuidePage>
+    </IntroPage>
   );
 }
 
@@ -476,12 +476,12 @@ export function DebriefPage({ caseId }: { caseId: CaseId }) {
     </span>
   );
   return (
-    <GuidePage>
+    <IntroPage>
       <OtherSideButton caseId={caseId} view="oppsummering" />
       <Eyebrow>
         {s('debrief')} · {s('patientAge', { name: c.patient.name, age: c.patient.age })}
       </Eyebrow>
-      <PageHeading title={s('debrief')} guide>
+      <PageHeading title={s('debrief')}>
         {/* The title follows the same state as the text below it: no answer sent, no «svar» in the title (R2V-07, r4F-06);
             «Tre plasseringer» only when all three markers are there (r5F-06). */}
         {viewer === 'dps' && caseId === 'astrid' && !dps.answerSent
@@ -523,12 +523,12 @@ export function DebriefPage({ caseId }: { caseId: CaseId }) {
         <CaseEndPrompt caseId={caseId} onContinue={() => work.finishCase(caseId)} />
       ) : (
         <Actions>
-          <SheenButton icon={<ArrowRight20Regular />} iconPosition="after" onClick={() => work.finishCase(caseId)}>
+          <StartButton icon={<ArrowRight20Regular />} iconPosition="after" onClick={() => work.finishCase(caseId)}>
             {work.mode === 'study' ? s('goToNextStep') : s('backToList')}
-          </SheenButton>
+          </StartButton>
         </Actions>
       )}
-    </GuidePage>
+    </IntroPage>
   );
 }
 

@@ -5,7 +5,7 @@ import {
   CheckmarkCircle20Filled,
   Circle20Regular,
   Clock16Regular,
-  DocumentArrowDown16Regular,
+  DocumentText16Regular,
   Info16Regular,
   Info24Regular,
   LockClosed16Regular,
@@ -37,7 +37,7 @@ import { CORE, caseInProgress, casesDone, currentCase, partOf, partTwoLabel } fr
 
 const useVelkommen = makeStyles({
   wrap: { marginBlockStart: `${size.panelInset}px`, display: 'flex', flexDirection: 'column', gap: tokens.spacingVerticalS },
-  // A guide surface (B6): the dawn, with the guide layer's image on top of it. One screen tall on a laptop (decision 13).
+  // A guide surface (B6): the dawn, with the guide layer's image on top of it. The height its content needs.
   hero: {
     position: 'relative',
     isolation: 'isolate',
@@ -45,14 +45,13 @@ const useVelkommen = makeStyles({
     background: atlasDawn,
     borderRadius: tokens.borderRadiusLarge,
     boxShadow: tokens.shadow2,
-    paddingInline: 'clamp(16px, 3.4vw, 40px)',
-    paddingBlock: 'clamp(16px, 2.2vw, 24px)',
+    paddingInline: 'clamp(16px, 3.4vw, 48px)',
+    paddingBlock: 'clamp(24px, 3.4vw, 40px)',
     display: 'flex',
     flexWrap: 'wrap',
     alignItems: 'center',
     columnGap: '48px',
-    rowGap: '18px',
-    '@media (max-height: 640px)': { paddingBlock: '12px', rowGap: '12px' },
+    rowGap: '28px',
     boxSizing: 'border-box',
     '& [data-muted]': { color: tokens.colorNeutralForeground2 },
     '@media print': { background: '#FFFFFF', boxShadow: 'none' },
@@ -298,7 +297,7 @@ function IntroText({ withContact }: { withContact: boolean }) {
         {/* A missing letter or contact is said, never hidden: the release check confirms both are set. */}
         {cfg.informationLetter ? (
           <Link href={cfg.informationLetter} target="_blank" rel="noopener noreferrer" className={v.letter}>
-            <DocumentArrowDown16Regular aria-hidden="true" />
+            <DocumentText16Regular aria-hidden="true" />
             {s('velkommenLetter')}
           </Link>
         ) : (
@@ -570,16 +569,16 @@ export function VelkommenPage() {
 /* ---------- 2 Om deg ---------- */
 
 const useOmDeg = makeStyles({
-  wrap: { marginBlockStart: `${size.panelInset}px`, display: 'flex', flexWrap: 'wrap', alignItems: 'stretch', gap: '16px' },
-  // The two panels fit side by side beside an open form panel too (776 px of content on a 1280 px laptop).
+  wrap: { marginBlockStart: `${size.panelInset}px`, display: 'flex', flexWrap: 'wrap', alignItems: 'flex-start', gap: '16px' },
+  // The two panels sit side by side beside an open form panel too (776 px of content on a 1280 px laptop).
   main: {
     flex: '1 1 460px',
     maxWidth: '640px',
     minWidth: 0,
+    alignSelf: 'flex-start',
     display: 'flex',
     flexDirection: 'column',
-    justifyContent: 'center',
-    gap: '12px',
+    gap: '14px',
     backgroundColor: tokens.colorNeutralBackground1,
     borderRadius: tokens.borderRadiusLarge,
     boxShadow: tokens.shadow2,
@@ -624,42 +623,29 @@ const useOmDeg = makeStyles({
   },
   nextIcon: { marginTop: '2px', color: tokens.colorNeutralForeground2, display: 'inline-flex' },
   reason: { ...typographyStyles.caption1, color: tokens.colorNeutralForeground3, margin: '8px 0 0' },
-  // The study name: a guide card beside the form (B6), the name large, what it is for, and three short facts.
+  // The study name: a white card beside the form, the name large, what it is for, and three short facts.
   name: {
-    position: 'relative',
-    isolation: 'isolate',
-    overflow: 'hidden',
     flex: '1 1 260px',
     maxWidth: '440px',
     minWidth: 0,
+    alignSelf: 'flex-start',
     display: 'flex',
     flexDirection: 'column',
-    justifyContent: 'center',
     gap: '12px',
     paddingInline: 'clamp(20px, 2.2vw, 28px)',
-    paddingBlock: '28px',
+    paddingBlock: 'clamp(20px, 2.2vw, 28px)',
     borderRadius: tokens.borderRadiusLarge,
-    border: `1px solid ${guide.cardEdge}`,
-    background: guide.card,
+    backgroundColor: tokens.colorNeutralBackground1,
+    boxShadow: tokens.shadow2,
     boxSizing: 'border-box',
-    '@media (forced-colors: active)': { background: 'Canvas', border: '1px solid CanvasText' },
+    '@media (forced-colors: active)': { border: '1px solid CanvasText' },
   },
-  nameEyebrow: { ...typographyStyles.caption1Strong, margin: 0, color: guide.ink },
+  nameEyebrow: { ...typographyStyles.caption1Strong, margin: 0, color: tokens.colorBrandForeground1 },
   nameValue: { ...typographyStyles.title2, margin: 0, color: tokens.colorNeutralForeground1, overflowWrap: 'anywhere' },
   nameText: { ...typographyStyles.body1, margin: 0, color: tokens.colorNeutralForeground1 },
-  facts: { listStyle: 'none', margin: 0, padding: 0, display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: '8px' },
-  fact: {
-    display: 'inline-flex',
-    alignItems: 'center',
-    gap: '6px',
-    paddingInline: '10px',
-    paddingBlock: '3px',
-    borderRadius: tokens.borderRadiusCircular,
-    border: `1px solid ${guide.cardEdge}`,
-    backgroundColor: 'rgba(255,255,255,0.9)',
-    ...typographyStyles.body1,
-  },
-  factIcon: { color: guide.ink, display: 'inline-flex' },
+  facts: { listStyle: 'none', margin: 0, padding: 0, display: 'flex', flexDirection: 'column', gap: '8px' },
+  fact: { display: 'flex', alignItems: 'flex-start', gap: '8px', ...typographyStyles.body1, color: tokens.colorNeutralForeground1 },
+  factIcon: { color: tokens.colorBrandForeground1, display: 'inline-flex', marginTop: '2px' },
 });
 
 export function OmDegPage() {
@@ -765,7 +751,6 @@ export function OmDegPage() {
       </div>
       {st.studienavn && (
         <aside className={o.name} aria-labelledby={nameId} data-studienavn="">
-          <GuideImage variant="band" />
           <p className={o.nameEyebrow} id={nameId}>
             {s('omDegNameTitle')}
           </p>

@@ -24,10 +24,10 @@ import { useId, useState, type ReactNode } from 'react';
 import type { Role, TourPart, TourStep } from '../content/types';
 import { tour, tourParts } from '../content';
 import { useLang } from '../i18n/i18n';
-import { GuideImage, SheenButton } from '../patterns/basics';
+import { GuideImage, StartButton } from '../patterns/basics';
 import { Actions, Body, Lead } from '../patterns/layout';
 import { PageHeading } from '../shell/PageHeading';
-import { atlasDawn, guide, size } from '../theme/constants';
+import { atlasDawn, size } from '../theme/constants';
 import { SandboxFrame, isStudyFrame, useSandbox, type Sandbox } from './frames';
 
 const useStyles = makeStyles({
@@ -38,19 +38,18 @@ const useStyles = makeStyles({
     overflow: 'hidden',
     marginBlockStart: `${size.panelInset}px`,
     background: atlasDawn,
-    borderRadius: '16px',
+    borderRadius: tokens.borderRadiusLarge,
     boxShadow: tokens.shadow2,
     paddingInline: 'clamp(16px, 3vw, 36px)',
-    paddingBlockStart: 'clamp(16px, 2vw, 22px)',
-    paddingBlockEnd: 'clamp(20px, 3vw, 32px)',
-    '@media (max-height: 640px)': { paddingBlockStart: '12px', paddingBlockEnd: '16px', rowGap: '16px' },
-    minHeight: `calc(100dvh - var(--atlas-header-h, 48px) - ${size.panelInset * 2}px - 66px)`,
+    paddingBlockStart: 'clamp(16px, 2vw, 24px)',
+    paddingBlockEnd: 'clamp(20px, 3vw, 36px)',
     boxSizing: 'border-box',
     display: 'grid',
     gridTemplateColumns: 'minmax(0, 1fr)',
     gridTemplateRows: 'auto',
     gap: 'clamp(20px, 3vw, 28px)',
-    alignItems: 'center',
+    // The text card sits at the top beside the live window (and stays in view while the window is read).
+    alignItems: 'start',
     '@media only screen and (min-width: 1024px)': { gridTemplateColumns: 'minmax(300px, 470px) minmax(0, 1fr)', gridTemplateRows: 'auto minmax(0, 1fr)' },
     '@media (forced-colors: active)': { background: 'Canvas', border: '1px solid CanvasText' },
     '@media print': { background: '#FFFFFF' },
@@ -60,34 +59,32 @@ const useStyles = makeStyles({
     display: 'inline-flex',
     alignItems: 'center',
     gap: '6px',
-    paddingBlock: '4px',
-    paddingInlineStart: '10px',
-    paddingInlineEnd: '12px',
-    borderRadius: tokens.borderRadiusCircular,
-    background: `linear-gradient(90deg,${guide.peach} 0%,${guide.rose} 100%)`,
-    boxShadow: '0 1px 2px rgba(156,61,31,0.18)',
-    color: tokens.colorNeutralForeground1,
+    paddingBlock: '3px',
+    paddingInlineStart: '8px',
+    paddingInlineEnd: '10px',
+    borderRadius: tokens.borderRadiusMedium,
+    backgroundColor: tokens.colorNeutralBackground1,
+    border: `1px solid ${tokens.colorBrandStroke2}`,
+    color: tokens.colorBrandForeground1,
     ...typographyStyles.caption1Strong,
     '@media (forced-colors: active)': { border: '1px solid CanvasText' },
   },
   where: { ...typographyStyles.caption1, color: tokens.colorNeutralForeground2 },
   progress: { flex: '1 1 280px', maxWidth: '520px', display: 'flex', alignItems: 'center', gap: '10px' },
   progressPart: { display: 'flex', gap: '4px' },
-  seg: { flex: '1 1 0', height: '6px', borderRadius: '3px', backgroundColor: guide.track, '@media (forced-colors: active)': { border: '1px solid CanvasText' } },
-  segDone: { backgroundColor: guide.coral },
-  segNow: { backgroundColor: guide.ink, '@media (forced-colors: active)': { backgroundColor: 'Highlight' } },
-  // A frosted panel over the image, so the text always reads on white.
+  seg: { flex: '1 1 0', height: '4px', borderRadius: '2px', backgroundColor: tokens.colorNeutralStroke2, '@media (forced-colors: active)': { border: '1px solid CanvasText' } },
+  segDone: { backgroundColor: tokens.colorBrandStroke2 },
+  segNow: { backgroundColor: tokens.colorBrandBackground, '@media (forced-colors: active)': { backgroundColor: 'Highlight' } },
+  // A white card over the image, so the text always reads on white.
   text: {
     display: 'flex',
     flexDirection: 'column',
     gap: tokens.spacingVerticalL,
     minWidth: 0,
     padding: 'clamp(18px, 2.5vw, 28px)',
-    borderRadius: '14px',
-    backgroundColor: 'rgba(255,255,255,0.78)',
-    backdropFilter: 'blur(22px)',
-    WebkitBackdropFilter: 'blur(22px)',
-    boxShadow: '0 0 2px rgba(0,0,0,0.06), 0 10px 30px rgba(63,54,130,0.12)',
+    borderRadius: tokens.borderRadiusLarge,
+    backgroundColor: tokens.colorNeutralBackground1,
+    boxShadow: tokens.shadow4,
     boxSizing: 'border-box',
     animationName: { from: { opacity: 0 }, to: { opacity: 1 } },
     animationDuration: '400ms',
@@ -96,7 +93,7 @@ const useStyles = makeStyles({
     '@media only screen and (min-width: 1024px)': { position: 'sticky', top: 'calc(var(--atlas-header-h, 48px) + 24px)' },
     '@media (forced-colors: active)': { backgroundColor: 'Canvas', border: '1px solid CanvasText' },
   },
-  part: { ...typographyStyles.caption1Strong, margin: 0, color: guide.ink },
+  part: { ...typographyStyles.caption1Strong, margin: 0, color: tokens.colorBrandForeground1 },
   tryIt: {
     display: 'flex',
     gap: '10px',
@@ -105,11 +102,12 @@ const useStyles = makeStyles({
     margin: 0,
     paddingInline: '14px',
     paddingBlock: '12px',
-    borderRadius: '10px',
-    backgroundColor: '#FFF0E8',
-    border: '1px solid #F8CBB8',
+    borderRadius: tokens.borderRadiusMedium,
+    backgroundColor: tokens.colorNeutralBackground2,
+    border: `1px solid ${tokens.colorNeutralStroke2}`,
+    '@media (forced-colors: active)': { border: '1px solid CanvasText' },
   },
-  tryIcon: { color: guide.ink, flexShrink: 0, marginTop: '1px' },
+  tryIcon: { color: tokens.colorBrandForeground1, flexShrink: 0, marginTop: '1px' },
   bridge: {
     display: 'flex',
     gap: tokens.spacingHorizontalS,
@@ -154,16 +152,15 @@ const useStyles = makeStyles({
     '@media (forced-colors: active)': { '::after': { backgroundColor: 'Highlight', border: '1px solid Highlight' } },
   },
   nav: { display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: tokens.spacingHorizontalM, flexWrap: 'wrap' },
-  // The live window: a thin warm frame round a white window.
+  // The live window: a white window on the stage, as a Fluent card at its elevation.
   window: {
-    padding: '2px',
-    borderRadius: '16px',
-    background: 'linear-gradient(135deg,#F59E85 0%,#F6B8DA 50%,#BCB4F5 100%)',
-    boxShadow: '0 0 2px rgba(0,0,0,0.10), 0 18px 44px rgba(63,54,130,0.20)',
+    borderRadius: tokens.borderRadiusLarge,
+    border: `1px solid ${tokens.colorNeutralStroke2}`,
+    boxShadow: tokens.shadow16,
     minWidth: 0,
-    '@media (forced-colors: active)': { background: 'Canvas', border: '1px solid CanvasText' },
+    '@media (forced-colors: active)': { border: '1px solid CanvasText' },
   },
-  windowInner: { backgroundColor: tokens.colorNeutralBackground1, borderRadius: '14px', overflow: 'hidden' },
+  windowInner: { backgroundColor: tokens.colorNeutralBackground1, borderRadius: tokens.borderRadiusLarge, overflow: 'hidden' },
   // A plain 40 px bar with the frame's title: no browser tab, no favicon, no window buttons (fluent.md 5.2, R2A-10).
   bar: {
     display: 'flex',
@@ -182,9 +179,8 @@ const useStyles = makeStyles({
   winBody: {
     paddingInline: 'clamp(12px, 2vw, 24px)',
     paddingBlock: tokens.spacingVerticalL,
-    // The stage stays one screen tall on a laptop: the live window scrolls inside itself (Meridian, «One screen tall»).
-    maxHeight: 'min(72vh, 760px, max(240px, calc(100dvh - 340px)))',
-    overflowY: 'auto',
+    // The window is as tall as its content; anything wider than a narrow window scrolls inside it, never the page.
+    overflowX: 'auto',
     ':focus-visible': { outline: `2px solid ${tokens.colorStrokeFocus2}`, outlineOffset: '-2px' },
   },
   // Over the image: a white backing keeps the line readable.
@@ -207,7 +203,7 @@ const useStyles = makeStyles({
   coachReturn: {
     '& [data-section="vurdering"] fieldset': { outline: `2px solid ${tokens.colorBrandStroke1}`, outlineOffset: '6px', borderRadius: tokens.borderRadiusMedium },
   },
-  // «Dette har du sett»: in two columns where there is room, so the closing screen stays one screen tall.
+  // «Dette har du sett»: in two columns where there is room.
   seen: {
     listStyle: 'none',
     margin: 0,
@@ -452,9 +448,9 @@ export function TourView({
             <Button icon={<ArrowLeft20Regular />} disabled={pos.part === 0 && stepIdx === 0} onClick={prev}>
               {s('previous')}
             </Button>
-            <SheenButton size="medium" icon={<ArrowRight20Regular />} iconPosition="after" onClick={next}>
+            <StartButton size="medium" icon={<ArrowRight20Regular />} iconPosition="after" onClick={next}>
               {!lastInPart ? s('next') : !lastPart ? s('tourNextPart') : s('tourFinish')}
-            </SheenButton>
+            </StartButton>
           </Actions>
         </div>
       </div>

@@ -10,7 +10,7 @@ import { stepIndex, useStudy } from '../state/study';
 import { STEP_ORDER, type FormStep, type StepId } from '../state/types';
 import { Panel } from '../patterns/basics';
 import { focusAfterOverlay } from '../patterns/announce';
-import { Actions, Body, Card, GuidePage, Lead, Muted, PageCard } from '../patterns/layout';
+import { Actions, Body, Card, IntroPage, Lead, Muted, PageCard } from '../patterns/layout';
 import { FOCUS_HEADING_ON_LOAD, PageHeading } from '../shell/PageHeading';
 import { ConfirmDialog } from '../shell/HeaderParts';
 import { V5View } from '../overview/V5View';
@@ -233,7 +233,7 @@ export function TakkPage() {
   const caseIds: CaseId[] = ['kari', 'erlend', 'astrid'];
   if (role === 'gp' && study.state.ledger.S7) caseIds.push('torbjorn');
   return (
-    <GuidePage
+    <IntroPage
       wide
       after={
         <Card aria-label={s('takkReasonsTitle')}>
@@ -270,14 +270,14 @@ export function TakkPage() {
         </Card>
       }
     >
-      <PageHeading title={s('stepTakk')} guide>
+      <PageHeading title={s('stepTakk')}>
         {s('takkTitle')}
       </PageHeading>
       <Lead>{previewFlag() ? s('takkBodyPreview') : s('takkBody')}</Lead>
       {/* The full name only now, after the last form: it names what the forms ask about. */}
       <Body>{s('takkAtlasName')}</Body>
       <ClearBrowserData />
-    </GuidePage>
+    </IntroPage>
   );
 }
 

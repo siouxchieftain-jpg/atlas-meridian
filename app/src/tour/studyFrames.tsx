@@ -45,7 +45,7 @@ const useStyles = makeStyles({
   mapPill: { width: '34px', height: '8px', borderRadius: '4px', backgroundColor: tokens.colorNeutralStroke2 },
   mapPillNow: { backgroundColor: tokens.colorBrandStroke1 },
   mapCard: { position: 'relative', borderRadius: '6px', backgroundColor: tokens.colorNeutralBackground1, border: `1px solid ${tokens.colorNeutralStroke3}` },
-  mapStudy: { background: guide.card, border: `1px solid ${guide.cardEdge}` },
+  mapStudy: { backgroundColor: tokens.colorNeutralBackground1, border: `1px solid ${tokens.colorBrandStroke2}` },
   mapLines: { display: 'flex', flexDirection: 'column', gap: '6px', padding: '10px' },
   mapLine: { height: '6px', borderRadius: '3px', backgroundColor: tokens.colorNeutralStroke3 },
   mapTab: {

@@ -1,6 +1,6 @@
-# ATLAS v3.1 on Meridian
+# ATLAS v3.2 on Meridian
 
-ATLAS is a concept prototype of decision support for referrals from GPs (fastleger) to specialist mental health services (DPS) in Norway. Version 3 is built on Meridian, ATLAS's design language on Fluent 2, for a formative evaluation with GPs and DPS clinicians in a PhD project at the University of Agder. Version 3.1 reworks the participant's journey: an overview for each role, a card before the tour, the overall impression after the three cases, feedback in the moment (S9) and a pilot round that keeps its answers apart from the study's.
+ATLAS is a concept prototype of decision support for referrals from GPs (fastleger) to specialist mental health services (DPS) in Norway. Version 3 is built on Meridian, ATLAS's design language on Fluent 2, for a formative evaluation with GPs and DPS clinicians in a PhD project at the University of Agder. Version 3.1 reworks the participant's journey: an overview for each role, a card before the tour, the overall impression after the three cases, feedback in the moment (S9) and a pilot round that keeps its answers apart from the study's. Version 3.2 makes it read as a working system: pages take the height they need and scroll down, every working page sits on Meridian's white panels, and the guide layer (the dawn and the artwork) is kept for Velkommen and the tour. It also adds the information letter.
 
 All patients, clinicians and figures in ATLAS are fictional. ATLAS is an evaluation prototype and must not be used for clinical decisions.
 
@@ -10,12 +10,15 @@ The study starts at **https://siouxchieftain-jpg.github.io/atlas-meridian/**. It
 
 Review mode, for supervisors and pilot testers, has its own address, which goes to reviewers directly while data collection runs.
 
+The information letter is at **https://siouxchieftain-jpg.github.io/atlas-meridian/informasjonsskriv.html** (Norwegian, with English one click away), with a PDF of each language for invitations: `informasjonsskriv.pdf` and `information-letter.pdf`. Velkommen links to it.
+
 ## What is here
 
 | Path | What it holds |
 |---|---|
 | `app/` | The app: Vite, React 19, TypeScript and Fluent UI React v9 (`src/`, `public/`, `tests/`, `scripts/`) |
 | `app/public/atlas-config.json` | The round (`pilot` or `study`), the Nettskjema addresses for the study (`forms`) and for the pilot (`pilotForms`), the study period, the information letter's address and the contact lines |
+| `app/public/informasjonsskriv.html` | The information letter, both languages; `npm run letter` prints it to the two PDFs beside it |
 | `app/src/content/` | Every text, case and form, in Norwegian and English |
 | `meridian/` | The Meridian design language as exported from the design tool, unchanged; on the site at `meridian/` |
 | `docs/` | [Build note](docs/BUILD-NOTE.md), [plan](docs/PLAN.md), [Nettskjema build sheet](docs/NETTSKJEMA-BUILD-SHEET.md), [Meridian 1.1](docs/MERIDIAN-1.1.md), [clinician check](docs/CLINICIAN-CHECK.md) and [traceability](docs/TRACEABILITY.md) |
@@ -34,6 +37,7 @@ npm test                            # unit tests
 npx playwright install chromium     # once, for the end-to-end tests
 npm run e2e                         # end-to-end and accessibility tests on the built site
 npm run docs                        # write the build sheet and the traceability table again
+npm run letter                      # print the information letter to its two PDFs (after changing it)
 npm run site                        # assemble the site in site/ (after npm run build)
 ```
 

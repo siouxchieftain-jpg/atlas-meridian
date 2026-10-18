@@ -5,22 +5,19 @@ import { useLang } from '../i18n/i18n';
 import type { StringKey } from '../i18n/strings';
 import { navigate } from '../router/router';
 import { useStudy } from '../state/study';
-import { GuideImage, SheenButton } from '../patterns/basics';
-import { guide } from '../theme/constants';
+import { StartButton } from '../patterns/basics';
 
 const useStyles = makeStyles({
   surface: {
     padding: 0,
     width: '100%',
     maxWidth: 'min(1040px, calc(100vw - 32px))',
-    borderRadius: '14px',
+    borderRadius: tokens.borderRadiusXLarge,
     overflowY: 'auto',
     maxHeight: 'calc(100dvh - 32px)',
   },
+  // A plain dialog header, as in any Fluent dialog.
   head: {
-    position: 'relative',
-    isolation: 'isolate',
-    overflow: 'hidden',
     display: 'flex',
     alignItems: 'flex-start',
     justifyContent: 'space-between',
@@ -28,14 +25,11 @@ const useStyles = makeStyles({
     paddingInline: 'clamp(20px, 3vw, 28px)',
     paddingBlockStart: '24px',
     paddingBlockEnd: '12px',
-    borderRadius: '14px 14px 0 0',
-    background: `linear-gradient(180deg,rgba(255,255,255,0) 35%,#FFFFFF 100%), linear-gradient(120deg,#FFF3EC 0%,#FDEDF5 52%,#F1EEFC 100%)`,
-    '@media (forced-colors: active)': { background: 'Canvas' },
   },
   headText: { display: 'flex', flexDirection: 'column', gap: '4px', minWidth: 0 },
-  eyebrow: { ...typographyStyles.caption1Strong, margin: 0, color: guide.ink },
-  title: { ...typographyStyles.title2, margin: 0 },
-  close: { flexShrink: 0, backgroundColor: 'rgba(255,255,255,0.7)' },
+  eyebrow: { ...typographyStyles.caption1Strong, margin: 0, color: tokens.colorBrandForeground1 },
+  title: { ...typographyStyles.title3, margin: 0 },
+  close: { flexShrink: 0 },
   body: {
     display: 'grid',
     gridTemplateColumns: 'minmax(0, 1fr)',
@@ -53,17 +47,17 @@ const useStyles = makeStyles({
     columnGap: '10px',
     alignItems: 'start',
     padding: '12px',
-    borderRadius: '10px',
-    border: `1px solid ${guide.cardEdge}`,
-    backgroundColor: '#FFF8F4',
+    borderRadius: tokens.borderRadiusMedium,
+    border: `1px solid ${tokens.colorNeutralStroke2}`,
+    backgroundColor: tokens.colorNeutralBackground2,
     '@media (forced-colors: active)': { border: '1px solid CanvasText' },
   },
   tileIcon: {
     width: '28px',
     height: '28px',
     borderRadius: tokens.borderRadiusCircular,
-    backgroundColor: '#FFE9DE',
-    color: guide.ink,
+    backgroundColor: tokens.colorBrandBackground2,
+    color: tokens.colorBrandForeground1,
     display: 'inline-flex',
     alignItems: 'center',
     justifyContent: 'center',
@@ -131,7 +125,6 @@ export function TourStartDialog({ open, onClose }: { open: boolean; onClose: () 
     <Dialog open={open} onOpenChange={(_, d) => !d.open && onClose()}>
       <DialogSurface className={cls.surface} data-tour-start="">
         <div className={cls.head}>
-          <GuideImage variant="header" />
           <div className={cls.headText}>
             <p className={cls.eyebrow}>{s('tourStartEyebrow')}</p>
             <DialogTitle as="h2" className={cls.title}>
@@ -174,10 +167,10 @@ export function TourStartDialog({ open, onClose }: { open: boolean; onClose: () 
         <div className={cls.foot}>
           <p className={cls.footNote}>{s('tourStartRequired')}</p>
           <div className={cls.footActions}>
-            <Button size="large" onClick={onClose}>
+            <Button onClick={onClose}>
               {s('tourStartNotNow')}
             </Button>
-            <SheenButton
+            <StartButton
               icon={<ArrowRight20Regular />}
               iconPosition="after"
               onClick={() => {
@@ -186,7 +179,7 @@ export function TourStartDialog({ open, onClose }: { open: boolean; onClose: () 
               }}
             >
               {s('studyCardStartTour')}
-            </SheenButton>
+            </StartButton>
           </div>
         </div>
       </DialogSurface>

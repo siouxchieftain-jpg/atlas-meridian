@@ -2,13 +2,11 @@ import { makeStyles, mergeClasses, tokens, typographyStyles } from '@fluentui/re
 import { ArrowLeft16Regular, Beaker16Regular, ChevronRight12Regular, Clock16Regular } from '@fluentui/react-icons';
 import type { ReactNode } from 'react';
 import { RouterLink } from '../router/router';
-import { GuideSurface } from './basics';
 import { size } from '../theme/constants';
 
 /**
- * Page-level layout pieces shared by both modes. Clinical views sit on white
- * cards on the frame wash; guide surfaces (dawn) are only for welcome, tour,
- * briefings, sent and summary pages (B6).
+ * Page-level layout pieces shared by both modes. Every working page sits on white panels on the frame wash, as in any
+ * Microsoft 365 app; the guide layer (the dawn and the artwork) belongs to Velkommen and the tour only (ATLAS 3.2).
  */
 const useStyles = makeStyles({
   page: {
@@ -28,14 +26,21 @@ const useStyles = makeStyles({
     '@media print': { boxShadow: 'none', minHeight: 0 },
   },
   narrowCol: { maxWidth: '880px' },
-  guideWrap: {
-    marginBlockStart: `${size.panelInset}px`,
-    minHeight: `calc(100dvh - var(--atlas-header-h, 48px) - ${size.panelInset * 2}px - 66px)`,
-    display: 'flex',
-    flexDirection: 'column',
+  // An intro page (briefing, sent, summary, Takk): a white panel the height of its content, then any cards after it.
+  introWrap: { marginBlockStart: `${size.panelInset}px`, display: 'flex', flexDirection: 'column', gap: `${size.panelInset}px` },
+  intro: {
+    backgroundColor: tokens.colorNeutralBackground1,
+    borderRadius: tokens.borderRadiusLarge,
+    boxShadow: tokens.shadow2,
+    paddingInline: 'clamp(16px, 4vw, 40px)',
+    paddingBlock: 'clamp(20px, 4vw, 36px)',
+    minWidth: 0,
+    boxSizing: 'border-box',
+    '@media (forced-colors: active)': { border: '1px solid CanvasText' },
+    '@media print': { boxShadow: 'none' },
   },
-  // On the dawn, captions use foreground 2: foreground 3 falls to 3.3 to 4.4:1 there (WCAG 1.4.3, G-24).
-  guideInner: { flexGrow: 1, boxShadow: tokens.shadow2, '& [data-muted]': { color: tokens.colorNeutralForeground2 } },
+  introColumn: { maxWidth: '720px', display: 'flex', flexDirection: 'column', gap: tokens.spacingVerticalL },
+  introWide: { maxWidth: '1040px' },
   eyebrow: { ...typographyStyles.caption1Strong, color: tokens.colorBrandForeground1, margin: 0 },
   meta: { display: 'flex', flexWrap: 'wrap', gap: tokens.spacingHorizontalS },
   metaChip: {
@@ -45,7 +50,7 @@ const useStyles = makeStyles({
     paddingInline: tokens.spacingHorizontalS,
     minHeight: '24px',
     borderRadius: tokens.borderRadiusMedium,
-    backgroundColor: 'rgba(255,255,255,0.72)',
+    backgroundColor: tokens.colorNeutralBackground1,
     border: `1px solid ${tokens.colorNeutralStroke2}`,
     color: tokens.colorNeutralForeground2,
     ...typographyStyles.caption1,
@@ -106,20 +111,20 @@ export function PageCard({ children, narrow, className }: { children: ReactNode;
   return <div className={mergeClasses(cls.page, className)}>{narrow ? <div className={mergeClasses(cls.stack, cls.narrowCol)}>{children}</div> : children}</div>;
 }
 
-/** A guide surface page (dawn): welcome, tour, briefing, sent, summary. */
-export function GuidePage({ children, wide, after }: { children: ReactNode; wide?: boolean; after?: ReactNode }) {
+/** An intro page: briefing, sent, summary, Takk and review mode's start. One white panel, then whatever follows it. */
+export function IntroPage({ children, wide, after }: { children: ReactNode; wide?: boolean; after?: ReactNode }) {
   const cls = useStyles();
   return (
-    <div className={cls.guideWrap}>
-      <GuideSurface wide={wide} className={cls.guideInner}>
-        {children}
-      </GuideSurface>
+    <div className={cls.introWrap}>
+      <section className={cls.intro} data-intro-page="">
+        <div className={mergeClasses(cls.introColumn, wide && cls.introWide)}>{children}</div>
+      </section>
       {after}
     </div>
   );
 }
 
-/** A white card that follows a guide surface (for example «Om vignetten»). */
+/** A white card that follows an intro page (for example «Om saken»). */
 export function Card({ children, className, 'aria-label': ariaLabel }: { children: ReactNode; className?: string; 'aria-label'?: string }) {
   const cls = useStyles();
   return (

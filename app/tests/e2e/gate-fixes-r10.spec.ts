@@ -57,12 +57,14 @@ test('r9F-01: after a return the DPS side played, «Skriv den nye henvisningen»
   await expect(page.locator('dt:has-text("Fastlegens plan") + dd')).toHaveText('Henvis på nytt, og den nye henvisningen ble sendt');
 });
 
-test('r9A-01: on the summary, the caption under the title uses foreground 2 on the dawn', async ({ page }) => {
+test('r9A-01: on the summary, the caption under the title reads on a white panel (3.2: no dawn behind it)', async ({ page }) => {
   await page.setViewportSize({ width: 341, height: 225 });
   await page.goto('/#/gjennomgang/dps/sak/astrid/oppsummering');
   const caption = page.getByText('Fastlegesiden er ikke spilt ennå, så det som står om fastlegen her, er eksempelsvar.');
   await expect(caption).toBeVisible();
-  expect(await caption.evaluate((el) => getComputedStyle(el).color)).toBe('rgb(66, 66, 66)');
+  // Foreground 3 (#616161) is 5.7:1 on white; foreground 2 (#424242) 10:1. Either passes WCAG 1.4.3.
+  expect(['rgb(97, 97, 97)', 'rgb(66, 66, 66)']).toContain(await caption.evaluate((el) => getComputedStyle(el).color));
+  expect(await caption.evaluate((el) => getComputedStyle(el.closest('[data-intro-page]')!).backgroundColor)).toBe('rgb(255, 255, 255)');
 });
 
 test('r9A-02: at 320 px a tag’s definition opens above the review tab', async ({ page }) => {

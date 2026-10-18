@@ -4,15 +4,14 @@ import type { CoreCaseId } from '../content/types';
 import { cases } from '../content';
 import { useLang } from '../i18n/i18n';
 import { useStudy } from '../state/study';
-import { SheenButton } from '../patterns/basics';
+import { StartButton } from '../patterns/basics';
 import { Actions } from '../patterns/layout';
-import { guide } from '../theme/constants';
 import { CORE, roleSeg } from './parts';
 import { FeedbackPartsPopover, feedbackOpened, type FeedbackResult } from './StudyFeedback';
 import { useStudyNotice } from './notice';
 
 const useStyles = makeStyles({
-  // A quiet guide bar: the one question this break asks (decision 4), never inside the measurement.
+  // A quiet bar: the one question this break asks (decision 4), never inside the measurement.
   bar: {
     display: 'flex',
     flexWrap: 'wrap',
@@ -20,15 +19,15 @@ const useStyles = makeStyles({
     justifyContent: 'space-between',
     columnGap: '16px',
     rowGap: '12px',
-    paddingInline: '18px',
+    paddingInline: '16px',
     paddingBlock: '14px',
-    borderRadius: '12px',
-    border: `1px solid ${guide.cardEdge}`,
-    background: guide.card,
-    '@media (forced-colors: active)': { background: 'Canvas', border: '1px solid CanvasText' },
+    borderRadius: tokens.borderRadiusMedium,
+    border: `1px solid ${tokens.colorNeutralStroke2}`,
+    backgroundColor: tokens.colorNeutralBackground2,
+    '@media (forced-colors: active)': { border: '1px solid CanvasText' },
   },
   text: { display: 'flex', gap: '12px', alignItems: 'flex-start', flex: '1 1 380px', minWidth: 0 },
-  icon: { color: guide.ink, flexShrink: 0, marginTop: '2px', display: 'inline-flex' },
+  icon: { color: tokens.colorBrandForeground1, flexShrink: 0, marginTop: '2px', display: 'inline-flex' },
   q: { ...typographyStyles.body1Strong, margin: 0 },
   why: { ...typographyStyles.body1, margin: 0, color: tokens.colorNeutralForeground2 },
   quiet: { ...typographyStyles.caption1, margin: 0, color: tokens.colorNeutralForeground2 },
@@ -70,7 +69,7 @@ export function CaseEndPrompt({ caseId, onContinue }: { caseId: CoreCaseId; onCo
           <FeedbackPartsPopover
             side={side}
             trigger={
-              <Button appearance="primary" icon={<CommentEdit20Regular />} data-prompt-feedback="">
+              <Button icon={<CommentEdit20Regular />} data-prompt-feedback="">
                 {s('feedback')}
               </Button>
             }
@@ -82,7 +81,7 @@ export function CaseEndPrompt({ caseId, onContinue }: { caseId: CoreCaseId; onCo
         <p className={cls.quiet}>{s('promptAlways')}</p>
       )}
       <Actions>
-        <SheenButton
+        <StartButton
           icon={<ArrowRight20Regular />}
           iconPosition="after"
           onClick={() => {
@@ -91,7 +90,7 @@ export function CaseEndPrompt({ caseId, onContinue }: { caseId: CoreCaseId; onCo
           }}
         >
           {s('toHome')}
-        </SheenButton>
+        </StartButton>
       </Actions>
     </>
   );

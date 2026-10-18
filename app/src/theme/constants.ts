@@ -85,7 +85,11 @@ export const size = {
 export const mq = {
   medium: '@media only screen and (min-width: 480px)',
   large: '@media only screen and (min-width: 640px)',
+  /** The overview: the study card beside the day's list. */
+  overviewTwo: '@media only screen and (min-width: 900px)',
   xlarge: '@media only screen and (min-width: 1024px)',
+  /** The overview: the side column beside them as well. */
+  overviewThree: '@media only screen and (min-width: 1240px)',
   xxlarge: '@media only screen and (min-width: 1366px)',
   xxxlarge: '@media only screen and (min-width: 1920px)',
   belowLarge: '@media only screen and (max-width: 639px)',
@@ -95,7 +99,9 @@ export const mq = {
 export const mediaQueryOrder = [
   'only screen and (min-width: 480px)',
   'only screen and (min-width: 640px)',
+  'only screen and (min-width: 900px)',
   'only screen and (min-width: 1024px)',
+  'only screen and (min-width: 1240px)',
   'only screen and (min-width: 1366px)',
   'only screen and (min-width: 1920px)',
   'only screen and (max-width: 1023px)',

@@ -28,7 +28,7 @@ async function frameParams(page: Page): Promise<URLSearchParams> {
   return new URL(src ?? 'about:blank').searchParams;
 }
 
-/** How far the page scrolls down and sideways: both 0 when it is one screen. */
+/** How far the page scrolls down and sideways. Pages may scroll down (ATLAS 3.2); sideways is always 0. */
 async function overflow(page: Page): Promise<[number, number]> {
   await page.waitForTimeout(250);
   return page.evaluate(() => [
@@ -356,13 +356,13 @@ for (const [width, height] of [
   [1280, 600],
 ] as const) {
   for (const role of ['Fastlege', 'DPS-kliniker'] as const) {
-    test(`one screen tall at ${width}×${height}, ${role}: the study’s own pages scroll neither down nor sideways`, async ({ page }) => {
+    test(`at ${width}×${height}, ${role}: the study’s own pages scroll down when they need to, never sideways`, async ({ page }) => {
       await page.setViewportSize({ width, height });
       await mockNettskjema(page);
       const seen: string[] = [];
       const check = async (where: string) => {
-        const [down, side] = await overflow(page);
-        if (down > 0 || side > 0) seen.push(`${where}: ${down}px down, ${side}px sideways`);
+        const [, side] = await overflow(page);
+        if (side > 0) seen.push(`${where}: ${side}px sideways`);
       };
       await page.goto('/');
       await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
