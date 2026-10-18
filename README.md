@@ -53,8 +53,9 @@ The pilot runs on the live site with forms of its own, so no pilot answer ever l
 
 1. `node scripts/nettskjema.mjs create --round pilot` makes a copy of the twelve study forms (S1 to S9, titled «(pilot)») and writes their addresses under `pilotForms`.
 2. With `"round": "pilot"` in `atlas-config.json`, the study forms come from `pilotForms`; the header shows a «Pilot» chip, Velkommen says the answers are kept out of the study's data, and the `versjon` of every study form ends in `-pilot` (R1 and R2, the review forms, keep theirs).
-3. Before the study round, bring the study forms in line: `node scripts/nettskjema.mjs update`, then `node scripts/nettskjema.mjs verify`. Forms made before v3.1 still have S2 before the cases, «dashbordet» in S2 and S8, B-02, and receipts that do not name their form; `update` leaves any form that has answers alone.
-4. When the pilot is over, set `"round"` to `"study"` and fill `studyPeriod` with the first and last day (`YYYY-MM-DD`). After the last day (Norwegian time), Velkommen says the study has ended and nothing starts. The pilot forms and their answers stay in Nettskjema, apart from the study's.
+3. Before the study round, bring the study forms in line (done on 18 October 2026): `node scripts/nettskjema.mjs update`, then `node scripts/nettskjema.mjs verify`. Forms made before v3.1 still have S2 before the cases, «dashbordet» in S2 and S8, B-02, and receipts that do not name their form; `update` leaves any form that has answers alone.
+4. Open the pilot forms for answers: `node scripts/nettskjema.mjs open --round pilot --until YYYY-MM-DD` (through that day, Norwegian time). `close --round pilot` closes them; `status --round pilot` shows answers and whether each is open.
+5. When the pilot is over, close the pilot forms, set `"round"` to `"study"` and fill `studyPeriod` with the first and last day (`YYYY-MM-DD`). Open the study forms the same way, with `--study` added (the script refuses to open the study set without it). After the last day (Norwegian time), Velkommen says the study has ended and nothing starts. The pilot forms and their answers stay in Nettskjema, apart from the study's.
 
 ## Release check, before the first invitation
 

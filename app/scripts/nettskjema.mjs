@@ -6,7 +6,11 @@
 //                                        into public/atlas-config.json, then checks each one (--only S1,S3 limits it)
 //   node scripts/nettskjema.mjs update   brings existing forms in line with the instrument; refuses a form with answers
 //   node scripts/nettskjema.mjs verify   reads every form back and compares it with the instrument
-//   node scripts/nettskjema.mjs status   answers per form
+//   node scripts/nettskjema.mjs status   answers per form, open or closed
+//   node scripts/nettskjema.mjs open --until 2026-11-30
+//                                        opens the forms for answers from now through that day (Norwegian time);
+//                                        the study set also needs --study, so it is never opened by a slip
+//   node scripts/nettskjema.mjs close    closes the forms now (a form with answers keeps them)
 //
 // --round pilot works on the pilot set instead: a copy of the study forms (S1 to S9, not R1 and R2), titled
 // «(pilot)», whose addresses go under «pilotForms» in atlas-config.json. While the config says "round": "pilot", the
@@ -441,11 +445,61 @@ async function status() {
   }
 }
 
-const modes = { plan, create, update, verify, status };
+/**
+ * The end of a day in Norway as ISO 8601 with its offset (23:59 on 2026-11-30 is 2026-11-30T23:59:00+01:00), or
+ * undefined for anything that is not a date.
+ */
+export function osloEndOfDay(day) {
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(String(day ?? ''))) return undefined;
+  const noon = new Date(`${day}T12:00:00Z`);
+  if (Number.isNaN(noon.getTime()) || noon.toISOString().slice(0, 10) !== day) return undefined;
+  const name = new Intl.DateTimeFormat('en-GB', { timeZone: 'Europe/Oslo', timeZoneName: 'longOffset' })
+    .formatToParts(noon)
+    .find((p) => p.type === 'timeZoneName')?.value;
+  const offset = /^GMT([+-]\d{2}:\d{2})$/.exec(name ?? '')?.[1] ?? '+01:00';
+  return `${day}T23:59:00${offset}`;
+}
+
+/** Sets the open period of every form in the set (--only limits it), then reads back whether each is open. */
+async function setOpenPeriod(c, period, label) {
+  const cfg = readConfig();
+  const only = flag('only')?.split(',').map((s) => s.trim());
+  for (const form of roundForms()) {
+    if (only && !only.includes(form.key)) continue;
+    const id = formIdOf(addressOf(cfg, form.key));
+    if (!id) {
+      console.log(`${pad(form.key, 12)} no address yet`);
+      continue;
+    }
+    // Only the open period changes: the rest of the settings stay as they are.
+    await api(c, 'PATCH', `/form/${id}/settings`, period);
+  }
+  const mine = await api(c, 'GET', '/form/me');
+  const byId = new Map((mine ?? []).map((f) => [f.formId, f]));
+  for (const form of roundForms()) {
+    if (only && !only.includes(form.key)) continue;
+    const id = formIdOf(addressOf(cfg, form.key));
+    const f = id ? byId.get(id) : undefined;
+    if (id) console.log(`${pad(form.key, 12)} ${label}: ${f ? (f.open ? 'open' : 'closed') : 'not visible to the client'}${f?.openTo ? `, open to ${f.openTo}` : ''}`);
+  }
+}
+
+async function open() {
+  const openTo = osloEndOfDay(flag('until'));
+  if (!openTo) throw new Error('open needs --until YYYY-MM-DD: the last day the forms take answers (Norwegian time)');
+  if (ROUND === 'study' && !rest.includes('--study')) throw new Error('this would open the study forms: add --study if that is meant, or use --round pilot');
+  await setOpenPeriod(credentials(), { openFrom: new Date().toISOString(), openTo }, `opened through ${flag('until')}`);
+}
+
+async function close() {
+  await setOpenPeriod(credentials(), { openTo: new Date().toISOString() }, 'closed now');
+}
+
+const modes = { plan, create, update, verify, status, open, close };
 const isMain = process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1];
 if (isMain) {
   if (!modes[mode]) {
-    console.error(`unknown mode «${mode}»: use plan, create, update, verify or status`);
+    console.error(`unknown mode «${mode}»: use plan, create, update, verify, status, open or close`);
     process.exit(2);
   }
   modes[mode]().catch((e) => {

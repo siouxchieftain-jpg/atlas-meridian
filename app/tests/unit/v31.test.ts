@@ -205,4 +205,13 @@ describe('the receipt names its form (nettskjema.mjs verify)', () => {
     expect(m.receiptProblems(`<a href="${site}sendt.html?skjema=S1" rel="x">`, 'S9')).toHaveLength(1);
     expect(m.receiptProblems('', 'S1')[0]).toMatch(/missing/);
   });
+
+  it('opens a form through the end of a day in Norway, winter or summer', async () => {
+    const path = '../../scripts/nettskjema.mjs';
+    const m = (await import(/* @vite-ignore */ path)) as { osloEndOfDay: (d: unknown) => string | undefined };
+    expect(m.osloEndOfDay('2026-11-30')).toBe('2026-11-30T23:59:00+01:00');
+    expect(m.osloEndOfDay('2027-06-15')).toBe('2027-06-15T23:59:00+02:00');
+    expect(m.osloEndOfDay('2026-02-30')).toBeUndefined();
+    expect(m.osloEndOfDay('30.11.2026')).toBeUndefined();
+  });
 });
