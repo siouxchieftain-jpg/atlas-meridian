@@ -282,7 +282,10 @@ export function receiptProblems(receiptText, key) {
   const text = String(receiptText ?? '');
   if (!text.includes(`${SITE}sendt.html`)) return ['receipt: the button back to ATLAS is missing'];
   const link = `${SITE}sendt.html?skjema=${stepOf(key)}"`;
-  return text.includes(link) ? [] : [`receipt: the button back to ATLAS does not name the form (sendt.html?skjema=${stepOf(key)})`];
+  if (text.includes(link)) return [];
+  const at = text.indexOf(`${SITE}sendt.html`);
+  const found = text.slice(at + SITE.length, at + SITE.length + 40).replace(/\s+/g, ' ');
+  return [`receipt: the button back to ATLAS does not name the form (sendt.html?skjema=${stepOf(key)}); it reads «${found}»`];
 }
 
 /* ---------- Modes ---------- */
