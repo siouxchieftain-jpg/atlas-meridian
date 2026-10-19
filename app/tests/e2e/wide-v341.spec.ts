@@ -198,8 +198,16 @@ test('a big screen gives the pages more columns: the start page four, Delt overs
   await page.goto('/#/studie/hjem');
   await expect(page.locator('[data-start-hero]').getByRole('heading', { level: 1 })).toHaveText('Sak 1 av 3: Kari Nordli');
   await expect(page.locator('[data-columns]')).toHaveAttribute('data-columns', '4');
-  // The same reading order as on a laptop.
-  expect(await page.locator('[data-home-part]').evaluateAll((els) => els.map((el) => el.getAttribute('data-home-part')))).toEqual(['dag', 'henvisninger', 'monster', 'innboks', 'delt']);
+  // Board 12a's parts in two rows (3.5): «Kommende» joins the first; the two locked parts share a column.
+  expect(await page.locator('[data-home-part]').evaluateAll((els) => els.map((el) => el.getAttribute('data-home-part')))).toEqual([
+    'tall',
+    'dag',
+    'innboks',
+    'kommende',
+    'henvisninger',
+    'monster',
+    'delt',
+  ]);
   const inbox = (await page.locator('[data-home-part="innboks"]').boundingBox())!;
   const shared = (await page.locator('[data-home-part="delt"]').boundingBox())!;
   expect(shared.x).toBeGreaterThan(inbox.x + inbox.width);

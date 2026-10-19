@@ -31,7 +31,6 @@
   "startDay": {
     "from": "08:00",
     "to": "16:00",
-    "stripTo": "12:30",
     "blocks": [
       {
         "from": "08:00",
@@ -102,15 +101,74 @@
     "referralsWaiting": [
       {
         "name": "Siri Dahl",
-        "sent": "2026-03-13"
+        "age": 52,
+        "sent": "2026-03-13",
+        "received": "2026-03-13",
+        "deadline": "2026-03-27"
       },
       {
         "name": "Mona Lie",
-        "sent": "2026-03-11"
+        "age": 31,
+        "sent": "2026-03-11",
+        "received": "2026-03-11",
+        "asked": "2026-03-13"
       },
       {
         "name": "Per Haugen",
-        "sent": "2026-03-09"
+        "age": 45,
+        "sent": "2026-03-09",
+        "received": "2026-03-09",
+        "deadline": "2026-03-23"
+      }
+    ],
+    "todos": [
+      {
+        "icon": "pill",
+        "what": { "nb": "Forny resept", "en": "Renew a prescription" },
+        "who": "Ola Berg",
+        "when": { "nb": "Forespørsel i går", "en": "Requested yesterday" }
+      },
+      {
+        "icon": "certificate",
+        "what": { "nb": "Skriv legeattest", "en": "Write a medical certificate" },
+        "who": "Jonas Brekke",
+        "when": { "nb": "Til timen kl. 11:15", "en": "For the 11:15 appointment" }
+      },
+      {
+        "icon": "calendar",
+        "what": { "nb": "Sykemeldingen går ut fredag", "en": "The sick leave ends on Friday" },
+        "who": "Ingrid Myhre",
+        "when": { "nb": "Tas opp på timen kl. 10:45", "en": "To raise at the 10:45 appointment" }
+      }
+    ],
+    "upcoming": [
+      {
+        "date": "2026-03-19",
+        "time": "14:00",
+        "icon": "video",
+        "title": { "nb": "Samarbeidsmøte med DPS Skjærgården", "en": "Liaison meeting with DPS Skjærgården" },
+        "where": { "nb": "Teams", "en": "Teams" }
+      },
+      {
+        "date": "2026-03-20",
+        "time": "10:00",
+        "icon": "people",
+        "title": { "nb": "Dialogmøte for Ingrid Myhre", "en": "Dialogue meeting for Ingrid Myhre" },
+        "where": { "nb": "Med NAV og arbeidsgiver", "en": "With NAV and the employer" }
+      },
+      {
+        "date": "2026-03-23",
+        "time": "16:00",
+        "icon": "evening",
+        "title": { "nb": "Kveldsvakt på legevakten", "en": "Evening shift at the out-of-hours clinic" },
+        "where": { "nb": "Interkommunal legevakt", "en": "Inter-municipal out-of-hours clinic" }
+      },
+      {
+        "date": "2026-03-25",
+        "time": "18:00",
+        "icon": "people",
+        "title": { "nb": "Smågruppe", "en": "Peer group" },
+        "where": { "nb": "Legekontoret", "en": "At the practice" }
       }
     ],
     "dpsMessages": [
@@ -134,6 +192,64 @@
     "dpsDay": [
       { "nb": "Inntaksmøte kl. 11:00", "en": "Intake meeting at 11:00" },
       { "nb": "Ni andre henvisninger venter på vurdering denne uka", "en": "Nine other referrals are waiting for assessment this week" }
+    ],
+    "dpsBlocks": [
+      { "from": "08:00", "to": "08:45", "kind": "other", "label": { "nb": "Morgenmøte", "en": "Morning meeting" } },
+      { "from": "08:45", "to": "11:00", "kind": "case", "label": { "nb": "Henvisningene i studien", "en": "The referrals in the study" } },
+      { "from": "11:00", "to": "12:00", "kind": "other", "label": { "nb": "Inntaksmøte", "en": "Intake meeting" } },
+      { "from": "12:00", "to": "12:30", "kind": "other", "label": { "nb": "Lunsj", "en": "Lunch" } },
+      { "from": "12:30", "to": "15:00", "kind": "routine", "label": { "nb": "Pasientsamtaler", "en": "Patient sessions" } },
+      { "from": "15:00", "to": "16:00", "kind": "other", "label": { "nb": "Journalarbeid", "en": "Clinical notes" } }
+    ],
+    "dpsNow": ["08:50", "09:25", "10:00", "10:30"],
+    "dpsTodos": [
+      {
+        "icon": "letter",
+        "what": { "nb": "Les epikrisen", "en": "Read the discharge summary" },
+        "who": "Nora Eide",
+        "when": { "nb": "Fra akuttpsykiatrisk avdeling, kom i går", "en": "From the acute psychiatric ward, came yesterday" }
+      },
+      {
+        "icon": "chat",
+        "what": { "nb": "Svar kommunal psykisk helsetjeneste", "en": "Reply to the municipal mental health service" },
+        "who": "Trond Vik",
+        "when": { "nb": "Spørsmål fra 16. mars", "en": "Question from 16 March" }
+      },
+      {
+        "icon": "people",
+        "what": { "nb": "Forbered inntaksmøtet", "en": "Prepare the intake meeting" },
+        "when": { "nb": "Kl. 11:00, ni andre henvisninger venter denne uka", "en": "At 11:00, nine other referrals are waiting this week" }
+      }
+    ],
+    "dpsUpcoming": [
+      {
+        "date": "2026-03-19",
+        "time": "14:00",
+        "icon": "video",
+        "title": { "nb": "Samarbeidsmøte med fastlegene i opptaksområdet", "en": "Liaison meeting with the GPs in the catchment area" },
+        "where": { "nb": "Teams", "en": "Teams" }
+      },
+      {
+        "date": "2026-03-20",
+        "time": "08:30",
+        "icon": "people",
+        "title": { "nb": "Veiledning i inntaksteamet", "en": "Supervision in the intake team" },
+        "where": { "nb": "DPS Skjærgården", "en": "DPS Skjærgården" }
+      },
+      {
+        "date": "2026-03-23",
+        "time": "11:00",
+        "icon": "people",
+        "title": { "nb": "Inntaksmøte", "en": "Intake meeting" },
+        "where": { "nb": "Inntaksteamet", "en": "The intake team" }
+      },
+      {
+        "date": "2026-03-24",
+        "time": "13:00",
+        "icon": "people",
+        "title": { "nb": "Ansvarsgruppemøte", "en": "Care team meeting" },
+        "where": { "nb": "Med kommunal psykisk helsetjeneste", "en": "With the municipal mental health service" }
+      }
     ]
   }
 }

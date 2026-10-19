@@ -1,5 +1,5 @@
 import { makeStyles, mergeClasses, tokens, typographyStyles } from '@fluentui/react-components';
-import { LockClosed16Regular } from '@fluentui/react-icons';
+import { LockClosed20Regular } from '@fluentui/react-icons';
 import { useId, type ReactNode } from 'react';
 import { cases } from '../content';
 import { formatDayMonth, useLang } from '../i18n/i18n';
@@ -57,7 +57,30 @@ const useStyles = makeStyles({
     '@media (forced-colors: active)': { border: '1px dashed CanvasText' },
   },
   examplesLabel: { ...typographyStyles.caption1Strong, margin: 0, color: tokens.colorNeutralForeground2 },
-  lockLine: { display: 'flex', alignItems: 'center', gap: '6px', ...typographyStyles.body1, margin: 0, color: tokens.colorNeutralForeground2 },
+  // A locked part keeps its place and its row's height: a quiet panel that says when it opens and what it will hold.
+  lockedBody: {
+    flexGrow: 1,
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: '6px',
+    paddingBlock: '12px',
+    textAlign: 'center',
+  },
+  lockIcon: {
+    width: '40px',
+    height: '40px',
+    borderRadius: tokens.borderRadiusCircular,
+    display: 'inline-flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: tokens.colorNeutralBackground3,
+    color: tokens.colorNeutralForeground2,
+    '@media (forced-colors: active)': { border: '1px solid CanvasText' },
+  },
+  lockLine: { ...typographyStyles.body1Strong, margin: 0, color: tokens.colorNeutralForeground2 },
+  lockNote: { ...typographyStyles.caption1, margin: 0, maxWidth: '36ch', color: tokens.colorNeutralForeground2 },
   // The deadline strip: the working days as dates, today outlined, a deadline filled. A date, never a countdown.
   days: { listStyle: 'none', margin: 0, padding: 0, display: 'grid', gridTemplateColumns: 'repeat(10, minmax(0, 1fr))', gap: '4px' },
   dayCell: {
@@ -131,6 +154,7 @@ export function HomeCard({
   sub,
   badge,
   locked,
+  lockedNote,
   foot,
   children,
   className,
@@ -141,6 +165,8 @@ export function HomeCard({
   badge?: ReactNode;
   /** The part opens later in the study: its lock line replaces the body. */
   locked?: string;
+  /** What the part will hold once it opens, said under the lock line without any of its figures. */
+  lockedNote?: string;
   foot?: ReactNode;
   children?: ReactNode;
   className?: string;
@@ -162,10 +188,13 @@ export function HomeCard({
         {sub && <p className={cls.sub}>{sub}</p>}
       </div>
       {locked ? (
-        <p className={cls.lockLine}>
-          <LockClosed16Regular aria-hidden="true" />
-          {locked}
-        </p>
+        <div className={cls.lockedBody}>
+          <span className={cls.lockIcon} aria-hidden="true">
+            <LockClosed20Regular />
+          </span>
+          <p className={cls.lockLine}>{locked}</p>
+          {lockedNote && <p className={cls.lockNote}>{lockedNote}</p>}
+        </div>
       ) : (
         children
       )}
