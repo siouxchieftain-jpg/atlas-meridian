@@ -38,10 +38,10 @@ import { CORE, caseInProgress, casesDone, currentCase, partOf, partTwoLabel } fr
 const useVelkommen = makeStyles({
   wrap: { flexGrow: 1, marginBlockStart: `${size.panelInset}px`, display: 'flex', flexDirection: 'column', gap: tokens.spacingVerticalS },
   // A guide surface (B6): the dawn, with the guide layer's image on top of it. It reaches down to the footer when its
-  // content is shorter than the window, with the content in the middle (board 10b), and grows when it is longer.
+  // content is shorter than the window and grows when it is longer. The intro and the role cards sit in the middle of
+  // the room the five steps leave, and the steps sit at its foot, so a tall screen shows no empty band under them (3.4.1).
   hero: {
     flexGrow: 1,
-    alignContent: 'center',
     position: 'relative',
     isolation: 'isolate',
     overflow: 'hidden',
@@ -50,18 +50,35 @@ const useVelkommen = makeStyles({
     boxShadow: tokens.shadow2,
     paddingInline: 'clamp(16px, 3.4vw, 48px)',
     paddingBlock: 'clamp(24px, 3.4vw, 40px)',
+    // Room above the content for the letter in the corner (3.4.1).
+    '@media only screen and (min-width: 1024px)': { paddingBlockStart: '52px' },
     display: 'flex',
-    flexWrap: 'wrap',
-    alignItems: 'center',
-    columnGap: '48px',
+    flexDirection: 'column',
     rowGap: '28px',
     boxSizing: 'border-box',
     '& [data-muted]': { color: tokens.colorNeutralForeground2 },
     '@media print': { background: '#FFFFFF', boxShadow: 'none' },
     '@media (forced-colors: active)': { background: 'Canvas', border: '1px solid CanvasText' },
   },
+  // The intro and the role cards side by side, in the middle of the room above the steps; they stack when it is narrow.
+  // On a big screen the card fills the window and the artwork the room around them; the intro, the role cards and the
+  // steps keep one width (1,760 px) in its middle, so the cards never stretch (3.4.1).
+  middle: {
+    flexGrow: 1,
+    minWidth: 0,
+    width: '100%',
+    maxWidth: '1760px',
+    marginLeft: 'auto',
+    marginRight: 'auto',
+    display: 'flex',
+    flexWrap: 'wrap',
+    alignItems: 'center',
+    alignContent: 'center',
+    columnGap: '48px',
+    rowGap: '28px',
+  },
   text: { flex: '1 1 420px', minWidth: 0, maxWidth: '600px', display: 'flex', flexDirection: 'column', gap: '12px' },
-  side: { flex: '1 1 460px', minWidth: 0, display: 'flex', flexDirection: 'column', gap: '12px' },
+  side: { flex: '1 1 460px', minWidth: 0, maxWidth: '1080px', display: 'flex', flexDirection: 'column', gap: '12px' },
   h2: { ...typographyStyles.subtitle1, margin: 0 },
   chips: { listStyle: 'none', margin: 0, padding: 0, display: 'flex', flexWrap: 'wrap', gap: '8px' },
   chip: {
@@ -91,7 +108,33 @@ const useVelkommen = makeStyles({
     color: tokens.colorNeutralForeground1,
   },
   letterRow: { display: 'flex', flexWrap: 'wrap', alignItems: 'center', columnGap: '16px', rowGap: '4px' },
-  letter: { display: 'inline-flex', alignItems: 'center', gap: '6px', ...typographyStyles.body1Strong },
+  // The information letter: a link in the intro on a small screen; from 1024 px a white button in the card's top right
+  // corner, where a page keeps its tools. In the reading order it stays after the intro, before the role cards (3.4.1).
+  letter: {
+    display: 'inline-flex',
+    alignItems: 'center',
+    gap: '6px',
+    ...typographyStyles.body1Strong,
+    '@media only screen and (min-width: 1024px)': {
+      position: 'absolute',
+      top: '12px',
+      right: '12px',
+      zIndex: 1,
+      minHeight: '32px',
+      paddingInline: '12px',
+      boxSizing: 'border-box',
+      backgroundColor: tokens.colorNeutralBackground1,
+      border: `1px solid ${tokens.colorNeutralStroke1}`,
+      borderRadius: tokens.borderRadiusMedium,
+      boxShadow: tokens.shadow2,
+      color: tokens.colorNeutralForeground1,
+      textDecorationLine: 'none',
+      ':hover': { backgroundColor: tokens.colorNeutralBackground1Hover, color: tokens.colorNeutralForeground1Hover, textDecorationLine: 'none' },
+      ':active': { backgroundColor: tokens.colorNeutralBackground1Pressed, color: tokens.colorNeutralForeground1Pressed, textDecorationLine: 'none' },
+    },
+    '@media (forced-colors: active)': { border: '1px solid LinkText' },
+  },
+  letterIcon: { display: 'inline-flex', color: tokens.colorBrandForeground1 },
   missing: {
     ...typographyStyles.caption1,
     margin: 0,
@@ -148,8 +191,8 @@ const useVelkommen = makeStyles({
     backgroundColor: 'rgba(255,255,255,0.88)',
     color: tokens.colorNeutralForeground2,
   },
-  // «Slik foregår det»: the five steps under both columns.
-  steps: { flex: '1 1 100%', display: 'flex', flexDirection: 'column', gap: '10px', minWidth: 0 },
+  // «Slik foregår det»: the five steps at the foot of the card, under both columns.
+  steps: { display: 'flex', flexDirection: 'column', gap: '10px', minWidth: 0, width: '100%', maxWidth: '1760px', marginLeft: 'auto', marginRight: 'auto' },
   stepsHead: { display: 'flex', flexWrap: 'wrap', alignItems: 'baseline', columnGap: '12px', rowGap: '2px' },
   stepList: { listStyle: 'none', margin: 0, padding: 0, display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 170px), 1fr))', gap: '10px' },
   step: {
@@ -298,8 +341,10 @@ function IntroText({ withContact }: { withContact: boolean }) {
       <div className={v.letterRow}>
         {/* A missing letter or contact is said, never hidden: the release check confirms both are set. */}
         {cfg.informationLetter ? (
-          <Link href={cfg.informationLetter} target="_blank" rel="noopener noreferrer" className={v.letter}>
-            <DocumentText16Regular aria-hidden="true" />
+          <Link href={cfg.informationLetter} target="_blank" rel="noopener noreferrer" className={v.letter} data-letter="">
+            <span className={v.letterIcon} aria-hidden="true">
+              <DocumentText16Regular />
+            </span>
             {s('velkommenLetter')}
           </Link>
         ) : (
@@ -307,7 +352,7 @@ function IntroText({ withContact }: { withContact: boolean }) {
         )}
         {withContact &&
           (cfg.contact ? (
-            <span className={v.small}>
+            <span className={v.small} data-contact="">
               {s('velkommenContact')} {t(cfg.contact)}
             </span>
           ) : (
@@ -562,8 +607,10 @@ export function VelkommenPage() {
       {!closed && <SmallScreenBar />}
       <section className={v.hero} aria-label={s('velkommenTitle')} data-guide-surface="" data-welcome={closed ? 'closed' : back ? 'back' : 'first'}>
         <GuideImage variant="hero" art="organza" />
-        <div className={v.text}>{back ? <WelcomeBack /> : <IntroText withContact={!closed} />}</div>
-        <div className={v.side}>{closed ? <ClosedCard /> : back ? <ProgressCard /> : <RoleCards />}</div>
+        <div className={v.middle} data-welcome-middle="">
+          <div className={v.text}>{back ? <WelcomeBack /> : <IntroText withContact={!closed} />}</div>
+          <div className={v.side}>{closed ? <ClosedCard /> : back ? <ProgressCard /> : <RoleCards />}</div>
+        </div>
         {!closed && !back && <FiveSteps />}
       </section>
     </div>

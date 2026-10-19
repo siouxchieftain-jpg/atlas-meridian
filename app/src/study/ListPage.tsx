@@ -1,6 +1,7 @@
 import { Button, SearchBox, makeStyles, mergeClasses, tokens, typographyStyles } from '@fluentui/react-components';
 import { ArrowRight16Regular, CheckmarkCircle16Filled, LockClosed16Regular } from '@fluentui/react-icons';
 import { useEffect, useState, type ReactNode } from 'react';
+import { useWidth } from '../patterns/useWidth';
 import type { CoreCaseId, Role } from '../content/types';
 import { cases, ordinary } from '../content';
 import { formatDateWithWeekday, formatDayMonth, useLang } from '../i18n/i18n';
@@ -35,8 +36,15 @@ const useStyles = makeStyles({
   grid: { listStyle: 'none', margin: 0, padding: 0, display: 'grid', gap: '16px', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 228px), 1fr))' },
   gridDps: { gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 300px), 1fr))' },
   item: { display: 'flex', minWidth: 0 },
-  // The referrals' list lends its items to the grid around it, so «Frister» can share the grid without joining the list.
+  // DPS: «Frister» never gets less than 400 px for its ten days (3.4.1). A wide page gives it a column of its own beside
+  // the three referrals; a laptop puts it beside the third referral, two to a row, as before; a narrow page under them.
+  dpsZones: { display: 'grid', gap: '16px', gridTemplateColumns: 'minmax(0, 1fr)' },
+  dpsSide: { gridTemplateColumns: 'minmax(0, 1fr) minmax(420px, 480px)', alignItems: 'start' },
+  dpsTwo: { gridTemplateColumns: 'repeat(2, minmax(0, 1fr))' },
+  dpsNarrow: { gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 300px), 1fr))' },
+  // The referrals' list lends its items to the grid around it on a laptop, so «Frister» shares the grid without joining it.
   contents: { display: 'contents' },
+  spanAll: { gridColumn: '1 / -1' },
   card: {
     flex: '1 1 auto',
     display: 'flex',
@@ -315,6 +323,7 @@ function DpsCards({ query }: { query: string }) {
   const study = useStudy();
   const st = study.state;
   const now = st.tour.done ? currentCase(st) : undefined;
+  const [ref, width] = useWidth<HTMLDivElement>();
   // Newest first; the same day keeps the study's order (Meridian: the queue sorts by date received).
   const rows = CORE.filter((c) => matches(query, cases[c].patient.name, cases[c].patient.fnr)).sort((a, b) =>
     cases[b].dps!.queue.received.localeCompare(cases[a].dps!.queue.received),
@@ -365,15 +374,21 @@ function DpsCards({ query }: { query: string }) {
       </li>
     );
   });
-  // The referrals are a list of their own; «Frister» sits in the same grid as its own part, never a fourth referral.
+  // The referrals are a list of their own; «Frister» is a part of its own, never a fourth referral.
+  // A column of its own only when all three referrals fit in one row beside it; two to a row otherwise, as on a laptop.
+  const mode = width >= 3 * 300 + 2 * 16 + 16 + 480 ? 'side' : width >= 2 * 400 + 16 ? 'two' : 'narrow';
   return (
     <>
       <SrOnly as="h2">{s('listReferralsLabel')}</SrOnly>
-      <div className={mergeClasses(cls.grid, cls.gridDps)}>
-        <ul className={cls.contents} role="list" aria-label={s('listReferralsLabel')}>
+      <div
+        ref={ref}
+        className={mergeClasses(cls.dpsZones, mode === 'side' && cls.dpsSide, mode === 'two' && cls.dpsTwo, mode === 'narrow' && cls.dpsNarrow)}
+        data-deadlines={mode}
+      >
+        <ul className={mode === 'side' ? mergeClasses(cls.grid, cls.gridDps) : cls.contents} role="list" aria-label={s('listReferralsLabel')}>
           {items}
         </ul>
-        <div className={cls.item}>
+        <div className={mergeClasses(cls.item, mode === 'narrow' && cls.spanAll)}>
           <Deadlines framed />
         </div>
       </div>

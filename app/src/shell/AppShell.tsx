@@ -39,6 +39,9 @@ const useGlobalStyles = makeStaticStyles({
   '@media (max-height: 500px)': { html: { scrollPaddingTop: '8px' } },
   // Review-only controls never reach paper.
   '@media print': { '[data-no-print]': { display: 'none' } },
+  // The page fills the window, so running text keeps its own line length: a paragraph never runs past about a hundred
+  // characters, however wide its panel (G-39, 3.4.1).
+  '#main p, #main blockquote': { maxWidth: '100ch' },
 });
 
 const useStyles = makeStyles({
@@ -185,9 +188,16 @@ const useStyles = makeStyles({
     paddingBlockEnd: tokens.spacingVerticalS,
     ':focus': { outline: 'none' },
   },
-  // A flex column, so a page can reach down to the footer when it is shorter than the window (ATLAS 3.3).
-  content: { flexGrow: 1, minWidth: 0, maxWidth: `${size.contentMax}px`, width: '100%', display: 'flex', flexDirection: 'column' },
-  notice: { maxWidth: `${size.contentMax}px`, paddingBlockStart: `${size.panelInset}px`, '@media print': { display: 'none' } },
+  // A flex column, so a page can reach down to the footer when it is shorter than the window (ATLAS 3.3). It fills the
+  // window's width at every size, as a Fluent app does; the pages reflow into more columns where there is room, and
+  // running text keeps its own measure (G-39, 3.4.1).
+  content: { flexGrow: 1, minWidth: 0, width: '100%', display: 'flex', flexDirection: 'column' },
+  notice: {
+    width: '100%',
+    boxSizing: 'border-box',
+    paddingBlockStart: `${size.panelInset}px`,
+    '@media print': { display: 'none' },
+  },
   footer: {
     ...typographyStyles.caption1,
     color: tokens.colorNeutralForeground3,
@@ -199,7 +209,7 @@ const useStyles = makeStyles({
     justifyContent: 'space-between',
     columnGap: tokens.spacingHorizontalXXXL,
     rowGap: tokens.spacingVerticalM,
-    maxWidth: `${size.contentMax}px`,
+    width: '100%',
     boxSizing: 'border-box',
   },
   footerText: { display: 'flex', flexDirection: 'column', gap: '2px', maxWidth: '960px', minWidth: 0, flex: '1 1 480px' },
@@ -377,7 +387,9 @@ export function AppShell({
         <div className={cls.mainCol}>
           <main id="main" tabIndex={-1} className={cls.main}>
             {notice && <div className={cls.notice}>{notice}</div>}
-            <div className={cls.content}>{children}</div>
+            <div className={cls.content} data-content-column="">
+              {children}
+            </div>
           </main>
           {footer}
         </div>

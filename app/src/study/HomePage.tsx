@@ -10,7 +10,7 @@ import {
   Form20Regular,
   Map16Regular,
 } from '@fluentui/react-icons';
-import { useEffect, useId, useLayoutEffect, useRef, useState, type ReactNode, type RefObject } from 'react';
+import { useEffect, useId, useState, type ReactNode } from 'react';
 import type { CoreCaseId, Role } from '../content/types';
 import { cases, ordinary, pattern, shared, startDay } from '../content';
 import { formatDateWithWeekday, formatDayMonth, useLang } from '../i18n/i18n';
@@ -22,6 +22,7 @@ import { guide, neutralBar } from '../theme/constants';
 import { PageHeading } from '../shell/PageHeading';
 import { TourStepDialog } from '../tour/Tour';
 import { focusAfterOverlay } from '../patterns/announce';
+import { useWidth } from '../patterns/useWidth';
 import { HOME_PATH, LIST_PATH, useStudyController } from './controller';
 import { CORE, caseInProgress, casesDone, currentCase } from './parts';
 import { ExampleGroup, HomeCard, NewBadge } from './homeParts';
@@ -95,6 +96,9 @@ const useStyles = makeStyles({
   // it counts.
   parts: { minWidth: 0 },
   split: { display: 'grid', gridTemplateColumns: 'minmax(0, 2fr) minmax(0, 1fr)', gap: '16px', alignItems: 'start' },
+  // A big screen (3.4.1): the day's work keeps its half, and what came in and Delt oversikt take a column each, so the
+  // width goes to more parts side by side rather than wider ones.
+  split4: { gridTemplateColumns: 'minmax(0, 2fr) minmax(0, 1fr) minmax(0, 1fr)' },
   stack: { display: 'flex', flexDirection: 'column', gap: '16px', minWidth: 0 },
   pair: { display: 'grid', gridTemplateColumns: 'repeat(2, minmax(0, 1fr))', gap: '16px', alignItems: 'start' },
   grid: { display: 'grid', gap: '16px', alignItems: 'start', minWidth: 0, gridTemplateColumns: 'minmax(0, 1fr)' },
@@ -249,23 +253,6 @@ const useStyles = makeStyles({
   dayStateDone: { ...typographyStyles.caption1, color: tokens.colorNeutralForeground2 },
 });
 
-/** An element's own width, measured as it changes (the start page lays itself out by its width, not the window's). */
-function useWidth<T extends HTMLElement>(): [RefObject<T | null>, number] {
-  const ref = useRef<T>(null);
-  const [width, setWidth] = useState(0);
-  useLayoutEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const measure = () => setWidth(Math.round(el.getBoundingClientRect().width));
-    measure();
-    if (typeof ResizeObserver === 'undefined') return;
-    const ro = new ResizeObserver(measure);
-    ro.observe(el);
-    return () => ro.disconnect();
-  }, []);
-  return [ref, width];
-}
-
 /** «09:30» → minutes since midnight. */
 function minutes(hhmm: string): number {
   const [h, m] = hhmm.split(':').map(Number);
@@ -306,15 +293,15 @@ export function HomePage() {
     if (route.query.has('omvisning')) navigate(HOME_PATH, { replace: true });
   }, [route.query]);
   const [gridRef, width] = useWidth<HTMLDivElement>();
-  const cols = width >= 1080 ? 3 : width >= 640 ? 2 : 1;
+  const cols = width >= 1800 ? 4 : width >= 1080 ? 3 : width >= 640 ? 2 : 1;
   const open = useCasesDone();
   return (
     <div className={cls.page} data-start-page="">
       <Hero onStartTour={() => setTourCard(true)} />
       <div ref={gridRef} className={cls.parts} data-columns={cols}>
         {role === 'gp' ? (
-          cols === 3 ? (
-            <div className={cls.split}>
+          cols >= 3 ? (
+            <div className={mergeClasses(cls.split, cols === 4 && cls.split4)}>
               <div className={cls.stack}>
                 <DayPart />
                 <div className={cls.pair}>
@@ -322,10 +309,17 @@ export function HomePage() {
                   <GpPattern locked={!open} onOpen={() => setStepDialog('gp-monster')} />
                 </div>
               </div>
-              <div className={cls.stack}>
-                <GpInbox />
-                <SharedPart role="gp" locked={!open} onOpen={() => setStepDialog('gp-kalibrering')} />
-              </div>
+              {cols === 4 ? (
+                <>
+                  <GpInbox />
+                  <SharedPart role="gp" locked={!open} onOpen={() => setStepDialog('gp-kalibrering')} />
+                </>
+              ) : (
+                <div className={cls.stack}>
+                  <GpInbox />
+                  <SharedPart role="gp" locked={!open} onOpen={() => setStepDialog('gp-kalibrering')} />
+                </div>
+              )}
             </div>
           ) : (
             <div className={mergeClasses(cls.grid, cols === 2 && cls.grid2)}>
@@ -337,7 +331,7 @@ export function HomePage() {
             </div>
           )
         ) : (
-          <div className={mergeClasses(cls.grid, cols === 2 && cls.grid2, cols === 3 && cls.grid3)}>
+          <div className={mergeClasses(cls.grid, cols === 2 && cls.grid2, cols >= 3 && cls.grid3)}>
             <DpsIntake className={cols === 2 ? cls.spanAll : undefined} />
             <DpsMessages />
             <SharedPart role="dps" locked={!open} onOpen={() => setStepDialog('dps-kalibrering')} />

@@ -35,6 +35,8 @@ const useStyles = makeStyles({
     display: 'none',
     flexShrink: 0,
     width: `${size.atlasPanel}px`,
+    // A big screen gives the ATLAS panel more room (3.4.1); the form panel's sums keep the laptop's 320 px.
+    '@media only screen and (min-width: 1920px)': { width: '380px' },
     position: 'sticky',
     top: 'calc(var(--atlas-header-h, 48px) + 8px)',
     maxHeight: 'calc(100dvh - var(--atlas-header-h, 48px) - 16px)',

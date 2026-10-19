@@ -126,7 +126,7 @@ test('review: R1 for one part of a screen and R2 at the end go through the form 
     rolle: 'Veileder',
     side: 'fastlege/kari/konsultasjon',
     seksjon: 'band',
-    versjon: expect.stringMatching(/^3\.4\.0-/),
+    versjon: expect.stringMatching(/^3\.4\.1-/),
   });
   await sendForm(page);
   // Confirmed on the screen the feedback was about, in a MessageBar (no toast).
@@ -148,7 +148,7 @@ test('review: R1 for one part of a screen and R2 at the end go through the form 
   // R2: the overall impression.
   await page.getByRole('button', { name: 'Gi et samlet inntrykk' }).click();
   await expect(frame(page).locator('h1')).toHaveText('Mock Nettskjema R2');
-  expect(await frameFields(page)).toEqual({ rolle: 'Veileder', versjon: expect.stringMatching(/^3\.4\.0-/) });
+  expect(await frameFields(page)).toEqual({ rolle: 'Veileder', versjon: expect.stringMatching(/^3\.4\.1-/) });
   await sendForm(page);
   await expect(page.getByText('Det samlede inntrykket er sendt.')).toBeVisible();
 
