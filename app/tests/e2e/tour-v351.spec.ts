@@ -142,13 +142,30 @@ async function axe(page: Page) {
   expect(r.violations.map((v) => `${v.id}: ${v.nodes.map((n) => n.target.join(' ')).join(', ')}`)).toEqual([]);
 }
 
-/** Opens a tour step in a dialog and closes it again. */
+/**
+ * Opens a tour step in a dialog, checks it, and closes it again. At a laptop's height the content scrolls: it must be
+ * reachable by keyboard, pass axe, and keep «Lukk» on screen (3.5.1 re-check S1, N7).
+ */
 async function inDialog(page: Page, opener: Locator, check: (win: Locator) => Promise<void>) {
   await opener.click();
   const dlg = page.getByRole('dialog');
   await expect(dlg).toBeVisible();
   await check(dlg.locator('[data-tour-frame]'));
-  await dlg.getByRole('button', { name: 'Lukk' }).last().click();
+  const r = await new AxeBuilder({ page })
+    .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa', 'best-practice'])
+    .include('[role="dialog"]')
+    .analyze();
+  expect(r.violations.map((v) => `${v.id}: ${v.nodes.map((n) => n.target.join(' ')).join(', ')}`)).toEqual([]);
+  const close = dlg.getByRole('button', { name: 'Lukk' });
+  const box = await close.boundingBox();
+  expect(box && box.y + box.height, '«Lukk» below the window').toBeLessThanOrEqual(page.viewportSize()!.height);
+  const content = dlg.locator('.fui-DialogContent');
+  if (await content.evaluate((el) => el.scrollHeight > el.clientHeight)) {
+    await content.focus();
+    await page.keyboard.press('End');
+    await expect.poll(() => content.evaluate((el) => el.scrollTop)).toBeGreaterThan(0);
+  }
+  await close.click();
   await expect(dlg).toHaveCount(0);
 }
 
@@ -216,7 +233,7 @@ test('the held windows at 320 px and in forced colours: no sideways scroll, and 
 for (const role of ['fastlege', 'dps-kliniker'] as const) {
   const gp = role === 'fastlege';
   test(`part 3 (${gp ? 'GP' : 'DPS'}): the start page, «Se igjen» and the tour seen again show the figures`, async ({ page }) => {
-    await page.setViewportSize({ width: 1536, height: 900 });
+    await page.setViewportSize({ width: 1366, height: 768 });
     await mockNettskjema(page);
     await seed(page, role, 3);
     await page.goto('/#/studie/hjem');
@@ -262,10 +279,10 @@ test('review mode: the tour mirrors the held state and says when the study shows
 });
 
 /**
- * A guard for G-38: no sentence a study case's «with ATLAS» view holds (the system's reading, the GP's uncertainty,
- * DPS's return, explanation, advice and reply) appears anywhere in the tour, and no rate or «Fiktive tall» does. The
- * practice case is placed where a window asks, and the window's disclosures are opened at every step. Reason, criterion
- * and outcome names are the interface's vocabulary.
+ * A guard for G-38: no sentence of 25 characters or more that a study case's «with ATLAS» view holds (the system's
+ * reading, the GP's uncertainty, DPS's return, explanation, advice and reply) appears in the Norwegian tour, and no rate
+ * or «Fiktive tall» does. The practice case is placed where a window asks, and the window's disclosures are opened at
+ * every step. Reason, criterion and outcome names are the interface's vocabulary.
  */
 const WITH: Record<'gp' | 'dps', string[]> = {
   gp: ['systemReading', 'dpsScript'],
@@ -285,11 +302,26 @@ const LABELS = new Set<string>();
   nbStrings(read('vocab.json'), all);
   all.forEach((l) => LABELS.add(l.trim().replace(/\.$/, '')));
 }
+/** Split into sentences, without the closing mark. */
+const sentences = (s: string) =>
+  s
+    .replace(/\s+/g, ' ')
+    .split(/(?<=[.!?])\s+/)
+    .map((part) => part.trim().replace(/[.!?]$/, ''))
+    .filter(Boolean);
 /**
- * The reading's provenance, the same for the practice case: its sources, and that its sentence on similar referrals was
- * written for the case with no real figures behind it. It says nothing about an outcome, a reason or a rate.
+ * What the practice patient's own case says too is the format, not a case: the reading's sources, that its sentence on
+ * similar referrals was written for the case with no real figures behind it, a thank-you. Taken from Sofie's text, so
+ * nothing case-specific is let through by a pattern (3.5.1 re-check N3).
  */
-const FORMAT = (p: string) => p.startsWith('Kilder: ') || p === 'Setningen om liknende henvisninger er også skrevet for saken' || p === 'Det finnes ingen ekte tall bak den';
+const SOFIE = new Set<string>();
+{
+  const all: string[] = [];
+  nbStrings(read('cases/sofie.json'), all);
+  all.forEach((s) => sentences(s).forEach((p) => SOFIE.add(p)));
+}
+/** The count is pinned, so a renamed key or a changed case shows here: check the new sentences, then update it. */
+const WITH_ATLAS_COUNT = 49;
 const WITH_ATLAS: string[] = [];
 for (const id of ['kari', 'erlend', 'astrid']) {
   const c = read(`cases/${id}.json`) as Record<'gp' | 'dps', Record<string, unknown>>;
@@ -298,9 +330,8 @@ for (const id of ['kari', 'erlend', 'astrid']) {
       const found: string[] = [];
       nbStrings(c[side]?.[key], found);
       for (const s of found) {
-        for (const part of s.replace(/\s+/g, ' ').split(/(?<=[.!?])\s+/)) {
-          const p = part.trim().replace(/[.!?]$/, '');
-          if (p.length >= 25 && !LABELS.has(p) && !FORMAT(p)) WITH_ATLAS.push(p);
+        for (const p of sentences(s)) {
+          if (p.length >= 25 && !LABELS.has(p) && !SOFIE.has(p)) WITH_ATLAS.push(p);
         }
       }
     }
@@ -309,7 +340,7 @@ for (const id of ['kari', 'erlend', 'astrid']) {
 
 for (const role of ['Fastlege', 'DPS-kliniker'] as const) {
   test(`G-38 guard (${role}): no case's «with ATLAS» sentence, rate or «Fiktive tall» anywhere in the tour`, async ({ page }) => {
-    expect(WITH_ATLAS.length, 'sentences to look for').toBeGreaterThan(20);
+    expect(new Set(WITH_ATLAS).size, 'the sentences to look for (the case data changed: check them, then update)').toBe(WITH_ATLAS_COUNT);
     await startTour(page, role);
     const stage = page.locator('[data-tour-stage]');
     const win = page.locator('[data-tour-frame]');

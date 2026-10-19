@@ -491,13 +491,27 @@ export function TourView({
   );
 }
 
-function StepDialogBody({ step, role, showReason, hold }: { step: TourStep; role: Role; showReason: boolean; hold?: Held }) {
-  const { t } = useLang();
+function StepDialogBody({
+  step,
+  role,
+  showReason,
+  hold,
+  onClose,
+}: {
+  step: TourStep;
+  role: Role;
+  showReason: boolean;
+  hold?: Held;
+  onClose: () => void;
+}) {
+  const { s, t } = useLang();
   const sandbox: Sandbox = useSandbox(role, false);
   return (
     <DialogBody>
       <DialogTitle>{t(step.title)}</DialogTitle>
-      <DialogContent>
+      {/* A window with nothing to press (the pattern, Kalibrering) still scrolls by keyboard: the content is a named,
+          focusable region (2.1.1, 3.5.1 re-check S1). Its name differs from the live window's, which is a region too. */}
+      <DialogContent tabIndex={0} role="region" aria-label={s('tourStepDialogContent', { title: t(step.title) })}>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
           <Body>{t(step.body)}</Body>
           {step.bridge && <Body>{t(step.bridge)}</Body>}
@@ -507,6 +521,12 @@ function StepDialogBody({ step, role, showReason, hold }: { step: TourStep; role
           </FramedWindow>
         </div>
       </DialogContent>
+      {/* Inside the body, so «Lukk» stays on screen while the content scrolls (3.5.1 re-check N7). */}
+      <DialogActions>
+        <Button appearance="primary" onClick={onClose}>
+          {s('close')}
+        </Button>
+      </DialogActions>
     </DialogBody>
   );
 }
@@ -529,17 +549,11 @@ export function TourStepDialog({
   hold?: Held;
 }) {
   const cls = useStyles();
-  const { s } = useLang();
   const step = stepId ? tourParts(role, true).flatMap((p) => p.steps).find((x) => x.id === stepId) : undefined;
   return (
     <Dialog open={!!step} onOpenChange={(_, d) => !d.open && onClose()}>
       <DialogSurface className={cls.dialogSurface}>
-        {step && <StepDialogBody step={step} role={role} showReason={showReason} hold={hold} />}
-        <DialogActions style={{ marginTop: 12 }}>
-          <Button appearance="primary" onClick={onClose}>
-            {s('close')}
-          </Button>
-        </DialogActions>
+        {step && <StepDialogBody step={step} role={role} showReason={showReason} hold={hold} onClose={onClose} />}
       </DialogSurface>
     </Dialog>
   );
