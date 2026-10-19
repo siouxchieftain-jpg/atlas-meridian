@@ -58,8 +58,9 @@ test('study screens have no serious or critical axe violations', async ({ page }
   await scan(page, 'om-deg sent', found);
   await toHome(page);
   await scan(page, 'home before the tour', found);
-  await page.locator('[data-study-card] [data-name-what]').click();
-  await scan(page, 'study name popover', found);
+  // The study name: the header's account opens what the name is for (the start page's greeting names it).
+  await page.locator('[data-study-account]').click();
+  await scan(page, 'study name card', found);
   await page.keyboard.press('Escape');
   await page.locator('[data-start-tour]').click();
   await expect(page.getByRole('dialog')).toBeVisible();
@@ -83,6 +84,8 @@ test('study screens have no serious or critical axe violations', async ({ page }
   await page.locator('[data-feedback-tab]').click();
   await scan(page, 'feedback parts on home', found);
   await page.keyboard.press('Escape');
+  await page.locator('[data-start-hero] [data-to-list]').click();
+  await scan(page, 'the list', found);
   await openCurrentCase(page);
   await scan(page, 'kari briefing', found);
   await page.getByRole('button', { name: 'Start saken' }).click();
@@ -116,6 +119,8 @@ test('study screens have no serious or critical axe violations', async ({ page }
   await expect(page.getByText('Takk. Tilbakemeldingen er registrert.')).toBeVisible();
   await scan(page, 'S9 sent', found);
   await finishCaseHome(page);
+  await scan(page, 'the list after kari', found);
+  await page.goto('/#/studie/hjem');
   await scan(page, 'home after kari', found);
   await page.goto('/#/studie/steg');
   await scan(page, 'stepper', found);

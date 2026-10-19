@@ -3,7 +3,11 @@ import {
   ArrowDownload16Regular,
   ArrowRight20Regular,
   BookOpen20Regular,
+  CalendarLtr20Filled,
+  CalendarLtr20Regular,
   CommentEdit20Regular,
+  DocumentBulletList20Filled,
+  DocumentBulletList20Regular,
   Dismiss16Regular,
   Home20Filled,
   Home20Regular,
@@ -35,7 +39,8 @@ import { partOf as sectionOf } from '../review/sections';
 import { downloadPreviewCsv } from './PreviewForm';
 import { FormHostProvider, useFormHost } from './formHost';
 import { FormPanel, formTitle, type FormPanelActions } from './FormPanel';
-import { HOME_PATH, STEP_PATH, StudyControllerProvider, stepReachable, useStudyController } from './controller';
+import { HOME_PATH, LIST_PATH, STEP_PATH, StudyControllerProvider, stepReachable, useStudyController } from './controller';
+import { ListPage } from './ListPage';
 import { AvslutningPage, EkstraPage, HelhetPage, OmDegPage, StepperPage, TakkPage, V5Page, VelkommenPage } from './pages';
 import { HomePage } from './HomePage';
 import { RoleLabel, StudyAccount, StudyProgress } from './StudyHeader';
@@ -164,7 +169,17 @@ function StudyShell() {
 
   const nav: NavItem[] = [];
   if (atHome) {
-    nav.push({ key: 'hjem', label: s('navHome'), to: HOME_PATH, icon: <Home20Regular />, iconActive: <Home20Filled />, match: [HOME_PATH, '/studie/sak'] });
+    nav.push({ key: 'hjem', label: s('navHome'), to: HOME_PATH, icon: <Home20Regular />, iconActive: <Home20Filled />, match: [HOME_PATH] });
+    // The list the cases start from; a case belongs to it, as a document belongs to its folder.
+    const gp = (study.role ?? 'gp') === 'gp';
+    nav.push({
+      key: 'liste',
+      label: s(gp ? 'timelisteTitle' : 'navQueue'),
+      to: LIST_PATH,
+      icon: gp ? <CalendarLtr20Regular /> : <DocumentBulletList20Regular />,
+      iconActive: gp ? <CalendarLtr20Filled /> : <DocumentBulletList20Filled />,
+      match: [LIST_PATH, '/studie/sak'],
+    });
   }
   nav.push({ key: 'steg', label: s('stepperTitle'), to: '/studie/steg', icon: <TaskListLtr20Regular />, iconActive: <TaskListLtr20Filled />, match: ['/studie/steg'] });
 
@@ -433,8 +448,8 @@ function StudyRoutes({ path, igjen }: { path: string[]; igjen: boolean }) {
     case 'steg':
       return <StepperPage />;
     case 'liste':
-      // v3's list page: the overview holds the list now.
-      return <Redirect to={guard('omvisning') ? HOME_PATH : current} />;
+      // The list the cases start from (3.4, boards 4a and 4b), reached from the start page.
+      return guard('omvisning') ? <ListPage /> : <Redirect to={current} />;
     case 'sak': {
       if (!isCaseId(a) || a === 'sofie') return <Redirect to={current} />;
       if (a === 'torbjorn') {

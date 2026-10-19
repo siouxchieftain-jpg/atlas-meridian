@@ -856,8 +856,8 @@
     "en": "{{n}} days later"
   },
   "dayLater": {
-    "nb": "Én dag senere",
-    "en": "One day later"
+    "nb": "Resten av dagen: {{list}} til kl. {{to}}.",
+    "en": "The rest of the day: {{list}} until {{to}}:00."
   },
   "you": {
     "nb": "Du",
@@ -2647,6 +2647,58 @@
     "nb": "Kan ikke åpnes i prototypen",
     "en": "Cannot be opened in the prototype"
   },
+  "listLaterInStudy": {
+    "nb": "Senere i studien",
+    "en": "Later in the study"
+  },
+  "listSubGp": {
+    "nb": "Dagen i studien: {{date}} · {{n}} timer · {{m}} med henvisningssak",
+    "en": "The day in the study: {{date}} · {{n}} appointments · {{m}} with a referral case"
+  },
+  "listSubDps": {
+    "nb": "Dagen i studien: {{date}} · {{n}} henvisninger",
+    "en": "The day in the study: {{date}} · {{n}} referrals"
+  },
+  "listNoteGp": {
+    "nb": "Sortert etter klokkeslett. Vanlige timer viser en vanlig dag og kan ikke åpnes.",
+    "en": "Sorted by time. Ordinary appointments show an ordinary day and cannot be opened."
+  },
+  "listCasesLabel": {
+    "nb": "Pasientene i studien",
+    "en": "The patients in the study"
+  },
+  "listRoutineLabel": {
+    "nb": "Resten av dagen",
+    "en": "The rest of the day"
+  },
+  "listReferralsLabel": {
+    "nb": "Henvisningene i studien",
+    "en": "The referrals in the study"
+  },
+  "listReceived": {
+    "nb": "Mottatt {{date}}",
+    "en": "Received {{date}}"
+  },
+  "listAssessed": {
+    "nb": "Vurdert {{date}}",
+    "en": "Assessed {{date}}"
+  },
+  "listAnsweredText": {
+    "nb": "Fastlegen har sendt et spørsmål om svaret dere sendte {{date}}.",
+    "en": "The GP has sent a question about the reply you sent on {{date}}."
+  },
+  "exampleTag": {
+    "nb": "Eksempel",
+    "en": "Example"
+  },
+  "exampleTip": {
+    "nb": "viser en vanlig dag og kan ikke åpnes i prototypen",
+    "en": "shows an ordinary day and cannot be opened in the prototype"
+  },
+  "homeDeadlineFor": {
+    "nb": "vurderingsfrist for {{names}}",
+    "en": "assessment deadline for {{names}}"
+  },
   "listSortedGp": {
     "nb": "Sortert etter klokkeslett.",
     "en": "Sorted by time."
@@ -2867,9 +2919,149 @@
     "nb": "Oversikten",
     "en": "The overview"
   },
+  "startGreetingLead": {
+    "nb": "God morgen,",
+    "en": "Good morning,"
+  },
+  "startToListGp": {
+    "nb": "Gå til timelisten",
+    "en": "Go to the appointment list"
+  },
+  "startToListDps": {
+    "nb": "Gå til mottatte henvisninger",
+    "en": "Go to received referrals"
+  },
+  "startEndLookGp": {
+    "nb": "Mitt henvisningsmønster og Delt oversikt er åpne under, hvis du vil se dem igjen før skjemaene.",
+    "en": "My referral pattern and the shared overview are open below, if you want to see them again before the forms."
+  },
+  "startEndLookDps": {
+    "nb": "Delt oversikt er åpen under, hvis du vil se den igjen før skjemaene.",
+    "en": "The shared overview is open below, if you want to see it again before the forms."
+  },
+  "dayNow": {
+    "nb": "Nå {{time}}",
+    "en": "Now {{time}}"
+  },
+  "dayTitle": {
+    "nb": "Dagen",
+    "en": "Your day"
+  },
+  "daySub": {
+    "nb": "{{date}} · {{n}} timer · {{m}} med henvisningssak",
+    "en": "{{date}} · {{n}} appointments · {{m}} with a referral case"
+  },
+  "dayNowSpoken": {
+    "nb": "Klokka er {{time}} i studiens dag.",
+    "en": "It is {{time}} in the study’s day."
+  },
+  "dayLabel": {
+    "nb": "Formiddagen fra kl. 08 til 12:30",
+    "en": "The morning from 08:00 to 12:30"
+  },
+  "dayListLabel": {
+    "nb": "Dagen fra kl. 08 til 16",
+    "en": "The day from 08:00 to 16:00"
+  },
+  "dayCase": {
+    "nb": "{{time}}: {{name}}, sak {{n}}",
+    "en": "{{time}}: {{name}}, case {{n}}"
+  },
+  "dayRoutine": {
+    "nb": "{{time}}: {{name}}, vanlig time",
+    "en": "{{time}}: {{name}}, ordinary appointment"
+  },
+  "dayBlock": {
+    "nb": "{{from}} til {{to}}: {{label}}",
+    "en": "{{from}} to {{to}}: {{label}}"
+  },
+  "dayLegendCase": {
+    "nb": "Sak i studien",
+    "en": "Case in the study"
+  },
+  "dayLegendRoutine": {
+    "nb": "Vanlig time",
+    "en": "Ordinary appointment"
+  },
+  "dayLegendOther": {
+    "nb": "Annet",
+    "en": "Other"
+  },
+  "dayNote": {
+    "nb": "Vanlige timer og resten av dagen er eksempler. Sakene åpner du fra timelisten.",
+    "en": "Ordinary appointments and the rest of the day are examples. You open the cases from the appointment list."
+  },
+  "examplesLabel": {
+    "nb": "Eksempler på en vanlig dag, kan ikke åpnes i prototypen",
+    "en": "Examples of an ordinary day, cannot be opened in the prototype"
+  },
+  "inboxNewest": {
+    "nb": "Nyeste først",
+    "en": "Newest first"
+  },
+  "inboxSelfReport": {
+    "nb": "Selvrapport, fylt ut før timen kl. {{time}}",
+    "en": "Self-report, filled in before the {{time}} appointment"
+  },
+  "inboxDpsReply": {
+    "nb": "Svar fra {{from}}",
+    "en": "Reply from {{from}}"
+  },
+  "refMineTitle": {
+    "nb": "Henvisningene mine",
+    "en": "My referrals"
+  },
+  "refMineSub": {
+    "nb": "Til DPS Skjærgården",
+    "en": "To DPS Skjærgården"
+  },
+  "refSentReplied": {
+    "nb": "Sendt {{sent}} · svar fra DPS {{replied}}",
+    "en": "Sent {{sent}} · reply from DPS {{replied}}"
+  },
+  "refSent": {
+    "nb": "Sendt {{date}}, venter på svar",
+    "en": "Sent {{date}}, awaiting a reply"
+  },
+  "lockedAfterCases": {
+    "nb": "Åpnes når de tre sakene er ferdige.",
+    "en": "Opens when the three cases are done."
+  },
+  "sharedLatestChange": {
+    "nb": "Siste endring i kriteriene, {{date}}",
+    "en": "Latest change to the criteria, {{date}}"
+  },
+  "sharedLatestDialog": {
+    "nb": "Siste i dialogen",
+    "en": "Latest in the dialogue"
+  },
+  "sharedOpen": {
+    "nb": "Åpne Delt oversikt",
+    "en": "Open the shared overview"
+  },
+  "intakeReceived": {
+    "nb": "Mottatt {{received}} · vurderingsfrist {{deadline}}",
+    "en": "Received {{received}} · assessment deadline {{deadline}}"
+  },
+  "intakeAnswered": {
+    "nb": "Vurdert {{date}} · fastlegen har sendt et spørsmål",
+    "en": "Assessed {{date}} · the GP has sent a question"
+  },
+  "intakeDone": {
+    "nb": "Mottatt {{received}} · ferdig",
+    "en": "Received {{received}} · done"
+  },
   "toHome": {
     "nb": "Til oversikten",
     "en": "To the overview"
+  },
+  "toListGp": {
+    "nb": "Til timelisten",
+    "en": "To the appointment list"
+  },
+  "toListDps": {
+    "nb": "Til mottatte henvisninger",
+    "en": "To received referrals"
   },
   "homeGpTitle": {
     "nb": "Min dag",
@@ -3056,8 +3248,8 @@
     "en": "Start with the tour"
   },
   "studyCardTourGoOnTitle": {
-    "nb": "Fortsett omvisningen",
-    "en": "Continue the tour"
+    "nb": "Du er midt i omvisningen",
+    "en": "You are partway through the tour"
   },
   "studyCardTourTextGp": {
     "nb": "En øvingspasient, Sofie Lund, viser deg hvor alt er. Ingenting du gjør der, lagres.",
@@ -3088,12 +3280,20 @@
     "en": "Continue case {{n}}: {{name}}"
   },
   "studyCardMetaGp": {
-    "nb": "Kl. {{time}} · {{visit}} · {{duration}}",
-    "en": "At {{time}} · {{visit}} · {{duration}}"
+    "nb": "Kl. {{time}} · {{visit}}",
+    "en": "At {{time}} · {{visit}}"
   },
   "studyCardMetaDps": {
-    "nb": "Mottatt {{date}} · {{duration}}",
-    "en": "Received {{date}} · {{duration}}"
+    "nb": "Mottatt {{date}}",
+    "en": "Received {{date}}"
+  },
+  "studyCardCaseText": {
+    "nb": "Saken tar {{duration}}. Du ser den først uten ATLAS, så med.",
+    "en": "The case takes {{duration}}. You see it first without ATLAS, then with it."
+  },
+  "studyCardResumeText": {
+    "nb": "Du fortsetter der du slapp.",
+    "en": "You go on where you left off."
   },
   "studyCardDoneText": {
     "nb": "Til slutt kommer to skjemaer om ATLAS som helhet, og ekstrasakene hvis du vil.",
@@ -3128,8 +3328,8 @@
     "en": "The tour shows what is in ATLAS, where it is, and how the study runs. The referrals open when you have finished."
   },
   "tourStartPartsTitle": {
-    "nb": "Fem korte deler",
-    "en": "Five short parts"
+    "nb": "Fem korte steg",
+    "en": "Five short steps"
   },
   "tourStartPartsText": {
     "nb": "Du kan ta pause og fortsette fra oversikten.",
@@ -3524,20 +3724,20 @@
     "en": "how far you have got in the study."
   },
   "studyMapCard": {
-    "nb": "Studiekortet",
-    "en": "The study card"
+    "nb": "Kortet øverst",
+    "en": "The card at the top"
   },
   "studyMapCardText": {
     "nb": "neste steg, og studienavnet ditt.",
     "en": "the next step, and your study name."
   },
   "studyMapListGp": {
-    "nb": "sakene åpnes herfra, én om gangen.",
-    "en": "the cases are opened from here, one at a time."
+    "nb": "timene i dag. Sakene åpner du fra timelisten, én om gangen.",
+    "en": "today’s appointments. You open the cases from the appointment list, one at a time."
   },
   "studyMapListDps": {
-    "nb": "henvisningene åpnes herfra, én om gangen.",
-    "en": "the referrals are opened from here, one at a time."
+    "nb": "henvisningene som har kommet. Du åpner dem fra listen over mottatte henvisninger, én om gangen.",
+    "en": "the referrals that have come in. You open them from the list of received referrals, one at a time."
   },
   "studyMapFeedbackText": {
     "nb": "når som helst, på hvert skjermbilde.",
@@ -3568,8 +3768,8 @@
     "en": "Summary"
   },
   "studyFlowSummaryText": {
-    "nb": "Hva du gjorde. Så tilbake til oversikten.",
-    "en": "What you did. Then back to the overview."
+    "nb": "Hva du gjorde. Så videre i studien.",
+    "en": "What you did. Then on with the study."
   },
   "studyStopLabel": {
     "nb": "Side 2 av skjemaet for en sak",

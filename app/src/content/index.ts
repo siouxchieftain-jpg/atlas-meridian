@@ -5,6 +5,7 @@ import type {
   GlossaryEntry,
   Instrument,
   OrdinaryPatient,
+  StartDay,
   PatternData,
   SharedOverview,
   TourContent,
@@ -54,3 +55,4 @@ export const pattern = patternJson as unknown as PatternData;
 export const shared = sharedJson as unknown as SharedOverview;
 export const v5 = v5Json as unknown as V5Content;
 export const ordinary = (scheduleJson as unknown as { ordinary: OrdinaryPatient[] }).ordinary;
+export const startDay = (scheduleJson as unknown as { startDay: StartDay }).startDay;

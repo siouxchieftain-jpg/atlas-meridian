@@ -27,5 +27,113 @@
       "fnr": "070464 ·····",
       "visit": { "nb": "Kontroll, hypertensjon", "en": "Check-up, hypertension" }
     }
-  ]
+  ],
+  "startDay": {
+    "from": "08:00",
+    "to": "16:00",
+    "stripTo": "12:30",
+    "blocks": [
+      {
+        "from": "08:00",
+        "to": "08:45",
+        "label": { "nb": "Kontortid", "en": "Admin time" }
+      },
+      {
+        "from": "12:00",
+        "to": "12:30",
+        "label": { "nb": "Lunsj", "en": "Lunch" }
+      },
+      {
+        "from": "12:30",
+        "to": "13:30",
+        "label": { "nb": "Telefontid", "en": "Phone hour" }
+      },
+      {
+        "from": "13:30",
+        "to": "15:00",
+        "label": { "nb": "Øyeblikkelig hjelp", "en": "Same-day urgent care" }
+      },
+      {
+        "from": "15:00",
+        "to": "16:00",
+        "label": { "nb": "Kontortid", "en": "Admin time" }
+      }
+    ],
+    "lengths": {
+      "kari": 20,
+      "erlend": 20,
+      "astrid": 20,
+      "ingrid": 20,
+      "jonas": 15,
+      "ola": 20
+    },
+    "now": [
+      "08:52",
+      "09:24",
+      "10:05",
+      "10:38"
+    ],
+    "inbox": [
+      {
+        "id": "ola",
+        "date": "2026-03-16",
+        "name": "Ola Berg",
+        "age": 61,
+        "icon": "lab",
+        "what": { "nb": "Prøvesvar: lipidprofil", "en": "Test result: lipid profile" }
+      },
+      {
+        "id": "jonas",
+        "date": "2026-03-16",
+        "name": "Jonas Brekke",
+        "age": 23,
+        "icon": "chat",
+        "what": { "nb": "E-konsultasjon: spørsmål om legeattest", "en": "E-consultation: question about a medical certificate" }
+      },
+      {
+        "id": "ingrid",
+        "date": "2026-03-13",
+        "name": "Ingrid Myhre",
+        "age": 47,
+        "icon": "letter",
+        "what": { "nb": "Brev fra NAV: innkalling til dialogmøte", "en": "Letter from NAV: invitation to a dialogue meeting" }
+      }
+    ],
+    "referralsWaiting": [
+      {
+        "name": "Siri Dahl",
+        "sent": "2026-03-13"
+      },
+      {
+        "name": "Mona Lie",
+        "sent": "2026-03-11"
+      },
+      {
+        "name": "Per Haugen",
+        "sent": "2026-03-09"
+      }
+    ],
+    "dpsMessages": [
+      {
+        "id": "eide",
+        "date": "2026-03-17",
+        "name": "Nora Eide",
+        "age": 29,
+        "icon": "letter",
+        "what": { "nb": "Epikrise fra akuttpsykiatrisk avdeling", "en": "Discharge summary from the acute psychiatric ward" }
+      },
+      {
+        "id": "vik",
+        "date": "2026-03-16",
+        "name": "Trond Vik",
+        "age": 56,
+        "icon": "chat",
+        "what": { "nb": "Spørsmål fra kommunal psykisk helsetjeneste", "en": "Question from the municipal mental health service" }
+      }
+    ],
+    "dpsDay": [
+      { "nb": "Inntaksmøte kl. 11:00", "en": "Intake meeting at 11:00" },
+      { "nb": "Ni andre henvisninger venter på vurdering denne uka", "en": "Nine other referrals are waiting for assessment this week" }
+    ]
+  }
 }

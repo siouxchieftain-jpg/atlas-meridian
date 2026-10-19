@@ -322,6 +322,27 @@ export interface OrdinaryPatient {
   visit: T;
 }
 
+/**
+ * The start page's day (3.4, schedule.json `startDay`): what is not an appointment on the GP's timeline, how long each
+ * appointment is, where «Nå» stands as the cases are done, and the parts of an ordinary day that are only examples (the
+ * GP's other inbox items and waiting referrals, DPS's other messages and intake). Fictional, as everything in ATLAS.
+ */
+export interface StartDay {
+  from: string;
+  to: string;
+  /** Where the time strip ends: the morning, where the appointments are. The rest of the day is said in a line. */
+  stripTo: string;
+  blocks: { from: string; to: string; label: T }[];
+  /** Each appointment's length in minutes, by case or ordinary patient. */
+  lengths: Record<string, number>;
+  /** «Nå» on the timeline, by how many cases are done (0 to 3). */
+  now: string[];
+  inbox: { id: string; date: string; name: string; age: number; icon: 'lab' | 'chat' | 'letter'; what: T }[];
+  referralsWaiting: { name: string; sent: string }[];
+  dpsMessages: { id: string; date: string; name: string; age: number; icon: 'lab' | 'chat' | 'letter'; what: T }[];
+  dpsDay: T[];
+}
+
 /* ---------- Shared vocabulary (vocab.json) ---------- */
 
 export interface Vocab {

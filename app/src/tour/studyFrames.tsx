@@ -18,11 +18,12 @@ export const isStudyFrame = (frame: string): boolean => STUDY_FRAMES.has(frame);
 const useStyles = makeStyles({
   stack: { display: 'flex', flexDirection: 'column', gap: '12px', minWidth: 0 },
   // The overview in miniature: a header strip, the study card, the day's list, the side cards and the feedback tab.
+  // 3.4: the greeting with the next step across the top, the day's parts under it.
   map: {
     position: 'relative',
     display: 'grid',
-    gridTemplateColumns: 'minmax(0, 0.9fr) minmax(0, 1.6fr) minmax(0, 1fr)',
-    gridTemplateRows: '26px 100px',
+    gridTemplateColumns: 'minmax(0, 1.6fr) minmax(0, 1fr) minmax(0, 1fr)',
+    gridTemplateRows: '26px 52px 64px',
     gap: '8px',
     padding: '10px',
     paddingInlineEnd: '30px',
@@ -45,7 +46,7 @@ const useStyles = makeStyles({
   mapPill: { width: '34px', height: '8px', borderRadius: '4px', backgroundColor: tokens.colorNeutralStroke2 },
   mapPillNow: { backgroundColor: tokens.colorBrandStroke1 },
   mapCard: { position: 'relative', borderRadius: '6px', backgroundColor: tokens.colorNeutralBackground1, border: `1px solid ${tokens.colorNeutralStroke3}` },
-  mapStudy: { background: guide.card, border: `1px solid ${guide.cardEdge}` },
+  mapStudy: { gridColumn: '1 / -1', background: guide.card, border: `1px solid ${guide.cardEdge}` },
   mapLines: { display: 'flex', flexDirection: 'column', gap: '6px', padding: '10px' },
   mapLine: { height: '6px', borderRadius: '3px', backgroundColor: tokens.colorNeutralStroke3 },
   mapTab: {
@@ -169,13 +170,14 @@ export function FrameStudyMap({ role }: { role: Role }) {
         </div>
         <div className={mergeClasses(cls.mapCard, cls.mapStudy)}>
           {marker(2)}
-          {lines(4)}
+          {lines(2)}
         </div>
         <div className={cls.mapCard}>
           {marker(3)}
-          {lines(7)}
+          {lines(4)}
         </div>
-        <div className={cls.mapCard}>{lines(5)}</div>
+        <div className={cls.mapCard}>{lines(4)}</div>
+        <div className={cls.mapCard}>{lines(4)}</div>
         <span className={cls.mapTab}>
           {marker(4, cls.markerTab)}
           <CommentEdit16Regular />
@@ -189,7 +191,7 @@ export function FrameStudyMap({ role }: { role: Role }) {
           <span className={cls.legendTitle}>{s('studyMapCard')}:</span> {s('studyMapCardText')}
         </li>
         <li>
-          <span className={cls.legendTitle}>{s(role === 'gp' ? 'timelisteTitle' : 'navQueue')}:</span> {s(role === 'gp' ? 'studyMapListGp' : 'studyMapListDps')}
+          <span className={cls.legendTitle}>{s(role === 'gp' ? 'dayTitle' : 'homeDpsTitle')}:</span> {s(role === 'gp' ? 'studyMapListGp' : 'studyMapListDps')}
         </li>
         <li>
           <span className={cls.legendTitle}>{s('feedback')}:</span> {s('studyMapFeedbackText')}

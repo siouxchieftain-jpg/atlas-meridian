@@ -37,8 +37,8 @@
       },
       {
         "label": {
-          "nb": "Henvisninger der DPS ba om mer informasjon",
-          "en": "Referrals where DPS asked for more information"
+          "nb": "Av alle mottatte henvisninger: DPS ba om mer informasjon",
+          "en": "Of all referrals received: DPS asked for more information"
         },
         "value": {
           "nb": "14 %",

@@ -1,131 +1,119 @@
-import { Button, Popover, PopoverSurface, PopoverTrigger, SearchBox, makeStyles, mergeClasses, tokens, typographyStyles } from '@fluentui/react-components';
+import { Button, makeStyles, mergeClasses, tokens, typographyStyles } from '@fluentui/react-components';
 import {
+  ArrowReply20Regular,
   ArrowRight16Regular,
   ArrowRight20Regular,
+  Chat20Regular,
   CheckmarkCircle16Filled,
-  Clock16Regular,
-  LockClosed16Regular,
+  ClipboardPulse20Regular,
+  Document20Regular,
+  Form20Regular,
   Map16Regular,
-  PeopleCommunity20Regular,
 } from '@fluentui/react-icons';
 import { useEffect, useId, useLayoutEffect, useRef, useState, type ReactNode, type RefObject } from 'react';
 import type { CoreCaseId, Role } from '../content/types';
-import { cases, ordinary, pattern, vocab } from '../content';
+import { cases, ordinary, pattern, shared, startDay } from '../content';
 import { formatDateWithWeekday, formatDayMonth, useLang } from '../i18n/i18n';
-import { DPS_TODAY, GP_TODAY, isWeekday } from '../engine/clock';
+import { DPS_TODAY, GP_TODAY } from '../engine/clock';
 import { navigate, useRoute } from '../router/router';
 import { useStudy } from '../state/study';
-import { GuideImage, SheenButton, SrOnly, StatusChip, StudyNameMark, guideCardSurface } from '../patterns/basics';
+import { GuideImage, SheenButton, SrOnly, StudyNameMark, guideCardSurface } from '../patterns/basics';
 import { guide, neutralBar } from '../theme/constants';
 import { PageHeading } from '../shell/PageHeading';
 import { TourStepDialog } from '../tour/Tour';
-import { focusAfterOverlay, useAtlasAnnounce } from '../patterns/announce';
-import { HOME_PATH, useStudyController } from './controller';
-import { CORE, caseInProgress, casesDone, currentCase, partTwoLabel } from './parts';
+import { focusAfterOverlay } from '../patterns/announce';
+import { HOME_PATH, LIST_PATH, useStudyController } from './controller';
+import { CORE, caseInProgress, casesDone, currentCase } from './parts';
+import { ExampleGroup, HomeCard, NewBadge } from './homeParts';
+import { StudyCases, StudyMeta, useStudyStep } from './StudyCard';
 import { TourStartDialog } from './TourStart';
 
+/**
+ * The start page (3.4, boards 12a and 12c): where the participant arrives after Om deg, after the tour, after a pause and
+ * after the three cases. The greeting holds the study's next step and its one sheen, which leads to the list where every
+ * case starts; under it, the day around the study. Nothing here opens a case, and nothing here hints at one: the parts
+ * that show outcomes (the GP's own pattern, Delt oversikt) open when the three cases are done.
+ */
 const useStyles = makeStyles({
   page: { marginBlockStart: '8px', display: 'flex', flexDirection: 'column', gap: '16px', minWidth: 0 },
-  // The title, the day and its counts on the left; the patient search on the right (board 4a), under them when narrow.
-  head: { display: 'flex', flexWrap: 'wrap', alignItems: 'flex-end', justifyContent: 'space-between', columnGap: '24px', rowGap: '10px' },
-  headText: { display: 'flex', flexDirection: 'column', gap: '4px', minWidth: 0 },
-  titleRow: { display: 'flex', flexWrap: 'wrap', alignItems: 'baseline', columnGap: '14px', rowGap: '2px', minWidth: 0 },
-  day: { ...typographyStyles.body1, margin: 0, color: tokens.colorNeutralForeground2 },
-  search: { flex: '0 1 360px', minWidth: '240px', maxWidth: '100%' },
-  // The day's counts as one line of plain text («6 timer · 3 med henvisningssak · 2 nye i innboksen»): facts, not buttons.
-  counts: { listStyle: 'none', margin: 0, padding: 0, display: 'flex', flexWrap: 'wrap', columnGap: '8px', rowGap: '2px' },
-  count: {
-    ...typographyStyles.body1,
-    display: 'inline-flex',
-    alignItems: 'baseline',
-    gap: '4px',
-    color: tokens.colorNeutralForeground2,
-    whiteSpace: 'nowrap',
-    // The dot is decoration: its alternative text is empty, so screen readers read the list items only.
-    ':not(:first-child)::before': { content: '"·" / ""', color: tokens.colorNeutralForeground3, marginInlineEnd: '4px' },
-  },
-  countNum: { ...typographyStyles.body1Strong, color: tokens.colorNeutralForeground1 },
-  // Three columns where the overview has the room: the study card, the day's list and the side column, each the height
-  // of its content. The page scrolls down when the day needs it; it never scrolls sideways. With less room (a narrower
-  // window, or a form panel open beside the overview) the side column moves under the list and lays its cards out side
-  // by side; with less still, everything stacks. The overview measures its own width (useColumns), never the window's.
-  cols: { display: 'grid', gap: '16px', alignItems: 'start', minWidth: 0, gridTemplateColumns: 'minmax(0, 1fr)' },
-  cols2: { gridTemplateColumns: '272px minmax(0, 1fr)' },
-  cols3: { gridTemplateColumns: '272px minmax(0, 1fr) 320px' },
-  cols3Dps: { gridTemplateColumns: '272px minmax(0, 1fr) 360px' },
-  // With the room of a laptop window, the side column splits in two, as board 8b draws «Min dag»: the inbox and the
-  // referrals beside the pattern and Delt oversikt, so the day fits one screen more often.
-  cols4: { gridTemplateColumns: '272px minmax(440px, 1fr) 240px 240px' },
-  cols4Dps: { gridTemplateColumns: '272px minmax(440px, 1fr) 360px 240px' },
-  colStudy: { display: 'flex', flexDirection: 'column', gap: '12px', minWidth: 0 },
-  colMain: { minWidth: 0 },
-  colSide: {
-    display: 'grid',
-    gap: '12px',
-    alignItems: 'start',
-    minWidth: 0,
-    gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 280px), 1fr))',
-  },
-  colSideUnder: { gridColumn: '1 / -1' },
-  colSideBeside: { gridTemplateColumns: 'minmax(0, 1fr)' },
-  // Four columns: the side column's two groups take a grid column each.
-  colSideSplit: { display: 'contents' },
-  sideGroup: { display: 'flex', flexDirection: 'column', gap: '12px', minWidth: 0 },
-  card: {
-    backgroundColor: tokens.colorNeutralBackground1,
-    borderRadius: tokens.borderRadiusLarge,
-    boxShadow: tokens.shadow2,
-    border: `1px solid ${tokens.colorNeutralStroke3}`,
-    minWidth: 0,
-    boxSizing: 'border-box',
-    '@media (forced-colors: active)': { border: '1px solid CanvasText' },
-  },
-  cardHead: {
+  // The greeting: text on the card's own warm colour, the role's wave in a cell of its own beside it (wide), or in a
+  // band above it (narrow), so no text ever sits on the artwork. The three cases run along its foot.
+  hero: { ...guideCardSurface, display: 'grid', gridTemplateColumns: 'minmax(0, 1fr)', gridTemplateAreas: '"text" "foot"', boxShadow: tokens.shadow4 },
+  heroWide: { gridTemplateColumns: 'minmax(0, 1fr) minmax(300px, 42%)', gridTemplateAreas: '"text art" "foot foot"' },
+  // The band ends above the text: text never sits on the artwork (G-35).
+  heroBand: { height: '72px' },
+  heroText: {
+    gridArea: 'text',
     display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    gap: '8px',
-    paddingInline: '16px',
-    paddingBlockStart: '14px',
-    paddingBlockEnd: '10px',
-  },
-  h2: { ...typographyStyles.subtitle2, margin: 0 },
-  // A count badge in brand 80, as Meridian draws it; black is kept for «Frist i dag».
-  newBadge: {
-    ...typographyStyles.caption1Strong,
-    paddingInline: '8px',
-    borderRadius: tokens.borderRadiusCircular,
-    backgroundColor: tokens.colorBrandBackground,
-    color: tokens.colorNeutralForegroundOnBrand,
-    whiteSpace: 'nowrap',
-    '@media (forced-colors: active)': { border: '1px solid CanvasText' },
-  },
-  nextLine: {
-    display: 'flex',
-    alignItems: 'center',
+    flexDirection: 'column',
+    alignItems: 'flex-start',
     gap: '10px',
-    paddingInline: '16px',
-    paddingBlockEnd: '8px',
-    borderBottom: `1px solid ${tokens.colorNeutralStroke3}`,
-    ...typographyStyles.caption1,
-    color: tokens.colorNeutralForeground2,
+    minWidth: 0,
+    paddingInline: '20px',
+    paddingBlockStart: '76px',
+    paddingBlockEnd: '20px',
+    '@media (min-width: 640px)': { paddingInline: '28px' },
   },
-  rows: { listStyle: 'none', margin: 0, padding: 0 },
+  heroTextWide: { paddingBlockStart: '28px', paddingBlockEnd: '24px' },
+  heroArt: { gridArea: 'art', position: 'relative', isolation: 'isolate', minHeight: '200px' },
+  greet: { display: 'flex', alignItems: 'center', gap: '16px', minWidth: 0 },
+  greetText: { display: 'flex', flexDirection: 'column', gap: '2px', minWidth: 0 },
+  greeting: { ...typographyStyles.body1Strong, margin: 0, color: guide.ink },
+  title: { ...typographyStyles.title2, '@media (max-width: 479px)': { ...typographyStyles.subtitle1 } },
+  lead: { ...typographyStyles.body1, margin: 0, color: tokens.colorNeutralForeground2, maxWidth: '64ch' },
+  actions: { display: 'flex', flexWrap: 'wrap', alignItems: 'center', columnGap: '20px', rowGap: '8px', marginBlockStart: '6px' },
+  start: { maxWidth: '100%', height: 'auto', minHeight: '40px', whiteSpace: 'normal', textAlign: 'start' },
+  tourLink: {
+    minWidth: 0,
+    height: 'auto',
+    minHeight: '24px',
+    paddingInline: 0,
+    ...typographyStyles.body1Strong,
+    color: guide.ink,
+    ':hover': { color: guide.ink, textDecoration: 'underline' },
+    ':hover:active': { color: guide.ink },
+  },
+  heroFoot: {
+    gridArea: 'foot',
+    display: 'flex',
+    flexWrap: 'wrap',
+    alignItems: 'center',
+    columnGap: '20px',
+    rowGap: '8px',
+    paddingInline: '20px',
+    paddingBlock: '12px',
+    borderTop: `1px solid ${guide.track}`,
+    backgroundColor: 'rgba(255,255,255,0.62)',
+    '@media (min-width: 640px)': { paddingInline: '28px' },
+    '@media (forced-colors: active)': { borderTop: '1px solid CanvasText' },
+  },
+  casesLabel: { ...typographyStyles.caption1Strong, color: guide.ink },
+  pause: { ...typographyStyles.caption1, margin: 0, marginInlineStart: 'auto', color: tokens.colorNeutralForeground2 },
+  // The parts under the greeting. With the room of a laptop window, two stacks side by side: the day's work on the
+  // left (two thirds), what came in on the right; every part as tall as its content, so no part is padded out. With
+  // less room, two columns, then one. The page measures its own width, never the window's, so an open form panel beside
+  // it counts.
+  parts: { minWidth: 0 },
+  split: { display: 'grid', gridTemplateColumns: 'minmax(0, 2fr) minmax(0, 1fr)', gap: '16px', alignItems: 'start' },
+  stack: { display: 'flex', flexDirection: 'column', gap: '16px', minWidth: 0 },
+  pair: { display: 'grid', gridTemplateColumns: 'repeat(2, minmax(0, 1fr))', gap: '16px', alignItems: 'start' },
+  grid: { display: 'grid', gap: '16px', alignItems: 'start', minWidth: 0, gridTemplateColumns: 'minmax(0, 1fr)' },
+  grid2: { gridTemplateColumns: 'repeat(2, minmax(0, 1fr))' },
+  grid3: { gridTemplateColumns: 'repeat(3, minmax(0, 1fr))' },
+  spanAll: { gridColumn: '1 / -1' },
+  // Rows inside a part: a picture (an icon or initials), what and who, and a date or a tag at the end.
+  rows: { listStyle: 'none', margin: 0, padding: 0, display: 'flex', flexDirection: 'column' },
   row: {
     display: 'grid',
-    gridTemplateColumns: '48px 32px minmax(0, 1fr) auto',
+    gridTemplateColumns: '32px minmax(0, 1fr) auto',
     alignItems: 'center',
-    columnGap: '10px',
-    paddingInline: '16px',
-    paddingBlock: '10px',
-    borderBottom: `1px solid ${tokens.colorNeutralStroke3}`,
+    columnGap: '12px',
+    paddingBlock: '8px',
+    borderTop: `1px solid ${tokens.colorNeutralStroke3}`,
+    ':first-child': { borderTop: 'none', paddingBlockStart: 0 },
   },
-  rowDps: { gridTemplateColumns: '64px 32px minmax(0, 1fr) auto' },
-  rowCurrent: { backgroundColor: tokens.colorBrandBackground2, boxShadow: `inset 3px 0 0 ${tokens.colorBrandStroke1}` },
-  time: { ...typographyStyles.body1Strong, fontVariantNumeric: 'tabular-nums' },
-  received: { display: 'flex', flexDirection: 'column', ...typographyStyles.caption1, color: tokens.colorNeutralForeground2 },
-  receivedDate: { ...typographyStyles.body1Strong, color: tokens.colorNeutralForeground1 },
-  avatar: {
+  rowQuiet: { gridTemplateColumns: '24px minmax(0, 1fr) auto', paddingBlock: '6px', borderTop: `1px solid ${tokens.colorNeutralStroke2}`, color: tokens.colorNeutralForeground2 },
+  rowIcon: {
     width: '32px',
     height: '32px',
     borderRadius: tokens.borderRadiusCircular,
@@ -136,66 +124,28 @@ const useStyles = makeStyles({
     justifyContent: 'center',
     ...typographyStyles.caption1Strong,
   },
-  who: { display: 'flex', flexDirection: 'column', minWidth: 0 },
-  name: { ...typographyStyles.body1Strong, overflowWrap: 'anywhere' },
-  nameQuiet: { ...typographyStyles.body1, overflowWrap: 'anywhere' },
-  visit: { ...typographyStyles.caption1, color: tokens.colorNeutralForeground3, overflowWrap: 'anywhere' },
-  chipLine: { display: 'flex', flexWrap: 'wrap', gap: '4px', marginBlockStart: '2px' },
-  status: { display: 'flex', flexDirection: 'column', alignItems: 'flex-end', justifyContent: 'center', gap: '4px' },
-  tag: {
-    ...typographyStyles.caption1Strong,
-    paddingInline: '6px',
-    borderRadius: tokens.borderRadiusMedium,
-    border: `1px solid ${tokens.colorNeutralStroke1}`,
-    color: tokens.colorNeutralForeground1,
-    whiteSpace: 'nowrap',
-  },
-  tagNow: { color: tokens.colorBrandForeground1, border: `1px solid ${tokens.colorBrandStroke1}`, backgroundColor: tokens.colorNeutralBackground1 },
-  later: { ...typographyStyles.caption1, color: tokens.colorNeutralForeground3, display: 'inline-flex', alignItems: 'center', gap: '4px', whiteSpace: 'nowrap' },
-  doneMark: { ...typographyStyles.caption1, color: tokens.colorNeutralForeground2, display: 'inline-flex', alignItems: 'center', gap: '4px', whiteSpace: 'nowrap' },
-  doneIcon: { color: tokens.colorNeutralForeground2, display: 'inline-flex' },
-  foot: { ...typographyStyles.caption1, margin: 0, paddingInline: '16px', paddingBlock: '10px', color: tokens.colorNeutralForeground3 },
-  empty: { ...typographyStyles.body1, margin: 0, paddingInline: '16px', paddingBlock: '16px', color: tokens.colorNeutralForeground2, borderBottom: `1px solid ${tokens.colorNeutralStroke3}` },
-  items: { listStyle: 'none', margin: 0, padding: 0 },
-  item: {
-    position: 'relative',
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '2px',
-    paddingInlineStart: '28px',
-    paddingInlineEnd: '16px',
-    paddingBlock: '8px',
-    borderTop: `1px solid ${tokens.colorNeutralStroke3}`,
-  },
+  rowIconQuiet: { width: '24px', height: '24px', backgroundColor: 'transparent', color: tokens.colorNeutralForeground3 },
+  rowText: { display: 'flex', flexDirection: 'column', minWidth: 0 },
+  rowName: { ...typographyStyles.body1, color: tokens.colorNeutralForeground1, overflowWrap: 'anywhere', display: 'inline-flex', alignItems: 'center', gap: '6px' },
+  rowNameNew: { ...typographyStyles.body1Strong },
+  rowWhat: { ...typographyStyles.caption1, color: tokens.colorNeutralForeground2, overflowWrap: 'anywhere' },
+  rowEnd: { ...typographyStyles.caption1, color: tokens.colorNeutralForeground2, whiteSpace: 'nowrap', textAlign: 'end' },
   dot: {
-    position: 'absolute',
-    left: '14px',
-    top: '15px',
-    width: '6px',
-    height: '6px',
+    flex: '0 0 8px',
+    width: '8px',
+    height: '8px',
     borderRadius: tokens.borderRadiusCircular,
-    backgroundColor: tokens.colorNeutralForeground1,
+    backgroundColor: tokens.colorBrandBackground,
     '@media (forced-colors: active)': { backgroundColor: 'CanvasText' },
   },
-  itemKind: { ...typographyStyles.caption1, color: tokens.colorNeutralForeground2 },
-  itemNote: { ...typographyStyles.caption1, color: tokens.colorNeutralForeground2 },
-  refRow: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    gap: '8px',
-    paddingInline: '16px',
-    paddingBlock: '8px',
-    borderTop: `1px solid ${tokens.colorNeutralStroke3}`,
-    ...typographyStyles.body1,
-  },
-  refWho: { display: 'flex', flexDirection: 'column', gap: '2px', minWidth: 0 },
-  refCount: { ...typographyStyles.body1Strong },
-  pattern: { display: 'flex', flexDirection: 'column', gap: '8px', paddingInline: '16px', paddingBlockEnd: '12px' },
-  patternSub: { ...typographyStyles.caption1, margin: 0, marginBlockStart: '-6px', color: tokens.colorNeutralForeground2 },
+  // «Sak 3» at a row's end: plain text, never a bordered tag that reads as a small button.
+  tag: { ...typographyStyles.caption1Strong, color: tokens.colorNeutralForeground2, whiteSpace: 'nowrap' },
+  exList: { listStyle: 'none', margin: 0, padding: 0, display: 'flex', flexDirection: 'column' },
+  exLine: { ...typographyStyles.caption1, color: tokens.colorNeutralForeground2 },
+  // Part 3: the GP's own pattern, as the tour showed it. The greys are the information, so forced colours keep them.
   patternTotal: { ...typographyStyles.body1, margin: 0 },
-  patternNum: { ...typographyStyles.subtitle1, marginInlineEnd: '2px' },
-  // The greys are the information, so forced colours keep them (as the review mode's proportion bar does).
+  patternNum: { ...typographyStyles.subtitle1, marginInlineEnd: '4px' },
+  quiet: { ...typographyStyles.caption1, margin: 0, color: tokens.colorNeutralForeground2 },
   bar: {
     display: 'flex',
     height: '10px',
@@ -210,208 +160,139 @@ const useStyles = makeStyles({
     width: '10px',
     height: '10px',
     borderRadius: '2px',
-    border: `1px solid ${tokens.colorNeutralStroke1}`,
+    border: `1px solid ${tokens.colorNeutralStrokeAccessible}`,
     boxSizing: 'border-box',
     '@media (forced-colors: active)': { forcedColorAdjust: 'none', border: '1px solid CanvasText' },
   },
   legendNum: { ...typographyStyles.caption1Strong, fontVariantNumeric: 'tabular-nums' },
-  quiet: { ...typographyStyles.caption1, margin: 0, color: tokens.colorNeutralForeground3 },
-  linkBtn: { alignSelf: 'flex-start', minWidth: 0, paddingInline: 0, height: 'auto' },
-  shared: {
+  openBtn: { alignSelf: 'flex-start', minWidth: 0, paddingInline: 0, height: '28px', ...typographyStyles.body1Strong, marginBlockStart: 'auto' },
+  sharedBlock: { display: 'flex', flexDirection: 'column', gap: '2px' },
+  sharedHead: { ...typographyStyles.body1Strong, margin: 0 },
+  sharedText: { ...typographyStyles.body1, margin: 0, color: tokens.colorNeutralForeground2 },
+  // The day: a time strip from 08 to 16 (the start page's «Timeliste i dag»), or a plain list when the part is narrow.
+  stripWrap: { display: 'flex', flexDirection: 'column', gap: '8px' },
+  srLine: { margin: 0, height: 0 },
+  strip: { position: 'relative', height: '100px', marginInline: '2px' },
+  hour: {
+    position: 'absolute',
+    top: '80px',
+    ...typographyStyles.caption1,
+    color: tokens.colorNeutralForeground3,
+    fontVariantNumeric: 'tabular-nums',
+    transform: 'translateX(-50%)',
+  },
+  hourFirst: { transform: 'none' },
+  tick: { position: 'absolute', top: '74px', width: '1px', height: '4px', backgroundColor: tokens.colorNeutralStroke1 },
+  blocks: { listStyle: 'none', margin: 0, padding: 0, position: 'absolute', left: 0, right: 0, top: '24px', height: '46px' },
+  block: {
+    position: 'absolute',
+    top: 0,
+    height: '46px',
+    boxSizing: 'border-box',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingInline: '3px',
+    borderRadius: tokens.borderRadiusMedium,
+    overflow: 'hidden',
+    ...typographyStyles.caption1,
+    whiteSpace: 'nowrap',
+  },
+  blockCase: { backgroundColor: tokens.colorNeutralBackground1, border: `1px solid ${tokens.colorNeutralStrokeAccessible}`, color: tokens.colorNeutralForeground1 },
+  blockNow: { border: `2px solid ${tokens.colorBrandStroke1}`, backgroundColor: tokens.colorBrandBackground2, '@media (forced-colors: active)': { border: '2px solid Highlight' } },
+  // A case that is done steps back: quiet fill, quiet edge, a tick. Never a box with a mark in it (that reads as a
+  // checkbox).
+  blockDone: { backgroundColor: tokens.colorNeutralBackground2, border: `1px solid ${tokens.colorNeutralStroke2}`, color: tokens.colorNeutralForeground3 },
+  blockRoutine: { backgroundColor: tokens.colorNeutralBackground3, border: `1px solid ${tokens.colorNeutralStroke2}`, color: tokens.colorNeutralForeground2 },
+  blockOther: { backgroundColor: tokens.colorNeutralBackground2, border: `1px solid ${tokens.colorNeutralStroke3}`, color: tokens.colorNeutralForeground2 },
+  blockTick: { display: 'block', color: tokens.colorNeutralForeground3 },
+  blockWho: { ...typographyStyles.caption1Strong, display: 'inline-flex', alignItems: 'center', gap: '2px' },
+  blockLabel: { maxWidth: '100%', overflow: 'hidden', textOverflow: 'ellipsis' },
+  now: {
+    position: 'absolute',
+    top: 0,
+    zIndex: 1,
+    transform: 'translateX(-50%)',
+    display: 'inline-flex',
+    alignItems: 'center',
+    height: '20px',
+    paddingInline: '8px',
+    borderRadius: tokens.borderRadiusCircular,
+    backgroundColor: tokens.colorBrandBackground,
+    color: tokens.colorNeutralForegroundOnBrand,
+    ...typographyStyles.caption1Strong,
+    whiteSpace: 'nowrap',
+    '@media (forced-colors: active)': { border: '1px solid CanvasText' },
+  },
+  nowLine: { position: 'absolute', top: '20px', zIndex: 1, height: '54px', marginLeft: '-1px', borderLeft: `2px solid ${tokens.colorBrandStroke1}` },
+  legendLine: { display: 'flex', flexWrap: 'wrap', columnGap: '16px', rowGap: '4px', margin: 0, ...typographyStyles.caption1, color: tokens.colorNeutralForeground2 },
+  legendItem: { display: 'inline-flex', alignItems: 'center', gap: '6px' },
+  legendSwatch: { width: '16px', height: '10px', borderRadius: '3px', boxSizing: 'border-box' },
+  legendSwatchQuiet: { border: `1px solid ${tokens.colorNeutralStroke1}` },
+  dayList: { listStyle: 'none', margin: 0, padding: 0, display: 'flex', flexDirection: 'column' },
+  dayRow: {
     display: 'grid',
-    gridTemplateColumns: '36px minmax(0, 1fr) auto',
+    gridTemplateColumns: '92px minmax(0, 1fr) auto',
     alignItems: 'center',
     columnGap: '12px',
-    paddingInline: '16px',
-    paddingBlock: '12px',
-    width: '100%',
-    textAlign: 'start',
-    font: 'inherit',
-    color: tokens.colorNeutralForeground1,
-    background: 'none',
-    border: 'none',
+    paddingBlock: '7px',
+    borderTop: `1px solid ${tokens.colorNeutralStroke3}`,
+    ...typographyStyles.body1,
+    ':first-child': { borderTop: 'none' },
   },
-  sharedBtn: {
-    cursor: 'pointer',
-    borderRadius: tokens.borderRadiusLarge,
-    ':hover': { backgroundColor: tokens.colorSubtleBackgroundHover },
-    ':focus-visible': { outline: `2px solid ${tokens.colorStrokeFocus2}`, outlineOffset: '2px' },
-  },
-  sharedIcon: {
-    width: '36px',
-    height: '36px',
-    borderRadius: tokens.borderRadiusCircular,
-    backgroundColor: tokens.colorBrandBackground2,
-    border: `1px solid ${tokens.colorBrandStroke2}`,
-    color: tokens.colorBrandForeground2,
-    display: 'inline-flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    boxSizing: 'border-box',
-  },
-  sharedText: { display: 'flex', flexDirection: 'column', minWidth: 0 },
-  pause: { ...typographyStyles.caption1, margin: 0, paddingInline: '4px', color: tokens.colorNeutralForeground2 },
-  // Frister: the ten working days to the deadline, as a strip of dates, today outlined. A date, never a countdown.
-  days: { listStyle: 'none', margin: 0, paddingInline: '16px', display: 'grid', gridTemplateColumns: 'repeat(10, minmax(0, 1fr))', gap: '4px' },
-  dayCell: {
-    position: 'relative',
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    paddingBlock: '4px',
-    borderRadius: tokens.borderRadiusMedium,
-    backgroundColor: tokens.colorNeutralBackground2,
-    ...typographyStyles.caption2,
-    color: tokens.colorNeutralForeground2,
-  },
-  dayNum: { ...typographyStyles.body1Strong, color: tokens.colorNeutralForeground1 },
-  dayToday: { border: `1px solid ${tokens.colorBrandStroke1}`, backgroundColor: tokens.colorNeutralBackground1, color: tokens.colorBrandForeground1 },
-  dayDue: { backgroundColor: tokens.colorNeutralForeground1, color: tokens.colorNeutralForegroundInverted },
-  dayNumDue: { color: tokens.colorNeutralForegroundInverted },
-  dayBadge: {
-    position: 'absolute',
-    top: '-7px',
-    right: '-5px',
-    minWidth: '16px',
-    height: '16px',
-    borderRadius: tokens.borderRadiusCircular,
-    backgroundColor: tokens.colorNeutralBackground1,
-    border: `1px solid ${tokens.colorNeutralForeground1}`,
-    color: tokens.colorNeutralForeground1,
-    ...typographyStyles.caption2Strong,
-    display: 'inline-flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    boxSizing: 'border-box',
-  },
-  dl: { margin: 0, paddingInline: '16px', paddingBlock: '10px', display: 'flex', flexDirection: 'column', gap: '8px' },
-  dlList: { margin: 0 },
-  dt: { ...typographyStyles.body1Strong },
-  dd: { margin: 0, ...typographyStyles.body1 },
-  // The study card: a guide card (boards 4a and 8b), the artwork fading in from the top, the study's next step with its
-  // one sheen action, the three cases with «Nå», and the study name. The study around the work, beside the day.
-  study: {
-    ...guideCardSurface,
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '12px',
-    paddingInline: '20px',
-    paddingBlockStart: '64px',
-    paddingBlockEnd: '20px',
-    boxShadow: tokens.shadow2,
-  },
-  studyBand: { height: '84px' },
-  eyebrow: { ...typographyStyles.caption1Strong, margin: 0, color: guide.ink },
-  studyTitle: { ...typographyStyles.subtitle1, margin: 0, color: tokens.colorNeutralForeground1 },
-  studyText: { ...typographyStyles.body1, margin: 0, color: tokens.colorNeutralForeground2 },
-  studyMeta: { display: 'flex', alignItems: 'flex-start', gap: '6px', ...typographyStyles.body1, margin: 0, color: tokens.colorNeutralForeground2 },
-  studyMetaIcon: { flexShrink: 0, marginTop: '2px', color: guide.ink, display: 'inline-flex' },
-  start: { alignSelf: 'flex-start', maxWidth: '100%', height: 'auto', minHeight: '40px', whiteSpace: 'normal', textAlign: 'start' },
-  tourLink: {
-    alignSelf: 'flex-start',
-    minWidth: 0,
-    height: 'auto',
-    minHeight: '24px',
-    paddingInline: 0,
-    ...typographyStyles.body1Strong,
-    color: guide.ink,
-    ':hover': { color: guide.ink, textDecoration: 'underline' },
-    ':hover:active': { color: guide.ink },
-  },
-  // The three cases (board 4a): an empty ring to come, a coral dot and «Nå» for the current one, a tick when done.
-  cases: {
-    listStyle: 'none',
-    margin: 0,
-    paddingBlockStart: '12px',
-    paddingInline: 0,
-    borderTop: `1px solid ${guide.track}`,
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '10px',
-  },
-  caseRow: { display: 'flex', alignItems: 'center', gap: '10px', ...typographyStyles.body1, color: tokens.colorNeutralForeground2 },
-  caseNow: { ...typographyStyles.body1Strong, color: tokens.colorNeutralForeground1 },
-  caseDot: {
-    flex: '0 0 12px',
-    width: '12px',
-    height: '12px',
-    borderRadius: tokens.borderRadiusCircular,
-    boxSizing: 'border-box',
-    border: `1px solid ${tokens.colorNeutralStroke1}`,
-    backgroundColor: tokens.colorNeutralBackground1,
-    '@media (forced-colors: active)': { border: '1px solid CanvasText' },
-  },
-  caseDotNow: { border: 'none', backgroundColor: guide.coral, '@media (forced-colors: active)': { backgroundColor: 'Highlight' } },
-  caseDone: { flex: '0 0 16px', color: guide.ink, display: 'inline-flex', marginInline: '-2px' },
-  caseName: { flex: '1 1 auto', minWidth: 0 },
-  caseStatus: { ...typographyStyles.caption1Strong, color: guide.ink },
-  caseStatusDone: { ...typographyStyles.caption1, color: tokens.colorNeutralForeground2 },
-  // «Studienavnet ditt»: the name's mark, the label with a small «Hva er dette?» beside it, and the name below.
-  nameBox: {
-    display: 'grid',
-    gridTemplateColumns: '32px minmax(0, 1fr)',
-    alignItems: 'start',
-    columnGap: '10px',
-    marginBlockStart: '4px',
-    paddingInlineStart: '10px',
-    paddingInlineEnd: '6px',
-    paddingBlock: '8px',
-    borderRadius: tokens.borderRadiusLarge,
-    border: `1px solid ${guide.cardEdge}`,
-    backgroundColor: 'rgba(255,255,255,0.86)',
-    '@media (forced-colors: active)': { border: '1px solid CanvasText' },
-  },
-  nameStack: { display: 'flex', flexDirection: 'column', gap: '0', minWidth: 0 },
-  nameLabel: { ...typographyStyles.caption1, color: tokens.colorNeutralForeground2 },
-  nameValue: { ...typographyStyles.body1Strong, overflowWrap: 'anywhere' },
-  nameWhat: {
-    alignSelf: 'flex-start',
-    minWidth: 0,
-    height: '24px',
-    paddingInline: 0,
-    marginBlockStart: '2px',
-    ...typographyStyles.caption1Strong,
-    color: guide.ink,
-    ':hover': { color: guide.ink, textDecoration: 'underline' },
-    ':hover:active': { color: guide.ink },
-  },
-  namePop: { maxWidth: '300px', display: 'flex', flexDirection: 'column', gap: '8px' },
-  namePopTitle: { ...typographyStyles.body1Strong, margin: 0 },
-  namePopText: { ...typographyStyles.body1, margin: 0 },
+  dayRowQuiet: { color: tokens.colorNeutralForeground2 },
+  dayRowNow: { boxShadow: `inset 3px 0 0 ${tokens.colorBrandStroke1}`, paddingInlineStart: '8px' },
+  dayTime: { fontVariantNumeric: 'tabular-nums', ...typographyStyles.body1Strong },
+  dayTimeQuiet: { fontWeight: tokens.fontWeightRegular },
+  dayState: { ...typographyStyles.caption1Strong, color: guide.ink, display: 'inline-flex', alignItems: 'center', gap: '4px', whiteSpace: 'nowrap' },
+  dayStateDone: { ...typographyStyles.caption1, color: tokens.colorNeutralForeground2 },
 });
 
-/** The least widths of the overview's grid for two, three and four columns: the study card 272 px, the day's list 472
- * or 480 px (440 px beside two side columns), the side column 320 px (360 px for DPS, whose deadline strip needs it) or
- * two of 240 px (as board 8b at 1366 px), and 16 px gaps. */
-const TWO_COLUMNS = 760;
-const THREE_COLUMNS: Record<Role, number> = { gp: 1104, dps: 1144 };
-const FOUR_COLUMNS: Record<Role, number> = { gp: 1240, dps: 1360 };
-
-/** How many columns the overview has room for, from its own measured width. */
-function useColumns(role: Role): [RefObject<HTMLDivElement | null>, 1 | 2 | 3 | 4] {
-  const ref = useRef<HTMLDivElement>(null);
-  const [cols, setCols] = useState<1 | 2 | 3 | 4>(1);
+/** An element's own width, measured as it changes (the start page lays itself out by its width, not the window's). */
+function useWidth<T extends HTMLElement>(): [RefObject<T | null>, number] {
+  const ref = useRef<T>(null);
+  const [width, setWidth] = useState(0);
   useLayoutEffect(() => {
     const el = ref.current;
     if (!el) return;
-    const measure = () => {
-      const w = el.getBoundingClientRect().width;
-      setCols(w >= FOUR_COLUMNS[role] ? 4 : w >= THREE_COLUMNS[role] ? 3 : w >= TWO_COLUMNS ? 2 : 1);
-    };
+    const measure = () => setWidth(Math.round(el.getBoundingClientRect().width));
     measure();
+    if (typeof ResizeObserver === 'undefined') return;
     const ro = new ResizeObserver(measure);
     ro.observe(el);
     return () => ro.disconnect();
-  }, [role]);
-  return [ref, cols];
+  }, []);
+  return [ref, width];
 }
 
-const WEEKDAY: Record<'nb' | 'en', string[]> = {
-  nb: ['sø', 'ma', 'ti', 'on', 'to', 'fr', 'lø'],
-  en: ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'],
-};
+/** «09:30» → minutes since midnight. */
+function minutes(hhmm: string): number {
+  const [h, m] = hhmm.split(':').map(Number);
+  return h * 60 + m;
+}
 
-/** The overview: «Min dag» for the GP, «Inntaket i dag» for DPS (decision 1, boards 8b and 8c). */
+/** «Kari Nordli, 34 år»: the age never breaks from its «år» at a line's end. */
+function keepAge(name: string): string {
+  return name.replace(/ (år)$/, '\u00a0$1');
+}
+
+/** «a, b og c» / «a, b and c». */
+function listOf(items: string[], lang: 'nb' | 'en'): string {
+  if (items.length < 2) return items.join('');
+  return `${items.slice(0, -1).join(', ')} ${lang === 'nb' ? 'og' : 'and'} ${items[items.length - 1]}`;
+}
+
+function hhmm(min: number): string {
+  return `${String(Math.floor(min / 60)).padStart(2, '0')}:${String(min % 60).padStart(2, '0')}`;
+}
+
+/** The three cases are done: part 3, where the parts that show outcomes open. */
+function useCasesDone(): boolean {
+  const study = useStudy();
+  return casesDone(study.state) === CORE.length;
+}
+
 export function HomePage() {
   const cls = useStyles();
   const study = useStudy();
@@ -424,60 +305,43 @@ export function HomePage() {
   useEffect(() => {
     if (route.query.has('omvisning')) navigate(HOME_PATH, { replace: true });
   }, [route.query]);
-  const openStep = (id: string) => setStepDialog(id);
-  const [colsRef, ncols] = useColumns(role);
-  const side = mergeClasses(cls.colSide, ncols === 2 && cls.colSideUnder, ncols === 3 && cls.colSideBeside, ncols === 4 && cls.colSideSplit);
-  // The patient search filters the day's list (board 4a); the rest of the day stays as it is.
-  const [query, setQuery] = useState('');
+  const [gridRef, width] = useWidth<HTMLDivElement>();
+  const cols = width >= 1080 ? 3 : width >= 640 ? 2 : 1;
+  const open = useCasesDone();
   return (
-    <div className={cls.page}>
-      <HomeHead role={role} query={query} onQuery={setQuery} />
-      <div
-        ref={colsRef}
-        className={mergeClasses(
-          cls.cols,
-          ncols === 2 && cls.cols2,
-          ncols === 3 && (role === 'dps' ? cls.cols3Dps : cls.cols3),
-          ncols === 4 && (role === 'dps' ? cls.cols4Dps : cls.cols4),
-        )}
-        data-columns={ncols}
-      >
-        <div className={cls.colStudy}>
-          <StudyCard onStartTour={() => setTourCard(true)} />
-        </div>
+    <div className={cls.page} data-start-page="">
+      <Hero onStartTour={() => setTourCard(true)} />
+      <div ref={gridRef} className={cls.parts} data-columns={cols}>
         {role === 'gp' ? (
-          <>
-            <div className={cls.colMain}>
-              <Timeliste query={query} />
-            </div>
-            <div className={side}>
-              <div className={cls.sideGroup}>
+          cols === 3 ? (
+            <div className={cls.split}>
+              <div className={cls.stack}>
+                <DayPart />
+                <div className={cls.pair}>
+                  <GpReferrals />
+                  <GpPattern locked={!open} onOpen={() => setStepDialog('gp-monster')} />
+                </div>
+              </div>
+              <div className={cls.stack}>
                 <GpInbox />
-                <GpReferrals />
-              </div>
-              <div className={cls.sideGroup}>
-                <GpPattern onOpen={st.tour.done ? () => openStep('gp-monster') : undefined} />
-                <SharedCard role="gp" onOpen={st.tour.done ? () => openStep('gp-kalibrering') : undefined} />
-                <Pause />
+                <SharedPart role="gp" locked={!open} onOpen={() => setStepDialog('gp-kalibrering')} />
               </div>
             </div>
-          </>
+          ) : (
+            <div className={mergeClasses(cls.grid, cols === 2 && cls.grid2)}>
+              <DayPart className={cols === 2 ? cls.spanAll : undefined} />
+              <GpInbox />
+              <GpReferrals />
+              <GpPattern locked={!open} onOpen={() => setStepDialog('gp-monster')} />
+              <SharedPart role="gp" locked={!open} onOpen={() => setStepDialog('gp-kalibrering')} />
+            </div>
+          )
         ) : (
-          <>
-            <div className={cls.colMain}>
-              <Queue query={query} />
-            </div>
-            <div className={side}>
-              <div className={cls.sideGroup}>
-                <Deadlines />
-                <DpsMessages />
-              </div>
-              <div className={cls.sideGroup}>
-                <SharedCard role="dps" onOpen={st.tour.done ? () => openStep('dps-kalibrering') : undefined} />
-                <Pause />
-              </div>
-            </div>
-          </>
+          <div className={mergeClasses(cls.grid, cols === 2 && cls.grid2, cols === 3 && cls.grid3)}>
+            <DpsIntake className={cols === 2 ? cls.spanAll : undefined} />
+            <DpsMessages />
+            <SharedPart role="dps" locked={!open} onOpen={() => setStepDialog('dps-kalibrering')} />
+          </div>
         )}
       </div>
       <TourStartDialog
@@ -500,145 +364,48 @@ export function HomePage() {
   );
 }
 
-/** A patient matches the search by name, or by the start of the national identity number (board 4a, as review mode). */
-function matches(query: string, name: string, fnr: string): boolean {
-  const needle = query.trim().toLocaleLowerCase('nb');
-  if (!needle) return true;
-  const digits = needle.replace(/\D/g, '');
-  return name.toLocaleLowerCase('nb').includes(needle) || (digits !== '' && fnr.replace(/\D/g, '').startsWith(digits));
-}
+/* ---------- The greeting ---------- */
 
-function HomeHead({ role, query, onQuery }: { role: Role; query: string; onQuery: (q: string) => void }) {
+function Hero({ onStartTour }: { onStartTour: () => void }) {
   const cls = useStyles();
-  const { s, lang } = useLang();
-  const study = useStudy();
-  const announce = useAtlasAnnounce();
-  const st = study.state;
-  // How many patients match is said once typing pauses (G-28), through the app's one announcer (G-32).
-  const all = role === 'gp' ? [...CORE.map((c) => cases[c].patient), ...ordinary] : CORE.map((c) => cases[c].patient);
-  const found = all.filter((p) => matches(query, p.name, p.fnr)).length;
-  useEffect(() => {
-    if (!query.trim()) return;
-    const id = window.setTimeout(() => announce(found ? s('homeSearchFound', { n: found, m: all.length }) : s('noMatches')), 1000);
-    return () => window.clearTimeout(id);
-  }, [query, found, all.length, announce, s]);
-  const day = formatDateWithWeekday(role === 'gp' ? GP_TODAY : DPS_TODAY, lang);
-  const counts: { n: string; text: string }[] = [];
-  if (role === 'gp') {
-    counts.push({ n: String(CORE.length + ordinary.length), text: s('homeCountAppointments') });
-    counts.push({ n: String(CORE.length), text: s('homeCountCases') });
-    const fresh = gpInboxItems(st.phase).filter((x) => x.isNew).length;
-    counts.push(fresh ? { n: String(fresh), text: s(fresh === 1 ? 'homeCountInboxOne' : 'homeCountInbox') } : { n: '', text: s('homeCountInboxNone') });
-  } else {
-    counts.push({ n: String(CORE.length), text: s('homeCountReferrals') });
-    const fresh = st.phase.astrid !== 'done' ? 1 : 0;
-    counts.push(fresh ? { n: String(fresh), text: s('homeCountMessageOne') } : { n: '', text: s('homeCountMessageNone') });
-    counts.push({ n: '', text: s('homeNextDeadline', { date: formatDayMonth(cases.kari.dps!.queue.deadline, lang) }) });
-  }
-  return (
-    <div className={cls.head}>
-      <div className={cls.headText}>
-        <div className={cls.titleRow}>
-          <PageHeading title={s(role === 'gp' ? 'homeGpTitle' : 'homeDpsTitle')}>{s(role === 'gp' ? 'homeGpTitle' : 'homeDpsTitle')}</PageHeading>
-          <p className={cls.day}>{s('homeDayLabel', { date: day })}</p>
-        </div>
-        <ul className={cls.counts} aria-label={s('homeCountsLabel')}>
-          {counts.map((c) => (
-            <li key={c.text} className={cls.count}>
-              {c.n && <span className={cls.countNum}>{c.n}</span>}
-              {c.text}
-            </li>
-          ))}
-        </ul>
-      </div>
-      <SearchBox
-        className={cls.search}
-        value={query}
-        onChange={(_, d) => onQuery(d.value)}
-        placeholder={s('searchPatients')}
-        aria-label={s('searchPatients')}
-        dismiss={{ 'aria-label': s('clearSearch') }}
-        data-home-search=""
-      />
-    </div>
-  );
-}
-
-/* ---------- The study card ---------- */
-
-function StudyCard({ onStartTour }: { onStartTour: () => void }) {
-  const cls = useStyles();
-  const { s, t, lang } = useLang();
+  const { s } = useLang();
   const study = useStudy();
   const ctl = useStudyController();
-  const titleId = useId();
+  const step = useStudyStep();
+  const casesId = useId();
+  const [ref, width] = useWidth<HTMLElement>();
+  const wide = width >= 960;
   const role: Role = study.role ?? 'gp';
   const st = study.state;
   const current = currentCase(st);
-  const done = casesDone(st);
-  let eyebrow: string;
-  let title: string;
-  let body: ReactNode;
+  const name = st.studienavn;
   let action: ReactNode;
-  if (!st.tour.done) {
-    eyebrow = s('studyCardEyebrow', { n: 1, title: s('partIntro') });
-    title = st.tour.started ? s('studyCardTourGoOnTitle') : s('studyCardTourTitle');
-    body = (
-      <>
-        <p className={cls.studyText}>{s(role === 'gp' ? 'studyCardTourTextGp' : 'studyCardTourTextDps')}</p>
-        <p className={cls.studyMeta}>
-          <span className={cls.studyMetaIcon} aria-hidden="true">
-            <LockClosed16Regular />
-          </span>
-          {s(role === 'gp' ? 'studyCardLockedGp' : 'studyCardLockedDps')}
-        </p>
-      </>
-    );
-    action = st.tour.started ? (
-      <SheenButton className={cls.start} icon={<ArrowRight20Regular />} iconPosition="after" onClick={() => navigate('/studie/omvisning')}>
-        {s('studyCardTourGoOn')}
-      </SheenButton>
-    ) : (
+  if (step.kind === 'tour') {
+    action = (
       <SheenButton className={cls.start} icon={<ArrowRight20Regular />} iconPosition="after" onClick={onStartTour} data-start-tour="">
         {s('studyCardStartTour')}
       </SheenButton>
     );
-  } else if (current) {
-    const n = CORE.indexOf(current) + 1;
-    const c = cases[current];
-    const name = c.patient.name;
-    const inProgress = caseInProgress(st, current);
-    eyebrow = s('studyCardEyebrow', { n: 2, title: s(partTwoLabel(role)) });
-    title = inProgress
-      ? s('studyCardResumeTitle', { n, name })
-      : done === 0
-        ? s('studyCardReady', { name })
-        : s('guideCaseOf', { n, name });
-    const briefing = role === 'gp' ? c.gp.briefing : c.dps!.briefing;
-    const meta =
-      role === 'gp'
-        ? s('studyCardMetaGp', { time: c.gp.timeliste.time, visit: t(c.gp.timeliste.visit), duration: t(briefing.time) })
-        : s('studyCardMetaDps', { date: formatDayMonth(c.dps!.queue.received, lang), duration: t(briefing.time) });
-    body = (
-      <>
-        <p className={cls.studyMeta}>
-          <span className={cls.studyMetaIcon} aria-hidden="true">
-            <Clock16Regular />
-          </span>
-          {meta}
-        </p>
-        <p className={cls.studyText}>{s('guideTwoViews')}</p>
-      </>
+  } else if (step.kind === 'tourGoOn') {
+    action = (
+      <SheenButton className={cls.start} icon={<ArrowRight20Regular />} iconPosition="after" onClick={() => navigate('/studie/omvisning')}>
+        {s('studyCardTourGoOn')}
+      </SheenButton>
     );
+  } else if (step.kind === 'case' && current && caseInProgress(st, current)) {
+    // A case left in the middle goes on where it was; every new case starts from the list.
     action = (
       <SheenButton className={cls.start} icon={<ArrowRight20Regular />} iconPosition="after" onClick={() => navigate(`/studie/sak/${current}`)} data-open-case={current}>
-        {inProgress ? s('continueCase') : role === 'gp' ? s('listOpenCase') : s('listOpenReferral')}
+        {s('continueCase')}
+      </SheenButton>
+    );
+  } else if (step.kind === 'case') {
+    action = (
+      <SheenButton className={cls.start} icon={<ArrowRight20Regular />} iconPosition="after" onClick={() => navigate(LIST_PATH)} data-to-list="">
+        {s(role === 'gp' ? 'startToListGp' : 'startToListDps')}
       </SheenButton>
     );
   } else {
-    eyebrow = s('studyCardEyebrow', { n: 3, title: s('partEnd') });
-    title = s('guideAllDoneTitle');
-    body = <p className={cls.studyText}>{s('studyCardDoneText')}</p>;
     const atHelhet = st.furthest === 'helhet';
     action = (
       <SheenButton className={cls.start} icon={<ArrowRight20Regular />} iconPosition="after" onClick={() => (atHelhet ? ctl.goToStep('helhet') : navigate(ctl.currentPath()))}>
@@ -647,50 +414,247 @@ function StudyCard({ onStartTour }: { onStartTour: () => void }) {
     );
   }
   return (
-    <section className={cls.study} aria-labelledby={titleId} data-study-card="" data-guide-card="">
-      <GuideImage variant="band" className={cls.studyBand} />
-      <p className={cls.eyebrow}>{eyebrow}</p>
-      <h2 id={titleId} className={cls.studyTitle}>
-        {title}
-      </h2>
-      {body}
-      {action}
-      <StudyCases />
-      {/* After the tour, the tour again from where the cases are (board 4a). */}
-      {st.tour.done && (
-        <Button appearance="transparent" className={cls.tourLink} icon={<Map16Regular />} onClick={() => navigate('/studie/omvisning?igjen')}>
-          {s('guideTourAgain')}
-        </Button>
+    <section ref={ref} className={mergeClasses(cls.hero, wide && cls.heroWide)} aria-labelledby="start-title" data-start-hero="" data-guide-surface="">
+      {!wide && <GuideImage variant="band" className={cls.heroBand} />}
+      <div className={mergeClasses(cls.heroText, wide && cls.heroTextWide)}>
+        <div className={cls.greet}>
+          {name && <StudyNameMark name={name} size={width >= 480 ? 56 : 40} />}
+          <div className={cls.greetText}>
+            <p className={cls.greeting} data-start-greeting="">
+              {name ? (
+                <>
+                  {s('startGreetingLead')}{' '}
+                  <span lang="nb" data-studienavn-value="">
+                    {name}
+                  </span>
+                </>
+              ) : (
+                step.eyebrow
+              )}
+            </p>
+            <div id="start-title">
+              <PageHeading title={s('navHome')} className={cls.title}>
+                {step.title}
+              </PageHeading>
+            </div>
+          </div>
+        </div>
+        {step.kind === 'case' && <StudyMeta meta={step.meta} />}
+        {step.text && <p className={cls.lead}>{step.text}</p>}
+        {step.kind !== 'case' && <StudyMeta meta={step.meta} />}
+        {step.kind === 'end' && <p className={cls.lead}>{s(role === 'gp' ? 'startEndLookGp' : 'startEndLookDps')}</p>}
+        <div className={cls.actions}>
+          {action}
+          {st.tour.done && (
+            <Button appearance="transparent" className={cls.tourLink} icon={<Map16Regular />} onClick={() => navigate('/studie/omvisning?igjen')}>
+              {s('guideTourAgain')}
+            </Button>
+          )}
+        </div>
+      </div>
+      {wide && (
+        <div className={cls.heroArt}>
+          <GuideImage variant="home" />
+        </div>
       )}
-      <StudyName />
+      <div className={cls.heroFoot}>
+        <span className={cls.casesLabel} id={casesId}>
+          {s('guideCasesLabel')}
+        </span>
+        <StudyCases row labelledBy={casesId} />
+        <p className={cls.pause}>{s('homePause')}</p>
+      </div>
     </section>
   );
 }
 
-/** The three cases and where the participant is: «Nå» on the current one after the tour, a tick on each one done (4a). */
-function StudyCases() {
+/* ---------- GP: the day ---------- */
+
+interface DayItem {
+  key: string;
+  from: number;
+  to: number;
+  kind: 'case' | 'routine' | 'other';
+  /** What the strip shows: a time and initials, or a label. */
+  time?: string;
+  initials?: string;
+  label: string;
+  /** What a screen reader hears, and the narrow list shows. */
+  spoken: string;
+  caseId?: CoreCaseId;
+  n?: number;
+}
+
+function useDayItems(): DayItem[] {
+  const { s, t } = useLang();
+  const items: DayItem[] = [
+    ...CORE.map((c, i) => {
+      const x = cases[c];
+      const from = minutes(x.gp.timeliste.time);
+      return {
+        key: c,
+        from,
+        to: from + (startDay.lengths[c] ?? 30),
+        kind: 'case' as const,
+        time: x.gp.timeliste.time,
+        initials: x.patient.initials,
+        label: s('patientAge', { name: x.patient.name, age: x.patient.age }),
+        spoken: s('dayCase', { time: x.gp.timeliste.time, name: x.patient.name, n: i + 1 }),
+        caseId: c,
+        n: i + 1,
+      };
+    }),
+    ...ordinary.map((o) => {
+      const from = minutes(o.time);
+      return {
+        key: o.id,
+        from,
+        to: from + (startDay.lengths[o.id] ?? 30),
+        kind: 'routine' as const,
+        time: o.time,
+        initials: o.initials,
+        label: s('patientAge', { name: o.name, age: o.age }),
+        spoken: s('dayRoutine', { time: o.time, name: o.name }),
+      };
+    }),
+    ...startDay.blocks.map((b, i) => ({
+      key: `block-${i}`,
+      from: minutes(b.from),
+      to: minutes(b.to),
+      kind: 'other' as const,
+      label: t(b.label),
+      spoken: s('dayBlock', { from: b.from, to: b.to, label: t(b.label) }),
+    })),
+  ];
+  return items.sort((a, b) => a.from - b.from);
+}
+
+/**
+ * «Timeliste i dag» on the start page: the day at a glance, with «Nå» where the study's clock stands. A picture of the
+ * day, never a way in: the cases open from the list. Each appointment shows its initials (a tick when its case is
+ * done); its time is where it stands on the hours, and a screen reader hears the whole line. Below 720 px of its own
+ * width the strip becomes a plain list.
+ */
+function DayPart({ className }: { className?: string }) {
+  const { s, lang } = useLang();
+  const study = useStudy();
+  const st = study.state;
+  const [ref, width] = useWidth<HTMLDivElement>();
+  const items = useDayItems();
+  const now = startDay.now[Math.min(casesDone(st), startDay.now.length - 1)];
+  const current = st.tour.done ? currentCase(st) : undefined;
+  // «Tirsdag 17. mars 2026 · 6 timer · 3 med henvisningssak»: the title already says it is the day.
+  const date = formatDateWithWeekday(GP_TODAY, lang);
+  const sub = s('daySub', { date: date.charAt(0).toLocaleUpperCase(lang) + date.slice(1), n: CORE.length + ordinary.length, m: CORE.length });
+  return (
+    <HomeCard part="dag" title={s('dayTitle')} sub={sub} foot={s('dayNote')} className={className}>
+      <div ref={ref}>{width >= 720 ? <DayStrip items={items} now={now} current={current} width={width} /> : <DayList items={items} current={current} />}</div>
+    </HomeCard>
+  );
+}
+
+function DayStrip({ items, now, current, width }: { items: DayItem[]; now: string; current?: CoreCaseId; width: number }) {
+  const cls = useStyles();
+  const { s, lang } = useLang();
+  const study = useStudy();
+  const st = study.state;
+  const start = minutes(startDay.from);
+  const end = minutes(startDay.stripTo);
+  const span = end - start;
+  const at = (min: number) => `${((min - start) / span) * 100}%`;
+  const len = (min: number) => `${(min / span) * 100}%`;
+  const hours = Array.from({ length: Math.floor(span / 60) + 1 }, (_, i) => start + i * 60);
+  const onStrip = items.filter((x) => x.from < end);
+  const later = items.filter((x) => x.from >= end).map((x) => x.label.charAt(0).toLocaleLowerCase(lang) + x.label.slice(1));
+  return (
+    <div className={cls.stripWrap}>
+      <p className={cls.srLine}>
+        <SrOnly>{s('dayNowSpoken', { time: now })}</SrOnly>
+      </p>
+      <div className={cls.strip}>
+        {[...hours, end].map((h) => (
+          <span key={`t${h}`} className={cls.tick} style={{ left: at(h) }} aria-hidden="true" />
+        ))}
+        {hours.map((h, i) => (
+          <span key={h} className={mergeClasses(cls.hour, i === 0 && cls.hourFirst)} style={{ left: at(h) }} aria-hidden="true">
+            {hhmm(h).slice(0, 2)}
+          </span>
+        ))}
+        <span className={cls.now} style={{ left: at(minutes(now)) }} aria-hidden="true" data-day-now={now}>
+          {s('dayNow', { time: now })}
+        </span>
+        <span className={cls.nowLine} style={{ left: at(minutes(now)) }} aria-hidden="true" />
+        <ol className={cls.blocks} aria-label={s('dayLabel')}>
+          {onStrip.map((x) => {
+            const done = x.caseId ? st.phase[x.caseId] === 'done' : false;
+            const isNow = !!x.caseId && x.caseId === current;
+            const spoken = `${x.spoken}${isNow ? `, ${s('guideNow').toLocaleLowerCase()}` : ''}${done ? `, ${s('chipDone').toLocaleLowerCase()}` : ''}`;
+            // A slot too narrow for its initials shows none: what it is stays in the hidden line and the legend.
+            const roomy = ((x.to - x.from) / span) * width - 4 >= 28;
+            return (
+              <li
+                key={x.key}
+                className={mergeClasses(
+                  cls.block,
+                  x.kind === 'case' && cls.blockCase,
+                  isNow && cls.blockNow,
+                  done && cls.blockDone,
+                  x.kind === 'routine' && cls.blockRoutine,
+                  x.kind === 'other' && cls.blockOther,
+                )}
+                style={{ left: `calc(${at(x.from)} + 2px)`, width: `calc(${len(Math.min(x.to, end) - x.from)} - 4px)` }}
+                data-day-item={x.key}
+              >
+                <span aria-hidden="true" className={cls.blockLabel}>
+                  {x.kind === 'other' ? x.label : done ? <CheckmarkCircle16Filled className={cls.blockTick} /> : roomy && <span className={cls.blockWho}>{x.initials}</span>}
+                </span>
+                <SrOnly>{spoken}</SrOnly>
+              </li>
+            );
+          })}
+        </ol>
+      </div>
+      {later.length > 0 && <p className={cls.quiet}>{s('dayLater', { list: listOf(later, lang), to: startDay.to.slice(0, 2) })}</p>}
+      <p className={cls.legendLine} aria-hidden="true">
+        <span className={cls.legendItem}>
+          <span className={mergeClasses(cls.legendSwatch, cls.blockCase)} />
+          {s('dayLegendCase')}
+        </span>
+        <span className={cls.legendItem}>
+          <span className={mergeClasses(cls.legendSwatch, cls.blockRoutine, cls.legendSwatchQuiet)} />
+          {s('dayLegendRoutine')}
+        </span>
+        <span className={cls.legendItem}>
+          <span className={mergeClasses(cls.legendSwatch, cls.blockOther, cls.legendSwatchQuiet)} />
+          {s('dayLegendOther')}
+        </span>
+      </p>
+    </div>
+  );
+}
+
+/** The day as a list, where the part is narrow: time, who or what, and the case's state. */
+function DayList({ items, current }: { items: DayItem[]; current?: CoreCaseId }) {
   const cls = useStyles();
   const { s } = useLang();
   const study = useStudy();
   const st = study.state;
-  const current = st.tour.done ? currentCase(st) : undefined;
   return (
-    <ol className={cls.cases} aria-label={s('guideCasesLabel')} data-study-cases="">
-      {CORE.map((c, i) => {
-        const done = st.phase[c] === 'done';
-        const now = c === current;
+    <ol className={cls.dayList} aria-label={s('dayListLabel')}>
+      {items.map((x) => {
+        const done = x.caseId ? st.phase[x.caseId] === 'done' : false;
+        const isNow = !!x.caseId && x.caseId === current;
+        const time = x.kind === 'other' ? `${hhmm(x.from)}–${hhmm(x.to)}` : x.time;
         return (
-          <li key={c} className={mergeClasses(cls.caseRow, now && cls.caseNow)} aria-current={now ? 'step' : undefined} data-study-case={c}>
-            {done ? (
-              <span className={cls.caseDone} aria-hidden="true">
-                <CheckmarkCircle16Filled />
-              </span>
-            ) : (
-              <span className={mergeClasses(cls.caseDot, now && cls.caseDotNow)} aria-hidden="true" />
-            )}
-            <span className={cls.caseName}>{s('guideCaseRow', { n: i + 1, name: cases[c].patient.name })}</span>
-            {now && <span className={cls.caseStatus}>{s('guideNow')}</span>}
-            {done && <span className={cls.caseStatusDone}>{s('chipDone')}</span>}
+          <li key={x.key} className={mergeClasses(cls.dayRow, x.kind !== 'case' && cls.dayRowQuiet, isNow && cls.dayRowNow)} data-day-item={x.key}>
+            <span className={mergeClasses(cls.dayTime, x.kind !== 'case' && cls.dayTimeQuiet)}>{time}</span>
+            <span>{keepAge(x.label)}</span>
+            <span className={mergeClasses(cls.dayState, done && cls.dayStateDone)}>
+              {x.n && s('listCaseTag', { n: x.n })}
+              {isNow && ` · ${s('guideNow')}`}
+              {done && ` · ${s('chipDone')}`}
+              {x.kind === 'routine' && <span className={cls.dayStateDone}>{s('dayLegendRoutine')}</span>}
+            </span>
           </li>
         );
       })}
@@ -698,484 +662,272 @@ function StudyCases() {
   );
 }
 
-function StudyName() {
+/* ---------- GP: inbox and referrals ---------- */
+
+const INBOX_ICON = { lab: <ClipboardPulse20Regular />, chat: <Chat20Regular />, letter: <Document20Regular /> } as const;
+
+function Row({ icon, name, what, end, isNew }: { icon: ReactNode; name: string; what: string; end?: ReactNode; isNew?: boolean }) {
   const cls = useStyles();
   const { s } = useLang();
-  const study = useStudy();
-  const titleId = useId();
-  const labelId = useId();
-  const name = study.state.studienavn;
-  if (!name) return null;
   return (
-    <div className={cls.nameBox} data-studienavn="">
-      <StudyNameMark name={name} size={32} />
-      <span className={cls.nameStack}>
-        <span className={cls.nameLabel} id={labelId}>
-          {s('omDegNameTitle')}
-        </span>
-        <span className={cls.nameValue} lang="nb" data-studienavn-value="">
-          {name}
-        </span>
-        {/* «Hva er dette?» as a quiet link in the guide's ink (board 8b); it opens what the name is for. */}
-        <Popover withArrow positioning="above" trapFocus>
-          <PopoverTrigger disableButtonEnhancement>
-            <Button appearance="transparent" size="small" className={cls.nameWhat} aria-describedby={labelId} data-name-what="">
-              {s('studyNameWhat')}
-            </Button>
-          </PopoverTrigger>
-          <PopoverSurface aria-labelledby={titleId} tabIndex={-1}>
-            <div className={cls.namePop}>
-              <p className={cls.namePopTitle} id={titleId}>
-                {s('omDegNameTitle')}
-              </p>
-              <p className={cls.namePopText}>{s('omDegNameLead')}</p>
-            </div>
-          </PopoverSurface>
-        </Popover>
+    <li className={cls.row}>
+      <span className={cls.rowIcon} aria-hidden="true">
+        {icon}
       </span>
-    </div>
+      <span className={cls.rowText}>
+        <span className={mergeClasses(cls.rowName, isNew && cls.rowNameNew)}>
+          {isNew && <span className={cls.dot} aria-hidden="true" />}
+          {keepAge(name)}
+          {isNew && <SrOnly>{`, ${s('homeNewWord')}`}</SrOnly>}
+        </span>
+        <span className={cls.rowWhat}>{what}</span>
+      </span>
+      {end && <span className={cls.rowEnd}>{end}</span>}
+    </li>
   );
 }
 
-/* ---------- GP: Timeliste i dag ---------- */
-
-/** «Sak 1» and what the case can do now: wait for the tour, open, go on, or done. */
-function CaseStatus({ caseId }: { caseId: CoreCaseId }) {
+function ExampleRow({ icon, name, what, end }: { icon: ReactNode; name: string; what: string; end?: string }) {
   const cls = useStyles();
-  const { s } = useLang();
-  const study = useStudy();
-  const st = study.state;
-  const n = CORE.indexOf(caseId) + 1;
-  const current = currentCase(st);
-  const isCurrent = st.tour.done && caseId === current;
-  const name = cases[caseId].patient.name;
-  const nameId = `home-case-${caseId}`;
-  let what: ReactNode;
-  if (st.phase[caseId] === 'done') {
-    what = (
-      <span className={cls.doneMark}>
-        <span className={cls.doneIcon} aria-hidden="true">
-          <CheckmarkCircle16Filled />
-        </span>
-        {s('chipDone')}
-      </span>
-    );
-  } else if (!st.tour.done) {
-    what =
-      n === 1 ? (
-        <span className={cls.later}>
-          <LockClosed16Regular aria-hidden="true" />
-          {s('homeAfterTour')}
-        </span>
-      ) : (
-        <span className={cls.later}>{s('homeLater')}</span>
-      );
-  } else if (isCurrent) {
-    what = (
-      <Button size="small" aria-describedby={nameId} onClick={() => navigate(`/studie/sak/${caseId}`)}>
-        {caseInProgress(st, caseId) ? s('continue') : s('stepOpen')}
-      </Button>
-    );
-  } else {
-    what = <span className={cls.later}>{s('homeLater')}</span>;
-  }
   return (
-    <span className={cls.status}>
-      <span className={mergeClasses(cls.tag, isCurrent && cls.tagNow)}>{s('listCaseTag', { n })}</span>
-      {what}
-      <span id={nameId} hidden>
-        {name}
+    <li className={mergeClasses(cls.row, cls.rowQuiet)}>
+      <span className={mergeClasses(cls.rowIcon, cls.rowIconQuiet)} aria-hidden="true">
+        {icon}
       </span>
-    </span>
+      <span className={cls.rowText}>
+        <span className={cls.rowWhat}>{keepAge(name)}</span>
+        <span className={cls.rowWhat}>{what}</span>
+      </span>
+      {end && <span className={cls.rowEnd}>{end}</span>}
+    </li>
   );
 }
 
-function Timeliste({ query }: { query: string }) {
-  const cls = useStyles();
-  const { s, t } = useLang();
-  const study = useStudy();
-  const titleId = useId();
-  const st = study.state;
-  const current = st.tour.done ? currentCase(st) : undefined;
-  const next = currentCase(st);
-  const rows: { time: string; node: ReactNode; key: string }[] = [
-    ...CORE.filter((c) => matches(query, cases[c].patient.name, cases[c].patient.fnr)).map((c) => {
-      const x = cases[c];
-      // The visit and the case's first status, on one line (board 8b).
-      const line = [t(x.gp.timeliste.visit), ...x.gp.timeliste.chips.slice(0, 1).map((ch) => t(ch.label))].join(' · ');
-      return {
-        time: x.gp.timeliste.time,
-        key: c,
-        node: (
-          <li key={c} className={mergeClasses(cls.row, c === current && cls.rowCurrent)} data-home-case={c}>
-            <span className={cls.time}>{x.gp.timeliste.time}</span>
-            <span className={cls.avatar} aria-hidden="true">
-              {x.patient.initials}
-            </span>
-            <span className={cls.who}>
-              <span className={cls.name}>{s('patientAge', { name: x.patient.name, age: x.patient.age })}</span>
-              <span className={cls.visit}>{line}</span>
-            </span>
-            <CaseStatus caseId={c} />
-          </li>
-        ),
-      };
-    }),
-    ...ordinary.filter((o) => matches(query, o.name, o.fnr)).map((o) => ({
-      time: o.time,
-      key: o.id,
-      node: (
-        <li key={o.id} className={cls.row}>
-          <span className={cls.time} style={{ fontWeight: tokens.fontWeightRegular }}>
-            {o.time}
-          </span>
-          <span className={cls.avatar} aria-hidden="true">
-            {o.initials}
-          </span>
-          <span className={cls.who}>
-            <span className={cls.nameQuiet}>{s('patientAge', { name: o.name, age: o.age })}</span>
-            <span className={cls.visit}>{t(o.visit)}</span>
-          </span>
-          <span className={cls.later}>{s('listRoutineTag')}</span>
-        </li>
-      ),
-    })),
-  ].sort((a, b) => a.time.localeCompare(b.time));
-  return (
-    <section className={cls.card} aria-labelledby={titleId} data-home-part="timeliste">
-      <div className={cls.cardHead}>
-        <h2 id={titleId} className={cls.h2}>
-          {s('timelisteTitle')}
-        </h2>
-      </div>
-      <p className={cls.nextLine}>
-        <Clock16Regular aria-hidden="true" />
-        {next ? s('homeNext', { name: cases[next].patient.name, time: cases[next].gp.timeliste.time }) : s('guideAllDoneTitle')}
-      </p>
-      {rows.length ? <ul className={cls.rows}>{rows.map((r) => r.node)}</ul> : <p className={cls.empty}>{s('noMatches')}</p>}
-      <p className={cls.foot}>{s('homeRoutineNote')}</p>
-    </section>
-  );
-}
-
-/* ---------- GP: Innboks, Henvisninger, Mitt henvisningsmønster ---------- */
-
-interface InboxItem {
-  key: string;
-  kind: string;
-  name: string;
-  note?: ReactNode;
-  isNew: boolean;
-}
-
-/** What is new: Astrid's reply until her case is done, Kari's self-report until her case is opened. */
-function gpInboxItems(phase: ReturnType<typeof useStudy>['state']['phase']): { key: string; isNew: boolean }[] {
-  return [
-    { key: 'astrid', isNew: phase.astrid !== 'done' },
-    { key: 'kari', isNew: (phase.kari ?? 'briefing') === 'briefing' },
-  ];
-}
-
+/**
+ * The GP's inbox: Kari's self-report (new until her case opens) and DPS's reply about Astrid (new until her case is
+ * done), newest first; the rest of an ordinary inbox under «Eksempler». The dot means new, nothing else; no row opens
+ * anything, so the briefing stays the only way into a case. DPS's reply is named as a reply, never by its outcome: the
+ * case shows the letter first without ATLAS.
+ */
 function GpInbox() {
   const cls = useStyles();
   const { s, t, lang } = useLang();
   const study = useStudy();
-  const titleId = useId();
-  const fresh = gpInboxItems(study.state.phase);
+  const phase = study.state.phase;
   const letter = cases.astrid.gp.caseOnlyLetter!;
-  const items: InboxItem[] = [
-    {
-      key: 'astrid',
-      // «DPS Skjærgården», without «, inntaksteamet»: the line stays short.
-      kind: `${t(letter.title)} · ${t(letter.from).split(',')[0]} · ${formatDayMonth(letter.date, lang)}`,
-      name: s('patientAge', { name: cases.astrid.patient.name, age: cases.astrid.patient.age }),
-      note: <StatusChip>{t(vocab.outcomes.retur.label)}</StatusChip>,
-      isNew: fresh[0].isNew,
-    },
+  const items = [
     {
       key: 'kari',
-      kind: s('homeInboxSelfReport'),
+      date: GP_TODAY,
+      icon: <Form20Regular />,
       name: s('patientAge', { name: cases.kari.patient.name, age: cases.kari.patient.age }),
-      note: s('homeInboxSelfReportNote', { time: cases.kari.gp.timeliste.time }),
-      isNew: fresh[1].isNew,
+      what: s('inboxSelfReport', { time: cases.kari.gp.timeliste.time }),
+      isNew: (phase.kari ?? 'briefing') === 'briefing',
     },
-  ];
+    {
+      key: 'astrid',
+      date: letter.date,
+      icon: <ArrowReply20Regular />,
+      name: s('patientAge', { name: cases.astrid.patient.name, age: cases.astrid.patient.age }),
+      // «DPS Skjærgården», without «, inntaksteamet»: the line stays short.
+      what: s('inboxDpsReply', { from: t(letter.from).split(',')[0] }),
+      isNew: phase.astrid !== 'done',
+    },
+  ].sort((a, b) => b.date.localeCompare(a.date));
   const n = items.filter((x) => x.isNew).length;
+  const examples = [...startDay.inbox].sort((a, b) => b.date.localeCompare(a.date));
   return (
-    <section className={cls.card} aria-labelledby={titleId} data-home-part="innboks">
-      <div className={cls.cardHead}>
-        <h2 id={titleId} className={cls.h2}>
-          {s('homeInboxTitle')}
-        </h2>
-        {n > 0 && <span className={cls.newBadge}>{n === 1 ? s('homeNewOne') : s('homeNewCount', { n })}</span>}
-      </div>
-      <ul className={cls.items}>
+    <HomeCard
+      part="innboks"
+      title={s('homeInboxTitle')}
+      badge={n > 0 ? <NewBadge>{n === 1 ? s('homeNewOne') : s('homeNewCount', { n })}</NewBadge> : undefined}
+      sub={s('inboxNewest')}
+    >
+      <ul className={cls.rows}>
         {items.map((x) => (
-          <li key={x.key} className={cls.item}>
-            {x.isNew && <span className={cls.dot} aria-hidden="true" />}
-            <span className={cls.itemKind}>
-              {x.kind}
-              {x.isNew && <SrOnly>{`, ${s('homeNewWord')}`}</SrOnly>}
-            </span>
-            <span className={cls.name}>{x.name}</span>
-            {typeof x.note === 'string' ? <span className={cls.itemNote}>{x.note}</span> : x.note && <span className={cls.chipLine}>{x.note}</span>}
-          </li>
+          <Row key={x.key} icon={x.icon} name={x.name} what={x.what} end={formatDayMonth(x.date, lang)} isNew={x.isNew} />
         ))}
       </ul>
-    </section>
+      <ExampleGroup>
+        <ul className={cls.exList}>
+          {examples.map((x) => (
+            <ExampleRow key={x.id} icon={INBOX_ICON[x.icon]} name={s('patientAge', { name: x.name, age: x.age })} what={t(x.what)} end={formatDayMonth(x.date, lang)} />
+          ))}
+        </ul>
+      </ExampleGroup>
+    </HomeCard>
   );
 }
 
+/** «Henvisningene mine»: where Astrid's referral stands (a reply from DPS, never its outcome), and the others waiting. */
 function GpReferrals() {
   const cls = useStyles();
-  const { s, t } = useLang();
-  const titleId = useId();
-  const waiting = pattern.outcomes.find((o) => o.key === 'venter');
+  const { s, lang } = useLang();
+  const astrid = cases.astrid;
+  const sent = astrid.dps!.queue.received;
+  const replied = astrid.gp.caseOnlyLetter!.date;
   return (
-    <section className={cls.card} aria-labelledby={titleId} data-home-part="henvisninger">
-      <div className={cls.cardHead}>
-        <h2 id={titleId} className={cls.h2}>
-          {s('homeReferralsTitle')}
-        </h2>
-      </div>
-      <div className={cls.refRow}>
-        <span className={cls.refWho}>
-          <span>{cases.astrid.patient.name}</span>
-          <span className={cls.chipLine}>
-            <StatusChip>{t(vocab.outcomes.retur.label)}</StatusChip>
-          </span>
-        </span>
-      </div>
-      {waiting && (
-        <div className={cls.refRow}>
-          <span>{t(waiting.label)}</span>
-          <span className={cls.refCount}>{waiting.count}</span>
-        </div>
-      )}
-    </section>
-  );
-}
-
-function GpPattern({ onOpen }: { onOpen?: () => void }) {
-  const cls = useStyles();
-  const { s, t } = useLang();
-  const titleId = useId();
-  const total = pattern.total;
-  return (
-    <section className={cls.card} aria-labelledby={titleId} data-home-part="monster">
-      <div className={cls.cardHead}>
-        <h2 id={titleId} className={cls.h2}>
-          {s('navPattern')}
-        </h2>
-      </div>
-      <div className={cls.pattern}>
-        <p className={cls.patternSub}>{s('homePatternOnlyYou')}</p>
-        <p className={cls.patternTotal}>
-          <span className={cls.patternNum}>{total}</span> {s('homePatternReferrals')}
-        </p>
-        <p className={cls.quiet} style={{ marginBlockStart: -6 }}>
-          {t(pattern.period)}
-        </p>
-        <div className={cls.bar} aria-hidden="true">
-          {pattern.outcomes.map((o, i) => (
-            <span key={o.key} style={{ flex: `${o.count} 1 0`, backgroundColor: neutralBar[i] ?? neutralBar[3] }} />
-          ))}
-        </div>
-        <ul className={cls.legend}>
-          {pattern.outcomes.map((o, i) => (
-            <li key={o.key} className={cls.legendRow}>
-              <span className={cls.swatch} style={{ backgroundColor: neutralBar[i] ?? neutralBar[3] }} aria-hidden="true" />
-              <span>{t(o.label)}</span>
-              <span className={cls.legendNum}>{o.count}</span>
+    <HomeCard part="henvisninger" title={s('refMineTitle')} sub={s('refMineSub')}>
+      <ul className={cls.rows}>
+        <Row
+          icon={astrid.patient.initials}
+          name={s('patientAge', { name: astrid.patient.name, age: astrid.patient.age })}
+          what={s('refSentReplied', { sent: formatDayMonth(sent, lang), replied: formatDayMonth(replied, lang) })}
+          end={<span className={cls.tag}>{s('listCaseTag', { n: CORE.indexOf('astrid') + 1 })}</span>}
+        />
+      </ul>
+      <ExampleGroup>
+        <ul className={cls.exList}>
+          {startDay.referralsWaiting.map((r) => (
+            <li key={r.name} className={cls.exLine}>
+              {r.name} · {s('refSent', { date: formatDayMonth(r.sent, lang) })}
             </li>
           ))}
         </ul>
-        <p className={cls.quiet}>{s('homePatternNote')}</p>
-        {onOpen && (
-          <Button appearance="transparent" className={cls.linkBtn} icon={<ArrowRight16Regular />} iconPosition="after" onClick={onOpen} data-open-step="gp-monster">
-            {s('homeSeePattern')}
-          </Button>
-        )}
-      </div>
-    </section>
+      </ExampleGroup>
+    </HomeCard>
   );
 }
 
-/** Delt oversikt: after the tour it opens the tour's step again (the same view the tour showed). */
-function SharedCard({ role, onOpen }: { role: Role; onOpen?: () => void }) {
+/** «Mitt henvisningsmønster»: locked until the three cases are done; then the GP's own counts, as the tour showed them. */
+function GpPattern({ locked, onOpen }: { locked: boolean; onOpen: () => void }) {
   const cls = useStyles();
-  const { s } = useLang();
-  const inner = (
-    <>
-      <span className={cls.sharedIcon} aria-hidden="true">
-        <PeopleCommunity20Regular />
-      </span>
-      <span className={cls.sharedText}>
-        <span className={cls.name}>{s('navShared')}</span>
-        <span className={cls.visit}>{s(role === 'gp' ? 'homeSharedGp' : 'homeSharedDps')}</span>
-      </span>
-      {onOpen ? <ArrowRight16Regular aria-hidden="true" /> : <span />}
-    </>
-  );
+  const { s, t } = useLang();
   return (
-    <section className={cls.card} aria-label={s('navShared')} data-home-part="delt">
-      {onOpen ? (
-        <button type="button" className={mergeClasses(cls.shared, cls.sharedBtn)} onClick={onOpen} data-open-step={role === 'gp' ? 'gp-kalibrering' : 'dps-kalibrering'}>
-          {inner}
-        </button>
-      ) : (
-        <div className={cls.shared}>{inner}</div>
-      )}
-    </section>
+    <HomeCard part="monster" title={s('navPattern')} sub={s('homePatternOnlyYou')} locked={locked ? s('lockedAfterCases') : undefined}>
+      <p className={cls.patternTotal}>
+        <span className={cls.patternNum}>{pattern.total}</span>
+        {s('homePatternReferrals')}
+      </p>
+      <p className={cls.quiet}>{t(pattern.period)}</p>
+      <div className={cls.bar} aria-hidden="true">
+        {pattern.outcomes.map((o, i) => (
+          <span key={o.key} style={{ flex: `${o.count} 1 0`, backgroundColor: neutralBar[i] ?? neutralBar[3] }} />
+        ))}
+      </div>
+      <ul className={cls.legend}>
+        {pattern.outcomes.map((o, i) => (
+          <li key={o.key} className={cls.legendRow}>
+            <span className={cls.swatch} style={{ backgroundColor: neutralBar[i] ?? neutralBar[3] }} aria-hidden="true" />
+            <span>{t(o.label)}</span>
+            <span className={cls.legendNum}>{o.count}</span>
+          </li>
+        ))}
+      </ul>
+      <p className={cls.quiet}>{s('homePatternNote')}</p>
+      <Button appearance="transparent" className={cls.openBtn} icon={<ArrowRight16Regular />} iconPosition="after" onClick={onOpen} data-open-step="gp-monster">
+        {s('homeSeePattern')}
+      </Button>
+    </HomeCard>
   );
 }
 
-function Pause() {
+/**
+ * «Delt oversikt»: locked until the three cases are done. Then what changed and what is being discussed, and the
+ * median time to an assessment; never the area's outcome rates, which beside the GP's own counts would stage the
+ * comparison the guardrails rule out. The full view opens as the tour showed it.
+ */
+function SharedPart({ role, locked, onOpen }: { role: Role; locked: boolean; onOpen: () => void }) {
   const cls = useStyles();
-  const { s } = useLang();
-  return <p className={cls.pause}>{s('homePause')}</p>;
+  const { s, t, lang } = useLang();
+  const latest = shared.kalibrering.criteriaLog[0];
+  const median = shared.kalibrering.catchment.find((x) => x.label.nb.startsWith('Tid fra mottak'));
+  const step = role === 'gp' ? 'gp-kalibrering' : 'dps-kalibrering';
+  // The change's first sentence: what changed. The rest is in the full view.
+  const change = t(latest.text).split(/(?<=\.)\s/)[0];
+  return (
+    <HomeCard part="delt" title={s('navShared')} sub={s(role === 'gp' ? 'homeSharedGp' : 'homeSharedDps')} locked={locked ? s('lockedAfterCases') : undefined}>
+      <div className={cls.sharedBlock}>
+        <p className={cls.sharedHead}>{s('sharedLatestChange', { date: formatDayMonth(latest.date, lang) })}</p>
+        <p className={cls.sharedText}>{change}</p>
+      </div>
+      <div className={cls.sharedBlock}>
+        <p className={cls.sharedHead}>{s('sharedLatestDialog')}</p>
+        <p className={cls.sharedText}>{t(shared.dialog.discussion.title)}</p>
+      </div>
+      {median && <p className={cls.sharedText}>{`${t(median.label)}: ${t(median.value)}`}</p>}
+      <Button appearance="transparent" className={cls.openBtn} icon={<ArrowRight16Regular />} iconPosition="after" onClick={onOpen} data-open-step={step}>
+        {s('sharedOpen')}
+      </Button>
+    </HomeCard>
+  );
 }
 
-/* ---------- DPS: Mottatte henvisninger, Frister, Meldinger ---------- */
+/* ---------- DPS: intake and messages ---------- */
 
-function Queue({ query }: { query: string }) {
+/** «Inntaket i dag»: the study's three referrals with their dates (a deadline is a date, never a countdown). */
+function DpsIntake({ className }: { className?: string }) {
   const cls = useStyles();
   const { s, t, lang } = useLang();
   const study = useStudy();
-  const titleId = useId();
-  const st = study.state;
-  const current = st.tour.done ? currentCase(st) : undefined;
-  // Newest first; the same day keeps the study's order.
-  const rows = CORE.filter((c) => matches(query, cases[c].patient.name, cases[c].patient.fnr)).sort((a, b) =>
-    cases[b].dps!.queue.received.localeCompare(cases[a].dps!.queue.received),
-  );
+  const rows = [...CORE].sort((a, b) => cases[b].dps!.queue.received.localeCompare(cases[a].dps!.queue.received));
+  const day = formatDateWithWeekday(DPS_TODAY, lang);
   return (
-    <section className={cls.card} aria-labelledby={titleId} data-home-part="mottatte">
-      <div className={cls.cardHead}>
-        <h2 id={titleId} className={cls.h2}>
-          {s('navQueue')}
-        </h2>
-      </div>
-      {!rows.length && <p className={cls.empty}>{s('noMatches')}</p>}
-      <ul className={cls.rows} style={{ borderTop: `1px solid ${tokens.colorNeutralStroke3}` }} hidden={!rows.length}>
+    <HomeCard part="inntak" title={s('homeDpsTitle')} sub={s('listSubDps', { date: day, n: CORE.length })} className={className}>
+      <ul className={cls.rows}>
         {rows.map((c) => {
           const x = cases[c];
           const q = x.dps!.queue;
           const answered = x.dps!.returnSent;
+          // A case the participant has done reads as done: no deadline left to watch.
+          const done = study.state.phase[c] === 'done';
           return (
-            <li key={c} className={mergeClasses(cls.row, cls.rowDps, c === current && cls.rowCurrent)} data-home-case={c}>
-              <span className={cls.received}>
-                {s('colReceived')}
-                <span className={cls.receivedDate}>{formatDayMonth(q.received, lang)}</span>
-              </span>
-              <span className={cls.avatar} aria-hidden="true">
-                {x.patient.initials}
-              </span>
-              <span className={cls.who}>
-                <span className={cls.name}>{s('patientAge', { name: x.patient.name, age: x.patient.age })}</span>
-                <span className={cls.visit}>
-                  {answered ? s('homeAssessedMessage', { date: formatDayMonth(answered.date, lang) }) : `${s('homeFromGp')} · ${t(q.chips[0]?.label)}`}
-                </span>
-                {!answered && (
-                  <span className={cls.chipLine}>
-                    <StatusChip>{s('homeDeadlineChip', { date: formatDayMonth(q.deadline, lang) })}</StatusChip>
-                  </span>
-                )}
-              </span>
-              <CaseStatus caseId={c} />
-            </li>
+            <Row
+              key={c}
+              icon={x.patient.initials}
+              name={s('patientAge', { name: x.patient.name, age: x.patient.age })}
+              what={
+                done
+                  ? s('intakeDone', { received: formatDayMonth(q.received, lang) })
+                  : answered
+                    ? s('intakeAnswered', { date: formatDayMonth(answered.date, lang) })
+                    : s('intakeReceived', { received: formatDayMonth(q.received, lang), deadline: formatDayMonth(q.deadline, lang) })
+              }
+              end={<span className={cls.tag}>{s('listCaseTag', { n: CORE.indexOf(c) + 1 })}</span>}
+            />
           );
         })}
       </ul>
-      <p className={cls.foot}>{s('homeQueueNote')}</p>
-    </section>
-  );
-}
-
-function Deadlines() {
-  const cls = useStyles();
-  const { s, lang } = useLang();
-  const titleId = useId();
-  const open = CORE.filter((c) => !cases[c].dps!.returnSent);
-  const deadline = cases[open[0]].dps!.queue.deadline;
-  const due = open.filter((c) => cases[c].dps!.queue.deadline === deadline);
-  // The working days from today to the deadline (no public holidays fall in March 2026).
-  const days: string[] = [];
-  for (let d = DPS_TODAY; d <= deadline; ) {
-    if (isWeekday(d)) days.push(d);
-    const next = new Date(`${d}T12:00:00Z`);
-    next.setUTCDate(next.getUTCDate() + 1);
-    d = next.toISOString().slice(0, 10);
-  }
-  const weekday = (iso: string) => WEEKDAY[lang][new Date(`${iso}T12:00:00Z`).getUTCDay()];
-  return (
-    <section className={cls.card} aria-labelledby={titleId} data-home-part="frister">
-      <div className={cls.cardHead}>
-        <h2 id={titleId} className={cls.h2}>
-          {s('queueDeadlinesTitle')}
-        </h2>
-      </div>
-      <ol className={cls.days} aria-label={s('homeDaysLabel')}>
-        {days.map((d) => {
-          const isToday = d === DPS_TODAY;
-          const isDue = d === deadline;
-          const label = `${formatDayMonth(d, lang)}${isToday ? `, ${s('homeToday')}` : ''}${isDue ? `, ${s('homeDueFor', { n: due.length })}` : ''}`;
-          return (
-            <li key={d} className={mergeClasses(cls.dayCell, isToday && cls.dayToday, isDue && cls.dayDue)} aria-label={label}>
-              <span aria-hidden="true">{weekday(d)}</span>
-              <span className={mergeClasses(cls.dayNum, isDue && cls.dayNumDue)} aria-hidden="true">
-                {Number(d.slice(8))}
-              </span>
-              {isDue && (
-                <span className={cls.dayBadge} aria-hidden="true">
-                  {due.length}
-                </span>
-              )}
+      <ExampleGroup>
+        <ul className={cls.exList}>
+          {startDay.dpsDay.map((x) => (
+            <li key={x.nb} className={cls.exLine}>
+              {t(x)}
             </li>
-          );
-        })}
-      </ol>
-      <div className={cls.dl}>
-        <dl className={cls.dlList}>
-          <div>
-            <dt className={cls.dt}>{s('homeDeadlineLine', { date: formatDayMonth(deadline, lang) })}</dt>
-            <dd className={cls.dd}>{due.map((c) => cases[c].patient.name).join(', ')}</dd>
-          </div>
-        </dl>
-        <p className={cls.quiet}>{s('homeDeadlineNote')}</p>
-      </div>
-    </section>
+          ))}
+        </ul>
+      </ExampleGroup>
+    </HomeCard>
   );
 }
 
+/** «Meldinger»: the GP's question about Astrid (new until her case is done), and an ordinary inbox's other messages. */
 function DpsMessages() {
   const cls = useStyles();
-  const { s, lang } = useLang();
+  const { s, t, lang } = useLang();
   const study = useStudy();
-  const titleId = useId();
   const isNew = study.state.phase.astrid !== 'done';
   const answered = cases.astrid.dps!.returnSent!;
   return (
-    <section className={cls.card} aria-labelledby={titleId} data-home-part="meldinger">
-      <div className={cls.cardHead}>
-        <h2 id={titleId} className={cls.h2}>
-          {s('homeMessagesTitle')}
-        </h2>
-        {isNew && <span className={cls.newBadge}>{s('homeNewOne')}</span>}
-      </div>
-      <ul className={cls.items}>
-        <li className={cls.item}>
-          {isNew && <span className={cls.dot} aria-hidden="true" />}
-          <span className={cls.itemKind}>
-            {s('homeMessageFromGp')}
-            {isNew && <SrOnly>{`, ${s('homeNewWord')}`}</SrOnly>}
-          </span>
-          <span className={cls.name}>{s('patientAge', { name: cases.astrid.patient.name, age: cases.astrid.patient.age })}</span>
-          <span className={cls.itemNote}>{s('homeMessageAstrid', { date: formatDayMonth(answered.date, lang) })}</span>
-          <span className={cls.itemNote}>{s('queueMessageRule')}</span>
-        </li>
+    <HomeCard part="meldinger" title={s('homeMessagesTitle')} badge={isNew ? <NewBadge>{s('homeNewOne')}</NewBadge> : undefined} sub={s('inboxNewest')}>
+      <ul className={cls.rows}>
+        <Row
+          icon={<Chat20Regular />}
+          name={s('patientAge', { name: cases.astrid.patient.name, age: cases.astrid.patient.age })}
+          what={`${s('homeMessageFromGp')}. ${s('homeMessageAstrid', { date: formatDayMonth(answered.date, lang) })}. ${s('queueMessageRule')}`}
+          end={formatDayMonth(cases.astrid.dps!.gpScript?.question?.date ?? DPS_TODAY, lang)}
+          isNew={isNew}
+        />
       </ul>
-    </section>
+      <ExampleGroup>
+        <ul className={cls.exList}>
+          {[...startDay.dpsMessages]
+            .sort((a, b) => b.date.localeCompare(a.date))
+            .map((x) => (
+              <ExampleRow key={x.id} icon={INBOX_ICON[x.icon]} name={s('patientAge', { name: x.name, age: x.age })} what={t(x.what)} end={formatDayMonth(x.date, lang)} />
+            ))}
+        </ul>
+      </ExampleGroup>
+    </HomeCard>
   );
 }
-

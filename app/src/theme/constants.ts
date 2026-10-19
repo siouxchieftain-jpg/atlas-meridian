@@ -43,6 +43,18 @@ export const atlasDawn =
 export const guideImage = 'url(./guide-organza.webp)';
 
 /**
+ * The guide layer's two waves, Chieftain's own artwork beside the organza (ATLAS 3.4). One family, one logic: the role
+ * chooses. The coral-led wave on every GP guide surface, the lavender-led wave on every DPS one, and the folded organza,
+ * where both colours fold together, where the roles meet: Velkommen with the role choice, Takk and review mode
+ * (`useGuideArt`). One artwork per screen, never a sign of state. White at the top and the left, where text sits; the
+ * ribbons run along the bottom.
+ */
+export const guideWave = {
+  gp: 'url(./guide-wave-coral.webp)',
+  dps: 'url(./guide-wave-lavender.webp)',
+} as const;
+
+/**
  * The guide layer's warm colours: guide cards, help, the tour, the study name's mark and review mode's Merknader.
  * Buttons stay brand everywhere. Small text uses `ink` (6.8:1 on white, at least 4.7:1 on the card and the mark);
  * `coral`, `peach` and `rose` are for marks and illustration only, never for text.
