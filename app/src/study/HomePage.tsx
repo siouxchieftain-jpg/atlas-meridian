@@ -590,6 +590,8 @@ export function HomePage() {
       <TourStepDialog
         role={role}
         stepId={stepDialog}
+        // Part 3 opens the views with their figures; before it the figures stay held (G-38, 3.5.1 B1).
+        hold={open ? undefined : 'study'}
         onClose={() => {
           const id = stepDialog;
           setStepDialog(null);

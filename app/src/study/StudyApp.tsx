@@ -46,7 +46,7 @@ import { HomePage } from './HomePage';
 import { RoleLabel, StudyAccount, StudyProgress } from './StudyHeader';
 import { StudyFeedbackTab, feedbackOpened, useStudyFeedback } from './StudyFeedback';
 import { StudyNoticeProvider, useStudyNotice } from './notice';
-import { partOf, roleSeg } from './parts';
+import { CORE, casesDone, partOf, roleSeg } from './parts';
 import { SheenButton } from '../patterns/basics';
 import { Actions, Body, Muted } from '../patterns/layout';
 import { guide } from '../theme/constants';
@@ -408,10 +408,12 @@ function StudyTourPage({ igjen }: { igjen: boolean }) {
         {fb.dialog}
       </div>
     );
+  // The pattern and the area's figures stay held until the three cases are done, seen again or not (G-38, 3.5.1 B1).
+  const hold = casesDone(st) < CORE.length ? 'study' : undefined;
   return (
     <>
       {replay && !justDone && <Muted>{s('tourReplayNote')}</Muted>}
-      <TourView role={role} pos={pos} onPos={onPos} showReasons={false} ending={ending} notes={false} withStudy />
+      <TourView role={role} pos={pos} onPos={onPos} showReasons={false} ending={ending} notes={false} withStudy hold={hold} />
     </>
   );
 }

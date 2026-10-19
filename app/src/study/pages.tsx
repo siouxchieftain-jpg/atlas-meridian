@@ -17,7 +17,7 @@ import { V5View } from '../overview/V5View';
 import { STEP_FORM, STEP_PATH, stepReachable, useStudyController } from './controller';
 import { FormStepCard, FormWaiting } from './FormStepCard';
 import { TourStepDialog } from '../tour/Tour';
-import { partOf, partTwoLabel } from './parts';
+import { CORE, casesDone, partOf, partTwoLabel } from './parts';
 
 const useStyles = makeStyles({
   h2: { ...typographyStyles.subtitle1, margin: 0 },
@@ -96,6 +96,8 @@ export function HelhetPage() {
       <TourStepDialog
         role={role}
         stepId={open}
+        // Helhetsinntrykk comes after the three cases, so the figures show; held only if the page were reached before (G-38).
+        hold={casesDone(study.state) < CORE.length ? 'study' : undefined}
         onClose={() => {
           const id = open;
           setOpen(null);
