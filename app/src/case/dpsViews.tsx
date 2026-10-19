@@ -16,8 +16,14 @@ import { CaseTitle } from './CaseTitle';
 import { AtlasPanelDps, FinalChoiceSection, GpUnsureBlock, NoteAttachment, ReferralLetter, receivedReferral } from './dpsParts';
 import { Composer, StructuredReturnView, ThreadView } from './Thread';
 import { useCaseStatus } from './useCaseStatus';
+import { useWidth } from '../patterns/useWidth';
+import { size } from '../theme/constants';
 
 const useStyles = makeStyles({
+  // The referral and what the GP was unsure about: side by side when the case column is wide (1,200 px, a big screen),
+  // one under the other on a laptop (3.4.1).
+  twoUp: { display: 'grid', gap: `${size.panelInset}px`, gridTemplateColumns: 'minmax(0, 1fr)', alignItems: 'stretch', minWidth: 0 },
+  twoUpWide: { gridTemplateColumns: 'minmax(0, 3fr) minmax(0, 2fr)' },
   // A line that takes focus after «Ikke spør nå» or «Ikke svar nå», where the composer was (r5F-04).
   afterSkip: {
     ':focus': { outline: 'none' },
@@ -226,6 +232,7 @@ export function DpsAssessment({ caseId }: { caseId: CaseId }) {
   const dps = work.dps(caseId);
   const without = work.withoutAtlas(caseId);
   const received = receivedReferral(caseId, work, t);
+  const [pairRef, pairWidth] = useWidth<HTMLDivElement>();
   const onSent = () => {
     work.ownDecision(caseId);
     navigate(work.casePath(caseId, 'sendt'));
@@ -268,13 +275,15 @@ export function DpsAssessment({ caseId }: { caseId: CaseId }) {
               {t(d.ownRecordLine)}
             </p>
           )}
-          <Panel aria-label={s('referralAsSent')}>
-            <div className={cls.stack}>
-              <h2 className={cls.h2}>{without ? s('referralLetter') : s('referralAsSent')}</h2>
-              <ReferralLetter caseId={caseId} received={received} letterFrame={without} />
-            </div>
-          </Panel>
-          {!without && <GpUnsureBlock received={received} />}
+          <div ref={pairRef} className={mergeClasses(cls.twoUp, !without && pairWidth >= 1200 && cls.twoUpWide)} data-two-up={!without && pairWidth >= 1200 ? '' : undefined}>
+            <Panel aria-label={s('referralAsSent')}>
+              <div className={cls.stack}>
+                <h2 className={cls.h2}>{without ? s('referralLetter') : s('referralAsSent')}</h2>
+                <ReferralLetter caseId={caseId} received={received} letterFrame={without} />
+              </div>
+            </Panel>
+            {!without && <GpUnsureBlock received={received} />}
+          </div>
           {dps.sent && !work.held(caseId) && (
             <Actions>
               <Button appearance="primary" icon={<ArrowRight16Regular />} iconPosition="after" onClick={() => navigate(work.casePath(caseId, status.next === 'vurdering' ? 'dialog' : status.next))}>

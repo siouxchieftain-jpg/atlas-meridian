@@ -98,7 +98,6 @@ export const size = {
   contentMin: 640,
   /** With the ATLAS panel inline, the case column may narrow to this before the form panel overlays (AX-01). */
   contentMinWithAtlas: 520,
-  contentMax: 1600,
   panelInset: 8,
 } as const;
 

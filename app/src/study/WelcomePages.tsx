@@ -61,9 +61,24 @@ const useVelkommen = makeStyles({
     '@media (forced-colors: active)': { background: 'Canvas', border: '1px solid CanvasText' },
   },
   // The intro and the role cards side by side, in the middle of the room above the steps; they stack when it is narrow.
-  middle: { flexGrow: 1, minWidth: 0, display: 'flex', flexWrap: 'wrap', alignItems: 'center', alignContent: 'center', columnGap: '48px', rowGap: '28px' },
+  // On a big screen the card fills the window and the artwork the room around them; the intro, the role cards and the
+  // steps keep one width (1,760 px) in its middle, so the cards never stretch (3.4.1).
+  middle: {
+    flexGrow: 1,
+    minWidth: 0,
+    width: '100%',
+    maxWidth: '1760px',
+    marginLeft: 'auto',
+    marginRight: 'auto',
+    display: 'flex',
+    flexWrap: 'wrap',
+    alignItems: 'center',
+    alignContent: 'center',
+    columnGap: '48px',
+    rowGap: '28px',
+  },
   text: { flex: '1 1 420px', minWidth: 0, maxWidth: '600px', display: 'flex', flexDirection: 'column', gap: '12px' },
-  side: { flex: '1 1 460px', minWidth: 0, display: 'flex', flexDirection: 'column', gap: '12px' },
+  side: { flex: '1 1 460px', minWidth: 0, maxWidth: '1080px', display: 'flex', flexDirection: 'column', gap: '12px' },
   h2: { ...typographyStyles.subtitle1, margin: 0 },
   chips: { listStyle: 'none', margin: 0, padding: 0, display: 'flex', flexWrap: 'wrap', gap: '8px' },
   chip: {
@@ -177,7 +192,7 @@ const useVelkommen = makeStyles({
     color: tokens.colorNeutralForeground2,
   },
   // «Slik foregår det»: the five steps at the foot of the card, under both columns.
-  steps: { display: 'flex', flexDirection: 'column', gap: '10px', minWidth: 0 },
+  steps: { display: 'flex', flexDirection: 'column', gap: '10px', minWidth: 0, width: '100%', maxWidth: '1760px', marginLeft: 'auto', marginRight: 'auto' },
   stepsHead: { display: 'flex', flexWrap: 'wrap', alignItems: 'baseline', columnGap: '12px', rowGap: '2px' },
   stepList: { listStyle: 'none', margin: 0, padding: 0, display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 170px), 1fr))', gap: '10px' },
   step: {
@@ -592,7 +607,7 @@ export function VelkommenPage() {
       {!closed && <SmallScreenBar />}
       <section className={v.hero} aria-label={s('velkommenTitle')} data-guide-surface="" data-welcome={closed ? 'closed' : back ? 'back' : 'first'}>
         <GuideImage variant="hero" art="organza" />
-        <div className={v.middle}>
+        <div className={v.middle} data-welcome-middle="">
           <div className={v.text}>{back ? <WelcomeBack /> : <IntroText withContact={!closed} />}</div>
           <div className={v.side}>{closed ? <ClosedCard /> : back ? <ProgressCard /> : <RoleCards />}</div>
         </div>

@@ -27,12 +27,14 @@ const useStyles = makeStyles({
     paddingBlockEnd: tokens.spacingVerticalM,
     borderBottom: `1px solid ${tokens.colorNeutralStroke3}`,
   },
-  fieldCol: { flexGrow: 999, flexShrink: 1, flexBasis: '320px', minWidth: 0, display: 'flex', flexDirection: 'column', gap: tokens.spacingVerticalXS },
+  // On a big screen the field keeps a writing width (960 px) and «Hva DPS ser etter» takes up to 400 px beside it (3.4.1).
+  fieldCol: { flexGrow: 999, flexShrink: 1, flexBasis: '320px', minWidth: 0, maxWidth: '960px', display: 'flex', flexDirection: 'column', gap: tokens.spacingVerticalXS },
   margin: {
     flexGrow: 1,
     flexShrink: 1,
     flexBasis: '200px',
     minWidth: 0,
+    maxWidth: '400px',
     alignSelf: 'flex-start',
     paddingInline: tokens.spacingHorizontalM,
     paddingBlock: tokens.spacingVerticalS,

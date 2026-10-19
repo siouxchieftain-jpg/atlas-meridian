@@ -1,4 +1,4 @@
-import { Tab, TabList, makeStyles, tokens, typographyStyles } from '@fluentui/react-components';
+import { Tab, TabList, makeStyles, mergeClasses, tokens, typographyStyles } from '@fluentui/react-components';
 import { ChatMultiple20Regular, DataUsage20Regular } from '@fluentui/react-icons';
 import { useState } from 'react';
 import type { CaseId } from '../content/types';
@@ -6,6 +6,7 @@ import { cases, shared, vocab } from '../content';
 import { formatDate, useLang } from '../i18n/i18n';
 import { RouterLink } from '../router/router';
 import { DesignNote, ProvenanceChip, RoleAvatar } from '../patterns/basics';
+import { useWidth } from '../patterns/useWidth';
 
 const useStyles = makeStyles({
   root: { display: 'flex', flexDirection: 'column', gap: tokens.spacingVerticalL, minWidth: 0 },
@@ -25,6 +26,13 @@ const useStyles = makeStyles({
   statValue: { ...typographyStyles.subtitle1, fontVariantNumeric: 'tabular-nums' },
   statLabel: { ...typographyStyles.caption1, color: tokens.colorNeutralForeground2 },
   h2: { ...typographyStyles.subtitle2, margin: 0 },
+  // The area's figures and the reasons on the left, the changes in the criteria on the right, when the panel is wide
+  // (1,280 px, a big screen); one under the other on a laptop (3.4.1).
+  split: { display: 'grid', gridTemplateColumns: 'minmax(0, 1fr)', rowGap: tokens.spacingVerticalL, columnGap: '48px', alignItems: 'start' },
+  splitWide: { gridTemplateColumns: 'minmax(0, 1fr) minmax(0, 1fr)' },
+  col: { display: 'flex', flexDirection: 'column', gap: tokens.spacingVerticalL, minWidth: 0 },
+  // A reason and its share stay within reach of each other on a wide screen.
+  reasons: { maxWidth: '640px' },
   rows: { listStyle: 'none', margin: 0, padding: 0, display: 'flex', flexDirection: 'column' },
   row: {
     display: 'flex',
@@ -36,7 +44,7 @@ const useStyles = makeStyles({
   },
   logItem: {
     display: 'grid',
-    gridTemplateColumns: 'minmax(110px, max-content) 1fr',
+    gridTemplateColumns: 'minmax(110px, max-content) minmax(0, 100ch)',
     columnGap: tokens.spacingHorizontalL,
     paddingBlock: tokens.spacingVerticalS,
     borderBottom: `1px solid ${tokens.colorNeutralStroke3}`,
@@ -91,6 +99,8 @@ export function Kalibrering({ noData, notes }: { noData?: boolean; notes?: boole
   const cls = useStyles();
   const { s, t, lang } = useLang();
   const k = shared.kalibrering;
+  const [splitRef, splitWidth] = useWidth<HTMLDivElement>();
+  const wide = splitWidth >= 1280;
   return (
     <div className={cls.panel} data-section="kalibrering">
       {!noData && (
@@ -99,48 +109,52 @@ export function Kalibrering({ noData, notes }: { noData?: boolean; notes?: boole
         </div>
       )}
       {!noData && <p className={cls.intro}>{t(k.intro)}</p>}
-      {noData ? (
-        <p className={cls.empty}>
-          <strong>{s('noDataTitle')}.</strong> {s('noDataKalibrering')}
-        </p>
-      ) : (
-        <>
-          <section aria-label={s('catchment')} style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-            <h2 className={cls.h2}>{s('catchment')}</h2>
-            <div className={cls.stats}>
-              {k.catchment.map((c) => (
-                <div key={c.label.nb} className={cls.stat}>
-                  <span className={cls.statValue}>{t(c.value)}</span>
-                  <span className={cls.statLabel}>{t(c.label)}</span>
+      <div ref={splitRef} className={mergeClasses(cls.split, wide && cls.splitWide)} data-split={wide ? '' : undefined}>
+        <div className={cls.col}>
+          {noData ? (
+            <p className={cls.empty}>
+              <strong>{s('noDataTitle')}.</strong> {s('noDataKalibrering')}
+            </p>
+          ) : (
+            <>
+              <section aria-label={s('catchment')} style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+                <h2 className={cls.h2}>{s('catchment')}</h2>
+                <div className={cls.stats}>
+                  {k.catchment.map((c) => (
+                    <div key={c.label.nb} className={cls.stat}>
+                      <span className={cls.statValue}>{t(c.value)}</span>
+                      <span className={cls.statLabel}>{t(c.label)}</span>
+                    </div>
+                  ))}
                 </div>
-              ))}
-            </div>
-          </section>
-          <section aria-label={s('commonReasons')} style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-            <h2 className={cls.h2}>{s('commonReasons')}</h2>
-            <ul className={cls.rows}>
-              {k.commonReasons.map((r) => (
-                <li key={r.reason} className={cls.row}>
-                  <span>{t(vocab.reasons[r.reason])}</span>
-                  <span>{t(r.share)}</span>
-                </li>
-              ))}
-            </ul>
-            <p className={cls.note}>{s('patternReasonsNote')}</p>
-          </section>
-        </>
-      )}
-      <section aria-label={s('criteriaLog')} style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-        <h2 className={cls.h2}>{s('criteriaLog')}</h2>
-        <ul className={cls.rows}>
-          {k.criteriaLog.map((e) => (
-            <li key={e.date} className={cls.logItem}>
-              <span className={cls.date}>{formatDate(e.date, lang)}</span>
-              <span>{t(e.text)}</span>
-            </li>
-          ))}
-        </ul>
-      </section>
+              </section>
+              <section aria-label={s('commonReasons')} style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+                <h2 className={cls.h2}>{s('commonReasons')}</h2>
+                <ul className={mergeClasses(cls.rows, cls.reasons)}>
+                  {k.commonReasons.map((r) => (
+                    <li key={r.reason} className={cls.row}>
+                      <span>{t(vocab.reasons[r.reason])}</span>
+                      <span>{t(r.share)}</span>
+                    </li>
+                  ))}
+                </ul>
+                <p className={cls.note}>{s('patternReasonsNote')}</p>
+              </section>
+            </>
+          )}
+        </div>
+        <section aria-label={s('criteriaLog')} style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+          <h2 className={cls.h2}>{s('criteriaLog')}</h2>
+          <ul className={cls.rows}>
+            {k.criteriaLog.map((e) => (
+              <li key={e.date} className={cls.logItem}>
+                <span className={cls.date}>{formatDate(e.date, lang)}</span>
+                <span>{t(e.text)}</span>
+              </li>
+            ))}
+          </ul>
+        </section>
+      </div>
       <DesignNote id="kalibrering" show={!!notes} />
     </div>
   );
