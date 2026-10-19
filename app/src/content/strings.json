@@ -1343,6 +1343,14 @@
     "nb": "Tallene for opptaksområdet vises når det finnes nok henvisninger til at ingen kan kjennes igjen.",
     "en": "The figures for the catchment area appear once there are enough referrals for no one to be recognisable."
   },
+  "heldTitle": {
+    "nb": "Uten tall i omvisningen",
+    "en": "No figures in the tour"
+  },
+  "heldFigures": {
+    "nb": "Tallene vises når de tre sakene er ferdige.",
+    "en": "The figures show once the three cases are done."
+  },
   "showNoData": {
     "nb": "Vis tilstanden uten data",
     "en": "Show the no-data state"

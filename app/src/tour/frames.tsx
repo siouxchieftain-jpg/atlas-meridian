@@ -481,11 +481,13 @@ export function TourFrame({ frame, role }: { frame: string; role: Role }) {
     case 'return':
       body = <StructuredReturnView ret={c.gp.dpsScript.return!} unmetOpen={false} withOutcome />;
       break;
+    // The tour comes before case 1: the pattern and the area's figures show their layout only, so no rate or
+    // return reason reaches a participant before their answers without ATLAS (G-38, flow review B1, 3.5.1).
     case 'pattern':
-      body = <PatternView data={pattern} notes={work.notes} />;
+      body = <PatternView data={pattern} held notes={work.notes} />;
       break;
     case 'kalibrering':
-      body = <Kalibrering notes={work.notes} />;
+      body = <Kalibrering held notes={work.notes} />;
       break;
     case 'dialog':
       body = <FrameDialog role={role} />;

@@ -31,7 +31,7 @@ The values are Norwegian whatever language the app shows.
 | `intervju` | `Ja`, `Nei`, `Vil ikke svare` |
 | `steg` | `S1` to `S8`; `S3-etter`, `S4-etter` or `S5-etter` when a case form is opened again after «Vis ATLAS» |
 | `vignett` | `V1` (S3), `V3` (S4), `V4` (S5), `V2` (S7), `V5` (S8) |
-| `versjon` | The build: the package version and the commit (for example `3.5.0-66ca8de`); in the pilot round it ends in `-pilot` |
+| `versjon` | The build: the package version and the commit (for example `3.5.1-66ca8de`); in the pilot round it ends in `-pilot` |
 | `side`, `seksjon` | R1 and S9: the screen (for example `fastlege/kari/konsultasjon`, or `fastlege/kari/saken` for a case as a whole) and the part of it |
 
 ## The case forms (S3, S4, S5)

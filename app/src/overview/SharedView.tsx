@@ -95,25 +95,30 @@ export interface ThreadLink {
   status: string;
 }
 
-export function Kalibrering({ noData, notes }: { noData?: boolean; notes?: boolean }) {
+/**
+ * `held` is the tour's state: no figures and no reasons, only the criteria log and a line that says when the figures
+ * show, so nothing before case 1 sets a base rate (G-38, 3.5.1). `noData` is the designed empty state (G-14).
+ */
+export function Kalibrering({ noData, held, notes }: { noData?: boolean; held?: boolean; notes?: boolean }) {
   const cls = useStyles();
   const { s, t, lang } = useLang();
   const k = shared.kalibrering;
+  const bare = noData || held;
   const [splitRef, splitWidth] = useWidth<HTMLDivElement>();
   const wide = splitWidth >= 1280;
   return (
     <div className={cls.panel} data-section="kalibrering">
-      {!noData && (
+      {!bare && (
         <div className={cls.meta}>
           <ProvenanceChip source="fictional" />
         </div>
       )}
-      {!noData && <p className={cls.intro}>{t(k.intro)}</p>}
+      {!bare && <p className={cls.intro}>{t(k.intro)}</p>}
       <div ref={splitRef} className={mergeClasses(cls.split, wide && cls.splitWide)} data-split={wide ? '' : undefined}>
         <div className={cls.col}>
-          {noData ? (
-            <p className={cls.empty}>
-              <strong>{s('noDataTitle')}.</strong> {s('noDataKalibrering')}
+          {bare ? (
+            <p className={cls.empty} data-held={held ? '' : undefined}>
+              <strong>{s(held ? 'heldTitle' : 'noDataTitle')}.</strong> {s(held ? 'heldFigures' : 'noDataKalibrering')}
             </p>
           ) : (
             <>

@@ -146,10 +146,13 @@ function SessionRows() {
  * Mitt henvisningsmønster: counts, a neutral proportion bar, return reasons
  * («En retur kan ha flere årsaker»), quarters, the privacy line and the
  * fictional-figures label. No score, no colour for outcomes (B1, B5).
+ * `held` is the tour's state: the layout without figures, as «no data» shows it, and a line that says when the
+ * figures show. Before case 1 nothing may set a base rate or name the reasons returns give (G-38, 3.5.1).
  */
 export function PatternView({
   data,
   noData,
+  held,
   session,
   compact,
   notes,
@@ -157,6 +160,8 @@ export function PatternView({
 }: {
   data: PatternData;
   noData?: boolean;
+  /** The tour: the layout without figures (G-38). */
+  held?: boolean;
   session?: boolean;
   compact?: boolean;
   notes?: boolean;
@@ -166,21 +171,22 @@ export function PatternView({
   const cls = useStyles();
   const { s, t, lang } = useLang();
   const sum = data.outcomes.reduce((a, o) => a + o.count, 0) || 1;
+  const bare = noData || held;
   return (
     <div className={mergeClasses(cls.root, subgrid && cls.contents)} data-section="monster">
       {!compact && <p className={cls.privacy}>{s('patternPrivacy')}</p>}
       {/* With no data there are no figures: no «Fiktive tall», period or footnote beside «Ingen data ennå» (SV-17). */}
-      {!noData && (
+      {!bare && (
         <div className={cls.meta}>
           <ProvenanceChip source="fictional" />
           <span>{t(data.period)}</span>
           <span>{s('asOf', { date: formatDate(data.asOf, lang) })}</span>
         </div>
       )}
-      {noData ? (
+      {bare ? (
         <>
-          <p className={cls.empty}>
-            <strong>{s('noDataTitle')}.</strong> {s('noDataPattern')}
+          <p className={cls.empty} data-held={held ? '' : undefined}>
+            <strong>{s(held ? 'heldTitle' : 'noDataTitle')}.</strong> {s(held ? 'heldFigures' : 'noDataPattern')}
           </p>
           <div className={cls.grid}>
             <section className={cls.block} aria-label={s('patternOutcomes')}>
@@ -190,7 +196,8 @@ export function PatternView({
                   <li key={o.key} className={cls.legendItem}>
                     <span />
                     <span>{t(o.label)}</span>
-                    <span className={cls.dash}>{s('none')}</span>
+                    {/* «Ingen» says there are none; in the tour the figures are held back, not zero, so it says nothing. */}
+                    <span className={cls.dash}>{held ? null : s('none')}</span>
                   </li>
                 ))}
               </ul>
@@ -247,7 +254,7 @@ export function PatternView({
           {session && <SessionRows />}
         </div>
       )}
-      {!noData && <p className={cls.note}>{t(data.footnote)}</p>}
+      {!bare && <p className={cls.note}>{t(data.footnote)}</p>}
       <DesignNote id="monster" show={!!notes} />
     </div>
   );

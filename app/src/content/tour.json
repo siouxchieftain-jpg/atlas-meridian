@@ -319,8 +319,8 @@
               "en": "My referral pattern"
             },
             "body": {
-              "nb": "«Mitt henvisningsmønster» viser dine egne henvisninger over tid: hvor mange som fikk rett til helsehjelp, ble returnert med råd, ble avslått eller venter på svar, de vanligste returårsakene og antallet per kvartal. Tallene er fiktive for prototypen. Visningen er bare synlig for deg og deles ikke med DPS, arbeidsgiver, tilsynsmyndigheter eller andre.",
-              "en": "‘My referral pattern’ shows your own referrals over time: how many were granted the right to health care, returned with advice, rejected, or are awaiting a reply, the most common return reasons and the number per quarter. The figures are fictional for the prototype. The view is visible only to you and is not shared with DPS, employers, supervisory authorities or others."
+              "nb": "«Mitt henvisningsmønster» viser dine egne henvisninger over tid: hvor mange som fikk rett til helsehjelp, ble returnert med råd, ble avslått eller venter på svar, de vanligste returårsakene og antallet per kvartal. Her vises bare oppsettet: tallene, som er fiktive, vises når de tre sakene er ferdige. Visningen er bare synlig for deg og deles ikke med DPS, arbeidsgiver, tilsynsmyndigheter eller andre.",
+              "en": "‘My referral pattern’ shows your own referrals over time: how many were granted the right to health care, returned with advice, rejected, or are awaiting a reply, the most common return reasons and the number per quarter. Only the layout shows here: the figures, which are fictional, show once the three cases are done. The view is visible only to you and is not shared with DPS, employers, supervisory authorities or others."
             },
             "reason": {
               "nb": "Uten tilbakemelding over tid er det vanskelig å se sitt eget mønster. Visningen er privat, så den er til egen læring og ikke til kontroll.",
@@ -339,8 +339,8 @@
               "en": "Shared overview: Calibration"
             },
             "body": {
-              "nb": "Delt oversikt har to deler. Kalibrering viser anonymiserte tall for opptaksområdet til DPS Skjærgården, de vanligste returårsakene og en logg over endringer i kriteriene. Ingen enkeltklinikere vises, og tallene er fiktive.",
-              "en": "The shared overview has two sections. Calibration shows anonymised figures for the catchment area of DPS Skjærgården, the most common return reasons and a log of changes to the criteria. No individual clinicians are shown, and the figures are fictional."
+              "nb": "Delt oversikt har to deler. Kalibrering viser anonymiserte tall for opptaksområdet til DPS Skjærgården, de vanligste returårsakene og en logg over endringer i kriteriene. Her vises oppsettet og loggen: tallene, som er fiktive, vises når de tre sakene er ferdige. Ingen enkeltklinikere vises.",
+              "en": "The shared overview has two sections. Calibration shows anonymised figures for the catchment area of DPS Skjærgården, the most common return reasons and a log of changes to the criteria. The layout and the log show here: the figures, which are fictional, show once the three cases are done. No individual clinicians are shown."
             },
             "reason": {
               "nb": "Kriterier som endres uten at det synes, blir et mål som flytter seg. Felles tall og en felles logg gir begge sider samme bilde, uten å vise enkeltpersoner.",
@@ -640,8 +640,8 @@
               "en": "Shared overview: Calibration"
             },
             "body": {
-              "nb": "Delt oversikt har to deler. Kalibrering viser anonymiserte tall for opptaksområdet til DPS Skjærgården, de vanligste returårsakene og en logg over endringer i kriteriene. Ingen enkeltfastlege vises, og tallene er fiktive.",
-              "en": "The shared overview has two sections. Calibration shows anonymised figures for the catchment area of DPS Skjærgården, the most common return reasons and a log of changes to the criteria. No individual GP is shown, and the figures are fictional."
+              "nb": "Delt oversikt har to deler. Kalibrering viser anonymiserte tall for opptaksområdet til DPS Skjærgården, de vanligste returårsakene og en logg over endringer i kriteriene. Her vises oppsettet og loggen: tallene, som er fiktive, vises når de tre sakene er ferdige. Ingen enkeltfastlege vises.",
+              "en": "The shared overview has two sections. Calibration shows anonymised figures for the catchment area of DPS Skjærgården, the most common return reasons and a log of changes to the criteria. The layout and the log show here: the figures, which are fictional, show once the three cases are done. No individual GP is shown."
             },
             "reason": {
               "nb": "Tall for hele området gir et felles bilde uten å gjøre enkeltfastleger synlige. Loggen viser når kriteriene er endret.",
