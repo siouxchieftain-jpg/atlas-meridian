@@ -222,31 +222,32 @@ export function workingDays(from: string, n = 10): string[] {
 
 /**
  * The deadline strip, for both roles: ten working days from today, today outlined, a day with a legal assessment
- * deadline filled, and under it whose deadline falls there. A date, never a countdown, and never a ranking.
+ * deadline filled, and under it whose deadline falls there. A date, never a countdown, and never a ranking. The cells
+ * are a picture for the eye; the sentence under them says every deadline in words, for everyone (3.5: a label on a list
+ * item is often not read).
  */
-export function DeadlineStrip({ today, due, label }: { today: string; due: { date: string; names: string[] }[]; label: string }) {
+export function DeadlineStrip({ today, due, empty }: { today: string; due: { date: string; names: string[] }[]; empty: string }) {
   const cls = useStyles();
   const { s, lang } = useLang();
   const days = workingDays(today);
   const weekday = (iso: string) => WEEKDAY[lang][new Date(`${iso}T12:00:00Z`).getUTCDay()];
   return (
     <>
-      <ol className={cls.days} aria-label={label}>
+      <ol className={cls.days} aria-hidden="true">
         {days.map((d) => {
           const isToday = d === today;
           const hit = due.find((x) => x.date === d);
-          const spoken = `${formatDayMonth(d, lang)}${isToday ? `, ${s('homeToday')}` : ''}${hit ? `, ${s('homeDeadlineFor', { names: hit.names.join(', ') })}` : ''}`;
           return (
-            <li key={d} className={mergeClasses(cls.dayCell, isToday && cls.dayToday)} aria-label={spoken} data-due={hit ? '' : undefined}>
-              <span aria-hidden="true">{isToday ? s('homeToday') : weekday(d)}</span>
-              <span className={mergeClasses(cls.dayNum, hit && cls.dayNumDue)} aria-hidden="true">
-                {Number(d.slice(8))}
-              </span>
+            <li key={d} className={mergeClasses(cls.dayCell, isToday && cls.dayToday)} data-due={hit ? '' : undefined}>
+              <span>{isToday ? s('homeToday') : weekday(d)}</span>
+              <span className={mergeClasses(cls.dayNum, hit && cls.dayNumDue)}>{Number(d.slice(8))}</span>
             </li>
           );
         })}
       </ol>
-      {due.length > 0 && <p className={cls.dueLine}>{due.map((x) => `${formatDayMonth(x.date, lang)}: ${x.names.join(', ')}`).join(' · ')}</p>}
+      <p className={cls.dueLine}>
+        {due.length > 0 ? due.map((x) => `${formatDayMonth(x.date, lang).replace(' ', '\u00a0')}: ${x.names.join(', ')}`).join(' · ') : empty}
+      </p>
     </>
   );
 }
@@ -268,7 +269,7 @@ export function Deadlines({ framed }: { framed?: boolean }) {
     byDate.set(d, [...(byDate.get(d) ?? []), cases[c].patient.name]);
   }
   const due = [...byDate.entries()].sort(([a], [b]) => a.localeCompare(b)).map(([date, names]) => ({ date, names }));
-  const strip = <DeadlineStrip today={DPS_TODAY} due={due} label={s('homeDaysLabel')} />;
+  const strip = <DeadlineStrip today={DPS_TODAY} due={due} empty={s('deadlinesNone')} />;
   if (!framed) return strip;
   return (
     <section className={mergeClasses(cls.card, cls.fill)} aria-labelledby={titleId} data-home-part="frister">

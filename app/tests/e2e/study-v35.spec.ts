@@ -69,12 +69,25 @@ async function axe(page: Page) {
   expect(found, found.join('\n')).toEqual([]);
 }
 
-/** Nothing before a case says how DPS answered, and no rate appears beside the GP's own counts. */
+/** The outcomes and the reasons for a return, as the case's «with ATLAS» view and the pattern name them. */
+const OUTCOME_WORDS = [
+  'Retur med råd',
+  'Rett til helsehjelp',
+  'Avslått uten begrunnelse',
+  'Funksjonsnedgang for kort varighet',
+  'Utilstrekkelig informasjon',
+  'Kommunalt tilbud ikke utprøvd',
+  'Situasjonell krise',
+  'Annen årsak',
+];
+
+/** Nothing before a case says how DPS answered or why, and no rate appears beside the GP's own counts. */
 async function noOutcome(page: Page) {
   const text = (await page.locator('main').innerText()).replace(/\s+/g, ' ');
-  expect(text).not.toContain('Retur med råd');
-  expect(text).not.toContain('Rett til helsehjelp');
+  for (const w of OUTCOME_WORDS) expect(text, w).not.toContain(w);
   expect(text).not.toMatch(/\d\s?%/);
+  // And no text with a placeholder left in it.
+  expect(text).not.toContain('{{');
 }
 
 test('the GP’s start page has 12a’s parts: plain figures, the whole day with its tasks, the referrals as a table, and Kommende', async ({ page }) => {
@@ -110,8 +123,9 @@ test('the GP’s start page has 12a’s parts: plain figures, the whole day with
   await expect(ex.locator('[data-ref-row]')).toHaveCount(3);
   await expect(ex.locator('[data-ref-row="Mona Lie"]')).toContainText('Mottatt 11. mars, DPS spurte 13. mars');
   // The deadlines of the next ten working days, as dates: today, then Per Haugen's and Siri Dahl's.
-  const strip = page.locator('[data-home-part="henvisninger"]').getByRole('list', { name: 'Virkedagene fram til fristen' });
-  await expect(strip.getByRole('listitem')).toHaveCount(10);
+  // The cells are a picture; the sentence under them says every deadline in words.
+  const strip = page.locator('[data-home-part="henvisninger"] ol[aria-hidden="true"]');
+  await expect(strip.locator('li')).toHaveCount(10);
   await expect(strip.locator('[data-due]')).toHaveCount(2);
   await expect(page.locator('[data-home-part="henvisninger"]')).toContainText('23. mars: Per Haugen · 27. mars: Siri Dahl');
 
@@ -205,6 +219,8 @@ test('DPS’s start page: the figures, the intake beside its deadlines, the day,
 test('DPS’s figures follow the study: a deadline leaves when its referral is done, and the message once Astrid’s case is', async ({ page }) => {
   await home(page, 'dps-kliniker', 'case2');
   expect((await figures(page)).frist).toBe('Neste vurderingsfrist 31. mars Erlend Bakken');
+  expect((await figures(page)).henvisninger).toBe('Henvisningene i dag 3 henvisninger 1 ny, 1 med en melding fra fastlegen og 1 ferdig');
+  await noOutcome(page);
   await page.evaluate(() => window.sessionStorage.clear());
   const at = '2026-10-19T00:00:00.000Z';
   await page.evaluate((stamp) => {
@@ -219,8 +235,10 @@ test('DPS’s figures follow the study: a deadline leaves when its referral is d
   await page.reload();
   await expect(page.locator('[data-home-part="tall"]')).toBeVisible();
   const fig = await figures(page);
+  expect(fig.henvisninger).toBe('Henvisningene i dag 3 henvisninger Alle tre er ferdige');
   expect(fig.frist).toBe('Neste vurderingsfrist Ingen åpne De nye henvisningene i studien er vurdert');
   expect(fig.meldinger).toBe('Meldinger Ingen nye Alt er lest');
+  await expect(page.locator('[data-home-part="frister"]')).toContainText('Ingen åpne frister i studien.');
   await expect(page.locator('[data-home-part="delt"]')).not.toHaveAttribute('data-locked', '');
   await axe(page);
 });
@@ -241,8 +259,28 @@ test('in English the parts read in English, and nothing scrolls sideways at a la
   await page.addInitScript(() => window.localStorage.setItem('atlas.settings.lang', JSON.stringify('en')));
   await home(page, 'fastlege', 'case1');
   await expect(page.locator('[data-home-part="tall"]').getByRole('heading', { level: 2, name: 'Key figures' })).toBeAttached();
-  expect((await figures(page)).henvisninger).toBe('Referrals to DPS 3 awaiting a reply DPS asks for more information in one');
+  expect((await figures(page)).henvisninger).toBe('Referrals to DPS 3 awaiting a reply DPS asks for more information on one');
   await expect(page.locator('[data-home-part="kommende"]').getByRole('heading', { level: 2 })).toHaveText('Coming up');
-  await expect(page.getByRole('table', { name: 'My referrals' }).getByRole('columnheader')).toHaveText(['Patient', 'Sent', 'Where it is', 'Status']);
+  await expect(page.getByRole('table', { name: 'My referrals' }).getByRole('columnheader')).toHaveText(['Patient', 'Sent', 'Where it stands', 'Status']);
   expect(await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth)).toBeLessThanOrEqual(0);
+});
+
+test('before Astrid’s case the GP’s start page still names no outcome, and the inbox says what is new', async ({ page }) => {
+  await home(page, 'fastlege', 'case2');
+  expect((await figures(page)).innboks).toBe('Innboks 1 ny Svar fra DPS');
+  await expect(page.locator('[data-ref-row="astrid"]')).toContainText('Svar fra DPS · Sak 3');
+  await noOutcome(page);
+});
+
+test('no page shows a text with its placeholder left in it, and a thread one day apart says «Én dag senere»', async ({ page }) => {
+  // 3.4 had written the start page's «Resten av dagen» over the thread's «Én dag senere» under the same key.
+  for (const role of ['fastlege', 'dps']) {
+    for (const c of ['kari', 'erlend', 'astrid']) {
+      await page.goto(`/#/gjennomgang/${role}/sak/${c}/dialog`);
+      await expect(page.locator('main h1')).toBeVisible();
+      expect(await page.locator('main').innerText(), `${role} ${c}`).not.toContain('{{');
+    }
+  }
+  await page.goto('/#/gjennomgang/dps/sak/astrid/dialog');
+  await expect(page.locator('main')).toContainText('Én dag senere');
 });

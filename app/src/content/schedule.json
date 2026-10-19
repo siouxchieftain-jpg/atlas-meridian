@@ -207,11 +207,11 @@
         "icon": "letter",
         "what": { "nb": "Les epikrisen", "en": "Read the discharge summary" },
         "who": "Nora Eide",
-        "when": { "nb": "Fra akuttpsykiatrisk avdeling, kom i går", "en": "From the acute psychiatric ward, came yesterday" }
+        "when": { "nb": "Fra akuttpsykiatrisk avdeling, kom i går", "en": "From the acute psychiatric ward, arrived yesterday" }
       },
       {
         "icon": "chat",
-        "what": { "nb": "Svar kommunal psykisk helsetjeneste", "en": "Reply to the municipal mental health service" },
+        "what": { "nb": "Svar den kommunale psykiske helsetjenesten", "en": "Reply to the municipal mental health service" },
         "who": "Trond Vik",
         "when": { "nb": "Spørsmål fra 16. mars", "en": "Question from 16 March" }
       },

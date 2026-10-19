@@ -856,8 +856,8 @@
     "en": "{{n}} days later"
   },
   "dayLater": {
-    "nb": "Resten av dagen: {{list}} til kl. {{to}}.",
-    "en": "The rest of the day: {{list}} until {{to}}:00."
+    "nb": "Én dag senere",
+    "en": "One day later"
   },
   "you": {
     "nb": "Du",
@@ -2695,10 +2695,6 @@
     "nb": "viser en vanlig dag og kan ikke åpnes i prototypen",
     "en": "shows an ordinary day and cannot be opened in the prototype"
   },
-  "homeDeadlineFor": {
-    "nb": "vurderingsfrist for {{names}}",
-    "en": "assessment deadline for {{names}}"
-  },
   "listSortedGp": {
     "nb": "Sortert etter klokkeslett.",
     "en": "Sorted by time."
@@ -2947,10 +2943,6 @@
     "nb": "Dagen",
     "en": "Your day"
   },
-  "daySub": {
-    "nb": "{{date}} · {{n}} timer · {{m}} med henvisningssak",
-    "en": "{{date}} · {{n}} appointments · {{m}} with a referral case"
-  },
   "dayNowSpoken": {
     "nb": "Klokka er {{time}} i studiens dag.",
     "en": "It is {{time}} in the study’s day."
@@ -3012,8 +3004,8 @@
     "en": "My referrals"
   },
   "refMineSub": {
-    "nb": "Til DPS Skjærgården · sortert etter dato sendt",
-    "en": "To DPS Skjærgården · by date sent"
+    "nb": "Til DPS Skjærgården",
+    "en": "To DPS Skjærgården"
   },
   "refSentReplied": {
     "nb": "Sendt {{sent}} · svar fra DPS {{replied}}",
@@ -3206,10 +3198,6 @@
   "homeDeadlinesTitle": {
     "nb": "Frister",
     "en": "Deadlines"
-  },
-  "homeDaysLabel": {
-    "nb": "Virkedagene fram til fristen",
-    "en": "The working days up to the deadline"
   },
   "homeToday": {
     "nb": "i dag",
@@ -3828,7 +3816,7 @@
     "en": "appointments"
   },
   "figHoursSub": {
-    "nb": "{{m}} med henvisningssak · første kl. {{time}}",
+    "nb": "{{m}} med henvisningssak · første kl. {{time}}",
     "en": "{{m}} with a referral case · first at {{time}}"
   },
   "figNewUnitOne": {
@@ -3845,7 +3833,7 @@
   },
   "figAllRead": {
     "nb": "Alt er lest",
-    "en": "Everything is read"
+    "en": "All read"
   },
   "figInboxSubBoth": {
     "nb": "Svar fra DPS og en selvrapport",
@@ -3865,7 +3853,7 @@
   },
   "figRefSubAsked": {
     "nb": "DPS ber om mer informasjon i én",
-    "en": "DPS asks for more information in one"
+    "en": "DPS asks for more information on one"
   },
   "figDeadlineLabel": {
     "nb": "Neste vurderingsfrist",
@@ -3883,10 +3871,6 @@
     "nb": "henvisninger",
     "en": "referrals"
   },
-  "figDpsRefSub": {
-    "nb": "{{fresh}} nye og {{msg}} med en melding fra fastlegen",
-    "en": "{{fresh}} new and {{msg}} with a message from the GP"
-  },
   "figDpsMsgSub": {
     "nb": "Fra henvisende fastlege",
     "en": "From the referring GP"
@@ -3897,23 +3881,19 @@
   },
   "figDpsDeadlineNone": {
     "nb": "De nye henvisningene i studien er vurdert",
-    "en": "The new referrals in the study are assessed"
+    "en": "The new referrals in the study have been assessed"
   },
   "figMeetingLabel": {
     "nb": "Inntaksmøte",
     "en": "Intake meeting"
   },
   "figMeetingValue": {
-    "nb": "kl. {{time}}",
+    "nb": "kl. {{time}}",
     "en": "{{time}}"
   },
   "todosLabel": {
     "nb": "Gjøremål i dag: eksempler, kan ikke åpnes i prototypen",
     "en": "Today’s tasks: examples, cannot be opened in the prototype"
-  },
-  "dpsDaySub": {
-    "nb": "{{date}} · {{n}} henvisninger i studien",
-    "en": "{{date}} · {{n}} referrals in the study"
   },
   "dpsDayNote": {
     "nb": "Samtalene og resten av dagen er eksempler. Henvisningene åpner du fra Mottatte henvisninger.",
@@ -3937,7 +3917,7 @@
   },
   "refColWhere": {
     "nb": "Hvor den er",
-    "en": "Where it is"
+    "en": "Where it stands"
   },
   "refColStatus": {
     "nb": "Status",
@@ -4012,7 +3992,7 @@
     "en": "Examples of an ordinary week, cannot be opened in the prototype"
   },
   "upcomingWhen": {
-    "nb": "{{day}}, kl. {{time}}",
+    "nb": "{{day}}, kl. {{time}}",
     "en": "{{day}}, {{time}}"
   },
   "lockedNotePattern": {
@@ -4026,5 +4006,33 @@
   "lockedNoteSharedDps": {
     "nb": "Endringene i kriteriene, dialogen med fastlegene og tiden til vurdering.",
     "en": "The changes to the criteria, the dialogue with the GPs and the time to an assessment."
+  },
+  "figDpsWithMessage": {
+    "nb": "{{n}} med en melding fra fastlegen",
+    "en": "{{n}} with a message from the GP"
+  },
+  "figDpsDoneOne": {
+    "nb": "1 ferdig",
+    "en": "1 done"
+  },
+  "figDpsDoneMany": {
+    "nb": "{{n}} ferdige",
+    "en": "{{n}} done"
+  },
+  "figDpsAllDone": {
+    "nb": "Alle tre er ferdige",
+    "en": "All three are done"
+  },
+  "figuresNote": {
+    "nb": "Tallene teller med eksemplene på en vanlig dag.",
+    "en": "The figures include the examples of an ordinary day."
+  },
+  "quarterSoFar": {
+    "nb": "hittil",
+    "en": "so far"
+  },
+  "deadlinesNone": {
+    "nb": "Ingen åpne frister i studien.",
+    "en": "No open deadlines in the study."
   }
 }

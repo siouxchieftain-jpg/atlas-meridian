@@ -183,6 +183,7 @@ const useStyles = makeStyles({
   figNum: { ...typographyStyles.title3, fontVariantNumeric: 'tabular-nums', color: tokens.colorNeutralForeground1 },
   figUnit: { ...typographyStyles.body1, color: tokens.colorNeutralForeground2 },
   figSub: { ...typographyStyles.caption1, margin: 0, color: tokens.colorNeutralForeground2, overflowWrap: 'anywhere' },
+  figNote: { ...typographyStyles.caption1, margin: 0, marginBlockStart: '12px', color: tokens.colorNeutralForeground2 },
   // The day's tasks and what is coming up: examples, side by side where there is room.
   todoList: { listStyle: 'none', margin: 0, padding: 0, display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 210px), 1fr))', columnGap: '20px', rowGap: '10px' },
   todo: { display: 'grid', gridTemplateColumns: '20px minmax(0, 1fr)', columnGap: '10px', alignItems: 'start', minWidth: 0 },
@@ -246,8 +247,8 @@ const useStyles = makeStyles({
     display: 'inline-flex',
     alignItems: 'center',
     justifyContent: 'center',
-    fontSize: '9px',
-    lineHeight: '9px',
+    fontSize: '10px',
+    lineHeight: '10px',
     fontWeight: tokens.fontWeightSemibold,
     color: tokens.colorNeutralForeground1,
   },
@@ -259,18 +260,22 @@ const useStyles = makeStyles({
   patternTotal: { ...typographyStyles.body1, margin: 0 },
   patternNum: { ...typographyStyles.subtitle1, marginInlineEnd: '4px' },
   quarters: { margin: 0, display: 'flex', flexDirection: 'column', gap: '6px' },
-  qBars: { listStyle: 'none', margin: 0, padding: 0, display: 'grid', gridTemplateColumns: 'repeat(4, minmax(0, 1fr))', columnGap: '8px', alignItems: 'end' },
+  // Every quarter's track starts at the same height, so the bars stand on one line whatever the label under them.
+  qBars: { listStyle: 'none', margin: 0, padding: 0, display: 'grid', gridTemplateColumns: 'repeat(4, minmax(0, 1fr))', columnGap: '8px', alignItems: 'start' },
   qItem: { display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px', minWidth: 0 },
   qNum: { ...typographyStyles.caption1Strong, fontVariantNumeric: 'tabular-nums' },
   qTrack: { height: '64px', width: '100%', display: 'flex', alignItems: 'flex-end', justifyContent: 'center' },
+  // The quarters in one fill that no outcome in the legend below uses: a count per quarter, never an outcome.
   qBar: {
     width: 'min(28px, 70%)',
-    borderRadius: '3px 3px 0 0',
-    border: `1px solid ${tokens.colorNeutralStroke1}`,
+    borderTopLeftRadius: '3px',
+    borderTopRightRadius: '3px',
+    backgroundColor: tokens.colorNeutralStroke1Pressed,
     boxSizing: 'border-box',
-    '@media (forced-colors: active)': { forcedColorAdjust: 'none', border: '1px solid CanvasText' },
+    '@media (forced-colors: active)': { forcedColorAdjust: 'none', backgroundColor: 'Canvas', border: '1px solid CanvasText' },
   },
-  qLabel: { ...typographyStyles.caption2, color: tokens.colorNeutralForeground2, whiteSpace: 'nowrap' },
+  qLabel: { ...typographyStyles.caption1, color: tokens.colorNeutralForeground2, whiteSpace: 'nowrap', display: 'flex', flexDirection: 'column', alignItems: 'center' },
+  qSoFar: { ...typographyStyles.caption2, color: tokens.colorNeutralForeground2 },
   bar: {
     display: 'flex',
     height: '10px',
@@ -337,7 +342,8 @@ const useStyles = makeStyles({
   hourFirst: { transform: 'none' },
   hourLast: { transform: 'translateX(-100%)' },
   tick: { position: 'absolute', top: '74px', width: '1px', height: '4px', backgroundColor: tokens.colorNeutralStroke1 },
-  blocks: { listStyle: 'none', margin: 0, padding: 0, position: 'absolute', left: 0, right: 0, top: '24px', height: '46px' },
+  // The blocks sit over the «Nå» line, so it never crosses a label; the «Nå» pill sits over both.
+  blocks: { listStyle: 'none', margin: 0, padding: 0, position: 'absolute', left: 0, right: 0, top: '24px', height: '46px', zIndex: 1 },
   block: {
     position: 'absolute',
     top: 0,
@@ -358,18 +364,32 @@ const useStyles = makeStyles({
   // A case that is done steps back: quiet fill, quiet edge, a tick. Never a box with a mark in it (that reads as a
   // checkbox).
   blockDone: { backgroundColor: tokens.colorNeutralBackground2, border: `1px solid ${tokens.colorNeutralStroke2}`, color: tokens.colorNeutralForeground3 },
-  blockRoutine: { backgroundColor: tokens.colorNeutralBackground3, border: `1px solid ${tokens.colorNeutralStroke2}`, color: tokens.colorNeutralForeground2 },
-  blockOther: { backgroundColor: tokens.colorNeutralBackground2, border: `1px solid ${tokens.colorNeutralStroke3}`, color: tokens.colorNeutralForeground2 },
+  blockRoutine: {
+    backgroundColor: tokens.colorNeutralBackground3,
+    border: `1px solid ${tokens.colorNeutralStroke2}`,
+    color: tokens.colorNeutralForeground2,
+    '@media (forced-colors: active)': { border: '1px dashed CanvasText' },
+  },
+  blockOther: {
+    backgroundColor: tokens.colorNeutralBackground2,
+    border: `1px solid ${tokens.colorNeutralStroke3}`,
+    color: tokens.colorNeutralForeground2,
+    '@media (forced-colors: active)': { border: '1px dotted CanvasText' },
+  },
   blockTick: { display: 'block', color: tokens.colorNeutralForeground3 },
   blockInner: { display: 'inline-flex', alignItems: 'center', gap: '4px', maxWidth: '100%', minWidth: 0 },
   blockStack: { display: 'flex', flexDirection: 'column', alignItems: 'center', lineHeight: '14px' },
   blockTime: { ...typographyStyles.caption2, color: tokens.colorNeutralForeground2, fontVariantNumeric: 'tabular-nums' },
   blockWho: { ...typographyStyles.caption1Strong, display: 'inline-flex', alignItems: 'center', gap: '2px' },
   blockLabel: { maxWidth: '100%', overflow: 'hidden', textOverflow: 'ellipsis' },
+  blockWhoSlot: { paddingInline: 0 },
+  // A stretch of the day: its label on one line, or two, or in the smaller type, as measured for its width.
+  fitTwo: { whiteSpace: 'normal', textAlign: 'center', lineHeight: '14px', overflowWrap: 'break-word', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical' },
+  fitSmall: { ...typographyStyles.caption2 },
   now: {
     position: 'absolute',
     top: 0,
-    zIndex: 1,
+    zIndex: 2,
     transform: 'translateX(-50%)',
     display: 'inline-flex',
     alignItems: 'center',
@@ -382,7 +402,7 @@ const useStyles = makeStyles({
     whiteSpace: 'nowrap',
     '@media (forced-colors: active)': { border: '1px solid CanvasText' },
   },
-  nowLine: { position: 'absolute', top: '20px', zIndex: 1, height: '54px', marginLeft: '-1px', borderLeft: `2px solid ${tokens.colorBrandStroke1}` },
+  nowLine: { position: 'absolute', top: '20px', zIndex: 0, height: '54px', marginLeft: '-1px', borderLeft: `2px solid ${tokens.colorBrandStroke1}` },
   legendLine: { display: 'flex', flexWrap: 'wrap', columnGap: '16px', rowGap: '4px', margin: 0, ...typographyStyles.caption1, color: tokens.colorNeutralForeground2 },
   legendItem: { display: 'inline-flex', alignItems: 'center', gap: '6px' },
   legendSwatch: { width: '16px', height: '10px', borderRadius: '3px', boxSizing: 'border-box' },
@@ -406,6 +426,36 @@ const useStyles = makeStyles({
   dayStateDone: { ...typographyStyles.caption1, color: tokens.colorNeutralForeground2 },
 });
 
+/** The strip's text measured in the page's own font, so a slot shows only what fits in it. */
+let measureCtx: CanvasRenderingContext2D | null | undefined;
+function textWidth(text: string, size: number, weight = 400): number {
+  if (measureCtx === undefined) measureCtx = typeof document === 'undefined' ? null : document.createElement('canvas').getContext('2d');
+  if (!measureCtx) return text.length * size * 0.56;
+  measureCtx.font = `${weight} ${size}px ${getComputedStyle(document.body).fontFamily}`;
+  return measureCtx.measureText(text).width;
+}
+
+/** Whether a text breaks into two lines of `room` at most, between its words. */
+function fitsInTwo(text: string, size: number, room: number): boolean {
+  const words = text.split(' ');
+  if (words.length < 2) return false;
+  for (let i = 1; i < words.length; i++) {
+    if (textWidth(words.slice(0, i).join(' '), size) <= room && textWidth(words.slice(i).join(' '), size) <= room) return true;
+  }
+  return false;
+}
+
+type Fit = 'one' | 'two' | 'small' | 'smallTwo' | 'clip';
+
+/** How a stretch's label fits its slot: one line, two, the smaller type on one line or two, or cut with an ellipsis. */
+function fitLabel(label: string, room: number): Fit {
+  if (textWidth(label, 12) <= room) return 'one';
+  if (fitsInTwo(label, 12, room)) return 'two';
+  if (textWidth(label, 10) <= room) return 'small';
+  if (fitsInTwo(label, 10, room)) return 'smallTwo';
+  return 'clip';
+}
+
 /** «09:30» → minutes since midnight. */
 function minutes(hhmm: string): number {
   const [h, m] = hhmm.split(':').map(Number);
@@ -421,6 +471,11 @@ function keepAge(name: string): string {
 function listOf(items: string[], lang: 'nb' | 'en'): string {
   if (items.length < 2) return items.join('');
   return `${items.slice(0, -1).join(', ')} ${lang === 'nb' ? 'og' : 'and'} ${items[items.length - 1]}`;
+}
+
+/** «9. mars», «19 March»: the day and its month on one line. */
+function keepDate(text: string): string {
+  return text.replace(/(\d{1,2}\.?) (?=\p{L})/gu, '$1\u00a0');
 }
 
 function hhmm(min: number): string {
@@ -695,6 +750,7 @@ function Figures({ items }: { items: Figure[] }) {
           </div>
         ))}
       </dl>
+      <p className={cls.figNote}>{s('figuresNote')}</p>
     </section>
   );
 }
@@ -740,8 +796,8 @@ function GpFigures() {
       key: 'frist',
       icon: <Clock20Regular />,
       label: s('figDeadlineLabel'),
-      text: formatDayMonth(next.deadline!, lang),
-      sub: s('figDeadlineSub', { name: next.name, date: formatDayMonth(next.received, lang) }),
+      text: keepDate(formatDayMonth(next.deadline!, lang)),
+      sub: s('figDeadlineSub', { name: next.name, date: keepDate(formatDayMonth(next.received, lang)) }),
     },
   ];
   return <Figures items={items} />;
@@ -752,7 +808,16 @@ function DpsFigures() {
   const { s, t, lang } = useLang();
   const study = useStudy();
   const phase = study.state.phase;
-  const fresh = CORE.filter((c) => !cases[c].dps!.returnSent).length;
+  // The study's three referrals as they stand: new ones still to assess, the one with the GP's message, and those done.
+  const left = CORE.filter((c) => phase[c] !== 'done');
+  const fresh = left.filter((c) => !cases[c].dps!.returnSent).length;
+  const withMessage = left.length - fresh;
+  const finished = CORE.length - left.length;
+  const standing = [
+    ...(fresh ? [fresh === 1 ? s('homeNewOne') : s('homeNewCount', { n: fresh })] : []),
+    ...(withMessage ? [s('figDpsWithMessage', { n: withMessage })] : []),
+    ...(finished ? [finished === 1 ? s('figDpsDoneOne') : s('figDpsDoneMany', { n: finished })] : []),
+  ];
   const messageNew = phase.astrid !== 'done';
   // The deadlines still open: not answered before the study's day, and not done by the participant (as «Frister»).
   const open = CORE.filter((c) => !cases[c].dps!.returnSent && phase[c] !== 'done');
@@ -765,7 +830,7 @@ function DpsFigures() {
       label: s('figDpsRefLabel'),
       num: String(CORE.length),
       unit: s('figDpsRefUnit'),
-      sub: s('figDpsRefSub', { fresh, msg: CORE.length - fresh }),
+      sub: finished === CORE.length ? s('figDpsAllDone') : listOf(standing, lang),
     },
     {
       key: 'meldinger',
@@ -778,7 +843,7 @@ function DpsFigures() {
       key: 'frist',
       icon: <Clock20Regular />,
       label: s('figDeadlineLabel'),
-      text: first ? formatDayMonth(first, lang) : s('figNoOpen'),
+      text: first ? keepDate(formatDayMonth(first, lang)) : s('figNoOpen'),
       sub: first
         ? listOf(
             open.filter((c) => cases[c].dps!.queue.deadline === first).map((c) => cases[c].patient.name),
@@ -888,7 +953,7 @@ function useDpsDayItems(): DayItem[] {
  * «Dagen» on the GP's start page: the day at a glance, from 08 to 16, with «Nå» where the study's clock stands, and the
  * day's tasks under it as examples. A picture of the day, never a way in: the cases open from the list. Each
  * appointment shows its time and initials where there is room (a tick when its case is done); a screen reader hears the
- * whole line. Below 720 px of its own width the strip becomes a plain list.
+ * whole line. Below 600 px of its own width the strip becomes a plain list.
  */
 function DayPart() {
   const { s, lang } = useLang();
@@ -899,11 +964,12 @@ function DayPart() {
   const now = startDay.now[Math.min(casesDone(st), startDay.now.length - 1)];
   // «Tirsdag 17. mars 2026 · 6 timer · 3 med henvisningssak»: the title already says it is the day.
   const date = formatDateWithWeekday(GP_TODAY, lang);
-  const sub = s('daySub', { date: capitalFirst(date), n: CORE.length + ordinary.length, m: CORE.length });
+  // The date only: the counts are in the key figures.
+  const sub = capitalFirst(date);
   const legend = { case: s('dayLegendCase'), routine: s('dayLegendRoutine'), other: s('dayLegendOther') };
   return (
     <HomeCard part="dag" title={s('dayTitle')} sub={sub} foot={s('dayNote')}>
-      <div ref={ref}>{width >= 720 ? <DayStrip items={items} now={now} width={width} legend={legend} /> : <DayList items={items} legend={legend} />}</div>
+      <div ref={ref}>{width >= 600 ? <DayStrip items={items} now={now} width={width} legend={legend} /> : <DayList items={items} legend={legend} />}</div>
       <Todos items={startDay.todos} />
     </HomeCard>
   );
@@ -920,11 +986,11 @@ function DpsDayPart() {
   const [ref, width] = useWidth<HTMLDivElement>();
   const items = useDpsDayItems();
   const now = startDay.dpsNow[Math.min(casesDone(st), startDay.dpsNow.length - 1)];
-  const sub = s('dpsDaySub', { date: capitalFirst(formatDateWithWeekday(DPS_TODAY, lang)), n: CORE.length });
+  const sub = capitalFirst(formatDateWithWeekday(DPS_TODAY, lang));
   const legend = { case: s('dpsLegendCase'), routine: s('dpsLegendRoutine'), other: s('dayLegendOther') };
   return (
     <HomeCard part="dag" title={s('dayTitle')} sub={sub} foot={s('dpsDayNote')}>
-      <div ref={ref}>{width >= 720 ? <DayStrip items={items} now={now} width={width} legend={legend} /> : <DayList items={items} legend={legend} />}</div>
+      <div ref={ref}>{width >= 600 ? <DayStrip items={items} now={now} width={width} legend={legend} /> : <DayList items={items} legend={legend} />}</div>
       <Todos items={startDay.dpsTodos} />
     </HomeCard>
   );
@@ -974,33 +1040,51 @@ function DayStrip({ items, now, width, legend }: { items: DayItem[]; now: string
           {items.map((x) => {
             const { done, isNow } = state(x);
             const spoken = `${x.spoken}${isNow ? `, ${s('guideNow').toLocaleLowerCase()}` : ''}${done ? `, ${s('chipDone').toLocaleLowerCase()}` : ''}`;
-            // What fits in a slot: the time over the initials, the initials alone, or nothing (what it is stays in the
-            // hidden line and the legend). A stretch of the day shows its label.
-            const room = ((x.to - x.from) / span) * width - 4;
+            // What fits in a slot, measured: the slot's width less the gap between slots and the border, and for a
+            // stretch of the day its padding. An appointment shows its time over its initials, or its initials, or
+            // nothing (what it is stays in the hidden line and the legend); a stretch shows its label on one line or
+            // two, in the smaller type if it must.
+            const slot = ((x.to - x.from) / span) * width - 4 - 2;
             let shown: ReactNode = null;
             if (x.show === 'label') {
+              const room = slot - 6 - (done ? 20 : 0);
+              const fit = fitLabel(x.label, room);
+              const label = (
+                <span
+                  className={mergeClasses(
+                    cls.blockLabel,
+                    (fit === 'two' || fit === 'smallTwo') && cls.fitTwo,
+                    (fit === 'small' || fit === 'smallTwo' || fit === 'clip') && cls.fitSmall,
+                  )}
+                >
+                  {x.label}
+                </span>
+              );
               shown = done ? (
                 <span className={cls.blockInner}>
                   <CheckmarkCircle16Filled className={cls.blockTick} />
-                  <span className={cls.blockLabel}>{x.label}</span>
+                  {label}
                 </span>
               ) : (
-                <span className={cls.blockLabel}>{x.label}</span>
+                label
               );
             } else if (done) shown = <CheckmarkCircle16Filled className={cls.blockTick} />;
-            else if (room >= 44)
+            // The time is measured as «00:00», the widest a time can be in tabular figures, so every slot of a length
+            // shows the same.
+            else if (textWidth('00:00', 10) <= slot && textWidth(x.initials ?? '', 12, 600) <= slot)
               shown = (
                 <span className={cls.blockStack}>
                   <span className={cls.blockTime}>{x.time}</span>
                   <span className={cls.blockWho}>{x.initials}</span>
                 </span>
               );
-            else if (room >= 22) shown = <span className={cls.blockWho}>{x.initials}</span>;
+            else if (textWidth(x.initials ?? '', 12, 600) <= slot) shown = <span className={cls.blockWho}>{x.initials}</span>;
             return (
               <li
                 key={x.key}
                 className={mergeClasses(
                   cls.block,
+                  x.show === 'who' && cls.blockWhoSlot,
                   x.kind === 'case' && cls.blockCase,
                   isNow && cls.blockNow,
                   done && cls.blockDone,
@@ -1232,7 +1316,7 @@ function GpReferrals() {
   const { s, lang } = useLang();
   const [ref, width] = useWidth<HTMLDivElement>();
   const astrid = cases.astrid;
-  const day = (iso: string) => formatDayMonth(iso, lang);
+  const day = (iso: string) => keepDate(formatDayMonth(iso, lang));
   const study: RefRow = {
     key: 'astrid',
     name: s('patientAge', { name: astrid.patient.name, age: astrid.patient.age }),
@@ -1336,7 +1420,7 @@ function GpReferrals() {
         </div>
         <div className={cls.deadlines}>
           <h3 className={cls.subHead}>{s('refDeadlinesTitle')}</h3>
-          <DeadlineStrip today={GP_TODAY} due={due} label={s('homeDaysLabel')} />
+          <DeadlineStrip today={GP_TODAY} due={due} empty={s('deadlinesNone')} />
           <p className={cls.quiet}>{s('refDeadlinesNote')}</p>
         </div>
       </div>
@@ -1380,19 +1464,18 @@ function GpPattern({ locked, onOpen }: { locked: boolean; onOpen: () => void }) 
                 {q.count}
               </span>
               <span className={cls.qTrack} aria-hidden="true">
-                <span
-                  className={cls.qBar}
-                  style={{ height: `${(q.count / max) * 100}%`, backgroundColor: i === pattern.quarters.length - 1 ? neutralBar[0] : neutralBar[2] }}
-                />
+                <span className={cls.qBar} style={{ height: `${(q.count / max) * 100}%` }} />
               </span>
               <span className={cls.qLabel} aria-hidden="true">
                 {t(q.short ?? q.label)}
+                {i === pattern.quarters.length - 1 && <span className={cls.qSoFar}>{s('quarterSoFar')}</span>}
               </span>
               <SrOnly>{s('quarterSpoken', { label: t(q.label), n: q.count })}</SrOnly>
             </li>
           ))}
         </ol>
       </figure>
+      <p className={cls.quiet}>{s('patternOutcomes')}</p>
       <div className={cls.bar} aria-hidden="true">
         {pattern.outcomes.map((o, i) => (
           <span key={o.key} style={{ flex: `${o.count} 1 0`, backgroundColor: neutralBar[i] ?? neutralBar[3] }} />
@@ -1495,7 +1578,7 @@ function UpcomingPart({ items, today }: { items: Upcoming[]; today: string }) {
         <ExampleGroup label={s('upcomingExamples')}>
           <ul className={cls.upList} style={{ gridTemplateColumns: `repeat(${across}, minmax(0, 1fr))` }}>
             {shown.map((x) => {
-              const day = capitalFirst(formatWeekdayDayMonth(x.date, lang));
+              const day = keepDate(capitalFirst(formatWeekdayDayMonth(x.date, lang)));
               return (
                 <li key={`${x.date}${x.time}`} className={cls.todo}>
                   <span className={cls.todoIcon} aria-hidden="true">
@@ -1527,9 +1610,8 @@ function DpsIntake() {
   const { s, lang } = useLang();
   const study = useStudy();
   const rows = [...CORE].sort((a, b) => cases[b].dps!.queue.received.localeCompare(cases[a].dps!.queue.received));
-  const day = formatDateWithWeekday(DPS_TODAY, lang);
   return (
-    <HomeCard part="inntak" title={s('homeDpsTitle')} sub={s('listSubDps', { date: day, n: CORE.length })}>
+    <HomeCard part="inntak" title={s('homeDpsTitle')} sub={s('inboxNewest')}>
       <ul className={cls.rows}>
         {rows.map((c) => {
           const x = cases[c];
