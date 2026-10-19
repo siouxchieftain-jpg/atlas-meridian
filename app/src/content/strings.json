@@ -1343,6 +1343,18 @@
     "nb": "Tallene for opptaksområdet vises når det finnes nok henvisninger til at ingen kan kjennes igjen.",
     "en": "The figures for the catchment area appear once there are enough referrals for no one to be recognisable."
   },
+  "heldTitle": {
+    "nb": "Ingen tall i omvisningen",
+    "en": "No figures in the tour"
+  },
+  "heldFigures": {
+    "nb": "Tallene og returårsakene vises på oversikten når de tre sakene er ferdige.",
+    "en": "The figures and the return reasons appear on the overview once the three cases are done."
+  },
+  "heldFiguresReview": {
+    "nb": "I studien vises tallene og returårsakene på oversikten når de tre sakene er ferdige.",
+    "en": "In the study, the figures and the return reasons appear on the overview once the three cases are done."
+  },
   "showNoData": {
     "nb": "Vis tilstanden uten data",
     "en": "Show the no-data state"
@@ -1934,6 +1946,10 @@
   "tourFrameLabel": {
     "nb": "Levende eksempel: {{title}}",
     "en": "Live example: {{title}}"
+  },
+  "tourStepDialogContent": {
+    "nb": "Omvisning: {{title}}",
+    "en": "Tour: {{title}}"
   },
   "tourFrameNote": {
     "nb": "Øvingspasienten Sofie Lund. Det du gjør her, lagres ikke.",
@@ -2928,12 +2944,12 @@
     "en": "Go to received referrals"
   },
   "startEndLookGp": {
-    "nb": "Mitt henvisningsmønster og Delt oversikt er åpne under, hvis du vil se dem igjen før skjemaene.",
-    "en": "My referral pattern and the shared overview are open below, if you want to see them again before the forms."
+    "nb": "Mitt henvisningsmønster og Delt oversikt er åpne under, hvis du vil se dem før skjemaene.",
+    "en": "My referral pattern and the shared overview are open below, if you want to see them before the forms."
   },
   "startEndLookDps": {
-    "nb": "Delt oversikt er åpen under, hvis du vil se den igjen før skjemaene.",
-    "en": "The shared overview is open below, if you want to see it again before the forms."
+    "nb": "Delt oversikt er åpen under, hvis du vil se den før skjemaene.",
+    "en": "The shared overview is open below, if you want to see it before the forms."
   },
   "dayNow": {
     "nb": "Nå {{time}}",

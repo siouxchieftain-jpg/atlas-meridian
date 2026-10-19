@@ -866,6 +866,8 @@ function ReviewTourPage({ role }: { role: Role }) {
       onPos={setPos}
       showReasons={review.state.notes}
       notes={review.state.notes}
+      // The review's tour mirrors the participant's, which comes before case 1, and its line says so (3.5.1 review N4).
+      hold="review"
       ending={
         <Actions>
           <SheenButton onClick={() => navigate(role === 'gp' ? '/gjennomgang/fastlege/timeliste' : '/gjennomgang/dps/mottatte')}>{s('reviewBack')}</SheenButton>

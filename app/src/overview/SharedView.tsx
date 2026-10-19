@@ -7,6 +7,7 @@ import { formatDate, useLang } from '../i18n/i18n';
 import { RouterLink } from '../router/router';
 import { DesignNote, ProvenanceChip, RoleAvatar } from '../patterns/basics';
 import { useWidth } from '../patterns/useWidth';
+import type { Held } from './held';
 
 const useStyles = makeStyles({
   root: { display: 'flex', flexDirection: 'column', gap: tokens.spacingVerticalL, minWidth: 0 },
@@ -95,26 +96,53 @@ export interface ThreadLink {
   status: string;
 }
 
-export function Kalibrering({ noData, notes }: { noData?: boolean; notes?: boolean }) {
+/**
+ * `held` is the tour's state before the three cases are done: the layout without figures (the area's six labels with
+ * nothing beside them, the reasons' heading with no list, since their order alone would rank them), the criteria log,
+ * and a line that says where and when the figures appear. So nothing before case 1 sets a base rate (G-38, 3.5.1).
+ * `noData` is the designed empty state (G-14).
+ */
+export function Kalibrering({ noData, held, notes }: { noData?: boolean; held?: Held; notes?: boolean }) {
   const cls = useStyles();
   const { s, t, lang } = useLang();
   const k = shared.kalibrering;
+  const bare = noData || !!held;
   const [splitRef, splitWidth] = useWidth<HTMLDivElement>();
   const wide = splitWidth >= 1280;
   return (
     <div className={cls.panel} data-section="kalibrering">
-      {!noData && (
+      {!bare && (
         <div className={cls.meta}>
           <ProvenanceChip source="fictional" />
         </div>
       )}
-      {!noData && <p className={cls.intro}>{t(k.intro)}</p>}
+      {!bare && <p className={cls.intro}>{t(k.intro)}</p>}
       <div ref={splitRef} className={mergeClasses(cls.split, wide && cls.splitWide)} data-split={wide ? '' : undefined}>
         <div className={cls.col}>
-          {noData ? (
-            <p className={cls.empty}>
-              <strong>{s('noDataTitle')}.</strong> {s('noDataKalibrering')}
-            </p>
+          {bare ? (
+            <>
+              <p className={cls.empty} data-held={held ? '' : undefined}>
+                <strong>{s(held ? 'heldTitle' : 'noDataTitle')}.</strong> {s(held === 'review' ? 'heldFiguresReview' : held ? 'heldFigures' : 'noDataKalibrering')}
+              </p>
+              {held && (
+                <>
+                  <section aria-label={s('catchment')} style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+                    <h2 className={cls.h2}>{s('catchment')}</h2>
+                    <div className={cls.stats}>
+                      {k.catchment.map((c) => (
+                        <div key={c.label.nb} className={cls.stat}>
+                          <span className={cls.statLabel}>{t(c.label)}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </section>
+                  <section aria-label={s('commonReasons')} style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+                    <h2 className={cls.h2}>{s('commonReasons')}</h2>
+                    <p className={cls.note}>{s('patternReasonsNote')}</p>
+                  </section>
+                </>
+              )}
+            </>
           ) : (
             <>
               <section aria-label={s('catchment')} style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>

@@ -6,6 +6,7 @@ import { useWorkOptional } from '../state/work';
 import { DesignNote, ProvenanceChip } from '../patterns/basics';
 import { caseStatus, gpHeld } from '../engine/flow';
 import { neutralBar } from '../theme/constants';
+import type { Held } from './held';
 
 const useStyles = makeStyles({
   root: { display: 'flex', flexDirection: 'column', gap: tokens.spacingVerticalL, minWidth: 0 },
@@ -146,10 +147,14 @@ function SessionRows() {
  * Mitt henvisningsmønster: counts, a neutral proportion bar, return reasons
  * («En retur kan ha flere årsaker»), quarters, the privacy line and the
  * fictional-figures label. No score, no colour for outcomes (B1, B5).
+ * `held` is the tour's state before the three cases are done: the layout without figures (the outcomes, the reasons'
+ * heading and the quarters, each with nothing beside it) and a line that says where and when the figures appear. Before
+ * case 1 nothing may set a base rate or name the reasons returns give (G-38, 3.5.1).
  */
 export function PatternView({
   data,
   noData,
+  held,
   session,
   compact,
   notes,
@@ -157,6 +162,8 @@ export function PatternView({
 }: {
   data: PatternData;
   noData?: boolean;
+  /** The tour before the three cases are done: the layout without figures (G-38). */
+  held?: Held;
   session?: boolean;
   compact?: boolean;
   notes?: boolean;
@@ -166,21 +173,22 @@ export function PatternView({
   const cls = useStyles();
   const { s, t, lang } = useLang();
   const sum = data.outcomes.reduce((a, o) => a + o.count, 0) || 1;
+  const bare = noData || !!held;
   return (
     <div className={mergeClasses(cls.root, subgrid && cls.contents)} data-section="monster">
       {!compact && <p className={cls.privacy}>{s('patternPrivacy')}</p>}
       {/* With no data there are no figures: no «Fiktive tall», period or footnote beside «Ingen data ennå» (SV-17). */}
-      {!noData && (
+      {!bare && (
         <div className={cls.meta}>
           <ProvenanceChip source="fictional" />
           <span>{t(data.period)}</span>
           <span>{s('asOf', { date: formatDate(data.asOf, lang) })}</span>
         </div>
       )}
-      {noData ? (
+      {bare ? (
         <>
-          <p className={cls.empty}>
-            <strong>{s('noDataTitle')}.</strong> {s('noDataPattern')}
+          <p className={cls.empty} data-held={held ? '' : undefined}>
+            <strong>{s(held ? 'heldTitle' : 'noDataTitle')}.</strong> {s(held === 'review' ? 'heldFiguresReview' : held ? 'heldFigures' : 'noDataPattern')}
           </p>
           <div className={cls.grid}>
             <section className={cls.block} aria-label={s('patternOutcomes')}>
@@ -190,7 +198,8 @@ export function PatternView({
                   <li key={o.key} className={cls.legendItem}>
                     <span />
                     <span>{t(o.label)}</span>
-                    <span className={cls.dash}>{s('none')}</span>
+                    {/* «Ingen» says there are none; in the tour the figures are held back, not zero, so it says nothing. */}
+                    <span className={cls.dash}>{held ? null : s('none')}</span>
                   </li>
                 ))}
               </ul>
@@ -199,6 +208,19 @@ export function PatternView({
               <h2 className={cls.h2}>{s('patternReasons')}</h2>
               <p className={cls.note}>{s('patternReasonsNote')}</p>
             </section>
+            {/* The quarters by name only: a count beside them would set a base rate (3.5.1 review S2). */}
+            {held && (
+              <section className={cls.block} aria-label={s('patternQuarters')}>
+                <h2 className={cls.h2}>{s('patternQuarters')}</h2>
+                <ul className={cls.rows}>
+                  {data.quarters.map((q) => (
+                    <li key={q.label.nb} className={cls.row}>
+                      <span>{t(q.label)}</span>
+                    </li>
+                  ))}
+                </ul>
+              </section>
+            )}
           </div>
         </>
       ) : (
@@ -247,7 +269,7 @@ export function PatternView({
           {session && <SessionRows />}
         </div>
       )}
-      {!noData && <p className={cls.note}>{t(data.footnote)}</p>}
+      {!bare && <p className={cls.note}>{t(data.footnote)}</p>}
       <DesignNote id="monster" show={!!notes} />
     </div>
   );

@@ -28,6 +28,7 @@ import { GuideImage, SheenButton } from '../patterns/basics';
 import { Actions, Body, Lead } from '../patterns/layout';
 import { PageHeading } from '../shell/PageHeading';
 import { atlasDawn, guide, size } from '../theme/constants';
+import type { Held } from '../overview/held';
 import { SandboxFrame, isStudyFrame, useSandbox, type Sandbox } from './frames';
 
 const useStyles = makeStyles({
@@ -388,6 +389,7 @@ export function TourView({
   ending,
   notes,
   withStudy = false,
+  hold,
 }: {
   role: Role;
   pos: TourPosition | 'end';
@@ -398,6 +400,8 @@ export function TourView({
   notes: boolean;
   /** The participant's tour: it starts with «Slik foregår studien». */
   withStudy?: boolean;
+  /** The pattern and Kalibrering hold their figures back: the participant's tour before the three cases, and the review's tour (G-38). */
+  hold?: Held;
 }) {
   const cls = useStyles();
   const { s, t } = useLang();
@@ -478,7 +482,7 @@ export function TourView({
       </div>
       <div>
         <FramedWindow title={t(step.title)} coach={COACH[step.id]}>
-          <SandboxFrame sandbox={sandbox} frame={step.frame} role={role} />
+          <SandboxFrame sandbox={sandbox} frame={step.frame} role={role} hold={hold} />
         </FramedWindow>
         {/* The study's own frames are drawings of ATLAS, not the practice patient. */}
         <p className={cls.frameNote}>{isStudyFrame(step.frame) ? s('tourStudyFrameNote') : s('tourFrameNote')}</p>
@@ -487,40 +491,69 @@ export function TourView({
   );
 }
 
-function StepDialogBody({ step, role, showReason }: { step: TourStep; role: Role; showReason: boolean }) {
-  const { t } = useLang();
+function StepDialogBody({
+  step,
+  role,
+  showReason,
+  hold,
+  onClose,
+}: {
+  step: TourStep;
+  role: Role;
+  showReason: boolean;
+  hold?: Held;
+  onClose: () => void;
+}) {
+  const { s, t } = useLang();
   const sandbox: Sandbox = useSandbox(role, false);
   return (
     <DialogBody>
       <DialogTitle>{t(step.title)}</DialogTitle>
-      <DialogContent>
+      {/* A window with nothing to press (the pattern, Kalibrering) still scrolls by keyboard: the content is a named,
+          focusable region (2.1.1, 3.5.1 re-check S1). Its name differs from the live window's, which is a region too. */}
+      <DialogContent tabIndex={0} role="region" aria-label={s('tourStepDialogContent', { title: t(step.title) })}>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
           <Body>{t(step.body)}</Body>
           {step.bridge && <Body>{t(step.bridge)}</Body>}
           {showReason && <Body>{t(step.reason)}</Body>}
           <FramedWindow title={t(step.title)} coach={COACH[step.id]}>
-            <SandboxFrame sandbox={sandbox} frame={step.frame} role={role} />
+            <SandboxFrame sandbox={sandbox} frame={step.frame} role={role} hold={hold} />
           </FramedWindow>
         </div>
       </DialogContent>
+      {/* Inside the body, so «Lukk» stays on screen while the content scrolls (3.5.1 re-check N7). */}
+      <DialogActions>
+        <Button appearance="primary" onClick={onClose}>
+          {s('close')}
+        </Button>
+      </DialogActions>
     </DialogBody>
   );
 }
 
-/** «Se igjen»: one tour step in a dialog, without its reason (study mode). */
-export function TourStepDialog({ role, stepId, onClose, showReason = false }: { role: Role; stepId: string | null; onClose: () => void; showReason?: boolean }) {
+/**
+ * «Se igjen»: one tour step in a dialog, without its reason (study mode). The caller says whether the figures are held
+ * back: they are until the three cases are done (G-38).
+ */
+export function TourStepDialog({
+  role,
+  stepId,
+  onClose,
+  showReason = false,
+  hold,
+}: {
+  role: Role;
+  stepId: string | null;
+  onClose: () => void;
+  showReason?: boolean;
+  hold?: Held;
+}) {
   const cls = useStyles();
-  const { s } = useLang();
   const step = stepId ? tourParts(role, true).flatMap((p) => p.steps).find((x) => x.id === stepId) : undefined;
   return (
     <Dialog open={!!step} onOpenChange={(_, d) => !d.open && onClose()}>
       <DialogSurface className={cls.dialogSurface}>
-        {step && <StepDialogBody step={step} role={role} showReason={showReason} />}
-        <DialogActions style={{ marginTop: 12 }}>
-          <Button appearance="primary" onClick={onClose}>
-            {s('close')}
-          </Button>
-        </DialogActions>
+        {step && <StepDialogBody step={step} role={role} showReason={showReason} hold={hold} onClose={onClose} />}
       </DialogSurface>
     </Dialog>
   );

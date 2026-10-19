@@ -348,8 +348,8 @@
             },
             "frame": "kalibrering",
             "bridge": {
-              "nb": "Spørsmålene kaller tallene her og i Mitt henvisningsmønster for «kalibreringsdata».",
-              "en": "The questions call the figures here and in My referral pattern ‘calibration data’."
+              "nb": "Spørsmålene kaller tallene i Kalibrering og i Mitt henvisningsmønster for «kalibreringsdata».",
+              "en": "The questions call the figures in Calibration and in My referral pattern ‘calibration data’."
             }
           },
           {
@@ -649,8 +649,8 @@
             },
             "frame": "kalibrering",
             "bridge": {
-              "nb": "Spørsmålene kaller tallene her for «kalibreringsdata» og oversikten for «henvisningsmønstrene i opptaksområdet».",
-              "en": "The questions call the figures here ‘calibration data’ and the overview ‘the referral patterns in the catchment area’."
+              "nb": "Spørsmålene kaller tallene i Kalibrering for «kalibreringsdata» og oversikten for «henvisningsmønstrene i opptaksområdet».",
+              "en": "The questions call the figures in Calibration ‘calibration data’ and the overview ‘the referral patterns in the catchment area’."
             }
           },
           {

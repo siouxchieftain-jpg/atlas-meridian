@@ -20,6 +20,7 @@ import { ReferralEditor } from '../case/ReferralEditor';
 import { StructuredReturnView, ThreadView } from '../case/Thread';
 import { PatternView } from '../overview/PatternView';
 import { Kalibrering, SharedDialog } from '../overview/SharedView';
+import type { Held } from '../overview/held';
 import { FrameStudyCase, FrameStudyMap, FrameStudyName, FrameStudyStop, isStudyFrame } from './studyFrames';
 
 export { isStudyFrame };
@@ -432,8 +433,12 @@ function FrameOutcomeReturn() {
   return <DpsOutcomeSection caseId={SOFIE} onSent={focusSentAssessment} />;
 }
 
-/** The live component for a tour step's frame key. */
-export function TourFrame({ frame, role }: { frame: string; role: Role }) {
+/**
+ * The live component for a tour step's frame key. `hold` comes from the caller, which knows the study's progress: the
+ * tour before the three cases are done holds the figures back; part 3, «Se igjen» and the tour seen again after the
+ * cases show them (3.5.1 review B1).
+ */
+export function TourFrame({ frame, role, hold }: { frame: string; role: Role; hold?: Held }) {
   const { t } = useLang();
   const work = useWork();
   const c = cases.sofie;
@@ -481,11 +486,13 @@ export function TourFrame({ frame, role }: { frame: string; role: Role }) {
     case 'return':
       body = <StructuredReturnView ret={c.gp.dpsScript.return!} unmetOpen={false} withOutcome />;
       break;
+    // Held, the pattern and the area's figures show their layout only, so no rate, count or return reason reaches a
+    // participant before their answers without ATLAS (G-38, flow review B1, 3.5.1).
     case 'pattern':
-      body = <PatternView data={pattern} notes={work.notes} />;
+      body = <PatternView data={pattern} held={hold} notes={work.notes} />;
       break;
     case 'kalibrering':
-      body = <Kalibrering notes={work.notes} />;
+      body = <Kalibrering held={hold} notes={work.notes} />;
       break;
     case 'dialog':
       body = <FrameDialog role={role} />;
@@ -526,13 +533,16 @@ export function TourFrame({ frame, role }: { frame: string; role: Role }) {
   return <>{body}</>;
 }
 
-export function SandboxFrame({ sandbox, frame, role }: { sandbox: Sandbox; frame: string; role: Role }) {
+/** The pattern and Kalibrering keep nothing in the sandbox, so «Nullstill eksempelet» would reset nothing (3.5.1 review N6). */
+const NOTHING_TO_RESET = new Set(['pattern', 'kalibrering']);
+
+export function SandboxFrame({ sandbox, frame, role, hold }: { sandbox: Sandbox; frame: string; role: Role; hold?: Held }) {
   const { s } = useLang();
   return (
     <SandboxWorkProvider value={sandbox.work}>
-      <TourFrame frame={frame} role={role} />
+      <TourFrame frame={frame} role={role} hold={hold} />
       {/* A drawing of the study has nothing to reset. */}
-      {!isStudyFrame(frame) && (
+      {!isStudyFrame(frame) && !NOTHING_TO_RESET.has(frame) && (
         <div style={{ marginTop: 16 }}>
           <Button size="small" appearance="subtle" icon={<ArrowCounterclockwise16Regular />} onClick={sandbox.reset}>
             {s('tourResetFrame')}
