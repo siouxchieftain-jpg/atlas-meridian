@@ -52,13 +52,18 @@ async function gpKariToSummary(page: Page) {
   await page.getByRole('button', { name: 'Gå til oppsummeringen' }).click();
 }
 
-test('after Om deg: the overview, where the cases wait for the tour and the tour starts from its card', async ({ page }) => {
+test('after Om deg: the start page, where the cases wait for the tour and the tour starts from its greeting', async ({ page }) => {
   await mockNettskjema(page);
   await startStudy(page, 'Fastlege');
   await sendForm(page);
   await toHome(page);
+  await expect(page.locator('[data-open-case], [data-to-list]')).toHaveCount(0);
+  await expect(page.locator('[data-start-hero]')).toContainText('Sakene åpner seg etter omvisningen.');
+  // The list says it too, on the case: «Etter omvisningen».
+  await page.goto('/#/studie/liste');
+  await expect(page.locator('[data-list-case="kari"]').getByText('Etter omvisningen')).toBeVisible();
   await expect(page.locator('[data-study-card] [data-open-case]')).toHaveCount(0);
-  await expect(page.locator('[data-home-case="kari"]').getByText('Etter omvisningen')).toBeVisible();
+  await page.goto('/#/studie/hjem');
 
   // The card says what the tour is before it starts; «Ikke nå» leaves the overview as it was.
   await page.locator('[data-start-tour]').click();
@@ -80,7 +85,7 @@ test('after Om deg: the overview, where the cases wait for the tour and the tour
   await expect(page.locator('[data-tour-prompt]')).toBeVisible();
   await expect(page.getByRole('heading', { name: 'Sakene er åpne nå' })).toBeVisible();
   await page.getByRole('button', { name: 'Til oversikten' }).click();
-  await expect(page.locator('[data-study-card] [data-open-case]')).toBeVisible();
+  await expect(page.locator('[data-start-hero] [data-to-list]')).toBeVisible();
 
   // Seen again from Hjelp, the tour asks nothing and changes nothing.
   await page.goto('/#/studie/omvisning?igjen');
@@ -108,7 +113,7 @@ test('S9 from the overview opens in the panel with the role, the study name, the
   expect(q.get('CBstudienavn')).toBe(name);
   expect(q.get('CBside')).toBe('fastlege/hjem');
   expect(q.get('CBseksjon')).toBe('timeliste');
-  expect(q.get('CBversjon')).toMatch(/^3\.3\.0-/);
+  expect(q.get('CBversjon')).toMatch(/^3\.4\.0-/);
   expect(q.get('LCKside')).toBe('true');
   expect(q.get('CBsteg')).toBeNull();
   expect(q.get('CBintervju')).toBeNull();
@@ -175,11 +180,12 @@ test('the end of a case asks once about its screens; from then on the tab is the
   await expect(page.getByText('Takk. Tilbakemeldingen er registrert.')).toBeVisible();
   await expect(page.locator('[data-case-prompt]')).toHaveCount(0);
   await expect(page.getByText('Du kan alltid gi tilbakemelding fra knappen ved høyre kant.')).toBeVisible();
-  await page.getByRole('button', { name: 'Til oversikten' }).click();
-  await expect(page.getByRole('heading', { level: 1, name: HOME_HEADING })).toBeVisible();
+  // After case 1 the day goes on from the list (3.4).
+  await page.getByRole('button', { name: 'Til timelisten' }).click();
+  await expect(page.getByRole('heading', { level: 1, name: 'Timeliste i dag' })).toBeVisible();
   // Back on Kari's summary later: the question is not asked again.
   await page.goto('/#/studie/sak/kari/oppsummering');
-  await expect(page.getByRole('button', { name: 'Til oversikten' })).toBeVisible();
+  await expect(page.getByRole('button', { name: 'Til timelisten' })).toBeVisible();
   await expect(page.locator('[data-case-prompt]')).toHaveCount(0);
   const sent = await submissions(page);
   expect(sent.map((s) => s.key)).toEqual(['S1', 'S3', 'S9']);
@@ -262,9 +268,12 @@ test('a reload after the case form is sent keeps the case under way; the next ca
   await page.reload();
   await page.goto('/#/studie/sak/erlend');
   await expect(page).toHaveURL(/#\/studie\/sak\/kari\//);
+  await page.goto('/#/studie/liste');
+  await expect(page.locator('[data-list-case="kari"]').getByText('Ferdig')).toHaveCount(0);
+  await expect(page.locator('[data-list-case="erlend"] [data-list-open]')).toHaveCount(0);
+  // The case under way goes on from the start page's sheen, and from the list's study card.
   await page.goto('/#/studie/hjem');
-  await expect(page.locator('[data-home-case="erlend"]').getByText('Ferdig')).toHaveCount(0);
-  await page.locator('[data-study-card] [data-open-case]').click();
+  await page.locator('[data-start-hero] [data-open-case]').click();
   await expect(page).toHaveURL(/#\/studie\/sak\/kari\//);
 });
 
@@ -294,7 +303,7 @@ test('the pilot round: the «Pilot» chip, the line on Velkommen, the pilot form
   await expect(page.locator('header').getByText('Pilot', { exact: true })).toBeVisible();
   await startStudy(page, 'DPS-kliniker');
   expect(new URL((await page.locator('iframe[data-form-frame]').getAttribute('src'))!).pathname).toBe('/a/pilot-S1');
-  expect((await frameParams(page)).get('CBversjon')).toMatch(/^3\.3\.0-.*-pilot$/);
+  expect((await frameParams(page)).get('CBversjon')).toMatch(/^3\.4\.0-.*-pilot$/);
   await sendForm(page);
   await toHome(page);
   await page.locator('[data-feedback-tab]').click();
@@ -401,35 +410,36 @@ for (const [width, height] of [
   }
 }
 
-// The overview measures its own width: beside an open feedback form it drops to fewer columns, so the day's list keeps
-// room for its rows (ATLAS 3.2; a sideways check cannot see a squeezed column).
+// The start page measures its own width: beside an open feedback form it drops to fewer columns, so its parts keep
+// room (ATLAS 3.2, 3.4; a sideways check cannot see a squeezed column).
 for (const [width, role] of [
   [1280, 'Fastlege'],
   [1366, 'Fastlege'],
   [1280, 'DPS-kliniker'],
   [1366, 'DPS-kliniker'],
 ] as const) {
-  test(`at ${width} px, ${role}: with S9 open beside the overview, the day's list keeps room for its rows`, async ({ page }) => {
+  test(`at ${width} px, ${role}: with S9 open beside the start page, its parts keep their room`, async ({ page }) => {
     await page.setViewportSize({ width, height: 800 });
     await mockNettskjema(page);
     await startStudy(page, role);
     await sendForm(page);
     await toHome(page);
-    // Three columns, or four where the side column splits in two (3.3, board 8b); fewer beside the open form.
-    await expect(page.locator('[data-columns="3"], [data-columns="4"]')).toBeVisible();
+    // Two stacks where the page has the room of a laptop window (3.4); fewer columns beside the open form.
+    await expect(page.locator('[data-columns="3"]')).toBeVisible();
     await page.locator('[data-feedback-tab]').click();
     await page.locator('[data-feedback-part]').first().click();
     await expect(panel(page)).toBeVisible();
     await expect(panel(page)).toHaveAttribute('data-inline', 'true');
-    await expect(page.locator('[data-columns="3"], [data-columns="4"]')).toHaveCount(0);
-    const list = page.locator(role === 'Fastlege' ? '[data-home-part="timeliste"]' : '[data-home-part="mottatte"]');
-    const box = await list.boundingBox();
+    await expect(page.locator('[data-columns="3"]')).toHaveCount(0);
+    const part = page.locator(role === 'Fastlege' ? '[data-home-part="dag"]' : '[data-home-part="inntak"]');
+    const box = await part.boundingBox();
     expect(box!.width).toBeGreaterThanOrEqual(440);
-    // Each patient's name has a line of its own width, never a letter per line.
-    const narrowest = await list.locator('li').evaluateAll((rows) =>
-      Math.min(...rows.map((r) => (r.querySelector('span:nth-child(3)') as HTMLElement | null)?.getBoundingClientRect().width ?? 0)),
-    );
-    expect(narrowest).toBeGreaterThanOrEqual(160);
+    if (role === 'Fastlege') await expect(part.locator('[data-day-item="kari"]')).toBeVisible();
+    else {
+      // Each referral's name has a line of its own width, never a letter per line.
+      const narrowest = await part.locator('li').evaluateAll((rows) => Math.min(...rows.map((r) => r.getBoundingClientRect().width)));
+      expect(narrowest).toBeGreaterThanOrEqual(300);
+    }
     const [, side] = await overflow(page);
     expect(side).toBeLessThanOrEqual(0);
   });

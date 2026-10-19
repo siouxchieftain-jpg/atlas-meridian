@@ -1,7 +1,7 @@
 import AxeBuilder from '@axe-core/playwright';
 import { expect, test, type Locator, type Page } from '@playwright/test';
 import { configWithoutForms, mockNettskjema } from './mock';
-import { caseOnlyThenAtlas, doTour, place, sendForm, startStudy, toHome } from './helpers';
+import { caseOnlyThenAtlas, doTour, openCurrentCase, place, sendForm, startStudy, toHome } from './helpers';
 
 // ATLAS 3.3: the guide layer back where the approved boards had it, pages that reach the footer, the study card's three
 // cases, the patient search, the glossary in groups and the study name's mark.
@@ -48,14 +48,10 @@ test('Om deg: the study name as a profile card with its mark, both panels down t
   await expect(page.getByRole('heading', { level: 1, name: 'Om deg' })).toBeVisible();
   const card = page.locator('aside[data-studienavn]');
   const name = (await card.locator('[data-studienavn-value]').textContent())!.trim();
-  const initials = name
-    .split(/\s+/)
-    .filter((w) => /\p{L}/u.test(w))
-    .slice(0, 2)
-    .map((w) => w[0].toLocaleUpperCase('nb'))
-    .join('');
-  await expect(card.locator('[data-name-mark]')).toHaveText(initials);
-  await expect(card.locator('[data-guide-image="cover"]')).toHaveCount(1);
+  // 3.4: the mark shows the name's animal, a picture with no text of its own; the cover wears the GP's wave.
+  await expect(card.locator('[data-name-mark]')).toHaveAttribute('data-animal', name.split(' ')[1]);
+  await expect(card.locator('[data-name-mark] img')).toHaveAttribute('alt', '');
+  await expect(card.locator('[data-guide-image="cover"]')).toHaveAttribute('data-guide-art', 'gp');
   expect(await gapToFooter(page, card)).toBeLessThanOrEqual(16);
   // The header's account: the mark opens a card with the name and the role.
   const account = page.locator('[data-study-account]');
@@ -66,55 +62,6 @@ test('Om deg: the study name as a profile card with its mark, both panels down t
   await expect(pop).toContainText('Du deltar som fastlege.');
   await page.keyboard.press('Escape');
   await expect(account).toBeFocused();
-});
-
-test('the overview: the study card is a guide card with the sheen, the three cases with «Nå», and a search that filters the day', async ({ page }) => {
-  await mockNettskjema(page);
-  await startStudy(page, 'Fastlege');
-  await sendForm(page);
-  await toHome(page);
-  const card = page.locator('[data-study-card]');
-  await expect(card).toHaveAttribute('data-guide-card', '');
-  await expect(card.locator('[data-guide-image="band"]')).toHaveCount(1);
-  expect(await hasSheen(card.locator('[data-start-tour]'))).toBe(true);
-  const cases = card.locator('[data-study-cases] li');
-  await expect(cases).toHaveText(['Sak 1 · Kari Nordli', 'Sak 2 · Erlend Bakken', 'Sak 3 · Astrid Holm']);
-  // Before the tour no case is current.
-  await expect(card.locator('[data-study-cases] [aria-current="step"]')).toHaveCount(0);
-  // «Gi tilbakemelding» in brand again (board 8b): brand 80 behind it.
-  expect(await page.locator('[data-feedback-tab]').evaluate((el) => getComputedStyle(el).backgroundColor)).toBe('rgb(113, 96, 232)');
-
-  // The search filters the day's list by name, or by the start of the national identity number.
-  const search = page.getByRole('searchbox', { name: 'Søk etter pasient eller fødselsnummer' });
-  const rows = page.locator('[data-home-part="timeliste"] li');
-  await expect(rows).toHaveCount(6);
-  await search.fill('erlend');
-  await expect(rows).toHaveCount(1);
-  await expect(rows.first()).toContainText('Erlend Bakken');
-  await search.fill('zzz');
-  await expect(rows).toHaveCount(0);
-  await expect(page.locator('[data-home-part="timeliste"]')).toContainText('Ingen pasienter passer søket.');
-  await search.fill('');
-  await expect(rows).toHaveCount(6);
-
-  // After the tour: case 1 is current, with «Nå», and the tour can be seen again from the card.
-  // With the room of a laptop window the side column splits in two, as board 8b at 1366 px: the inbox beside the
-  // pattern; at 1280 px the side column stays one.
-  for (const width of [1366, 1536]) {
-    await page.setViewportSize({ width, height: 713 });
-    await expect(page.locator('[data-columns="4"]'), `${width}`).toBeVisible();
-    const inbox = await page.locator('[data-home-part="innboks"]').boundingBox();
-    const pattern = await page.locator('[data-home-part="monster"]').boundingBox();
-    expect(pattern!.x).toBeGreaterThan(inbox!.x + inbox!.width);
-  }
-  await page.setViewportSize({ width: 1280, height: 900 });
-  await expect(page.locator('[data-columns="3"]')).toBeVisible();
-
-  await doTour(page);
-  const now = card.locator('[data-study-cases] [aria-current="step"]');
-  await expect(now).toHaveText(/Sak 1 · Kari Nordli\s*Nå/);
-  await expect(card.getByRole('button', { name: 'Se omvisningen igjen' })).toBeVisible();
-  expect(await hasSheen(card.locator('[data-open-case]'))).toBe(true);
 });
 
 test('the glossary: three groups as tabs, each as cards, and a search across all of them', async ({ page }) => {
@@ -202,7 +149,7 @@ test('the guide surfaces keep their contrast and roles: axe on Velkommen, Om deg
   await page.getByRole('button', { name: 'Lagre og åpne skjemaet' }).click();
   await sendForm(page);
   await toHome(page);
-  await check('oversikten');
+  await check('startsiden');
   await page.locator('[data-study-account]').click();
   await check('kontoen');
   await page.keyboard.press('Escape');
@@ -211,6 +158,8 @@ test('the guide surfaces keep their contrast and roles: axe on Velkommen, Om deg
   await check('ordlisten');
   await page.keyboard.press('Escape');
   await doTour(page);
+  await page.locator('[data-start-hero] [data-to-list]').click();
+  await check('timelisten');
   await page.locator('[data-study-card] [data-open-case]').click();
   await expect(page.locator('[data-guide-card]')).toBeVisible();
   await check('orienteringen');
@@ -224,7 +173,7 @@ test('a case page reaches the footer too, and the briefing starts the case with 
   await sendForm(page);
   await toHome(page);
   await doTour(page);
-  await page.locator('[data-study-card] [data-open-case]').click();
+  await openCurrentCase(page);
   const start = page.getByRole('button', { name: 'Start saken' });
   await expect(start).toBeVisible();
   expect(await hasSheen(start)).toBe(true);
@@ -238,7 +187,7 @@ test('the end of a case: both ways on sit in the warm bar, the feedback first wi
   await sendForm(page);
   await toHome(page);
   await doTour(page);
-  await page.locator('[data-study-card] [data-open-case]').click();
+  await openCurrentCase(page);
   await caseOnlyThenAtlas(page);
   await place(page, 3);
   await page.getByLabel('Henvis', { exact: true }).check({ force: true });
@@ -252,12 +201,13 @@ test('the end of a case: both ways on sit in the warm bar, the feedback first wi
   const bar = page.locator('[data-case-prompt="kari"]');
   await expect(bar).toBeVisible();
   expect(await hasSheen(bar.locator('[data-prompt-feedback]'))).toBe(true);
-  const home = bar.getByRole('button', { name: 'Til oversikten' });
+  // 3.4: after case 1 the way on is the list.
+  const home = bar.getByRole('button', { name: 'Til timelisten' });
   await expect(home).toBeVisible();
   expect(await hasSheen(home)).toBe(false);
   // Nothing on the summary's white card outside the bar carries the sheen.
   const sheens = await page.locator('main button').evaluateAll((els) => els.filter((el) => getComputedStyle(el).backgroundImage.includes('linear-gradient')).length);
   expect(sheens).toBe(1);
   await home.click();
-  await expect(page.getByRole('heading', { level: 1, name: 'Min dag' })).toBeVisible();
+  await expect(page.getByRole('heading', { level: 1, name: 'Timeliste i dag' })).toBeVisible();
 });

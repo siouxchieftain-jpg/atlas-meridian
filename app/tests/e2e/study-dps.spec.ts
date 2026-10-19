@@ -14,7 +14,8 @@ test('a DPS clinician completes the core study, with the GP marker shown only af
   await startStudy(page, 'DPS-kliniker', 'Ja');
   await sendForm(page);
   await toHome(page);
-  await expect(page.getByRole('heading', { level: 1, name: 'Inntaket i dag' })).toBeVisible();
+  await expect(page.locator('[data-start-hero]').getByRole('heading', { level: 1, name: 'Start med omvisningen' })).toBeVisible();
+  await expect(page.locator('[data-home-part="inntak"]').getByRole('heading', { level: 2, name: 'Inntaket i dag' })).toBeVisible();
   await doTour(page);
 
   // Kari: the case-only letter has no «Hva fastlegen var usikker på».
@@ -67,7 +68,7 @@ test('a DPS clinician completes the core study, with the GP marker shown only af
   await page.getByRole('button', { name: 'Fortsett' }).click();
   await finishCaseHome(page);
   // After the three referrals: S2 (now about ATLAS as a whole, after the cases), then S6.
-  await page.locator('[data-study-card]').getByRole('button', { name: 'Gå til avslutningen' }).click();
+  await page.locator('[data-start-hero]').getByRole('button', { name: 'Gå til avslutningen' }).click();
   await sendForm(page);
   await page.getByRole('button', { name: 'Gå videre til avslutningen' }).click();
   await sendForm(page);
@@ -102,8 +103,9 @@ test('the DPS card covers every role in intake, sends DPS-inntak and the study n
   expect(s1.fields.intervju).toBe('Vil ikke svare');
   expect(s1.fields.studienavn).toBe(name);
   await toHome(page);
-  // The overview shows the same study name.
-  await expect(page.locator('[data-study-card] [data-studienavn-value]')).toHaveText(name);
+  // The start page greets the participant by the same study name, with the name's animal (3.4).
+  await expect(page.locator('[data-start-greeting]')).toContainText(name);
+  await expect(page.locator('[data-start-hero] [data-name-mark]')).toHaveAttribute('data-animal', name.split(' ')[1]);
   await page.locator('[data-start-tour]').click();
   await page.getByRole('dialog').getByRole('button', { name: 'Start omvisningen' }).click();
   await expect(page.getByText('DPS, inntak · punkt 1 av', { exact: false })).toBeVisible();

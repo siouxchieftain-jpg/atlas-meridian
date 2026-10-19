@@ -38,13 +38,19 @@ export async function startStudy(page: Page, role: 'Fastlege' | 'DPS-kliniker', 
   await expect(page.locator('iframe[data-form-frame]')).toBeVisible();
 }
 
-/** The overview's heading, for either role. */
-export const HOME_HEADING = /^(Min dag|Inntaket i dag)$/;
+/**
+ * The start page's heading (3.4): the study's next step, for either role («Start med omvisningen», «Sak 1 av 3: Kari
+ * Nordli», «De tre sakene er ferdige»). The document title stays «Oversikten · ATLAS».
+ */
+export const HOME_HEADING = /^(Start med omvisningen|Du er midt i omvisningen|Sak \d av 3: .+|Fortsett sak \d: .+|De tre sakene er ferdige)$/;
 
-/** After S1 is sent: on to the overview (v3.1). */
+/** The list where every case starts (3.4): «Timeliste i dag» or «Mottatte henvisninger». */
+export const LIST_HEADING = /^(Timeliste i dag|Mottatte henvisninger)$/;
+
+/** After S1 is sent: on to the start page (v3.1). */
 export async function toHome(page: Page) {
   await page.getByRole('button', { name: 'Til oversikten' }).click();
-  await expect(page.getByRole('heading', { level: 1, name: HOME_HEADING })).toBeVisible();
+  await expect(page.locator('[data-start-hero]').getByRole('heading', { level: 1, name: HOME_HEADING })).toBeVisible();
 }
 
 /** Through the tour, from the next button to the closing screen (the study's part first, then ATLAS's). */
@@ -68,9 +74,20 @@ export async function doTour(page: Page) {
   await expect(page.getByRole('heading', { level: 1, name: HOME_HEADING })).toBeVisible();
 }
 
-/** From the overview: the current case's briefing, from the study card. */
+/**
+ * The current case's briefing (3.4): from the start page, its sheen leads to the list and the study card there opens
+ * the case (a case left in the middle goes on from the start page's sheen); from the list, the study card.
+ */
 export async function openCurrentCase(page: Page) {
-  await page.locator('[data-study-card] [data-open-case]').click();
+  const hero = page.locator('[data-start-hero]');
+  if (await hero.isVisible()) {
+    if (await hero.locator('[data-open-case]').isVisible()) await hero.locator('[data-open-case]').click();
+    else {
+      await hero.locator('[data-to-list]').click();
+      await expect(page.getByRole('heading', { level: 1, name: LIST_HEADING })).toBeVisible();
+      await page.locator('[data-study-card] [data-open-case]').click();
+    }
+  } else await page.locator('[data-study-card] [data-open-case]').click();
   await expect(page.getByRole('button', { name: /^(Start saken|Fortsett saken)$/ })).toBeVisible();
 }
 
@@ -83,10 +100,13 @@ export async function toFirstCase(page: Page, role: 'Fastlege' | 'DPS-kliniker' 
   await openCurrentCase(page);
 }
 
-/** The summary's way on: past the question about the case, back to the overview. */
+/**
+ * The summary's way on, past the question about the case (3.4): after cases 1 and 2 to the list, after case 3 to the
+ * start page.
+ */
 export async function finishCaseHome(page: Page) {
-  await page.getByRole('button', { name: 'Til oversikten' }).click();
-  await expect(page.getByRole('heading', { level: 1, name: HOME_HEADING })).toBeVisible();
+  await page.locator('[data-case-go-on]').click();
+  await expect(page.getByRole('heading', { level: 1, name: new RegExp(`${LIST_HEADING.source}|${HOME_HEADING.source}`) })).toBeVisible();
 }
 
 /** Place the case with the visible band control (below 1024 px it sits in the ATLAS overlay). */

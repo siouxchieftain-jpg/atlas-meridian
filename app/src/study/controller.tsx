@@ -11,8 +11,11 @@ import type { StudyWorkActions } from '../state/work';
 import { useAtlasAnnounce } from '../patterns/announce';
 import { useFormHost, type CaseFormStage, type FormRoute, type OpenForm } from './formHost';
 
-/** The overview, «Min dag» or «Inntaket i dag»: home between the steps (v3.1). */
+/** The start page: home between the steps, where the participant lands (v3.1; the start page since 3.4). */
 export const HOME_PATH = '/studie/hjem';
+
+/** The list the cases start from: «Timeliste i dag» for the GP, «Mottatte henvisninger» for DPS (boards 4a and 4b, 3.4). */
+export const LIST_PATH = '/studie/liste';
 
 /** Where each study step lives. */
 export const STEP_PATH: Record<StepId, string> = {
@@ -265,10 +268,12 @@ export function StudyControllerProvider({ children }: { children: ReactNode }) {
       },
       finishCase: (caseId) => {
         study.setPhase(caseId, 'done');
-        // Back home after every case: the next case, or the last part, starts from the overview (v3.1).
+        // After cases 1 and 2 the day goes on from the list, where the next case is marked «Nå»; after case 3 the
+        // participant lands on the start page, where the last part starts (3.4: one page less before every case).
         if (isCore(caseId)) {
-          study.advanceTo(CASE_NEXT[caseId]);
-          navigate(HOME_PATH);
+          const next = CASE_NEXT[caseId];
+          study.advanceTo(next);
+          navigate(next === 'helhet' ? HOME_PATH : LIST_PATH);
         } else navigate('/studie/ekstra');
       },
     };

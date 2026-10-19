@@ -431,7 +431,7 @@ function WelcomeBack() {
       </Lead>
       {study.state.studienavn && (
         <span className={v.nameChip}>
-          <StudyNameMark name={study.state.studienavn} size={24} />
+          <StudyNameMark name={study.state.studienavn} size={28} />
           {s('omDegNameTitle')}
           <span className={v.nameValue} lang="nb">
             {study.state.studienavn}
@@ -561,7 +561,7 @@ export function VelkommenPage() {
     <div className={v.wrap}>
       {!closed && <SmallScreenBar />}
       <section className={v.hero} aria-label={s('velkommenTitle')} data-guide-surface="" data-welcome={closed ? 'closed' : back ? 'back' : 'first'}>
-        <GuideImage variant="hero" />
+        <GuideImage variant="hero" art="organza" />
         <div className={v.text}>{back ? <WelcomeBack /> : <IntroText withContact={!closed} />}</div>
         <div className={v.side}>{closed ? <ClosedCard /> : back ? <ProgressCard /> : <RoleCards />}</div>
         {!closed && !back && <FiveSteps />}

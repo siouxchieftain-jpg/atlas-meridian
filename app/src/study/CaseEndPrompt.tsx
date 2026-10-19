@@ -37,7 +37,7 @@ const useStyles = makeStyles({
 
 /**
  * The end of a case (screen 18, board 9b): one optional question about the case's screens, asked once, after page 2 is
- * sent and any reply is shown, with the way back to the overview beside it. Once asked, the bar keeps only the way on.
+ * sent and any reply is shown, with the way on beside it: to the list after cases 1 and 2, to the start page after case 3. Once asked, the bar keeps only the way on.
  */
 export function CaseEndPrompt({ caseId, onContinue }: { caseId: CoreCaseId; onContinue: () => void }) {
   const cls = useStyles();
@@ -47,6 +47,8 @@ export function CaseEndPrompt({ caseId, onContinue }: { caseId: CoreCaseId; onCo
   const role = study.role ?? 'gp';
   const asked = study.state.prompts[caseId];
   const next = CORE[CORE.indexOf(caseId) + 1];
+  // Cases 1 and 2 go on from the list (3.4); after case 3 the start page holds the last part.
+  const onLabel = next ? s(role === 'gp' ? 'toListGp' : 'toListDps') : s('toHome');
   const side = `${roleSeg(role)}/${caseId}/saken`;
   const onResult = (r: FeedbackResult) => {
     // Answered only once S9 is open; a form that is not ready leaves the question standing.
@@ -82,16 +84,16 @@ export function CaseEndPrompt({ caseId, onContinue }: { caseId: CoreCaseId; onCo
           back={() => document.querySelector<HTMLElement>('[data-prompt-feedback]')}
           onResult={onResult}
         />
-        <Button size="large" icon={<ArrowRight20Regular />} iconPosition="after" onClick={goOn}>
-          {s('toHome')}
+        <Button size="large" icon={<ArrowRight20Regular />} iconPosition="after" onClick={goOn} data-case-go-on="">
+          {onLabel}
         </Button>
       </div>
     </section>
   ) : (
-    <section className={cls.bar} aria-label={s('toHome')} data-case-prompt-done={caseId}>
+    <section className={cls.bar} aria-label={onLabel} data-case-prompt-done={caseId}>
       <p className={cls.quiet}>{s('promptAlways')}</p>
-      <SheenButton icon={<ArrowRight20Regular />} iconPosition="after" onClick={goOn}>
-        {s('toHome')}
+      <SheenButton icon={<ArrowRight20Regular />} iconPosition="after" onClick={goOn} data-case-go-on="">
+        {onLabel}
       </SheenButton>
     </section>
   );

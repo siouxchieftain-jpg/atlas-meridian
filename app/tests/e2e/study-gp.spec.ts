@@ -14,12 +14,12 @@ test('a GP completes the whole study on the panel route, with the right locked v
   await startStudy(page, 'Fastlege', 'Nei');
   expect(await frameSteg(page)).toBe('S1');
   await sendForm(page);
-  // v3.1: after the first form, the overview; the cases wait for the tour, which starts from its card.
+  // v3.1: after the first form, the start page; the cases wait for the tour, which starts from its greeting (3.4).
   await toHome(page);
-  await expect(page.locator('[data-home-case="kari"]').getByText('Etter omvisningen')).toBeVisible();
+  await expect(page.locator('[data-start-hero]')).toContainText('Sakene åpner seg etter omvisningen.');
   await doTour(page);
 
-  // Kari: from the overview, case only, page 1, stop page, «Vis ATLAS», own work, the rest of the form, the reply.
+  // Kari: from the list, case only, page 1, stop page, «Vis ATLAS», own work, the rest of the form, the reply.
   await openCurrentCase(page);
   await caseOnlyThenAtlas(page);
   await expect(panel(page)).toBeHidden();
@@ -45,8 +45,12 @@ test('a GP completes the whole study on the panel route, with the right locked v
   await page.getByRole('button', { name: 'Gå til oppsummeringen' }).click();
   // The end of the case asks once about its screens, after the form is sent.
   await expect(page.locator('[data-case-prompt="kari"]')).toContainText('Før du går videre til Erlend');
+  // 3.4: cases 1 and 2 end on the list, where Kari is done and Erlend is next.
+  await expect(page.locator('[data-case-go-on]')).toHaveText('Til timelisten');
   await finishCaseHome(page);
-  await expect(page.locator('[data-home-case="kari"]').getByText('Ferdig')).toBeVisible();
+  await expect(page.getByRole('heading', { level: 1, name: 'Timeliste i dag' })).toBeVisible();
+  await expect(page.locator('[data-list-case="kari"]').getByText('Ferdig')).toBeVisible();
+  await expect(page.locator('[data-list-case="erlend"] [data-list-open]')).toBeVisible();
 
   // Erlend: the GP starts in the referral draft after «Vis ATLAS».
   await openCurrentCase(page);
@@ -75,10 +79,13 @@ test('a GP completes the whole study on the panel route, with the right locked v
   await page.getByRole('button', { name: 'Lagre plan' }).click();
   await page.getByRole('button', { name: 'Gå til oppsummeringen' }).click();
   await expect(page.locator('[data-case-prompt="astrid"]')).toContainText('Før du går videre: vil du si noe');
+  // After case 3 the way on is the start page, where the last part starts.
+  await expect(page.locator('[data-case-go-on]')).toHaveText('Til oversikten');
   await finishCaseHome(page);
+  await expect(page.locator('[data-start-hero]').getByRole('heading', { level: 1, name: 'De tre sakene er ferdige' })).toBeVisible();
 
   // S2 now comes after the three cases (decision 3), then S6, then Takk: the reasons open only there.
-  await page.locator('[data-study-card]').getByRole('button', { name: 'Gå til avslutningen' }).click();
+  await page.locator('[data-start-hero]').getByRole('button', { name: 'Gå til avslutningen' }).click();
   await expect(page.getByRole('heading', { level: 1, name: 'Helhetsinntrykk' })).toBeVisible();
   await sendForm(page);
   await page.getByRole('button', { name: 'Gå videre til avslutningen' }).click();
@@ -94,7 +101,7 @@ test('a GP completes the whole study on the panel route, with the right locked v
   for (const s of sent) {
     expect(s.fields.rolle).toBe('Fastlege');
     expect(s.fields.intervju).toBe('Nei');
-    expect(s.fields.versjon).toMatch(/^3\.3\.0-/);
+    expect(s.fields.versjon).toMatch(/^3\.4\.0-/);
     expect(s.fields.versjon).not.toMatch(/-pilot$/);
   }
   expect(sent.find((s) => s.key === 'S3')?.fields.vignett).toBe('V1');

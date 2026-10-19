@@ -116,6 +116,10 @@ test('keyboard only, study: the overview, the tour card, the form panel and «Vi
   await clickThroughTour(page);
   await tabTo(page, page.getByRole('button', { name: 'Til oversikten' }));
   await page.keyboard.press('Enter');
+  // 3.4: the start page's sheen leads to the list, where the study card opens the case.
+  await tabTo(page, page.locator('[data-start-hero] [data-to-list]'));
+  await page.keyboard.press('Enter');
+  await expect(page.getByRole('heading', { level: 1, name: 'Timeliste i dag' })).toBeVisible();
   await tabTo(page, page.locator('[data-study-card] [data-open-case]'));
   await page.keyboard.press('Enter');
   await tabTo(page, page.getByRole('button', { name: 'Start saken' }));

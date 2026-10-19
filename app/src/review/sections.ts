@@ -68,24 +68,26 @@ export const VIEW_SECTIONS: Record<string, ReviewSection[]> = {
   'dps/omvisning': [whole],
   'fastlege/to-fastleger': [whole],
   'dps/to-fastleger': [whole],
-  // Study mode (S9): the home screens, the case as a whole from its summary page, and the study's own pages.
+  // Study mode (S9): the start page and the list (3.4), the case as a whole from its summary page, and the study's own
+  // pages. The ids the 3.3 overview used keep their meaning where the part kept its job, so earlier answers still sort.
   'fastlege/hjem': [
     whole,
     { id: 'studiekort', label: 'secStudyCard' },
-    { id: 'timeliste', label: 'homeTimelisteTitle' },
+    { id: 'timeliste', label: 'dayTitle' },
     { id: 'innboks', label: 'homeInboxTitle' },
-    { id: 'henvisninger', label: 'homeReferralsTitle' },
+    { id: 'henvisninger', label: 'refMineTitle' },
     { id: 'monster', label: 'navPattern' },
     { id: 'delt', label: 'navShared' },
   ],
   'dps/hjem': [
     whole,
     { id: 'studiekort', label: 'secStudyCard' },
-    { id: 'mottatte', label: 'navQueue' },
-    { id: 'frister', label: 'homeDeadlinesTitle' },
+    { id: 'inntak', label: 'homeDpsTitle' },
     { id: 'meldinger', label: 'homeMessagesTitle' },
     { id: 'delt', label: 'navShared' },
   ],
+  'fastlege/liste': [whole, { id: 'studiekort', label: 'secStudyCard' }, { id: 'saker', label: 'listCasesLabel' }, { id: 'resten', label: 'listRoutineLabel' }],
+  'dps/liste': [whole, { id: 'studiekort', label: 'secStudyCard' }, { id: 'saker', label: 'listReferralsLabel' }, { id: 'frister', label: 'queueDeadlinesTitle' }],
   'fastlege/saken': [
     { id: 'hele', label: 'secWholeCase' },
     { id: 'orientering', label: 'secBriefing' },
@@ -144,7 +146,14 @@ export function screenOf(side: string): { key: string; role: string; view: strin
 export function sideLabel(side: string, s: (k: StringKey) => string): string {
   const { role, view, caseId } = screenOf(side);
   const roleLabel = s(role === 'dps' ? 'roleDps' : 'roleGp');
-  const screen = view === 'dialog' ? s(role === 'dps' ? 'dialogWithGp' : 'dialogWithDps') : SCREEN_LABEL[view] ? s(SCREEN_LABEL[view]) : view;
+  const screen =
+    view === 'dialog'
+      ? s(role === 'dps' ? 'dialogWithGp' : 'dialogWithDps')
+      : view === 'liste'
+        ? s(role === 'dps' ? 'navQueue' : 'homeTimelisteTitle')
+        : SCREEN_LABEL[view]
+          ? s(SCREEN_LABEL[view])
+          : view;
   return caseId ? `${roleLabel} · ${cases[caseId].patient.name} · ${screen}` : `${roleLabel} · ${screen}`;
 }
 

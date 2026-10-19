@@ -197,9 +197,9 @@ test('R2GP-01: Astrid «Henvis på nytt» then «Send henvisning» leads on to t
   await page.getByRole('button', { name: 'Fortsett' }).click();
   await expect(page).toHaveURL(/#\/studie\/sak\/astrid\/oppsummering$/);
   await expect(page.getByText(/henvis på nytt/i).first()).toBeVisible();
-  // v3.1: back to the overview, where the closing part waits.
+  // After case 3 the start page, where the closing part waits (3.4).
   await finishCaseHome(page);
-  await expect(page.locator('[data-study-card]').getByRole('button', { name: 'Gå til avslutningen' })).toBeVisible();
+  await expect(page.locator('[data-start-hero]').getByRole('button', { name: 'Gå til avslutningen' })).toBeVisible();
   // Back in the dialogue the plan stays as it was, with the way on to the summary.
   await page.goto('/#/studie/sak/astrid/dialog');
   await expect(page.getByText('Planen kan ikke endres etter at den nye henvisningen er skrevet.').or(page.getByText(/Planen er lagret og kan ikke endres/))).toBeVisible();

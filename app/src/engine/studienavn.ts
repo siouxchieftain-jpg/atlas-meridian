@@ -34,23 +34,30 @@ export const DYR = [
   'ugle',
   'bever',
   'rev',
-  'gaupe',
+  'ulv',
   'oter',
   'ekorn',
   'hare',
   'ørn',
-  'lunde',
+  'gås',
   'sel',
-  'rein',
+  'frosk',
   'hjort',
   'grevling',
   'bjørn',
   'svane',
-  'trane',
+  'mus',
   'hval',
-  'laks',
+  'bie',
   'piggsvin',
 ] as const;
+
+/**
+ * Animals the names used until 3.3. Unicode has no emoji for them (lynx, puffin, reindeer, crane, salmon), and the
+ * study name's mark shows only exact animals, so 3.4 makes names from DYR only. A name already given with one of these
+ * stays valid: the state keeps it (it is in every form the participant has sent), and its mark shows the initials.
+ */
+export const DYR_TIDLIGERE = ['gaupe', 'lunde', 'rein', 'trane', 'laks'] as const;
 
 /** Three random integers from the browser's cryptographic source (Math.random as a fallback). */
 function randomInts(): [number, number, number] {
@@ -74,5 +81,10 @@ export function makeStudienavn(ints: [number, number, number] = randomInts()): s
 export function isStudienavn(value: unknown): value is string {
   if (typeof value !== 'string') return false;
   const m = /^(\S+) (\S+) (\d{2})$/.exec(value);
-  return !!m && (ADJEKTIV as readonly string[]).includes(m[1]) && (DYR as readonly string[]).includes(m[2]) && Number(m[3]) >= 10;
+  return (
+    !!m &&
+    (ADJEKTIV as readonly string[]).includes(m[1]) &&
+    ([...DYR, ...DYR_TIDLIGERE] as readonly string[]).includes(m[2]) &&
+    Number(m[3]) >= 10
+  );
 }

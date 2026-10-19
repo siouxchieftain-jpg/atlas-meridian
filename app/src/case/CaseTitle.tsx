@@ -72,10 +72,8 @@ export function CaseTitle({
   const { s, t } = useLang();
   const work = useWork();
   const c = cases[caseId];
-  // Study mode: the list crumb leads to the overview, and is named for it («Min dag», «Inntaket i dag»).
-  const items = work.mode === 'study' && !work.sandbox
-    ? crumbs.map((x, i) => (i === 0 && x.to === work.listPath ? { ...x, label: s(work.viewer === 'gp' ? 'homeGpTitle' : 'homeDpsTitle') } : x))
-    : crumbs;
+  // Study mode (3.4): the list crumb leads to the list the case was opened from, named as in review mode.
+  const items = crumbs;
   return (
     <section className={cls.card} aria-label={s('patientLabel')}>
       <Breadcrumbs items={items} label={s('breadcrumbs')} />

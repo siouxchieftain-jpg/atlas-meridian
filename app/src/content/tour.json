@@ -15,8 +15,8 @@
               "en": "The overview"
             },
             "body": {
-              "nb": "Oversikten er dagen din i ATLAS: timelisten, innboksen og henvisningene. Hver del av studien starter herfra, og du kommer tilbake hit etter hver sak. Kortet til venstre viser neste steg, og med «Gi tilbakemelding» ved høyre kant kan du når som helst si hva du mener om et skjermbilde.",
-              "en": "The overview is your day in ATLAS: the appointment list, the inbox and the referrals. Each part of the study starts here, and you come back here after each case. The card on the left shows the next step, and with ‘Give feedback’ on the right edge you can say what you think about a screen at any time."
+              "nb": "Oversikten er der dagen din starter. Kortet øverst viser neste steg i studien, og under det ligger dagen, innboksen og henvisningene dine. Sakene åpner du fra timelisten, og dit kommer du tilbake etter sak 1 og 2. Mitt henvisningsmønster og Delt oversikt åpnes her når de tre sakene er ferdige. Med «Gi tilbakemelding» ved høyre kant kan du når som helst si hva du mener om et skjermbilde.",
+              "en": "The overview is where your day starts. The card at the top shows the next step in the study, with your day, the inbox and your referrals below it. You open the cases from the appointment list, and you come back there after cases 1 and 2. My referral pattern and the shared overview open here when the three cases are done. With ‘Give feedback’ on the right edge you can say what you think about a screen at any time."
             },
             "reason": {
               "nb": "Et utgangspunkt som likner en vanlig arbeidsdag, gjør det lettere å vite hvor du er og hva som kommer etterpå.",
@@ -396,8 +396,8 @@
               "en": "The overview"
             },
             "body": {
-              "nb": "Oversikten er dagen din i inntaket: de mottatte henvisningene, fristene og meldingene. Hver del av studien starter herfra, og du kommer tilbake hit etter hver sak. Kortet til venstre viser neste steg, og med «Gi tilbakemelding» ved høyre kant kan du når som helst si hva du mener om et skjermbilde.",
-              "en": "The overview is your day in intake: the referrals received, the deadlines and the messages. Each part of the study starts here, and you come back here after each case. The card on the left shows the next step, and with ‘Give feedback’ on the right edge you can say what you think about a screen at any time."
+              "nb": "Oversikten er der dagen din i inntaket starter. Kortet øverst viser neste steg i studien, og under det ligger inntaket i dag og meldingene. Henvisningene åpner du fra listen over mottatte henvisninger, og dit kommer du tilbake etter sak 1 og 2. Delt oversikt åpnes her når de tre sakene er ferdige. Med «Gi tilbakemelding» ved høyre kant kan du når som helst si hva du mener om et skjermbilde.",
+              "en": "The overview is where your day in intake starts. The card at the top shows the next step in the study, with today’s intake and the messages below it. You open the referrals from the list of received referrals, and you come back there after cases 1 and 2. The shared overview opens here when the three cases are done. With ‘Give feedback’ on the right edge you can say what you think about a screen at any time."
             },
             "reason": {
               "nb": "Et utgangspunkt som likner en vanlig arbeidsdag, gjør det lettere å vite hvor du er og hva som kommer etterpå.",
