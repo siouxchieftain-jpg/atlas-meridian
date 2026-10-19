@@ -67,12 +67,20 @@
         "nb": "April til juni 2025",
         "en": "April to June 2025"
       },
+      "short": {
+        "nb": "K2 2025",
+        "en": "Q2 2025"
+      },
       "count": 6
     },
     {
       "label": {
         "nb": "Juli til september 2025",
         "en": "July to September 2025"
+      },
+      "short": {
+        "nb": "K3 2025",
+        "en": "Q3 2025"
       },
       "count": 5
     },
@@ -81,12 +89,20 @@
         "nb": "Oktober til desember 2025",
         "en": "October to December 2025"
       },
+      "short": {
+        "nb": "K4 2025",
+        "en": "Q4 2025"
+      },
       "count": 7
     },
     {
       "label": {
         "nb": "1. januar til 17. mars 2026",
         "en": "1 January to 17 March 2026"
+      },
+      "short": {
+        "nb": "K1 2026",
+        "en": "Q1 2026"
       },
       "count": 6
     }

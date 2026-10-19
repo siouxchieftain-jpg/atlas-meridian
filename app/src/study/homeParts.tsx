@@ -1,5 +1,5 @@
 import { makeStyles, mergeClasses, tokens, typographyStyles } from '@fluentui/react-components';
-import { LockClosed16Regular } from '@fluentui/react-icons';
+import { LockClosed20Regular } from '@fluentui/react-icons';
 import { useId, type ReactNode } from 'react';
 import { cases } from '../content';
 import { formatDayMonth, useLang } from '../i18n/i18n';
@@ -57,7 +57,30 @@ const useStyles = makeStyles({
     '@media (forced-colors: active)': { border: '1px dashed CanvasText' },
   },
   examplesLabel: { ...typographyStyles.caption1Strong, margin: 0, color: tokens.colorNeutralForeground2 },
-  lockLine: { display: 'flex', alignItems: 'center', gap: '6px', ...typographyStyles.body1, margin: 0, color: tokens.colorNeutralForeground2 },
+  // A locked part keeps its place and its row's height: a quiet panel that says when it opens and what it will hold.
+  lockedBody: {
+    flexGrow: 1,
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: '6px',
+    paddingBlock: '12px',
+    textAlign: 'center',
+  },
+  lockIcon: {
+    width: '40px',
+    height: '40px',
+    borderRadius: tokens.borderRadiusCircular,
+    display: 'inline-flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: tokens.colorNeutralBackground3,
+    color: tokens.colorNeutralForeground2,
+    '@media (forced-colors: active)': { border: '1px solid CanvasText' },
+  },
+  lockLine: { ...typographyStyles.body1Strong, margin: 0, color: tokens.colorNeutralForeground2 },
+  lockNote: { ...typographyStyles.caption1, margin: 0, maxWidth: '36ch', color: tokens.colorNeutralForeground2 },
   // The deadline strip: the working days as dates, today outlined, a deadline filled. A date, never a countdown.
   days: { listStyle: 'none', margin: 0, padding: 0, display: 'grid', gridTemplateColumns: 'repeat(10, minmax(0, 1fr))', gap: '4px' },
   dayCell: {
@@ -131,6 +154,7 @@ export function HomeCard({
   sub,
   badge,
   locked,
+  lockedNote,
   foot,
   children,
   className,
@@ -141,6 +165,8 @@ export function HomeCard({
   badge?: ReactNode;
   /** The part opens later in the study: its lock line replaces the body. */
   locked?: string;
+  /** What the part will hold once it opens, said under the lock line without any of its figures. */
+  lockedNote?: string;
   foot?: ReactNode;
   children?: ReactNode;
   className?: string;
@@ -162,10 +188,13 @@ export function HomeCard({
         {sub && <p className={cls.sub}>{sub}</p>}
       </div>
       {locked ? (
-        <p className={cls.lockLine}>
-          <LockClosed16Regular aria-hidden="true" />
-          {locked}
-        </p>
+        <div className={cls.lockedBody}>
+          <span className={cls.lockIcon} aria-hidden="true">
+            <LockClosed20Regular />
+          </span>
+          <p className={cls.lockLine}>{locked}</p>
+          {lockedNote && <p className={cls.lockNote}>{lockedNote}</p>}
+        </div>
       ) : (
         children
       )}
@@ -193,31 +222,32 @@ export function workingDays(from: string, n = 10): string[] {
 
 /**
  * The deadline strip, for both roles: ten working days from today, today outlined, a day with a legal assessment
- * deadline filled, and under it whose deadline falls there. A date, never a countdown, and never a ranking.
+ * deadline filled, and under it whose deadline falls there. A date, never a countdown, and never a ranking. The cells
+ * are a picture for the eye; the sentence under them says every deadline in words, for everyone (3.5: a label on a list
+ * item is often not read).
  */
-export function DeadlineStrip({ today, due, label }: { today: string; due: { date: string; names: string[] }[]; label: string }) {
+export function DeadlineStrip({ today, due, empty }: { today: string; due: { date: string; names: string[] }[]; empty: string }) {
   const cls = useStyles();
   const { s, lang } = useLang();
   const days = workingDays(today);
   const weekday = (iso: string) => WEEKDAY[lang][new Date(`${iso}T12:00:00Z`).getUTCDay()];
   return (
     <>
-      <ol className={cls.days} aria-label={label}>
+      <ol className={cls.days} aria-hidden="true">
         {days.map((d) => {
           const isToday = d === today;
           const hit = due.find((x) => x.date === d);
-          const spoken = `${formatDayMonth(d, lang)}${isToday ? `, ${s('homeToday')}` : ''}${hit ? `, ${s('homeDeadlineFor', { names: hit.names.join(', ') })}` : ''}`;
           return (
-            <li key={d} className={mergeClasses(cls.dayCell, isToday && cls.dayToday)} aria-label={spoken} data-due={hit ? '' : undefined}>
-              <span aria-hidden="true">{isToday ? s('homeToday') : weekday(d)}</span>
-              <span className={mergeClasses(cls.dayNum, hit && cls.dayNumDue)} aria-hidden="true">
-                {Number(d.slice(8))}
-              </span>
+            <li key={d} className={mergeClasses(cls.dayCell, isToday && cls.dayToday)} data-due={hit ? '' : undefined}>
+              <span>{isToday ? s('homeToday') : weekday(d)}</span>
+              <span className={mergeClasses(cls.dayNum, hit && cls.dayNumDue)}>{Number(d.slice(8))}</span>
             </li>
           );
         })}
       </ol>
-      {due.length > 0 && <p className={cls.dueLine}>{due.map((x) => `${formatDayMonth(x.date, lang)}: ${x.names.join(', ')}`).join(' · ')}</p>}
+      <p className={cls.dueLine}>
+        {due.length > 0 ? due.map((x) => `${formatDayMonth(x.date, lang).replace(' ', '\u00a0')}: ${x.names.join(', ')}`).join(' · ') : empty}
+      </p>
     </>
   );
 }
@@ -239,7 +269,7 @@ export function Deadlines({ framed }: { framed?: boolean }) {
     byDate.set(d, [...(byDate.get(d) ?? []), cases[c].patient.name]);
   }
   const due = [...byDate.entries()].sort(([a], [b]) => a.localeCompare(b)).map(([date, names]) => ({ date, names }));
-  const strip = <DeadlineStrip today={DPS_TODAY} due={due} label={s('homeDaysLabel')} />;
+  const strip = <DeadlineStrip today={DPS_TODAY} due={due} empty={s('deadlinesNone')} />;
   if (!framed) return strip;
   return (
     <section className={mergeClasses(cls.card, cls.fill)} aria-labelledby={titleId} data-home-part="frister">

@@ -100,27 +100,30 @@ test('the start page before the tour: the next step and its one sheen, the day a
   // The GP's wave in a cell of its own beside the text (wide), never under it.
   await expect(hero.locator('[data-guide-image="home"]')).toHaveAttribute('data-guide-art', 'gp');
 
-  // The day around the study, and the parts that show outcomes locked until the three cases are done.
+  // The day around the study, as board 12a lays it out at a laptop's width (3.5), and the parts that show outcomes
+  // locked until the three cases are done.
   const parts = page.locator('[data-home-part]');
-  expect(await parts.evaluateAll((els) => els.map((el) => el.getAttribute('data-home-part')))).toEqual(['dag', 'henvisninger', 'monster', 'innboks', 'delt']);
+  expect(await parts.evaluateAll((els) => els.map((el) => el.getAttribute('data-home-part')))).toEqual(['tall', 'dag', 'innboks', 'henvisninger', 'monster', 'delt', 'kommende']);
   for (const part of ['monster', 'delt']) {
     await expect(page.locator(`[data-home-part="${part}"]`)).toHaveAttribute('data-locked', '');
     await expect(page.locator(`[data-home-part="${part}"]`)).toContainText('Åpnes når de tre sakene er ferdige.');
   }
   // One door per destination: no part opens anything by its frame, and no row opens a case.
   await expect(page.locator('[data-home-part] button, [data-home-part] a')).toHaveCount(0);
-  // The examples: one grey group per part that has them, labelled once.
-  await expect(page.locator('[data-examples]')).toHaveCount(2);
-  for (const group of await page.locator('[data-examples]').all()) await expect(group).toContainText('Eksempler på en vanlig dag, kan ikke åpnes i prototypen');
+  // The examples: one grey group per part that has them, labelled once (the day's tasks, the inbox, the referrals and
+  // what is coming up).
+  await expect(page.locator('[data-examples]')).toHaveCount(4);
+  for (const group of await page.locator('[data-examples]').all()) await expect(group).toContainText(/(Eksempler|eksempler), kan ikke åpnes i prototypen|Eksempler på en vanlig (dag|uke), kan ikke åpnes i prototypen/);
   // Nothing that the case's «with ATLAS» view adds: DPS's reply is a reply, and there are no reasons or rates.
   const text = (await page.locator('main').innerText()).replace(/\s+/g, ' ');
   expect(text).not.toContain('Retur med råd');
   expect(text).toContain('Svar fra DPS Skjærgården');
   expect(text).not.toMatch(/\d\s?%/);
-  // The day: the morning as a strip with «Nå» where the study's clock stands, and a line for the rest of the day.
+  // The day: the whole day as a strip from 08 to 16 (3.5, as 12a drew it), with «Nå» where the study's clock stands.
   await expect(page.locator('[data-day-now]')).toHaveText('Nå 08:52');
   await expect(page.locator('[data-day-item="kari"]')).toBeVisible();
-  await expect(page.locator('[data-home-part="dag"]')).toContainText('Resten av dagen: telefontid, øyeblikkelig hjelp og kontortid til kl. 16.');
+  await expect(page.locator('[data-home-part="dag"] [data-day-item="block-4"]')).toContainText('Kontortid');
+  await expect(page.locator('[data-home-part="dag"]').getByRole('list', { name: 'Dagen fra kl. 08 til 16' })).toBeVisible();
   // The inbox's dot means new: Kari's self-report and DPS's reply, newest first.
   await expect(page.locator('[data-home-part="innboks"]')).toContainText('2 nye');
 });
@@ -187,8 +190,14 @@ test('part 3: the start page opens the GP’s pattern and Delt oversikt, without
   await expect(pattern).not.toHaveAttribute('data-locked', '');
   await expect(pattern).toContainText('24');
   await expect(pattern).toContainText('Fiktive tall. Ingen sammenlikning med andre.');
+  // The referrals per quarter (12a), and the reasons given most often for a return: the GP's own history.
+  await expect(pattern.getByRole('figure', { name: 'Henvisninger per kvartal' })).toBeVisible();
+  await expect(pattern).toContainText('K1 2026');
+  await expect(pattern).toContainText('Oftest oppgitt ved retur: funksjonsnedgang for kort varighet og utilstrekkelig informasjon, i tre av fem hver.');
   const shared = page.locator('[data-home-part="delt"]');
-  await expect(shared).toContainText('Siste endring i kriteriene, 16. februar');
+  // The changes to the criteria on a short line, the latest said in words; never the area's rates.
+  await expect(shared.getByRole('list', { name: 'Endringer i kriteriene' }).getByRole('listitem')).toHaveCount(3);
+  await expect(shared).toContainText('16. februar: Ved spørsmål om ADHD hos voksne ser inntaket nå etter opplysninger om symptomer før 12 års alder.');
   await expect(shared).toContainText('Tid fra mottak til vurdering, median: 8 virkedager');
   expect(await shared.innerText()).not.toMatch(/\d\s?%/);
   // «Se mønsteret» opens the view the tour showed, and closing it gives focus back.
@@ -213,8 +222,17 @@ test('the role chooses the artwork: the organza where the role is chosen, the co
   await expect(page.locator('[data-start-hero] [data-guide-image]')).toHaveAttribute('data-guide-art', 'dps');
   // One artwork per screen.
   await expect(page.locator('main [data-guide-image]')).toHaveCount(1);
-  // DPS's start page: the intake, the messages and Delt oversikt (locked), and no outcome before the cases.
-  expect(await page.locator('[data-home-part]').evaluateAll((els) => els.map((el) => el.getAttribute('data-home-part')))).toEqual(['inntak', 'meldinger', 'delt']);
+  // DPS's start page (3.5): the key figures, the intake and its deadlines, the day, the messages, what is coming up and
+  // Delt oversikt (locked), and no outcome before the cases.
+  expect(await page.locator('[data-home-part]').evaluateAll((els) => els.map((el) => el.getAttribute('data-home-part')))).toEqual([
+    'tall',
+    'inntak',
+    'frister',
+    'dag',
+    'meldinger',
+    'kommende',
+    'delt',
+  ]);
   await expect(page.locator('[data-home-part="inntak"]')).toContainText('Mottatt 17. mars · vurderingsfrist 31. mars');
   await expect(page.locator('[data-start-hero] [data-to-list], [data-start-hero] [data-start-tour]')).toHaveCount(1);
 });

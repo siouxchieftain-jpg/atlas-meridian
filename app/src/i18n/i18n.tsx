@@ -99,6 +99,22 @@ export function formatDayMonth(iso: string, lang: Lang): string {
   return fmt(lang, { day: 'numeric', month: 'long' }).format(toDate(iso));
 }
 
+/** «torsdag 19. mars» / "Thursday 19 March": a day in the coming week, where the year goes without saying. */
+export function formatWeekdayDayMonth(iso: string, lang: Lang): string {
+  return fmt(lang, { weekday: 'long', day: 'numeric', month: 'long' }).format(toDate(iso));
+}
+
+const MONTH_SHORT: Record<Lang, string[]> = {
+  nb: ['jan.', 'feb.', 'mars', 'apr.', 'mai', 'juni', 'juli', 'aug.', 'sep.', 'okt.', 'nov.', 'des.'],
+  en: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+};
+
+/** «feb. 2026» / "Feb 2026": a month on a short time line, written the same in every browser. */
+export function formatMonthShort(iso: string, lang: Lang): string {
+  const d = toDate(iso);
+  return `${MONTH_SHORT[lang][d.getUTCMonth()]} ${d.getUTCFullYear()}`;
+}
+
 export function weekdayOf(iso: string): number {
   return toDate(iso).getUTCDay();
 }

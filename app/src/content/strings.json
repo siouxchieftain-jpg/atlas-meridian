@@ -856,8 +856,8 @@
     "en": "{{n}} days later"
   },
   "dayLater": {
-    "nb": "Resten av dagen: {{list}} til kl. {{to}}.",
-    "en": "The rest of the day: {{list}} until {{to}}:00."
+    "nb": "Én dag senere",
+    "en": "One day later"
   },
   "you": {
     "nb": "Du",
@@ -2695,10 +2695,6 @@
     "nb": "viser en vanlig dag og kan ikke åpnes i prototypen",
     "en": "shows an ordinary day and cannot be opened in the prototype"
   },
-  "homeDeadlineFor": {
-    "nb": "vurderingsfrist for {{names}}",
-    "en": "assessment deadline for {{names}}"
-  },
   "listSortedGp": {
     "nb": "Sortert etter klokkeslett.",
     "en": "Sorted by time."
@@ -2947,17 +2943,13 @@
     "nb": "Dagen",
     "en": "Your day"
   },
-  "daySub": {
-    "nb": "{{date}} · {{n}} timer · {{m}} med henvisningssak",
-    "en": "{{date}} · {{n}} appointments · {{m}} with a referral case"
-  },
   "dayNowSpoken": {
     "nb": "Klokka er {{time}} i studiens dag.",
     "en": "It is {{time}} in the study’s day."
   },
   "dayLabel": {
-    "nb": "Formiddagen fra kl. 08 til 12:30",
-    "en": "The morning from 08:00 to 12:30"
+    "nb": "Dagen fra kl. 08 til 16",
+    "en": "The day from 08:00 to 16:00"
   },
   "dayListLabel": {
     "nb": "Dagen fra kl. 08 til 16",
@@ -3206,10 +3198,6 @@
   "homeDeadlinesTitle": {
     "nb": "Frister",
     "en": "Deadlines"
-  },
-  "homeDaysLabel": {
-    "nb": "Virkedagene fram til fristen",
-    "en": "The working days up to the deadline"
   },
   "homeToday": {
     "nb": "i dag",
@@ -3814,5 +3802,237 @@
   "studyCardReady": {
     "nb": "Du er klar. Start med {{name}}.",
     "en": "You are ready. Start with {{name}}."
+  },
+  "figuresTitle": {
+    "nb": "Nøkkeltall",
+    "en": "Key figures"
+  },
+  "figHoursLabel": {
+    "nb": "Timer i dag",
+    "en": "Appointments today"
+  },
+  "figHoursUnit": {
+    "nb": "timer",
+    "en": "appointments"
+  },
+  "figHoursSub": {
+    "nb": "{{m}} med henvisningssak · første kl. {{time}}",
+    "en": "{{m}} with a referral case · first at {{time}}"
+  },
+  "figNewUnitOne": {
+    "nb": "ny",
+    "en": "new"
+  },
+  "figNewUnitMany": {
+    "nb": "nye",
+    "en": "new"
+  },
+  "figNoneNew": {
+    "nb": "Ingen nye",
+    "en": "Nothing new"
+  },
+  "figAllRead": {
+    "nb": "Alt er lest",
+    "en": "All read"
+  },
+  "figInboxSubBoth": {
+    "nb": "Svar fra DPS og en selvrapport",
+    "en": "A reply from DPS and a self-report"
+  },
+  "figInboxSubReply": {
+    "nb": "Svar fra DPS",
+    "en": "A reply from DPS"
+  },
+  "figRefLabel": {
+    "nb": "Henvisninger til DPS",
+    "en": "Referrals to DPS"
+  },
+  "figRefUnit": {
+    "nb": "venter på svar",
+    "en": "awaiting a reply"
+  },
+  "figRefSubAsked": {
+    "nb": "DPS ber om mer informasjon i én",
+    "en": "DPS asks for more information on one"
+  },
+  "figDeadlineLabel": {
+    "nb": "Neste vurderingsfrist",
+    "en": "Next assessment deadline"
+  },
+  "figDeadlineSub": {
+    "nb": "{{name}}, mottatt av DPS {{date}}",
+    "en": "{{name}}, received by DPS on {{date}}"
+  },
+  "figDpsRefLabel": {
+    "nb": "Henvisningene i dag",
+    "en": "Today’s referrals"
+  },
+  "figDpsRefUnit": {
+    "nb": "henvisninger",
+    "en": "referrals"
+  },
+  "figDpsMsgSub": {
+    "nb": "Fra henvisende fastlege",
+    "en": "From the referring GP"
+  },
+  "figNoOpen": {
+    "nb": "Ingen åpne",
+    "en": "None open"
+  },
+  "figDpsDeadlineNone": {
+    "nb": "De nye henvisningene i studien er vurdert",
+    "en": "The new referrals in the study have been assessed"
+  },
+  "figMeetingLabel": {
+    "nb": "Inntaksmøte",
+    "en": "Intake meeting"
+  },
+  "figMeetingValue": {
+    "nb": "kl. {{time}}",
+    "en": "{{time}}"
+  },
+  "todosLabel": {
+    "nb": "Gjøremål i dag: eksempler, kan ikke åpnes i prototypen",
+    "en": "Today’s tasks: examples, cannot be opened in the prototype"
+  },
+  "dpsDayNote": {
+    "nb": "Samtalene og resten av dagen er eksempler. Henvisningene åpner du fra Mottatte henvisninger.",
+    "en": "The sessions and the rest of the day are examples. You open the referrals from Received referrals."
+  },
+  "dpsLegendCase": {
+    "nb": "Henvisningene i studien",
+    "en": "The referrals in the study"
+  },
+  "dpsLegendRoutine": {
+    "nb": "Pasientsamtaler",
+    "en": "Patient sessions"
+  },
+  "refColPatient": {
+    "nb": "Pasient",
+    "en": "Patient"
+  },
+  "refColSent": {
+    "nb": "Sendt",
+    "en": "Sent"
+  },
+  "refColWhere": {
+    "nb": "Hvor den er",
+    "en": "Where it stands"
+  },
+  "refColStatus": {
+    "nb": "Status",
+    "en": "Status"
+  },
+  "refSentOn": {
+    "nb": "Sendt {{date}}",
+    "en": "Sent {{date}}"
+  },
+  "refWhereReceived": {
+    "nb": "Mottatt {{date}}, ikke vurdert ennå",
+    "en": "Received {{date}}, not assessed yet"
+  },
+  "refWhereAsked": {
+    "nb": "Mottatt {{received}}, DPS spurte {{asked}}",
+    "en": "Received {{received}}, DPS asked on {{asked}}"
+  },
+  "refWhereAssessed": {
+    "nb": "Vurdert {{date}}",
+    "en": "Assessed {{date}}"
+  },
+  "refStatusDeadline": {
+    "nb": "Vurderingsfrist {{date}}",
+    "en": "Assessment deadline {{date}}"
+  },
+  "refStatusAsked": {
+    "nb": "DPS ber om mer informasjon",
+    "en": "DPS asks for more information"
+  },
+  "refStatusReply": {
+    "nb": "Svar fra DPS",
+    "en": "Reply from DPS"
+  },
+  "refDeadlinesTitle": {
+    "nb": "Fristene de neste ti virkedagene",
+    "en": "Deadlines in the next ten working days"
+  },
+  "refDeadlinesNote": {
+    "nb": "Fristen er ti virkedager etter at DPS har mottatt henvisningen. Den er en dato, ikke en nedtelling, og rangerer ikke pasientene.",
+    "en": "The deadline is ten working days after DPS has received the referral. It is a date, not a countdown, and does not rank the patients."
+  },
+  "quarterSpoken": {
+    "nb": "{{label}}: {{n}} henvisninger",
+    "en": "{{label}}: {{n}} referrals"
+  },
+  "patternMostReturnedOne": {
+    "nb": "Oftest oppgitt ved retur: {{reasons}}, i {{n}} av {{total}}.",
+    "en": "Given most often for a return: {{reasons}}, in {{n}} of {{total}}."
+  },
+  "patternMostReturnedMany": {
+    "nb": "Oftest oppgitt ved retur: {{reasons}}, i {{n}} av {{total}} hver.",
+    "en": "Given most often for a return: {{reasons}}, in {{n}} of {{total}} each."
+  },
+  "sharedChanges": {
+    "nb": "Endringer i kriteriene",
+    "en": "Changes to the criteria"
+  },
+  "sharedNoGps": {
+    "nb": "Ingen enkeltfastleger vises.",
+    "en": "No individual GPs are shown."
+  },
+  "upcomingTitle": {
+    "nb": "Kommende",
+    "en": "Coming up"
+  },
+  "upcomingSub": {
+    "nb": "Resten av uka og neste uke",
+    "en": "The rest of this week and next week"
+  },
+  "upcomingExamples": {
+    "nb": "Eksempler på en vanlig uke, kan ikke åpnes i prototypen",
+    "en": "Examples of an ordinary week, cannot be opened in the prototype"
+  },
+  "upcomingWhen": {
+    "nb": "{{day}}, kl. {{time}}",
+    "en": "{{day}}, {{time}}"
+  },
+  "lockedNotePattern": {
+    "nb": "Dine egne henvisninger til DPS og svarene på dem, kvartal for kvartal.",
+    "en": "Your own referrals to DPS and the replies to them, quarter by quarter."
+  },
+  "lockedNoteSharedGp": {
+    "nb": "Endringene i kriteriene, dialogen med DPS og tiden til vurdering.",
+    "en": "The changes to the criteria, the dialogue with DPS and the time to an assessment."
+  },
+  "lockedNoteSharedDps": {
+    "nb": "Endringene i kriteriene, dialogen med fastlegene og tiden til vurdering.",
+    "en": "The changes to the criteria, the dialogue with the GPs and the time to an assessment."
+  },
+  "figDpsWithMessage": {
+    "nb": "{{n}} med en melding fra fastlegen",
+    "en": "{{n}} with a message from the GP"
+  },
+  "figDpsDoneOne": {
+    "nb": "1 ferdig",
+    "en": "1 done"
+  },
+  "figDpsDoneMany": {
+    "nb": "{{n}} ferdige",
+    "en": "{{n}} done"
+  },
+  "figDpsAllDone": {
+    "nb": "Alle tre er ferdige",
+    "en": "All three are done"
+  },
+  "figuresNote": {
+    "nb": "Tallene teller med eksemplene på en vanlig dag.",
+    "en": "The figures include the examples of an ordinary day."
+  },
+  "quarterSoFar": {
+    "nb": "hittil",
+    "en": "so far"
+  },
+  "deadlinesNone": {
+    "nb": "Ingen åpne frister i studien.",
+    "en": "No open deadlines in the study."
   }
 }
