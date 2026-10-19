@@ -3,11 +3,12 @@ import {
   ArrowReply20Regular,
   ArrowRight16Regular,
   ArrowRight20Regular,
-  CalendarClock20Regular,
+  ArrowForward20Regular,
   CalendarLtr20Regular,
   Chat20Regular,
   CheckmarkCircle16Filled,
   ClipboardPulse20Regular,
+  Clock20Regular,
   Document20Regular,
   DocumentEdit20Regular,
   Form20Regular,
@@ -15,7 +16,6 @@ import {
   Map16Regular,
   PeopleTeam20Regular,
   Pill20Regular,
-  Send20Regular,
   Video20Regular,
   WeatherMoon20Regular,
 } from '@fluentui/react-icons';
@@ -216,7 +216,15 @@ const useStyles = makeStyles({
   where: { display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: '4px', minWidth: 0 },
   whereText: { ...typographyStyles.caption1, color: tokens.colorNeutralForeground2 },
   stages: { position: 'relative', display: 'inline-flex', alignItems: 'center', gap: '8px', paddingBlock: '2px' },
-  stagesLine: { position: 'absolute', left: '5px', right: '5px', top: '50%', height: '1px', backgroundColor: tokens.colorNeutralStroke1 },
+  stagesLine: {
+    position: 'absolute',
+    left: '5px',
+    right: '5px',
+    top: '50%',
+    height: '1px',
+    backgroundColor: tokens.colorNeutralStroke1,
+    '@media (forced-colors: active)': { forcedColorAdjust: 'none', backgroundColor: 'CanvasText' },
+  },
   stage: {
     position: 'relative',
     width: '10px',
@@ -289,7 +297,15 @@ const useStyles = makeStyles({
   // Delt oversikt's changes to the criteria on a short line, oldest to latest, the latest filled.
   changesWrap: { position: 'relative', paddingBlockStart: '2px' },
   changes: { position: 'relative', listStyle: 'none', margin: 0, padding: 0, display: 'grid', gridTemplateColumns: 'repeat(3, minmax(0, 1fr))' },
-  changesLine: { position: 'absolute', left: '5px', right: '5px', top: '7px', height: '1px', backgroundColor: tokens.colorNeutralStroke1 },
+  changesLine: {
+    position: 'absolute',
+    left: '5px',
+    right: '5px',
+    top: '7px',
+    height: '1px',
+    backgroundColor: tokens.colorNeutralStroke1,
+    '@media (forced-colors: active)': { forcedColorAdjust: 'none', backgroundColor: 'CanvasText' },
+  },
   change: { position: 'relative', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '6px', minWidth: 0 },
   changeFirst: { alignItems: 'flex-start' },
   changeLast: { alignItems: 'flex-end' },
@@ -714,7 +730,7 @@ function GpFigures() {
     },
     {
       key: 'henvisninger',
-      icon: <Send20Regular />,
+      icon: <ArrowForward20Regular />,
       label: s('figRefLabel'),
       num: String(waiting.length),
       unit: s('figRefUnit'),
@@ -722,7 +738,7 @@ function GpFigures() {
     },
     {
       key: 'frist',
-      icon: <CalendarClock20Regular />,
+      icon: <Clock20Regular />,
       label: s('figDeadlineLabel'),
       text: formatDayMonth(next.deadline!, lang),
       sub: s('figDeadlineSub', { name: next.name, date: formatDayMonth(next.received, lang) }),
@@ -760,7 +776,7 @@ function DpsFigures() {
     },
     {
       key: 'frist',
-      icon: <CalendarClock20Regular />,
+      icon: <Clock20Regular />,
       label: s('figDeadlineLabel'),
       text: first ? formatDayMonth(first, lang) : s('figNoOpen'),
       sub: first
@@ -1051,7 +1067,7 @@ function DayList({ items, legend }: { items: DayItem[]; legend: DayLegend }) {
 const TODO_ICON: Record<DayTodo['icon'], ReactNode> = {
   pill: <Pill20Regular />,
   certificate: <DocumentEdit20Regular />,
-  calendar: <CalendarClock20Regular />,
+  calendar: <CalendarLtr20Regular />,
   letter: <Document20Regular />,
   chat: <Chat20Regular />,
   people: <PeopleTeam20Regular />,
