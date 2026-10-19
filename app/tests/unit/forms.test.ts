@@ -36,7 +36,7 @@ describe('locked context', () => {
       studienavn: 'Rolig elg 27',
       steg: 'S3-etter',
       vignett: 'V1',
-      versjon: expect.stringMatching(/^3\.4\.0-/),
+      versjon: expect.stringMatching(/^3\.4\.1-/),
     });
   });
 

@@ -185,9 +185,27 @@ const useStyles = makeStyles({
     paddingBlockEnd: tokens.spacingVerticalS,
     ':focus': { outline: 'none' },
   },
-  // A flex column, so a page can reach down to the footer when it is shorter than the window (ATLAS 3.3).
-  content: { flexGrow: 1, minWidth: 0, maxWidth: `${size.contentMax}px`, width: '100%', display: 'flex', flexDirection: 'column' },
-  notice: { maxWidth: `${size.contentMax}px`, paddingBlockStart: `${size.panelInset}px`, '@media print': { display: 'none' } },
+  // A flex column, so a page can reach down to the footer when it is shorter than the window (ATLAS 3.3). On a screen
+  // wider than the column it sits in the middle of the window, with the notice and the footer on the same axis (G-39).
+  content: {
+    flexGrow: 1,
+    minWidth: 0,
+    maxWidth: `${size.contentMax}px`,
+    width: '100%',
+    marginLeft: 'auto',
+    marginRight: 'auto',
+    display: 'flex',
+    flexDirection: 'column',
+  },
+  notice: {
+    maxWidth: `${size.contentMax}px`,
+    width: '100%',
+    marginLeft: 'auto',
+    marginRight: 'auto',
+    boxSizing: 'border-box',
+    paddingBlockStart: `${size.panelInset}px`,
+    '@media print': { display: 'none' },
+  },
   footer: {
     ...typographyStyles.caption1,
     color: tokens.colorNeutralForeground3,
@@ -200,6 +218,9 @@ const useStyles = makeStyles({
     columnGap: tokens.spacingHorizontalXXXL,
     rowGap: tokens.spacingVerticalM,
     maxWidth: `${size.contentMax}px`,
+    width: '100%',
+    marginLeft: 'auto',
+    marginRight: 'auto',
     boxSizing: 'border-box',
   },
   footerText: { display: 'flex', flexDirection: 'column', gap: '2px', maxWidth: '960px', minWidth: 0, flex: '1 1 480px' },
@@ -377,7 +398,9 @@ export function AppShell({
         <div className={cls.mainCol}>
           <main id="main" tabIndex={-1} className={cls.main}>
             {notice && <div className={cls.notice}>{notice}</div>}
-            <div className={cls.content}>{children}</div>
+            <div className={cls.content} data-content-column="">
+              {children}
+            </div>
           </main>
           {footer}
         </div>
