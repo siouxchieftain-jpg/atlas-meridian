@@ -26,7 +26,6 @@ import {
   CommentEdit20Regular,
   DataPie20Filled,
   DataPie20Regular,
-  DesignIdeas20Regular,
   Info20Regular,
   Map20Filled,
   Map20Regular,
@@ -262,7 +261,6 @@ function ReviewShell() {
     { key: 'how', label: s('helpHowItWorks'), icon: <QuestionCircle20Regular />, dialog: { title: s('helpHowItWorks'), body: <Paragraphs items={[s('reviewHow1'), s('reviewHow2'), s('reviewHow3'), s('reviewHow4'), s('reviewHow5')]} /> } },
     { key: 'glossary', label: s('helpGlossary'), icon: <BookOpen20Regular />, dialog: { title: s('helpGlossary'), body: <GlossaryBody />, wide: true } },
     { key: 'about', label: s('helpAboutPrototype'), icon: <Info20Regular />, dialog: { title: s('helpAboutPrototype'), body: <AboutReview /> } },
-    { key: 'meridian', label: s('helpMeridian'), icon: <DesignIdeas20Regular />, href: './meridian/' },
   ];
 
   const form = host.form;
@@ -611,11 +609,6 @@ function Landing() {
       <div>
         <Link href="#/studie?forhandsvisning">{s('reviewTryStudy')}</Link>
         <Muted>{s('reviewTryStudyNote')}</Muted>
-      </div>
-      <div>
-        <Link href="./meridian/" target="_blank" rel="noopener">
-          {s('meridianLink')}
-        </Link>
       </div>
     </IntroPage>
   );
