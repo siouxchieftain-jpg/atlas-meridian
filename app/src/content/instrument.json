@@ -2459,8 +2459,8 @@
               },
               "options": [
                 {
-                  "nb": "Stå ved returen",
-                  "en": "Stand by the return",
+                  "nb": "Stå ved returen slik den er",
+                  "en": "Stand by the return as it is",
                   "code": "sta_ved_returen"
                 },
                 {
@@ -2615,8 +2615,8 @@
               },
               "options": [
                 {
-                  "nb": "Stå ved returen",
-                  "en": "Stand by the return",
+                  "nb": "Stå ved returen slik den er",
+                  "en": "Stand by the return as it is",
                   "code": "sta_ved_returen"
                 },
                 {

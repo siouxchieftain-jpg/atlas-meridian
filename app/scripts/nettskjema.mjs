@@ -30,7 +30,8 @@ import { fileURLToPath } from 'node:url';
 
 const here = dirname(fileURLToPath(import.meta.url));
 const app = join(here, '..');
-const instrument = JSON.parse(readFileSync(join(app, 'src/content/instrument.json'), 'utf8'));
+// ATLAS_INSTRUMENT points the script at another instrument file; the unit tests use it to check the hold on a copy.
+const instrument = JSON.parse(readFileSync(process.env.ATLAS_INSTRUMENT || join(app, 'src/content/instrument.json'), 'utf8'));
 const configPath = join(app, 'public/atlas-config.json');
 
 const SITE = 'https://siouxchieftain-jpg.github.io/atlas-meridian/';
@@ -106,8 +107,7 @@ const draftsAllowed = () => rest.includes('--drafts');
 function heldForDrafts(form) {
   const ids = draftItems(form);
   if (!ids.length || draftsAllowed()) return false;
-  console.log(`${pad(form.key, 12)} holds wording or choices waiting for the owner's ruling (${ids.join(', ')}): left as it is; rule them first, or pass --drafts`);
-  process.exitCode = 1;
+  console.log(`${pad(form.key, 12)} holds wording or choices waiting for the owner's ruling: ${ids.join(', ')}`);
   return true;
 }
 
@@ -393,7 +393,15 @@ async function plan() {
  */
 function formsToWorkOn() {
   const only = flag('only')?.split(',').map((s) => s.trim());
-  return roundForms().filter((f) => !only || only.includes(f.key)).filter((f) => !heldForDrafts(f));
+  const forms = roundForms().filter((f) => !only || only.includes(f.key));
+  // All or nothing: if any form named is held, none is changed, so a set never ends half one version and half another.
+  const held = forms.filter((f) => heldForDrafts(f));
+  if (held.length) {
+    console.log(`Nothing was changed. Rule the items above first (then remove their «draft» marks), or pass --drafts to change the forms anyway.`);
+    process.exitCode = 1;
+    return [];
+  }
+  return forms;
 }
 
 async function create() {
@@ -478,7 +486,9 @@ async function verify() {
   for (const form of roundForms()) {
     const id = formIdOf(addressOf(cfg, form.key));
     if (!id) {
-      console.log(`${pad(form.key, 12)} no address yet`);
+      // A form without an address would show «ikke klart ennå» in its step, so verify fails on it.
+      bad++;
+      console.log(`${pad(form.key, 12)} no address yet: use create`);
       continue;
     }
     const problems = await verifyForm(c, form, id);

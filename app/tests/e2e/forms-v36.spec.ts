@@ -26,7 +26,7 @@ const DECISION: Record<Role, Record<Case, { q: RegExp; options: string[] }>> = {
   'dps-kliniker': {
     kari: { q: /^Hvordan ville du vurdert henvisningen\?/, options: ['Be om mer informasjon', 'Rett til helsehjelp', 'Retur med råd', 'Ikke bestemt'] },
     erlend: { q: /^Hvordan ville du vurdert henvisningen\?/, options: ['Be om mer informasjon', 'Rett til helsehjelp', 'Retur med råd', 'Ikke bestemt'] },
-    astrid: { q: /^Hva ville du svart fastlegen\?/, options: ['Stå ved returen', 'Be om en ny henvisning', 'Vurdere henvisningen på nytt', 'Ikke svare nå', 'Ikke bestemt'] },
+    astrid: { q: /^Hva ville du svart fastlegen\?/, options: ['Stå ved returen slik den er', 'Be om en ny henvisning', 'Vurdere henvisningen på nytt', 'Ikke svare nå', 'Ikke bestemt'] },
   },
 };
 

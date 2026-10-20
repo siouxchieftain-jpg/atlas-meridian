@@ -103,8 +103,8 @@ describe('the decision without and with ATLAS (I-1)', () => {
   it('asks DPS in Astrid\'s case what they would answer the GP, with choices that do not overlap, as a draft', () => {
     const d = item('S5.dps', 'D-V4-D1');
     expect(d.text.nb).toBe('Hva ville du svart fastlegen?');
-    expect(nb(d)).toEqual(['Stå ved returen', 'Be om en ny henvisning', 'Vurdere henvisningen på nytt', 'Ikke svare nå', 'Ikke bestemt']);
-    expect(d.options?.map((o) => o.en)).toEqual(['Stand by the return', 'Ask for a new referral', 'Reassess the referral', 'Not reply for now', 'Not decided']);
+    expect(nb(d)).toEqual(['Stå ved returen slik den er', 'Be om en ny henvisning', 'Vurdere henvisningen på nytt', 'Ikke svare nå', 'Ikke bestemt']);
+    expect(d.options?.map((o) => o.en)).toEqual(['Stand by the return as it is', 'Ask for a new referral', 'Reassess the referral', 'Not reply for now', 'Not decided']);
     expect(d.options?.map((o) => o.code)).toEqual(['sta_ved_returen', 'ny_henvisning', 'vurdere_pa_nytt', 'ikke_svare', 'ikke_bestemt']);
     expect(d.draft).toBe(true);
   });
@@ -245,22 +245,43 @@ describe('the form script holds a form back until its items are ruled, and repai
     for (const key of ['S1', 'S6', 'S7.fastlege', 'S8', 'S9', 'R1', 'R2']) expect(m.draftItems(form(key)), key).toEqual([]);
   });
 
-  it('holds back a form with an unruled item before reading any credential or sending anything', async () => {
+  it('holds back every form a run names when one holds an unruled item, before reading any credential or sending anything', async () => {
     const { spawnSync } = await import('node:child_process');
     const { join } = await import('node:path');
-    // Vitest runs in app/.
+    const { mkdtempSync, writeFileSync } = await import('node:fs');
+    const { tmpdir } = await import('node:os');
+    // Vitest runs in app/. A copy of the instrument with one item in S6 marked as waiting, so the check does not depend on
+    // which of 3.6's items have been ruled.
     const script = join(process.cwd(), 'scripts', 'nettskjema.mjs');
+    const copy = JSON.parse(JSON.stringify(instrument)) as typeof instrument;
+    const s6 = copy.forms.find((f) => f.key === 'S6')!;
+    s6.pages[0].items.find((it) => it.id === 'E-01')!.draft = true;
+    for (const f of copy.forms) for (const p of f.pages) for (const it of p.items) if (f.key !== 'S6') delete it.draft;
+    const file = join(mkdtempSync(join(tmpdir(), 'atlas-hold-')), 'instrument.json');
+    writeFileSync(file, JSON.stringify(copy));
+    // No credentials file exists at this path: a run that got past the hold would stop on it, saying so.
+    const env = { ...process.env, ATLAS_INSTRUMENT: file, NETTSKJEMA_CREDENTIALS: '/nonexistent/atlas.json' };
+    const run = (args: string[]) => spawnSync(process.execPath, [script, ...args], { encoding: 'utf8', env });
     for (const mode of ['create', 'update']) {
-      // No credentials file exists at this path: a run that got past the hold would stop on it, saying so.
-      const run = spawnSync(process.execPath, [script, mode, '--round', 'pilot', '--only', 'S3.dps,S2.fastlege'], {
-        encoding: 'utf8',
-        env: { ...process.env, NETTSKJEMA_CREDENTIALS: '/nonexistent/atlas.json' },
-      });
-      expect(run.status, mode).toBe(1);
-      expect(run.stdout, mode).toContain("S3.dps       holds wording or choices waiting for the owner's ruling (D-V1-D1, D-V1-D2)");
-      expect(run.stdout, mode).toContain('S2.fastlege  holds wording or choices waiting');
-      expect(run.stderr, mode).not.toContain('credentials');
+      const held = run([mode, '--round', 'pilot', '--only', 'S8,S6']);
+      expect(held.status, mode).toBe(1);
+      expect(held.stdout, mode).toContain("S6           holds wording or choices waiting for the owner's ruling: E-01");
+      expect(held.stdout, mode).toContain('Nothing was changed.');
+      // S8 has nothing waiting, yet it is not touched either: no credential was read for it.
+      expect(held.stderr, mode).not.toContain('credentials');
+      // Without the held form the run goes on, and stops only at the missing credentials.
+      const free = run([mode, '--round', 'pilot', '--only', 'S8']);
+      expect(free.stdout + free.stderr, mode).toContain('no credentials file');
     }
+  });
+
+  it('marks as waiting, in the real instrument, every 3.6 item and the four DPS drafts from before (deviation 5)', async () => {
+    const m = await load();
+    const waiting = Object.fromEntries(instrument.forms.map((f) => [f.key, m.draftItems(f)]).filter(([, ids]) => ids.length));
+    expect(Object.keys(waiting).sort()).toEqual(['S2.dps', 'S2.fastlege', 'S3.dps', 'S3.fastlege', 'S4.dps', 'S4.fastlege', 'S5.dps', 'S5.fastlege']);
+    expect(waiting['S2.dps']).toContain('C1-04');
+    expect(waiting['S4.dps']).toEqual(expect.arrayContaining(['D-V3-01', 'D-V3-02']));
+    expect(waiting['S5.dps']).toContain('D-V4-02');
   });
 
   it('sets the codebook names and the named answer codes Nettskjema did not keep, «vet_ikke» among them', async () => {
