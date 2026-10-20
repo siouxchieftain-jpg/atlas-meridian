@@ -1,4 +1,4 @@
-# Test, check, build and publish ATLAS v3 with its Meridian pages to GitHub Pages.
+# Test, check, build and publish ATLAS v3 to GitHub Pages.
 # The site changes only when every check passes. While the repository is private the
 # publish job is skipped: GitHub Pages on a free plan needs a public repository.
 # A pull request to main runs every check and publishes nothing, and so does a run started by hand on another branch.
@@ -94,7 +94,7 @@ jobs:
             app/test-results
           retention-days: 7
 
-      # The app at the root and meridian/ beside it, with React served from the site.
+      # The site is the built app; the design files stay in the repository (3.5.2).
       - name: Assemble the site
         run: npm run site
 

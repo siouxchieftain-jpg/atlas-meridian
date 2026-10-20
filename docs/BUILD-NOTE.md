@@ -1,13 +1,13 @@
 # Build note
 
-ATLAS v3.5.1 is a research prototype for referrals from GPs (fastleger) to specialist mental health services (DPS) in Norway, built for a formative evaluation. All patients, clinicians and figures in it are fictional. This note says what was built and how. [PLAN.md](PLAN.md) lists the screens, the steps and the forms; [MERIDIAN-1.1.md](MERIDIAN-1.1.md) gives the design rules the build added to Meridian.
+ATLAS v3.5.2 is a research prototype for referrals from GPs (fastleger) to specialist mental health services (DPS) in Norway, built for a formative evaluation. All patients, clinicians and figures in it are fictional. This note says what was built and how. [PLAN.md](PLAN.md) lists the screens, the steps and the forms; [MERIDIAN-1.1.md](MERIDIAN-1.1.md) gives the design rules the build added to Meridian.
 
 ## What the site holds
 
 - **The app** at the site's address. Study mode opens there. Review mode has its own address, which goes to reviewers directly; study mode never links to it.
 - **`sendt.html`**, the page Nettskjema's receipt button leads to when a form was answered in a new tab. It records in the browser that the step was sent and leads back to the study, where the participant was (its link carries `?kvittering`, so it does not ask «Ikke deg?»). A receipt that names its form (`sendt.html?skjema=S3`) marks only that step; the feedback form's receipt (`?skjema=S9`) marks none and offers to close its tab, with no link back into ATLAS (a second ATLAS in that tab could open a case form twice). The form script writes the name into every receipt and `verify` checks it; a receipt without the name marks the step that is waiting, as in v3.
 - **`informasjonsskriv.html`**, the information letter, in Norwegian and English (the language ATLAS is set to opens first), with a PDF of each language (`informasjonsskriv.pdf`, `information-letter.pdf`) printed from the page by `npm run letter`. The script drives an installed browser over the DevTools protocol, with nothing to install; the published PDFs are printed with Microsoft Edge on Windows, so they carry Segoe UI, and they are tagged, with an outline and «Side x av y» on every page. Velkommen links to the letter, and S1's consent («Jeg har lest informasjonsskrivet og vil delta») refers to it.
-- **`meridian/`**, the Meridian design language as exported from the design tool, linked from review mode only. On the site its two React files are served from the site itself and checked against the integrity hashes the export pins (`app/scripts/assemble-site.mjs`); the copy in the repository is unchanged.
+- The design files under **`meridian/`** stay in the repository and are not published: since 3.5.2 the site is the app alone, and nothing in it names or links to them (`app/scripts/assemble-site.mjs`).
 
 ## Stack
 

@@ -71,10 +71,6 @@
     "nb": "Start ufullførte steg på nytt",
     "en": "Restart unfinished steps"
   },
-  "helpMeridian": {
-    "nb": "Meridian, designsystemet",
-    "en": "Meridian, the design system"
-  },
   "language": {
     "nb": "Språk",
     "en": "Language"
@@ -2266,10 +2262,6 @@
   "showWithAtlas": {
     "nb": "Vis med ATLAS",
     "en": "Show with ATLAS"
-  },
-  "meridianLink": {
-    "nb": "Meridian, designsystemet",
-    "en": "Meridian, the design system"
   },
   "playedLabel": {
     "nb": "Spilt i gjennomgangen",
