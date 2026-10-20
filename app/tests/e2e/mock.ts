@@ -8,9 +8,9 @@ import type { BrowserContext, Page } from '@playwright/test';
  * forms have three pages (B1, the stop page, the rest). No request ever
  * leaves the test.
  */
-export const STUDY_KEYS = ['S1', 'S2.fastlege', 'S2.dps', 'S3', 'S4.fastlege', 'S4.dps', 'S5.fastlege', 'S5.dps', 'S6', 'S7.fastlege', 'S8', 'S9'];
+export const STUDY_KEYS = ['S1', 'S2.fastlege', 'S2.dps', 'S3.fastlege', 'S3.dps', 'S4.fastlege', 'S4.dps', 'S5.fastlege', 'S5.dps', 'S6', 'S7.fastlege', 'S8', 'S9'];
 export const FORM_KEYS = [...STUDY_KEYS, 'R1', 'R2'];
-const THREE_PAGES = new Set(['S3', 'S4.fastlege', 'S4.dps', 'S5.fastlege', 'S5.dps']);
+const THREE_PAGES = new Set(['S3.fastlege', 'S3.dps', 'S4.fastlege', 'S4.dps', 'S5.fastlege', 'S5.dps']);
 
 export interface MockOptions {
   /** Form keys whose first send fails with "submitFailed". */

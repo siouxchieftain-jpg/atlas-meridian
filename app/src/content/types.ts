@@ -396,7 +396,8 @@ export type FormKey =
   | 'S1'
   | 'S2.fastlege'
   | 'S2.dps'
-  | 'S3'
+  | 'S3.fastlege'
+  | 'S3.dps'
   | 'S4.fastlege'
   | 'S4.dps'
   | 'S5.fastlege'
@@ -431,6 +432,11 @@ export interface InstrumentItem {
   text: T;
   options?: T[];
   anchors?: { low: T; high: T };
+  /**
+   * An agreement scale with one more choice, «Vet ikke» (3.6, I-18): the label of that choice. Nettskjema's linear
+   * scale has no such choice, so the form gets a row of single choices, 1 to 7 and this one (codebook value «vet_ikke»).
+   */
+  dontKnow?: T;
   required: boolean;
   /** Free text shows «Ikke skriv opplysninger om pasienter eller andre personer.» above it. */
   privacyLine?: boolean;

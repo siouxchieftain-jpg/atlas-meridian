@@ -95,16 +95,16 @@ test('a GP completes the whole study on the panel route, with the right locked v
 
   const sent = await submissions(page);
   const steg = Object.fromEntries(sent.map((s) => [s.key, s.fields.steg]));
-  expect(steg).toEqual({ S1: 'S1', S3: 'S3', 'S4.fastlege': 'S4', 'S5.fastlege': 'S5', 'S2.fastlege': 'S2', S6: 'S6' });
+  expect(steg).toEqual({ S1: 'S1', 'S3.fastlege': 'S3', 'S4.fastlege': 'S4', 'S5.fastlege': 'S5', 'S2.fastlege': 'S2', S6: 'S6' });
   // The order of the forms is the v3.1 order: the overall impression after the cases.
-  expect(sent.map((s) => s.key)).toEqual(['S1', 'S3', 'S4.fastlege', 'S5.fastlege', 'S2.fastlege', 'S6']);
+  expect(sent.map((s) => s.key)).toEqual(['S1', 'S3.fastlege', 'S4.fastlege', 'S5.fastlege', 'S2.fastlege', 'S6']);
   for (const s of sent) {
     expect(s.fields.rolle).toBe('Fastlege');
     expect(s.fields.intervju).toBe('Nei');
-    expect(s.fields.versjon).toMatch(/^3\.5\.1-/);
+    expect(s.fields.versjon).toMatch(/^3\.6\.0-/);
     expect(s.fields.versjon).not.toMatch(/-pilot$/);
   }
-  expect(sent.find((s) => s.key === 'S3')?.fields.vignett).toBe('V1');
+  expect(sent.find((s) => s.key === 'S3.fastlege')?.fields.vignett).toBe('V1');
   expect(sent.find((s) => s.key === 'S4.fastlege')?.fields.vignett).toBe('V3');
   expect(sent.find((s) => s.key === 'S5.fastlege')?.fields.vignett).toBe('V4');
   expect(sent.find((s) => s.key === 'S1')?.fields.vignett).toBeUndefined();

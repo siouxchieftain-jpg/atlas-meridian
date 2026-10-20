@@ -1,4 +1,4 @@
-// Builds the 14 Nettskjema forms from src/content/instrument.json through the Nettskjema API v3, the same
+// Builds the 15 Nettskjema forms from src/content/instrument.json through the Nettskjema API v3, the same
 // file the build sheet and the app's preview forms come from.
 //
 //   node scripts/nettskjema.mjs plan     what would be created; no login, nothing is sent
@@ -96,6 +96,22 @@ function options(it) {
 }
 
 function itemElement(it) {
+  if (it.dontKnow) {
+    // Nettskjema's linear scale has no «Vet ikke» (I-18, 3.6): one row of single choices, the scale's points and «Vet ikke»,
+    // with the anchors under the English text. «Vet ikke» is coded vet_ikke, so it never counts as a point on the scale.
+    if (it.type !== 'agree7' || !it.anchors) throw new Error(`«Vet ikke» is built only on an agreement scale with anchors (${it.id})`);
+    const [min, max] = SCALES[it.type];
+    const points = Array.from({ length: max - min + 1 }, (_, i) => String(min + i));
+    const q = question(it, 'RADIO', {
+      isHorizontal: true,
+      answerOptions: [
+        ...points.map((n, i) => ({ sequence: i + 1, text: n, externalAnswerOptionId: n })),
+        { sequence: points.length + 1, text: both(it.dontKnow), externalAnswerOptionId: 'vet_ikke' },
+      ],
+    });
+    q.description += para(`${min}: ${both(it.anchors.low)}. ${max}: ${both(it.anchors.high)}.`);
+    return q;
+  }
   if (it.type in SCALES) {
     const [min, max] = SCALES[it.type];
     return question(it, 'LINEAR_SCALE', {

@@ -1,6 +1,6 @@
 # Build note
 
-ATLAS v3.5.1 is a research prototype for referrals from GPs (fastleger) to specialist mental health services (DPS) in Norway, built for a formative evaluation. All patients, clinicians and figures in it are fictional. This note says what was built and how. [PLAN.md](PLAN.md) lists the screens, the steps and the forms; [MERIDIAN-1.1.md](MERIDIAN-1.1.md) gives the design rules the build added to Meridian.
+ATLAS v3.6.0 is a research prototype for referrals from GPs (fastleger) to specialist mental health services (DPS) in Norway, built for a formative evaluation. All patients, clinicians and figures in it are fictional. This note says what was built and how. [PLAN.md](PLAN.md) lists the screens, the steps and the forms; [MERIDIAN-1.1.md](MERIDIAN-1.1.md) gives the design rules the build added to Meridian.
 
 ## What the site holds
 
@@ -40,7 +40,7 @@ ATLAS v3.5.1 is a research prototype for referrals from GPs (fastleger) to speci
 - `sources.json` lists the 303 texts reused from the earlier ATLAS prototype and the project's own documents, with where each came from and any declared substitution (for example a changed fictional name). The content check confirms that each still reproduces the text the app shows.
 - Every clinical fact written new for v3 is listed for a clinician's check in [CLINICIAN-CHECK.md](CLINICIAN-CHECK.md).
 - `app/public/atlas-config.json` holds the Nettskjema addresses, the information letter's address and the contact lines. The app reads it at run time.
-- `app/scripts/nettskjema.mjs` makes the 14 Nettskjema forms from `instrument.json` through the Nettskjema API (`plan`, `create`, `update`, `verify`, `status`), writes their addresses into `atlas-config.json` and reads each form back to check it against the instrument. With `--round pilot` it works on the pilot set instead: a copy of the twelve study forms, titled «(pilot)», whose addresses go under `pilotForms`. `open --until YYYY-MM-DD` and `close` set a set's open period (opening the study set also needs `--study`), and `status` shows answers and whether each form is open. The API client's ID and secret, and the editor's Nettskjema username, stay in a file outside the repo. The forms are made closed; `open` gives a set its open period (or the owner does it in Nettskjema).
+- `app/scripts/nettskjema.mjs` makes the 15 Nettskjema forms from `instrument.json` through the Nettskjema API (`plan`, `create`, `update`, `verify`, `status`), writes their addresses into `atlas-config.json` and reads each form back to check it against the instrument. With `--round pilot` it works on the pilot set instead: a copy of the thirteen study forms, titled «(pilot)», whose addresses go under `pilotForms`. `open --until YYYY-MM-DD` and `close` set a set's open period (opening the study set also needs `--study`), and `status` shows answers and whether each form is open. The API client's ID and secret, and the editor's Nettskjema username, stay in a file outside the repo. The forms are made closed; `open` gives a set its open period (or the owner does it in Nettskjema).
 
 ## Study mode and the forms
 

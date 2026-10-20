@@ -34,7 +34,8 @@ const USE = {
   S1: 'Step S1, both roles',
   'S2.fastlege': 'Step S2 (after the three cases), GPs',
   'S2.dps': 'Step S2 (after the three cases), DPS participants',
-  S3: 'Step S3 (V1 Kari), both roles',
+  'S3.fastlege': 'Step S3 (V1 Kari), GPs',
+  'S3.dps': 'Step S3 (V1 Kari), DPS participants',
   'S4.fastlege': 'Step S4 (V3 Erlend), GPs',
   'S4.dps': 'Step S4 (V3 Erlend), DPS participants',
   'S5.fastlege': 'Step S5 (V4 Astrid), GPs',
@@ -50,7 +51,11 @@ const USE = {
 const cell = (s) => String(s).replace(/\|/g, '\\|').replace(/\n+/g, ' ');
 const both = (t) => (t ? `${t.nb} / ${t.en}` : '');
 
+/** The Nettskjema element for an item: a scale with «Vet ikke» is a row of single choices (I-18, 3.6). */
+const typeOf = (item) => (item.dontKnow ? 'Flervalg (én), in one row: 1 to 7, then «Vet ikke»' : TYPE[item.type] ?? item.type);
+
 function scale(item) {
+  if (item.dontKnow) return `1 to 7: ${both(item.anchors.low)} … ${both(item.anchors.high)}; then ${both(item.dontKnow)}, coded \`vet_ikke\``;
   const range = { agree7: '1 to 7', confidence7: '1 to 7', helpful7: '1 to 7', nps11: '0 to 10', clarity5: '1 to 5' }[item.type];
   if (range && item.anchors) return `${range}: ${both(item.anchors.low)} … ${both(item.anchors.high)}`;
   if (range) return range;
@@ -75,6 +80,7 @@ push(
   `- At the top of every form: «${instrument.consentLine.nb}» / "${instrument.consentLine.en}", and «${instrument.privacyLine.nb}» / "${instrument.privacyLine.en}".`,
   `- Above every long text question: «${instrument.privacyLine.nb}» / "${instrument.privacyLine.en}".`,
   '- Long text answers take at most 3,800 characters.',
+  '- The options of a single choice («Flervalg») are coded 1, 2, 3 and on, in the order listed; «Vet ikke» after a scale is coded `vet_ikke`.',
   `- «Melding på kvitteringsside etter levert svar»: the form's receipt text below, then a button back to the site, written as Nettskjema documents it: \`<div><a class="receipt-link-as-button" href="${SITE}sendt.html?skjema=<step>" rel="noopener noreferrer">Tilbake til ATLAS</a></div>\`, where \`<step>\` is the form's step (\`S1\` to \`S9\`; both versions of S2 name \`S2\`). \`sendt.html\` marks the step it names as sent, when that step is the one waiting, and leads back to the study; S9's receipt marks no step and offers to close its tab. \`node scripts/nettskjema.mjs verify\` checks the link. Check in the pilot that Nettskjema keeps the button.`,
   '- A closing date.',
   `- Locked fields: one «Tekstsvar» per field, under the heading «${instrument.lockedHeading.nb}» / "${instrument.lockedHeading.en}". ATLAS fills and locks each from the form's address (\`CB<codebook>=<value>&LCK<codebook>=true\`); in the panel the address also carries \`embed=1\`.`,
@@ -83,7 +89,7 @@ push(
   '',
   '## The pilot set',
   '',
-  'The pilot answers into a copy of the twelve study forms (S1 to S9, not R1 and R2), titled «(pilot)»: `node scripts/nettskjema.mjs create --round pilot` makes them and writes their addresses under `pilotForms` in `app/public/atlas-config.json`. While that file says `"round": "pilot"`, the app opens these forms, and every `versjon` ends in `-pilot`, so no pilot answer lands in a study form.',
+  'The pilot answers into a copy of the thirteen study forms (S1 to S9, not R1 and R2), titled «(pilot)»: `node scripts/nettskjema.mjs create --round pilot` makes them and writes their addresses under `pilotForms` in `app/public/atlas-config.json`. While that file says `"round": "pilot"`, the app opens these forms, and every `versjon` ends in `-pilot`, so no pilot answer lands in a study form.',
   '',
   '## Locked values',
   '',
@@ -100,7 +106,7 @@ push(
   '',
   '## The case forms (S3, S4, S5)',
   '',
-  'Each case form has three pages. Page 1 holds B1, marked «Obligatorisk». Page 2 is the stop page: text only, no question (check in the pilot that a page with text only is allowed). The last page opens with the check item «Har du arbeidet med denne saken i ATLAS før du svarer på denne siden?» (also required), then B2 and the rest. Check in the pilot whether the back button can be turned off on the last page.',
+  'Each case form has three pages, and each case has one form per role, so each role sees its own choices (Nettskjema cannot route on a locked field). Page 1 holds the decision item (D1: what the clinician would do, in the role\'s and the case\'s words, ending with «Ikke bestemt»), then B1, both marked «Obligatorisk». Page 2 is the stop page: text only, no question (check in the pilot that a page with text only is allowed). The last page opens with the check item «Har du arbeidet med denne saken i ATLAS før du svarer på denne siden?» (also required), then the decision item again (D2, the same words and choices) and B2, then the rest. Check in the pilot whether the back button can be turned off on the last page.',
   '',
   '## Forms',
 );
@@ -121,7 +127,7 @@ for (const form of instrument.forms) {
       const req = it.type === 'locked' || it.type === 'stop' ? '' : it.required ? 'Obligatorisk' : 'No';
       const note = it.draft ? ' (DPS wording, a draft for the owner\'s approval)' : '';
       const text = `${both(it.text)}${note}`;
-      push(`| ${cell(it.id)} | \`${it.codebook}\` | ${TYPE[it.type] ?? it.type} | ${req} | ${cell(text)} | ${cell(scale(it))} |`);
+      push(`| ${cell(it.id)} | \`${it.codebook}\` | ${typeOf(it)} | ${req} | ${cell(text)} | ${cell(scale(it))} |`);
     }
   });
   push('', `- **Receipt:** «${form.receipt.nb}» / "${form.receipt.en}"`);

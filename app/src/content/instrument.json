@@ -348,6 +348,26 @@
               "required": false
             },
             {
+              "id": "C1-06",
+              "type": "agree7",
+              "codebook": "c1_06",
+              "text": {
+                "nb": "Det var tydelig for meg når jeg kunne støtte meg på det ATLAS viste, og når jeg burde holde meg til min egen vurdering.",
+                "en": "It was clear to me when I could rely on what ATLAS showed, and when I should keep to my own judgement."
+              },
+              "anchors": {
+                "low": {
+                  "nb": "Helt uenig",
+                  "en": "Strongly disagree"
+                },
+                "high": {
+                  "nb": "Helt enig",
+                  "en": "Strongly agree"
+                }
+              },
+              "required": false
+            },
+            {
               "id": "C1-05",
               "type": "longtext",
               "codebook": "c1_05",
@@ -427,6 +447,10 @@
                   "en": "Strongly agree"
                 }
               },
+              "dontKnow": {
+                "nb": "Vet ikke",
+                "en": "Don't know"
+              },
               "required": false
             },
             {
@@ -454,8 +478,8 @@
               "type": "longtext",
               "codebook": "c3_03",
               "text": {
-                "nb": "Hvordan vurderer du evnen ATLAS har til å ivareta behovene til den andre siden (fastleger eller spesialister)? Hva fungerer? Hva mangler? (1-3 setninger)",
-                "en": "How do you assess ATLAS's ability to serve the needs of the other side (GPs or specialists)? What works? What is missing? (1-3 sentences)"
+                "nb": "Hvordan vurderer du evnen ATLAS har til å ivareta behovene til den andre siden (fastleger eller spesialister)? Hva fungerer? Hva mangler? (1-3 setninger) Har du ikke grunnlag for å vurdere det, skriv «Vet ikke».",
+                "en": "How do you assess ATLAS's ability to serve the needs of the other side (GPs or specialists)? What works? What is missing? (1-3 sentences) If you have no basis for judging it, write ‘Don't know’."
               },
               "required": true,
               "privacyLine": true
@@ -488,7 +512,7 @@
                 "nb": "Forklar vurderingen din (1-3 setninger). Hva ville gjøre det lettere eller vanskeligere å bruke dette i din hverdag?",
                 "en": "Please explain your rating (1-3 sentences). What would make it easier or harder to use this in your daily practice?"
               },
-              "required": false,
+              "required": true,
               "privacyLine": true
             },
             {
@@ -570,7 +594,7 @@
                 "nb": "Hva ville denne tilbakemeldingen bety for din praksis over tid? (1-3 setninger)",
                 "en": "What would this feedback mean for your practice over time? (1-3 sentences)"
               },
-              "required": false,
+              "required": true,
               "privacyLine": true
             }
           ]
@@ -656,8 +680,8 @@
               "type": "agree7",
               "codebook": "c1_01",
               "text": {
-                "nb": "ATLAS gir meg informasjon som kan hjelpe meg å ta mer kalibrerte henvisningsbeslutninger over tid.",
-                "en": "ATLAS provides information that could help me make more calibrated referral decisions over time."
+                "nb": "ATLAS gir meg informasjon som kan hjelpe meg å gjøre mer kalibrerte vurderinger av henvisninger over tid.",
+                "en": "ATLAS provides information that could help me make more calibrated assessments of referrals over time."
               },
               "anchors": {
                 "low": {
@@ -669,7 +693,8 @@
                   "en": "Strongly agree"
                 }
               },
-              "required": false
+              "required": false,
+              "draft": true
             },
             {
               "id": "C1-02",
@@ -731,6 +756,26 @@
               },
               "required": false,
               "draft": true
+            },
+            {
+              "id": "C1-06",
+              "type": "agree7",
+              "codebook": "c1_06",
+              "text": {
+                "nb": "Det var tydelig for meg når jeg kunne støtte meg på det ATLAS viste, og når jeg burde holde meg til min egen vurdering.",
+                "en": "It was clear to me when I could rely on what ATLAS showed, and when I should keep to my own judgement."
+              },
+              "anchors": {
+                "low": {
+                  "nb": "Helt uenig",
+                  "en": "Strongly disagree"
+                },
+                "high": {
+                  "nb": "Helt enig",
+                  "en": "Strongly agree"
+                }
+              },
+              "required": false
             },
             {
               "id": "C1-05",
@@ -812,6 +857,10 @@
                   "en": "Strongly agree"
                 }
               },
+              "dontKnow": {
+                "nb": "Vet ikke",
+                "en": "Don't know"
+              },
               "required": false
             },
             {
@@ -839,8 +888,8 @@
               "type": "longtext",
               "codebook": "c3_03",
               "text": {
-                "nb": "Hvordan vurderer du evnen ATLAS har til å ivareta behovene til den andre siden (fastleger eller spesialister)? Hva fungerer? Hva mangler? (1-3 setninger)",
-                "en": "How do you assess ATLAS's ability to serve the needs of the other side (GPs or specialists)? What works? What is missing? (1-3 sentences)"
+                "nb": "Hvordan vurderer du evnen ATLAS har til å ivareta behovene til den andre siden (fastleger eller spesialister)? Hva fungerer? Hva mangler? (1-3 setninger) Har du ikke grunnlag for å vurdere det, skriv «Vet ikke».",
+                "en": "How do you assess ATLAS's ability to serve the needs of the other side (GPs or specialists)? What works? What is missing? (1-3 sentences) If you have no basis for judging it, write ‘Don't know’."
               },
               "required": true,
               "privacyLine": true
@@ -873,7 +922,7 @@
                 "nb": "Forklar vurderingen din (1-3 setninger). Hva ville gjøre det lettere eller vanskeligere å bruke dette i din hverdag?",
                 "en": "Please explain your rating (1-3 sentences). What would make it easier or harder to use this in your daily practice?"
               },
-              "required": false,
+              "required": true,
               "privacyLine": true
             },
             {
@@ -932,8 +981,8 @@
               "type": "agree7",
               "codebook": "c_cucf_01",
               "text": {
-                "nb": "Tilbakemeldingene om henvisningsutfall ville hjelpe meg å kalibrere mine fremtidige beslutninger.",
-                "en": "The feedback on referral outcomes would help me calibrate my future decisions."
+                "nb": "Oversikten over henvisninger og utfall i opptaksområdet ville hjelpe meg å kalibrere mine fremtidige vurderinger.",
+                "en": "The overview of referrals and outcomes in the catchment area would help me calibrate my future assessments."
               },
               "anchors": {
                 "low": {
@@ -945,18 +994,20 @@
                   "en": "Strongly agree"
                 }
               },
-              "required": false
+              "required": false,
+              "draft": true
             },
             {
               "id": "C-CUCF-02",
               "type": "longtext",
               "codebook": "c_cucf_02",
               "text": {
-                "nb": "Hva ville denne tilbakemeldingen bety for din praksis over tid? (1-3 setninger)",
-                "en": "What would this feedback mean for your practice over time? (1-3 sentences)"
+                "nb": "Hva ville denne oversikten bety for hvordan du vurderer henvisninger over tid? (1-3 setninger)",
+                "en": "What would this overview mean for how you assess referrals over time? (1-3 sentences)"
               },
-              "required": false,
-              "privacyLine": true
+              "required": true,
+              "privacyLine": true,
+              "draft": true
             }
           ]
         }
@@ -967,7 +1018,7 @@
       }
     },
     {
-      "key": "S3",
+      "key": "S3.fastlege",
       "title": {
         "nb": "Kari",
         "en": "Kari"
@@ -987,6 +1038,30 @@
       "pages": [
         {
           "items": [
+            {
+              "id": "D-V1-D1",
+              "type": "choice",
+              "codebook": "d_v1_d1",
+              "text": {
+                "nb": "Hva ville du gjort nå?",
+                "en": "What would you do now?"
+              },
+              "options": [
+                {
+                  "nb": "Beholde pasienten i allmennpraksis",
+                  "en": "Keep the patient in general practice"
+                },
+                {
+                  "nb": "Henvise til DPS",
+                  "en": "Refer to DPS"
+                },
+                {
+                  "nb": "Ikke bestemt",
+                  "en": "Not decided"
+                }
+              ],
+              "required": true
+            },
             {
               "id": "D-V1-B1",
               "type": "confidence7",
@@ -1106,6 +1181,319 @@
               "required": true
             },
             {
+              "id": "D-V1-D2",
+              "type": "choice",
+              "codebook": "d_v1_d2",
+              "text": {
+                "nb": "Hva ville du gjort nå?",
+                "en": "What would you do now?"
+              },
+              "options": [
+                {
+                  "nb": "Beholde pasienten i allmennpraksis",
+                  "en": "Keep the patient in general practice"
+                },
+                {
+                  "nb": "Henvise til DPS",
+                  "en": "Refer to DPS"
+                },
+                {
+                  "nb": "Ikke bestemt",
+                  "en": "Not decided"
+                }
+              ],
+              "required": true
+            },
+            {
+              "id": "D-V1-B2",
+              "type": "confidence7",
+              "codebook": "d_v1_b2",
+              "text": {
+                "nb": "Hvor sikker er du på din beslutning med ATLAS?",
+                "en": "How confident are you in your decision with ATLAS?"
+              },
+              "anchors": {
+                "low": {
+                  "nb": "Svært usikker",
+                  "en": "Very uncertain"
+                },
+                "high": {
+                  "nb": "Svært sikker",
+                  "en": "Very confident"
+                }
+              },
+              "required": true
+            },
+            {
+              "id": "D-V1-DS",
+              "type": "longtext",
+              "codebook": "d_v1_ds",
+              "text": {
+                "nb": "Var det tydelig for deg hva som er dine egne vurderinger versus hva systemet viser?",
+                "en": "Was it clear to you what are your own assessments versus what the system displays?"
+              },
+              "required": false,
+              "privacyLine": true
+            },
+            {
+              "id": "D-V1-01",
+              "type": "longtext",
+              "codebook": "d_v1_01",
+              "text": {
+                "nb": "Ville ATLAS endre din beslutning, din sikkerhet, eller dine informasjonsbehov sammenlignet med dagens praksis? (1-3 setninger)",
+                "en": "Would ATLAS change your decision, confidence, or information needs compared to current practice? (1-3 sentences)"
+              },
+              "required": true,
+              "privacyLine": true
+            },
+            {
+              "id": "D-V1-02",
+              "type": "longtext",
+              "codebook": "d_v1_02",
+              "text": {
+                "nb": "Hva konkret ved ATLAS utgjorde forskjellen (eller mislyktes)? Hva mangler? (1-3 setninger)",
+                "en": "What specifically about ATLAS made the difference (or failed)? What is missing? (1-3 sentences)"
+              },
+              "required": true,
+              "privacyLine": true
+            },
+            {
+              "id": "D-V1-03",
+              "type": "longtext",
+              "codebook": "d_v1_03",
+              "text": {
+                "nb": "Ville usikkerhetsvisningen endre hvordan du håndterer denne pasienten?",
+                "en": "Would the uncertainty display change how you handle this patient?"
+              },
+              "required": false,
+              "privacyLine": true
+            },
+            {
+              "id": "D-V1-04",
+              "type": "helpful7",
+              "codebook": "d_v1_04",
+              "text": {
+                "nb": "Samlet nytteverdi av ATLAS for dette scenariet.",
+                "en": "Overall helpfulness of ATLAS for this scenario."
+              },
+              "anchors": {
+                "low": {
+                  "nb": "Ikke nyttig",
+                  "en": "Not helpful"
+                },
+                "high": {
+                  "nb": "Svært nyttig",
+                  "en": "Very helpful"
+                }
+              },
+              "required": false
+            }
+          ]
+        }
+      ],
+      "receipt": {
+        "nb": "Takk, svarene er sendt. Gå tilbake til ATLAS for å fortsette.",
+        "en": "Thank you, the answers have been sent. Go back to ATLAS to continue."
+      }
+    },
+    {
+      "key": "S3.dps",
+      "title": {
+        "nb": "Kari",
+        "en": "Kari"
+      },
+      "intro": {
+        "nb": "Dette skjemaet handler om saken til Kari: første side besvares med bare saken på skjermen, resten når ATLAS ber deg om det. Kritikk er like nyttig som ros. Ved å sende skjemaet samtykker du i at de anonyme svarene brukes i forskningsprosjektet.",
+        "en": "This form is about Kari's case: the first page is answered with only the case on screen, the rest when ATLAS asks you to. Criticism is as useful as praise. By sending the form, you consent to the anonymous answers being used in the research project."
+      },
+      "locked": [
+        "rolle",
+        "intervju",
+        "studienavn",
+        "steg",
+        "vignett",
+        "versjon"
+      ],
+      "pages": [
+        {
+          "items": [
+            {
+              "id": "D-V1-D1",
+              "type": "choice",
+              "codebook": "d_v1_d1",
+              "text": {
+                "nb": "Hvordan ville du vurdert henvisningen?",
+                "en": "How would you assess the referral?"
+              },
+              "options": [
+                {
+                  "nb": "Be om mer informasjon",
+                  "en": "Request more information"
+                },
+                {
+                  "nb": "Rett til helsehjelp",
+                  "en": "Right to health care"
+                },
+                {
+                  "nb": "Retur med råd",
+                  "en": "Return with advice"
+                },
+                {
+                  "nb": "Ikke bestemt",
+                  "en": "Not decided"
+                }
+              ],
+              "required": true,
+              "draft": true
+            },
+            {
+              "id": "D-V1-B1",
+              "type": "confidence7",
+              "codebook": "d_v1_b1",
+              "text": {
+                "nb": "Hvor sikker er du på din beslutning uten ATLAS?",
+                "en": "How confident are you in your decision without ATLAS?"
+              },
+              "anchors": {
+                "low": {
+                  "nb": "Svært usikker",
+                  "en": "Very uncertain"
+                },
+                "high": {
+                  "nb": "Svært sikker",
+                  "en": "Very confident"
+                }
+              },
+              "required": true
+            },
+            {
+              "id": "rolle",
+              "type": "locked",
+              "codebook": "rolle",
+              "text": {
+                "nb": "Rolle",
+                "en": "Role"
+              },
+              "required": false
+            },
+            {
+              "id": "intervju",
+              "type": "locked",
+              "codebook": "intervju",
+              "text": {
+                "nb": "Deltok du i et intervju i dette forskningsprosjektet?",
+                "en": "Did you take part in an interview in this research project?"
+              },
+              "required": false
+            },
+            {
+              "id": "studienavn",
+              "type": "locked",
+              "codebook": "studienavn",
+              "text": {
+                "nb": "Studienavn",
+                "en": "Study name"
+              },
+              "required": false
+            },
+            {
+              "id": "steg",
+              "type": "locked",
+              "codebook": "steg",
+              "text": {
+                "nb": "Steg",
+                "en": "Step"
+              },
+              "required": false
+            },
+            {
+              "id": "vignett",
+              "type": "locked",
+              "codebook": "vignett",
+              "text": {
+                "nb": "Vignett",
+                "en": "Vignette"
+              },
+              "required": false
+            },
+            {
+              "id": "versjon",
+              "type": "locked",
+              "codebook": "versjon",
+              "text": {
+                "nb": "Versjon",
+                "en": "Version"
+              },
+              "required": false
+            }
+          ]
+        },
+        {
+          "items": [
+            {
+              "id": "STOPP-V1",
+              "type": "stop",
+              "codebook": "stopp",
+              "text": {
+                "nb": "Stopp her. Gå tilbake til ATLAS og trykk på Vis ATLAS. Gå videre først når ATLAS ber deg om det. Ikke gå tilbake og endre side 1.",
+                "en": "Stop here. Go back to ATLAS and press Show ATLAS. Continue only when ATLAS asks you to. Do not go back and change page 1."
+              },
+              "required": false
+            }
+          ]
+        },
+        {
+          "items": [
+            {
+              "id": "E11-V1",
+              "type": "choice",
+              "codebook": "kontroll",
+              "text": {
+                "nb": "Har du arbeidet med denne saken i ATLAS før du svarer på denne siden?",
+                "en": "Have you worked on this case in ATLAS before answering this page?"
+              },
+              "options": [
+                {
+                  "nb": "Ja",
+                  "en": "Yes"
+                },
+                {
+                  "nb": "Nei",
+                  "en": "No"
+                }
+              ],
+              "required": true
+            },
+            {
+              "id": "D-V1-D2",
+              "type": "choice",
+              "codebook": "d_v1_d2",
+              "text": {
+                "nb": "Hvordan ville du vurdert henvisningen?",
+                "en": "How would you assess the referral?"
+              },
+              "options": [
+                {
+                  "nb": "Be om mer informasjon",
+                  "en": "Request more information"
+                },
+                {
+                  "nb": "Rett til helsehjelp",
+                  "en": "Right to health care"
+                },
+                {
+                  "nb": "Retur med råd",
+                  "en": "Return with advice"
+                },
+                {
+                  "nb": "Ikke bestemt",
+                  "en": "Not decided"
+                }
+              ],
+              "required": true,
+              "draft": true
+            },
+            {
               "id": "D-V1-B2",
               "type": "confidence7",
               "codebook": "d_v1_b2",
@@ -1219,6 +1607,30 @@
         {
           "items": [
             {
+              "id": "D-V3-D1",
+              "type": "choice",
+              "codebook": "d_v3_d1",
+              "text": {
+                "nb": "Hva ville du gjort nå?",
+                "en": "What would you do now?"
+              },
+              "options": [
+                {
+                  "nb": "Beholde pasienten i allmennpraksis",
+                  "en": "Keep the patient in general practice"
+                },
+                {
+                  "nb": "Henvise til DPS",
+                  "en": "Refer to DPS"
+                },
+                {
+                  "nb": "Ikke bestemt",
+                  "en": "Not decided"
+                }
+              ],
+              "required": true
+            },
+            {
               "id": "D-V3-B1",
               "type": "confidence7",
               "codebook": "d_v3_b1",
@@ -1332,6 +1744,30 @@
                 {
                   "nb": "Nei",
                   "en": "No"
+                }
+              ],
+              "required": true
+            },
+            {
+              "id": "D-V3-D2",
+              "type": "choice",
+              "codebook": "d_v3_d2",
+              "text": {
+                "nb": "Hva ville du gjort nå?",
+                "en": "What would you do now?"
+              },
+              "options": [
+                {
+                  "nb": "Beholde pasienten i allmennpraksis",
+                  "en": "Keep the patient in general practice"
+                },
+                {
+                  "nb": "Henvise til DPS",
+                  "en": "Refer to DPS"
+                },
+                {
+                  "nb": "Ikke bestemt",
+                  "en": "Not decided"
                 }
               ],
               "required": true
@@ -1428,6 +1864,35 @@
         {
           "items": [
             {
+              "id": "D-V3-D1",
+              "type": "choice",
+              "codebook": "d_v3_d1",
+              "text": {
+                "nb": "Hvordan ville du vurdert henvisningen?",
+                "en": "How would you assess the referral?"
+              },
+              "options": [
+                {
+                  "nb": "Be om mer informasjon",
+                  "en": "Request more information"
+                },
+                {
+                  "nb": "Rett til helsehjelp",
+                  "en": "Right to health care"
+                },
+                {
+                  "nb": "Retur med råd",
+                  "en": "Return with advice"
+                },
+                {
+                  "nb": "Ikke bestemt",
+                  "en": "Not decided"
+                }
+              ],
+              "required": true,
+              "draft": true
+            },
+            {
               "id": "D-V3-B1",
               "type": "confidence7",
               "codebook": "d_v3_b1",
@@ -1546,6 +2011,35 @@
               "required": true
             },
             {
+              "id": "D-V3-D2",
+              "type": "choice",
+              "codebook": "d_v3_d2",
+              "text": {
+                "nb": "Hvordan ville du vurdert henvisningen?",
+                "en": "How would you assess the referral?"
+              },
+              "options": [
+                {
+                  "nb": "Be om mer informasjon",
+                  "en": "Request more information"
+                },
+                {
+                  "nb": "Rett til helsehjelp",
+                  "en": "Right to health care"
+                },
+                {
+                  "nb": "Retur med råd",
+                  "en": "Return with advice"
+                },
+                {
+                  "nb": "Ikke bestemt",
+                  "en": "Not decided"
+                }
+              ],
+              "required": true,
+              "draft": true
+            },
+            {
               "id": "D-V3-B2",
               "type": "confidence7",
               "codebook": "d_v3_b2",
@@ -1638,6 +2132,30 @@
       "pages": [
         {
           "items": [
+            {
+              "id": "D-V4-D1",
+              "type": "choice",
+              "codebook": "d_v4_d1",
+              "text": {
+                "nb": "Hva er planen videre?",
+                "en": "What is the plan from here?"
+              },
+              "options": [
+                {
+                  "nb": "Følge opp i allmennpraksis",
+                  "en": "Follow up in general practice"
+                },
+                {
+                  "nb": "Henvise på nytt",
+                  "en": "Refer again"
+                },
+                {
+                  "nb": "Ikke bestemt",
+                  "en": "Not decided"
+                }
+              ],
+              "required": true
+            },
             {
               "id": "D-V4-B1",
               "type": "confidence7",
@@ -1752,6 +2270,30 @@
                 {
                   "nb": "Nei",
                   "en": "No"
+                }
+              ],
+              "required": true
+            },
+            {
+              "id": "D-V4-D2",
+              "type": "choice",
+              "codebook": "d_v4_d2",
+              "text": {
+                "nb": "Hva er planen videre?",
+                "en": "What is the plan from here?"
+              },
+              "options": [
+                {
+                  "nb": "Følge opp i allmennpraksis",
+                  "en": "Follow up in general practice"
+                },
+                {
+                  "nb": "Henvise på nytt",
+                  "en": "Refer again"
+                },
+                {
+                  "nb": "Ikke bestemt",
+                  "en": "Not decided"
                 }
               ],
               "required": true
@@ -1859,6 +2401,35 @@
         {
           "items": [
             {
+              "id": "D-V4-D1",
+              "type": "choice",
+              "codebook": "d_v4_d1",
+              "text": {
+                "nb": "Hva ville du svart fastlegen?",
+                "en": "What would you answer the GP?"
+              },
+              "options": [
+                {
+                  "nb": "Stå ved returen",
+                  "en": "Stand by the return"
+                },
+                {
+                  "nb": "Åpne for en ny vurdering",
+                  "en": "Open the way to a new assessment"
+                },
+                {
+                  "nb": "Ikke svare nå",
+                  "en": "Not reply now"
+                },
+                {
+                  "nb": "Ikke bestemt",
+                  "en": "Not decided"
+                }
+              ],
+              "required": true,
+              "draft": true
+            },
+            {
               "id": "D-V4-B1",
               "type": "confidence7",
               "codebook": "d_v4_b1",
@@ -1977,6 +2548,35 @@
               "required": true
             },
             {
+              "id": "D-V4-D2",
+              "type": "choice",
+              "codebook": "d_v4_d2",
+              "text": {
+                "nb": "Hva ville du svart fastlegen?",
+                "en": "What would you answer the GP?"
+              },
+              "options": [
+                {
+                  "nb": "Stå ved returen",
+                  "en": "Stand by the return"
+                },
+                {
+                  "nb": "Åpne for en ny vurdering",
+                  "en": "Open the way to a new assessment"
+                },
+                {
+                  "nb": "Ikke svare nå",
+                  "en": "Not reply now"
+                },
+                {
+                  "nb": "Ikke bestemt",
+                  "en": "Not decided"
+                }
+              ],
+              "required": true,
+              "draft": true
+            },
+            {
               "id": "D-V4-B2",
               "type": "confidence7",
               "codebook": "d_v4_b2",
@@ -2001,8 +2601,8 @@
               "type": "longtext",
               "codebook": "d_v4_01",
               "text": {
-                "nb": "Endrer den strukturerte tilbakemeldingen din følelsesmessige respons på avslaget? Endrer den hvordan du svarer fastlegen? (1-3 setninger)",
-                "en": "Does the structured feedback change your emotional response to the rejection? Does it change how you answer the GP? (1-3 sentences)"
+                "nb": "Endrer den strukturerte tilbakemeldingen hvordan du ville svart fastlegen? (1-3 setninger)",
+                "en": "Does the structured feedback change how you would answer the GP? (1-3 sentences)"
               },
               "required": true,
               "privacyLine": true,

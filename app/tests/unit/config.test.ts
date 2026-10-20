@@ -10,7 +10,7 @@ describe('atlas-config.json', () => {
       vi.fn(async () =>
         new Response(
           JSON.stringify({
-            forms: { S1: '  https://nettskjema.no/a/111  ', S3: '', R1: '   ', R2: 42 },
+            forms: { S1: '  https://nettskjema.no/a/111  ', 'S3.dps': '', R1: '   ', R2: 42 },
             informationLetter: '   ',
             contact: { nb: ' ', en: '' },
           }),

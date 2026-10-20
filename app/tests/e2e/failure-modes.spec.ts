@@ -86,7 +86,7 @@ test('a vignette form sent whole before «Vis ATLAS» counts as sent, and is not
   await expect(page.locator('iframe[data-form-frame]')).toHaveCount(0);
   await page.getByRole('button', { name: 'Fortsett' }).click();
   await expect(page.getByText('Be om mer informasjon').first()).toBeVisible();
-  const s3 = (await submissions(page)).filter((s) => s.key === 'S3');
+  const s3 = (await submissions(page)).filter((s) => s.key === 'S3.fastlege');
   expect(s3).toHaveLength(1);
   expect(s3[0].fields.steg).toBe('S3');
 });

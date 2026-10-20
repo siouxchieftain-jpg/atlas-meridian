@@ -228,6 +228,8 @@ export function PreviewForm({
                     {range.map((n) => (
                       <Radio key={n} value={String(n)} label={String(n)} />
                     ))}
+                    {/* «Vet ikke» after the scale's last point, as the form shows it (3.6, I-18). */}
+                    {it.dontKnow && <Radio value={it.dontKnow.nb} label={t(it.dontKnow)} />}
                   </RadioGroup>
                 </Field>
                 {it.anchors && (

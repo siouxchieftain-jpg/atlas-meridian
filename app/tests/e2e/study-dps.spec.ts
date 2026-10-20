@@ -76,8 +76,8 @@ test('a DPS clinician completes the core study, with the GP marker shown only af
   await expect(page.getByRole('heading', { name: 'Hvorfor ATLAS ser slik ut' })).toBeVisible();
 
   const sent = await submissions(page);
-  expect(Object.fromEntries(sent.map((s) => [s.key, s.fields.steg]))).toEqual({ S1: 'S1', 'S2.dps': 'S2', S3: 'S3', 'S4.dps': 'S4', 'S5.dps': 'S5', S6: 'S6' });
-  expect(sent.map((s) => s.key)).toEqual(['S1', 'S3', 'S4.dps', 'S5.dps', 'S2.dps', 'S6']);
+  expect(Object.fromEntries(sent.map((s) => [s.key, s.fields.steg]))).toEqual({ S1: 'S1', 'S2.dps': 'S2', 'S3.dps': 'S3', 'S4.dps': 'S4', 'S5.dps': 'S5', S6: 'S6' });
+  expect(sent.map((s) => s.key)).toEqual(['S1', 'S3.dps', 'S4.dps', 'S5.dps', 'S2.dps', 'S6']);
   for (const s of sent) {
     expect(s.fields.rolle).toBe('DPS-inntak');
     expect(s.fields.intervju).toBe('Ja');
