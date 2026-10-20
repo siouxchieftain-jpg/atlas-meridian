@@ -1,6 +1,6 @@
 # Build note
 
-ATLAS v3.5.1 is a research prototype for referrals from GPs (fastleger) to specialist mental health services (DPS) in Norway, built for a formative evaluation. All patients, clinicians and figures in it are fictional. This note says what was built and how. [PLAN.md](PLAN.md) lists the screens, the steps and the forms; [MERIDIAN-1.1.md](MERIDIAN-1.1.md) gives the design rules the build added to Meridian.
+ATLAS v3.5.2 is a research prototype for referrals from GPs (fastleger) to specialist mental health services (DPS) in Norway, built for a formative evaluation. All patients, clinicians and figures in it are fictional. This note says what was built and how. [PLAN.md](PLAN.md) lists the screens, the steps and the forms; [MERIDIAN-1.1.md](MERIDIAN-1.1.md) gives the design rules the build added to Meridian.
 
 ## What the site holds
 
