@@ -150,6 +150,9 @@ async function inDialog(page: Page, opener: Locator, check: (win: Locator) => Pr
   await opener.click();
   const dlg = page.getByRole('dialog');
   await expect(dlg).toBeVisible();
+  // The dialog fades in over 250 ms. axe reads colours, and halfway through the fade «Lukk» (white on brand 80, 4.6:1)
+  // reads below 4.5:1, so wait until the dialog has finished opening.
+  await dlg.evaluate((el) => Promise.all(el.getAnimations({ subtree: true }).map((a) => a.finished)));
   await check(dlg.locator('[data-tour-frame]'));
   const r = await new AxeBuilder({ page })
     .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa', 'best-practice'])
