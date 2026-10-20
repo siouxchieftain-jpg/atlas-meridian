@@ -1,7 +1,7 @@
 import AxeBuilder from '@axe-core/playwright';
 import { expect, test, type Locator, type Page } from '@playwright/test';
 import { configWithoutForms } from './mock';
-import { openCurrentCase, panel, place } from './helpers';
+import { HOME_HEADING, openCurrentCase, panel, place } from './helpers';
 
 // ATLAS 3.6, the form pass, in the app's own preview forms (built from the same instrument as the Nettskjema forms): the
 // decision without ATLAS comes before B1 and again with ATLAS before B2, in each role's and case's words, with «Ikke
@@ -26,7 +26,7 @@ const DECISION: Record<Role, Record<Case, { q: RegExp; options: string[] }>> = {
   'dps-kliniker': {
     kari: { q: /^Hvordan ville du vurdert henvisningen\?/, options: ['Be om mer informasjon', 'Rett til helsehjelp', 'Retur med råd', 'Ikke bestemt'] },
     erlend: { q: /^Hvordan ville du vurdert henvisningen\?/, options: ['Be om mer informasjon', 'Rett til helsehjelp', 'Retur med råd', 'Ikke bestemt'] },
-    astrid: { q: /^Hva ville du svart fastlegen\?/, options: ['Stå ved returen', 'Åpne for en ny vurdering', 'Ikke svare nå', 'Ikke bestemt'] },
+    astrid: { q: /^Hva ville du svart fastlegen\?/, options: ['Stå ved returen', 'Be om en ny henvisning', 'Vurdere henvisningen på nytt', 'Ikke svare nå', 'Ikke bestemt'] },
   },
 };
 
@@ -81,6 +81,8 @@ async function toCasePage1(page: Page, role: Role, c: Case) {
   await page.setViewportSize({ width: 1366, height: 768 });
   await seed(page, role, c);
   await page.goto('/#/studie/hjem');
+  // The start page first: opening a case before it has drawn took the wrong way in (review S1).
+  await expect(page.getByRole('heading', { level: 1, name: HOME_HEADING })).toBeVisible();
   await openCurrentCase(page);
   await page.getByRole('button', { name: 'Start saken' }).click();
   await expect(previewForm(page).getByRole('heading', { level: 2 })).toContainText('Side 1 av 3');
@@ -123,52 +125,71 @@ for (const role of ['fastlege', 'dps-kliniker'] as const) {
   }
 }
 
-test('a GP in Kari\'s case: the last page asks the check item, then the decision again, then B2', async ({ page }) => {
-  await toCasePage1(page, 'fastlege', 'kari');
-  const form = previewForm(page);
-  await answerDecision(form, 'fastlege', 'kari', 0);
-  await form.getByRole('radiogroup').nth(1).getByRole('radio', { name: '3', exact: true }).check({ force: true });
-  await form.getByRole('button', { name: 'Neste', exact: true }).click();
-  await panel(page).getByRole('button', { name: 'Jeg har svart på side 1' }).click();
-  await panel(page).getByRole('button', { name: 'Vis ATLAS' }).click();
-  await place(page, 3);
-  await page.getByLabel('Henvis', { exact: true }).filter({ visible: true }).check({ force: true });
-  await page.getByRole('button', { name: 'Lagre beslutning' }).click();
-  await page.getByRole('button', { name: 'Skriv henvisningen' }).click();
-  await page.getByRole('button', { name: 'Send henvisning' }).click();
-  await expect(panel(page).getByText('Gå videre i skjemaet og svar på resten nå.')).toBeVisible();
-  await form.getByRole('button', { name: 'Neste', exact: true }).click();
-  await expect(form.getByRole('heading', { level: 2 })).toContainText('Side 3 av 3');
-  const names = await questionNames(form);
-  expect(names[0]).toMatch(/^Har du arbeidet med denne saken i ATLAS/);
-  expect(names[1]).toMatch(DECISION.fastlege.kari.q);
-  expect(names[2]).toMatch(/^Hvor sikker er du på din beslutning med ATLAS\?/);
-  // The decision with ATLAS starts empty: page 1's answer is not carried over.
-  for (const r of await form.getByRole('radiogroup').nth(1).getByRole('radio').all()) await expect(r).not.toBeChecked();
-});
+/** The participant's own work with ATLAS in each case, up to the page-2 moment (the steps the journey tests take). */
+const WORK: Record<Role, Record<Case, (page: Page) => Promise<void>>> = {
+  fastlege: {
+    kari: async (page) => {
+      await place(page, 3);
+      await page.getByLabel('Henvis', { exact: true }).filter({ visible: true }).check({ force: true });
+      await page.getByRole('button', { name: 'Lagre beslutning' }).click();
+      await page.getByRole('button', { name: 'Skriv henvisningen' }).click();
+      await page.getByRole('button', { name: 'Send henvisning' }).click();
+    },
+    erlend: async (page) => {
+      await expect(page.getByRole('heading', { name: 'Ny henvisning', level: 1 })).toBeVisible();
+      await page.getByRole('button', { name: 'Lagre utkast' }).click();
+    },
+    astrid: async (page) => {
+      await expect(page.getByRole('heading', { name: 'Retur med råd fra DPS' })).toBeVisible();
+      await page.locator('[data-section="composer"] textarea').fill('Hva manglet i henvisningen?');
+      await page.getByRole('button', { name: 'Send', exact: true }).click();
+    },
+  },
+  'dps-kliniker': {
+    kari: async (page) => {
+      await place(page, 2);
+      // The form's choices carry the app's words, so the app's own control is the visible one.
+      await page.getByLabel('Rett til helsehjelp', { exact: true }).filter({ visible: true }).check({ force: true });
+      await page.getByRole('button', { name: 'Send vurderingen' }).click();
+    },
+    erlend: async (page) => {
+      await place(page, 5);
+      await page.getByLabel('Rett til helsehjelp', { exact: true }).filter({ visible: true }).check({ force: true });
+      await page.getByRole('button', { name: 'Send vurderingen' }).click();
+    },
+    astrid: async (page) => {
+      await page.locator('[data-section="composer"] textarea').fill('Beskriv mønsteret over tid.');
+      await page.getByRole('button', { name: 'Send svaret' }).click();
+    },
+  },
+};
 
-test('DPS in Kari\'s case: DPS\'s own form, with the app\'s three outcomes, before B1 and before B2', async ({ page }) => {
-  await toCasePage1(page, 'dps-kliniker', 'kari');
-  const form = previewForm(page);
-  await answerDecision(form, 'dps-kliniker', 'kari', 1);
-  await form.getByRole('radiogroup').nth(1).getByRole('radio', { name: '5', exact: true }).check({ force: true });
-  await form.getByRole('button', { name: 'Neste', exact: true }).click();
-  await panel(page).getByRole('button', { name: 'Jeg har svart på side 1' }).click();
-  await panel(page).getByRole('button', { name: 'Vis ATLAS' }).click();
-  await place(page, 2);
-  // The form's choices carry the app's words, so the app's own control is the visible one.
-  await page.getByLabel('Rett til helsehjelp', { exact: true }).filter({ visible: true }).check({ force: true });
-  await page.getByRole('button', { name: 'Send vurderingen' }).click();
-  await expect(panel(page).getByText('Gå videre i skjemaet og svar på resten nå.')).toBeVisible();
-  await form.getByRole('button', { name: 'Neste', exact: true }).click();
-  await expect(form.getByRole('heading', { level: 2 })).toContainText('Side 3 av 3');
-  const names = await questionNames(form);
-  expect(names.slice(0, 3).map((n) => n.slice(0, 40))).toEqual([
-    expect.stringMatching(/^Har du arbeidet med denne saken i ATLAS/),
-    expect.stringMatching(DECISION['dps-kliniker'].kari.q),
-    expect.stringMatching(/^Hvor sikker er du på din beslutning med/),
-  ]);
-});
+for (const role of ['fastlege', 'dps-kliniker'] as const) {
+  for (const c of ORDER) {
+    test(`${role}, ${c}: the last page asks the check item, then the decision again, empty, then B2`, async ({ page }) => {
+      await toCasePage1(page, role, c);
+      const form = previewForm(page);
+      await answerDecision(form, role, c, 0);
+      await form.getByRole('radiogroup').nth(1).getByRole('radio', { name: '3', exact: true }).check({ force: true });
+      await form.getByRole('button', { name: 'Neste', exact: true }).click();
+      await expect(form.getByRole('heading', { level: 2 })).toContainText('Side 2 av 3');
+      await panel(page).getByRole('button', { name: 'Jeg har svart på side 1' }).click();
+      await panel(page).getByRole('button', { name: 'Vis ATLAS' }).click();
+      await WORK[role][c](page);
+      await expect(panel(page).getByText('Gå videre i skjemaet og svar på resten nå.')).toBeVisible();
+      await form.getByRole('button', { name: 'Neste', exact: true }).click();
+      await expect(form.getByRole('heading', { level: 2 })).toContainText('Side 3 av 3');
+      const names = await questionNames(form);
+      expect(names[0]).toMatch(/^Har du arbeidet med denne saken i ATLAS/);
+      expect(names[1]).toMatch(DECISION[role][c].q);
+      expect(names[2]).toMatch(/^Hvor sikker er du på .+ med ATLAS\?/);
+      const again = form.getByRole('radiogroup').nth(1);
+      await expect(again.getByRole('radio')).toHaveCount(DECISION[role][c].options.length);
+      // The decision with ATLAS starts empty: page 1's answer is not carried over.
+      for (const r of await again.getByRole('radio').all()) await expect(r).not.toBeChecked();
+    });
+  }
+}
 
 for (const role of ['fastlege', 'dps-kliniker'] as const) {
   test(`${role}: Helhetsinntrykk asks C1-06 before C1's reason, offers «Vet ikke» on C3-01 and requires C4-02 and C-CUCF-02`, async ({ page }) => {
@@ -198,7 +219,8 @@ for (const role of ['fastlege', 'dps-kliniker'] as const) {
     await expect(c301.getByRole('radio', { name: 'Vet ikke' })).toBeChecked();
     if (role === 'dps-kliniker') {
       expect(names[at(/^ATLAS gir meg informasjon/)]).toMatch(/vurderinger av henvisninger over tid/);
-      expect(names[at(/^Hva ville denne/)]).toMatch(/^Hva ville denne oversikten bety for hvordan du vurderer henvisninger over tid\?/);
+      expect(names[at(/^Svarene og spørsmålene fra fastlegene/)]).toContain('etter mine vurderinger');
+      expect(names[at(/^Hva ville denne/)]).toMatch(/^Hva ville denne tilbakemeldingen bety for hvordan du vurderer henvisninger over tid\?/);
     }
     const axe = await new AxeBuilder({ page }).include('[data-form-panel]').withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa']).analyze();
     expect(axe.violations.map((v) => `${v.id} ${v.nodes.map((n) => n.target.join(' ')).join(', ')}`)).toEqual([]);

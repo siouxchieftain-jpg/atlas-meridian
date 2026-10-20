@@ -80,6 +80,8 @@ export async function doTour(page: Page) {
  */
 export async function openCurrentCase(page: Page) {
   const hero = page.locator('[data-start-hero]');
+  // Wait for the start page or the list to draw before choosing the way in: isVisible() does not wait (3.6 review S1).
+  await expect(hero.or(page.locator('[data-study-card] [data-open-case]')).first()).toBeVisible();
   if (await hero.isVisible()) {
     if (await hero.locator('[data-open-case]').isVisible()) await hero.locator('[data-open-case]').click();
     else {

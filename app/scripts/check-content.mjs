@@ -122,7 +122,8 @@ const allowedEmpty = (path) => /\.referralDraft\.[a-z]+\.text$/.test(path);
 function walk(o, path, visit) {
   if (Array.isArray(o)) o.forEach((v, i) => walk(v, `${path}[${i}]`, visit));
   else if (o && typeof o === 'object') {
-    if ('nb' in o && 'en' in o && Object.keys(o).length === 2) visit(o, path);
+    // A text is {nb, en}; a choice in the instrument may also carry its own answer code (3.6).
+    if ('nb' in o && 'en' in o && Object.keys(o).every((k) => k === 'nb' || k === 'en' || k === 'code')) visit(o, path);
     else for (const [k, v] of Object.entries(o)) walk(v, `${path}.${k}`, visit);
   }
 }
@@ -200,6 +201,12 @@ if (instrument) {
       if ((it.type === 'choice' || it.type === 'importance3') && !(it.options && it.options.length)) fail(`instrument.json ${f.key} ${it.id}: choice without options`);
       if (it.type === 'consent' && !(it.required && it.options && it.options.length === 1)) fail(`instrument.json ${f.key} ${it.id}: the consent tick box must be required and have exactly one option`);
       if (it.dontKnow && !(it.type === 'agree7' && it.anchors && it.dontKnow.nb && it.dontKnow.en)) fail(`instrument.json ${f.key} ${it.id}: «Vet ikke» is built only on an agreement scale with anchors, in both languages`);
+      // A choice's own code (3.6) becomes Nettskjema's answer code: lowercase letters, digits and _, unique in the item, given
+      // to every choice of the item or to none, and never a bare number, which would read as a place in the list.
+      const codes = (it.options ?? []).map((o) => o.code).filter((c) => c !== undefined);
+      if (codes.length && codes.length !== it.options.length) fail(`instrument.json ${f.key} ${it.id}: some choices have a code and some do not`);
+      for (const c of codes) if (!/^[a-z][a-z0-9_]*$/.test(c) || c.length > 60) fail(`instrument.json ${f.key} ${it.id}: choice code «${c}» is not lowercase letters, digits and _ (starting with a letter)`);
+      if (new Set(codes).size !== codes.length) fail(`instrument.json ${f.key} ${it.id}: a choice code is used twice`);
     }
     const lockedItems = f.pages.flatMap((p) => p.items).filter((it) => it.type === 'locked').map((it) => it.codebook);
     for (const l of f.locked) if (!lockedItems.includes(l)) fail(`instrument.json ${f.key}: locked field «${l}» has no item`);

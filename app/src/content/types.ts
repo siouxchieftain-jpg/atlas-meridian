@@ -430,7 +430,7 @@ export interface InstrumentItem {
   /** Nettskjema codebook name: lowercase, unique in the form, no æøå. */
   codebook: string;
   text: T;
-  options?: T[];
+  options?: InstrumentOption[];
   anchors?: { low: T; high: T };
   /**
    * An agreement scale with one more choice, «Vet ikke» (3.6, I-18): the label of that choice. Nettskjema's linear
@@ -440,8 +440,20 @@ export interface InstrumentItem {
   required: boolean;
   /** Free text shows «Ikke skriv opplysninger om pasienter eller andre personer.» above it. */
   privacyLine?: boolean;
-  /** A DPS wording drafted for the owner's approval (Appendix E item 5). */
+  /**
+   * Waiting for the owner's ruling: a DPS wording drafted for approval (Appendix E item 5, deviation 5), and every item
+   * 3.6 adds or changes (its wording, its choices or whether it is required). `nettskjema.mjs` makes or updates no form
+   * that holds one unless `--drafts` is passed.
+   */
   draft?: boolean;
+}
+
+/**
+ * A choice. Nettskjema codes it by its place in the list (1, 2, 3 …) unless it carries a code of its own: the decision
+ * items name theirs (3.6), so «Ikke bestemt» is `ikke_bestemt` in every form, whatever its place.
+ */
+export interface InstrumentOption extends T {
+  code?: string;
 }
 
 export interface InstrumentPage {

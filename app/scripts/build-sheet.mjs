@@ -59,7 +59,7 @@ function scale(item) {
   const range = { agree7: '1 to 7', confidence7: '1 to 7', helpful7: '1 to 7', nps11: '0 to 10', clarity5: '1 to 5' }[item.type];
   if (range && item.anchors) return `${range}: ${both(item.anchors.low)} … ${both(item.anchors.high)}`;
   if (range) return range;
-  if (item.options) return item.options.map((o) => both(o)).join('; ');
+  if (item.options) return item.options.map((o) => `${both(o)}${o.code ? ` (\`${o.code}\`)` : ''}`).join('; ');
   return '';
 }
 
@@ -80,8 +80,8 @@ push(
   `- At the top of every form: «${instrument.consentLine.nb}» / "${instrument.consentLine.en}", and «${instrument.privacyLine.nb}» / "${instrument.privacyLine.en}".`,
   `- Above every long text question: «${instrument.privacyLine.nb}» / "${instrument.privacyLine.en}".`,
   '- Long text answers take at most 3,800 characters.',
-  '- The options of a single choice («Flervalg») are coded 1, 2, 3 and on, in the order listed; «Vet ikke» after a scale is coded `vet_ikke`.',
-  `- «Melding på kvitteringsside etter levert svar»: the form's receipt text below, then a button back to the site, written as Nettskjema documents it: \`<div><a class="receipt-link-as-button" href="${SITE}sendt.html?skjema=<step>" rel="noopener noreferrer">Tilbake til ATLAS</a></div>\`, where \`<step>\` is the form's step (\`S1\` to \`S9\`; both versions of S2 name \`S2\`). \`sendt.html\` marks the step it names as sent, when that step is the one waiting, and leads back to the study; S9's receipt marks no step and offers to close its tab. \`node scripts/nettskjema.mjs verify\` checks the link. Check in the pilot that Nettskjema keeps the button.`,
+  '- The options of a single choice («Flervalg») are coded 1, 2, 3 and on, in the order listed, unless the sheet gives a code in brackets: the decision items name every choice (so «Ikke bestemt» is `ikke_bestemt` in every form), and «Vet ikke» after a scale is coded `vet_ikke`.',
+  `- «Melding på kvitteringsside etter levert svar»: the form's receipt text below, then a button back to the site, written as Nettskjema documents it: \`<div><a class="receipt-link-as-button" href="${SITE}sendt.html?skjema=<step>" rel="noopener noreferrer">Tilbake til ATLAS</a></div>\`, where \`<step>\` is the form's step (\`S1\` to \`S9\`; every version of a step names the step, so both versions of S2 to S5 name \`S2\` to \`S5\`). \`sendt.html\` marks the step it names as sent, when that step is the one waiting, and leads back to the study; S9's receipt marks no step and offers to close its tab. \`node scripts/nettskjema.mjs verify\` checks the link. Check in the pilot that Nettskjema keeps the button.`,
   '- A closing date.',
   `- Locked fields: one «Tekstsvar» per field, under the heading «${instrument.lockedHeading.nb}» / "${instrument.lockedHeading.en}". ATLAS fills and locks each from the form's address (\`CB<codebook>=<value>&LCK<codebook>=true\`); in the panel the address also carries \`embed=1\`.`,
   '- When the form is open for answers, copy its address from «Innhent svar» (it looks like `https://nettskjema.no/a/123456`) into `app/public/atlas-config.json` under the key given for the form.',
@@ -125,7 +125,7 @@ for (const form of instrument.forms) {
     push('| ID | Codebook | Type | Required | Text (nb / en) | Scale or options |', '|---|---|---|---|---|---|');
     for (const it of page.items) {
       const req = it.type === 'locked' || it.type === 'stop' ? '' : it.required ? 'Obligatorisk' : 'No';
-      const note = it.draft ? ' (DPS wording, a draft for the owner\'s approval)' : '';
+      const note = it.draft ? ' (waiting for the owner\'s ruling: `create` and `update` leave the form alone until it is ruled)' : '';
       const text = `${both(it.text)}${note}`;
       push(`| ${cell(it.id)} | \`${it.codebook}\` | ${typeOf(it)} | ${req} | ${cell(text)} | ${cell(scale(it))} |`);
     }

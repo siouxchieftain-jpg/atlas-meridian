@@ -209,6 +209,52 @@ How to read the tables:
 | None | Both | All | Delt oversikt, Dialog (Fastlege), 2026-02-20 | Holder det med pasientens egen beskrivelse av barndommen, eller trengs opplysninger fra foreldre eller skole? Slike opplysninger er ofte vanskelige å skaffe. | new |
 | None | Both | All | Delt oversikt, Dialog (DPS, inntak), 2026-02-25 | Pasientens egen beskrivelse er et godt utgangspunkt. Opplysninger fra andre gjør bildet tydeligere, men henvisningen vurderes også uten dem. Det kan være nyttig å legge ved et utfylt ASRS-skjema. | new |
 
+### The ordinary day on the start pages (3.4 and 3.5; fictional, no vignette)
+
+The start pages show an ordinary working day around the study, in grey groups labelled as examples. None of it is part of a case, and nothing in it names a case's outcome. The clinician checks that the day reads as a plausible day in a GP's office and in a DPS intake team.
+
+| Vignette | Role | Branch | Where it shows | Text (Norwegian) | Source (prototype, vault or new) |
+|---|---|---|---|---|---|
+| None | GP | All | Timeliste i dag and Dagen, ordinary appointment | 10:45: Ingrid Myhre, 47 år. Oppfølging av sykemelding | new (the start page, 3.4 and 3.5) |
+| None | GP | All | Timeliste i dag and Dagen, ordinary appointment | 11:15: Jonas Brekke, 23 år. Legeattest | new (the start page, 3.4 and 3.5) |
+| None | GP | All | Timeliste i dag and Dagen, ordinary appointment | 11:30: Ola Berg, 61 år. Kontroll, hypertensjon | new (the start page, 3.4 and 3.5) |
+| None | GP | All | Dagen, a block of the day | 08:00 til 08:45: Kontortid | new (the start page, 3.4 and 3.5) |
+| None | GP | All | Dagen, a block of the day | 12:00 til 12:30: Lunsj | new (the start page, 3.4 and 3.5) |
+| None | GP | All | Dagen, a block of the day | 12:30 til 13:30: Telefontid | new (the start page, 3.4 and 3.5) |
+| None | GP | All | Dagen, a block of the day | 13:30 til 15:00: Øyeblikkelig hjelp | new (the start page, 3.4 and 3.5) |
+| None | GP | All | Dagen, a block of the day | 15:00 til 16:00: Kontortid | new (the start page, 3.4 and 3.5) |
+| None | GP | All | Innboks | 16. mars 2026: Ola Berg, 61 år. Prøvesvar: lipidprofil | new (the start page, 3.4 and 3.5) |
+| None | GP | All | Innboks | 16. mars 2026: Jonas Brekke, 23 år. E-konsultasjon: spørsmål om legeattest | new (the start page, 3.4 and 3.5) |
+| None | GP | All | Innboks | 13. mars 2026: Ingrid Myhre, 47 år. Brev fra NAV: innkalling til dialogmøte | new (the start page, 3.4 and 3.5) |
+| None | GP | All | Henvisningene mine (other referrals waiting) | Siri Dahl, 52 år. Sendt 13. mars 2026, mottatt av DPS 13. mars 2026; frist 27. mars 2026 | new (the start page, 3.4 and 3.5) |
+| None | GP | All | Henvisningene mine (other referrals waiting) | Mona Lie, 31 år. Sendt 11. mars 2026, mottatt av DPS 11. mars 2026; DPS ba om mer informasjon 13. mars 2026 | new (the start page, 3.4 and 3.5) |
+| None | GP | All | Henvisningene mine (other referrals waiting) | Per Haugen, 45 år. Sendt 9. mars 2026, mottatt av DPS 9. mars 2026; frist 23. mars 2026 | new (the start page, 3.4 and 3.5) |
+| None | GP | All | Dagen, tasks | Forny resept: Ola Berg. Forespørsel i går | new (the start page, 3.4 and 3.5) |
+| None | GP | All | Dagen, tasks | Skriv legeattest: Jonas Brekke. Til timen kl. 11:15 | new (the start page, 3.4 and 3.5) |
+| None | GP | All | Dagen, tasks | Sykemeldingen går ut fredag: Ingrid Myhre. Tas opp på timen kl. 10:45 | new (the start page, 3.4 and 3.5) |
+| None | GP | All | Kommende | 19. mars 2026 kl. 14:00: Samarbeidsmøte med DPS Skjærgården (Teams) | new (the start page, 3.4 and 3.5) |
+| None | GP | All | Kommende | 20. mars 2026 kl. 10:00: Dialogmøte for Ingrid Myhre (Med NAV og arbeidsgiver) | new (the start page, 3.4 and 3.5) |
+| None | GP | All | Kommende | 23. mars 2026 kl. 16:00: Kveldsvakt på legevakten (Interkommunal legevakt) | new (the start page, 3.4 and 3.5) |
+| None | GP | All | Kommende | 25. mars 2026 kl. 18:00: Smågruppe (Legekontoret) | new (the start page, 3.4 and 3.5) |
+| None | DPS | All | Meldinger | 17. mars 2026: Nora Eide, 29 år. Epikrise fra akuttpsykiatrisk avdeling | new (the start page, 3.4 and 3.5) |
+| None | DPS | All | Meldinger | 16. mars 2026: Trond Vik, 56 år. Spørsmål fra kommunal psykisk helsetjeneste | new (the start page, 3.4 and 3.5) |
+| None | DPS | All | Inntaket i dag | Inntaksmøte kl. 11:00 | new (the start page, 3.4 and 3.5) |
+| None | DPS | All | Inntaket i dag | Ni andre henvisninger venter på vurdering denne uka | new (the start page, 3.4 and 3.5) |
+| None | DPS | All | Dagen, a block of the day | 08:00 til 08:45: Morgenmøte | new (the start page, 3.4 and 3.5) |
+| None | DPS | All | Dagen, a block of the day | 08:45 til 11:00: Henvisningene i studien | new (the start page, 3.4 and 3.5) |
+| None | DPS | All | Dagen, a block of the day | 11:00 til 12:00: Inntaksmøte | new (the start page, 3.4 and 3.5) |
+| None | DPS | All | Dagen, a block of the day | 12:00 til 12:30: Lunsj | new (the start page, 3.4 and 3.5) |
+| None | DPS | All | Dagen, a block of the day | 12:30 til 15:00: Pasientsamtaler | new (the start page, 3.4 and 3.5) |
+| None | DPS | All | Dagen, a block of the day | 15:00 til 16:00: Journalarbeid | new (the start page, 3.4 and 3.5) |
+| None | DPS | All | Dagen, tasks | Les epikrisen: Nora Eide. Fra akuttpsykiatrisk avdeling, kom i går | new (the start page, 3.4 and 3.5) |
+| None | DPS | All | Dagen, tasks | Svar den kommunale psykiske helsetjenesten: Trond Vik. Spørsmål fra 16. mars | new (the start page, 3.4 and 3.5) |
+| None | DPS | All | Dagen, tasks | Forbered inntaksmøtet: Kl. 11:00, ni andre henvisninger venter denne uka | new (the start page, 3.4 and 3.5) |
+| None | DPS | All | Kommende | 19. mars 2026 kl. 14:00: Samarbeidsmøte med fastlegene i opptaksområdet (Teams) | new (the start page, 3.4 and 3.5) |
+| None | DPS | All | Kommende | 20. mars 2026 kl. 08:30: Veiledning i inntaksteamet (DPS Skjærgården) | new (the start page, 3.4 and 3.5) |
+| None | DPS | All | Kommende | 23. mars 2026 kl. 11:00: Inntaksmøte (Inntaksteamet) | new (the start page, 3.4 and 3.5) |
+| None | DPS | All | Kommende | 24. mars 2026 kl. 13:00: Ansvarsgruppemøte (Med kommunal psykisk helsetjeneste) | new (the start page, 3.4 and 3.5) |
+| None | GP | All | Mitt henvisningsmønster, note | Fiktive tall for prototypen. Én av de tre henvisningene som venter på svar, har fått en forespørsel om mer informasjon. | new (the start page, 3.4 and 3.5) |
+
 ### Generated sentences in the summaries (all cases)
 
 | Vignette | Role | Branch | Where it shows | Text (Norwegian) | Source (prototype, vault or new) |
@@ -301,7 +347,7 @@ Each entry in `sources.json` lists its own substitutions. They are applied to th
 
 The engineering reviewers (S5 to S8, role-played, not evaluation evidence) raised these points for the clinician. Each names the rows above it concerns.
 
-- Torbjørn (V2): new psychosis, unable to care for himself, sent through the ordinary referral with no urgency. The time slot reads «Øyeblikkelig hjelp». Is the path plausible, or should the case name the emergency route (akutteam, innleggelse) and keep the referral question?
+- Torbjørn (V2, owner item O-G8): new psychosis, unable to care for himself, sent through the ordinary referral with no urgency. The time slot reads «Øyeblikkelig hjelp». Is the path plausible, or should the case name the emergency route (akutteam, innleggelse) and keep the referral question?
 - Kari (V1): DPS places the case in the grey zone, leaning outside, and grants the right to health care after a request for more information, also when the GP sends no reply. Plausible? The grant says «innen fristen» without a date.
 - Kari (V1): the referral DPS receives carries a risk section from the vault («Selvmordsrisikovurdering gjennomført …»), while the GP note does not mention risk and the GP's own draft starts empty there.
 - Erlend (V3): the referral DPS receives adds a «Spørsmål til DPS» that is not drawn from the note.
@@ -310,4 +356,4 @@ The engineering reviewers (S5 to S8, role-played, not evaluation evidence) raise
 - Return reasons: is a common DPS return reason missing from the five categories (Situasjonell krise, Funksjonsnedgang for kort varighet, Kommunalt tilbud ikke utprøvd, Utilstrekkelig informasjon, Annen årsak)?
 - All scripted referrals reach DPS with all five sections filled («5 av 5» in the guide as received). Too complete to be realistic?
 - To fastleger (V5): Fastlege A has 8 referrals in the period and Fastlege B 14; A's note now reads «Henviser for å være på den sikre siden når hun er usikker på egen vurdering.» Do the two sketches and their figures read as plausible?
-- Erlend (V3): the clinical details carry the marker «Kliniske detaljer for Erlend er utkast …» on four screens. Clear it when the rows above are checked.
+- Erlend (V3, owner item O-G10): the clinical details carry the marker «Kliniske detaljer for Erlend er utkast …» on four screens. Clear it when the rows above are checked.

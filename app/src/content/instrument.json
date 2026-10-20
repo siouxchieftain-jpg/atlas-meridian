@@ -365,7 +365,8 @@
                   "en": "Strongly agree"
                 }
               },
-              "required": false
+              "required": false,
+              "draft": true
             },
             {
               "id": "C1-05",
@@ -451,7 +452,8 @@
                 "nb": "Vet ikke",
                 "en": "Don't know"
               },
-              "required": false
+              "required": false,
+              "draft": true
             },
             {
               "id": "C3-02",
@@ -482,7 +484,8 @@
                 "en": "How do you assess ATLAS's ability to serve the needs of the other side (GPs or specialists)? What works? What is missing? (1-3 sentences) If you have no basis for judging it, write ‘Don't know’."
               },
               "required": true,
-              "privacyLine": true
+              "privacyLine": true,
+              "draft": true
             },
             {
               "id": "C4-01",
@@ -513,7 +516,8 @@
                 "en": "Please explain your rating (1-3 sentences). What would make it easier or harder to use this in your daily practice?"
               },
               "required": true,
-              "privacyLine": true
+              "privacyLine": true,
+              "draft": true
             },
             {
               "id": "C5-01",
@@ -595,7 +599,8 @@
                 "en": "What would this feedback mean for your practice over time? (1-3 sentences)"
               },
               "required": true,
-              "privacyLine": true
+              "privacyLine": true,
+              "draft": true
             }
           ]
         }
@@ -775,7 +780,8 @@
                   "en": "Strongly agree"
                 }
               },
-              "required": false
+              "required": false,
+              "draft": true
             },
             {
               "id": "C1-05",
@@ -861,7 +867,8 @@
                 "nb": "Vet ikke",
                 "en": "Don't know"
               },
-              "required": false
+              "required": false,
+              "draft": true
             },
             {
               "id": "C3-02",
@@ -892,7 +899,8 @@
                 "en": "How do you assess ATLAS's ability to serve the needs of the other side (GPs or specialists)? What works? What is missing? (1-3 sentences) If you have no basis for judging it, write ‘Don't know’."
               },
               "required": true,
-              "privacyLine": true
+              "privacyLine": true,
+              "draft": true
             },
             {
               "id": "C4-01",
@@ -923,7 +931,8 @@
                 "en": "Please explain your rating (1-3 sentences). What would make it easier or harder to use this in your daily practice?"
               },
               "required": true,
-              "privacyLine": true
+              "privacyLine": true,
+              "draft": true
             },
             {
               "id": "C5-01",
@@ -981,8 +990,8 @@
               "type": "agree7",
               "codebook": "c_cucf_01",
               "text": {
-                "nb": "Oversikten over henvisninger og utfall i opptaksområdet ville hjelpe meg å kalibrere mine fremtidige vurderinger.",
-                "en": "The overview of referrals and outcomes in the catchment area would help me calibrate my future assessments."
+                "nb": "Svarene og spørsmålene fra fastlegene etter mine vurderinger ville hjelpe meg å kalibrere mine fremtidige vurderinger.",
+                "en": "The GPs' replies and questions after my assessments would help me calibrate my future assessments."
               },
               "anchors": {
                 "low": {
@@ -1002,8 +1011,8 @@
               "type": "longtext",
               "codebook": "c_cucf_02",
               "text": {
-                "nb": "Hva ville denne oversikten bety for hvordan du vurderer henvisninger over tid? (1-3 setninger)",
-                "en": "What would this overview mean for how you assess referrals over time? (1-3 sentences)"
+                "nb": "Hva ville denne tilbakemeldingen bety for hvordan du vurderer henvisninger over tid? (1-3 setninger)",
+                "en": "What would this feedback mean for how you assess referrals over time? (1-3 sentences)"
               },
               "required": true,
               "privacyLine": true,
@@ -1049,18 +1058,22 @@
               "options": [
                 {
                   "nb": "Beholde pasienten i allmennpraksis",
-                  "en": "Keep the patient in general practice"
+                  "en": "Keep the patient in general practice",
+                  "code": "beholde"
                 },
                 {
                   "nb": "Henvise til DPS",
-                  "en": "Refer to DPS"
+                  "en": "Refer to DPS",
+                  "code": "henvise"
                 },
                 {
                   "nb": "Ikke bestemt",
-                  "en": "Not decided"
+                  "en": "Not decided",
+                  "code": "ikke_bestemt"
                 }
               ],
-              "required": true
+              "required": true,
+              "draft": true
             },
             {
               "id": "D-V1-B1",
@@ -1191,18 +1204,22 @@
               "options": [
                 {
                   "nb": "Beholde pasienten i allmennpraksis",
-                  "en": "Keep the patient in general practice"
+                  "en": "Keep the patient in general practice",
+                  "code": "beholde"
                 },
                 {
                   "nb": "Henvise til DPS",
-                  "en": "Refer to DPS"
+                  "en": "Refer to DPS",
+                  "code": "henvise"
                 },
                 {
                   "nb": "Ikke bestemt",
-                  "en": "Not decided"
+                  "en": "Not decided",
+                  "code": "ikke_bestemt"
                 }
               ],
-              "required": true
+              "required": true,
+              "draft": true
             },
             {
               "id": "D-V1-B2",
@@ -1328,19 +1345,23 @@
               "options": [
                 {
                   "nb": "Be om mer informasjon",
-                  "en": "Request more information"
+                  "en": "Request more information",
+                  "code": "info"
                 },
                 {
                   "nb": "Rett til helsehjelp",
-                  "en": "Right to health care"
+                  "en": "Right to health care",
+                  "code": "rett"
                 },
                 {
                   "nb": "Retur med råd",
-                  "en": "Return with advice"
+                  "en": "Return with advice",
+                  "code": "retur"
                 },
                 {
                   "nb": "Ikke bestemt",
-                  "en": "Not decided"
+                  "en": "Not decided",
+                  "code": "ikke_bestemt"
                 }
               ],
               "required": true,
@@ -1475,19 +1496,23 @@
               "options": [
                 {
                   "nb": "Be om mer informasjon",
-                  "en": "Request more information"
+                  "en": "Request more information",
+                  "code": "info"
                 },
                 {
                   "nb": "Rett til helsehjelp",
-                  "en": "Right to health care"
+                  "en": "Right to health care",
+                  "code": "rett"
                 },
                 {
                   "nb": "Retur med råd",
-                  "en": "Return with advice"
+                  "en": "Return with advice",
+                  "code": "retur"
                 },
                 {
                   "nb": "Ikke bestemt",
-                  "en": "Not decided"
+                  "en": "Not decided",
+                  "code": "ikke_bestemt"
                 }
               ],
               "required": true,
@@ -1617,18 +1642,22 @@
               "options": [
                 {
                   "nb": "Beholde pasienten i allmennpraksis",
-                  "en": "Keep the patient in general practice"
+                  "en": "Keep the patient in general practice",
+                  "code": "beholde"
                 },
                 {
                   "nb": "Henvise til DPS",
-                  "en": "Refer to DPS"
+                  "en": "Refer to DPS",
+                  "code": "henvise"
                 },
                 {
                   "nb": "Ikke bestemt",
-                  "en": "Not decided"
+                  "en": "Not decided",
+                  "code": "ikke_bestemt"
                 }
               ],
-              "required": true
+              "required": true,
+              "draft": true
             },
             {
               "id": "D-V3-B1",
@@ -1759,18 +1788,22 @@
               "options": [
                 {
                   "nb": "Beholde pasienten i allmennpraksis",
-                  "en": "Keep the patient in general practice"
+                  "en": "Keep the patient in general practice",
+                  "code": "beholde"
                 },
                 {
                   "nb": "Henvise til DPS",
-                  "en": "Refer to DPS"
+                  "en": "Refer to DPS",
+                  "code": "henvise"
                 },
                 {
                   "nb": "Ikke bestemt",
-                  "en": "Not decided"
+                  "en": "Not decided",
+                  "code": "ikke_bestemt"
                 }
               ],
-              "required": true
+              "required": true,
+              "draft": true
             },
             {
               "id": "D-V3-B2",
@@ -1874,19 +1907,23 @@
               "options": [
                 {
                   "nb": "Be om mer informasjon",
-                  "en": "Request more information"
+                  "en": "Request more information",
+                  "code": "info"
                 },
                 {
                   "nb": "Rett til helsehjelp",
-                  "en": "Right to health care"
+                  "en": "Right to health care",
+                  "code": "rett"
                 },
                 {
                   "nb": "Retur med råd",
-                  "en": "Return with advice"
+                  "en": "Return with advice",
+                  "code": "retur"
                 },
                 {
                   "nb": "Ikke bestemt",
-                  "en": "Not decided"
+                  "en": "Not decided",
+                  "code": "ikke_bestemt"
                 }
               ],
               "required": true,
@@ -2021,19 +2058,23 @@
               "options": [
                 {
                   "nb": "Be om mer informasjon",
-                  "en": "Request more information"
+                  "en": "Request more information",
+                  "code": "info"
                 },
                 {
                   "nb": "Rett til helsehjelp",
-                  "en": "Right to health care"
+                  "en": "Right to health care",
+                  "code": "rett"
                 },
                 {
                   "nb": "Retur med råd",
-                  "en": "Return with advice"
+                  "en": "Return with advice",
+                  "code": "retur"
                 },
                 {
                   "nb": "Ikke bestemt",
-                  "en": "Not decided"
+                  "en": "Not decided",
+                  "code": "ikke_bestemt"
                 }
               ],
               "required": true,
@@ -2143,18 +2184,22 @@
               "options": [
                 {
                   "nb": "Følge opp i allmennpraksis",
-                  "en": "Follow up in general practice"
+                  "en": "Follow up in general practice",
+                  "code": "folge_opp"
                 },
                 {
                   "nb": "Henvise på nytt",
-                  "en": "Refer again"
+                  "en": "Refer again",
+                  "code": "henvise_pa_nytt"
                 },
                 {
                   "nb": "Ikke bestemt",
-                  "en": "Not decided"
+                  "en": "Not decided",
+                  "code": "ikke_bestemt"
                 }
               ],
-              "required": true
+              "required": true,
+              "draft": true
             },
             {
               "id": "D-V4-B1",
@@ -2285,18 +2330,22 @@
               "options": [
                 {
                   "nb": "Følge opp i allmennpraksis",
-                  "en": "Follow up in general practice"
+                  "en": "Follow up in general practice",
+                  "code": "folge_opp"
                 },
                 {
                   "nb": "Henvise på nytt",
-                  "en": "Refer again"
+                  "en": "Refer again",
+                  "code": "henvise_pa_nytt"
                 },
                 {
                   "nb": "Ikke bestemt",
-                  "en": "Not decided"
+                  "en": "Not decided",
+                  "code": "ikke_bestemt"
                 }
               ],
-              "required": true
+              "required": true,
+              "draft": true
             },
             {
               "id": "D-V4-B2",
@@ -2411,19 +2460,28 @@
               "options": [
                 {
                   "nb": "Stå ved returen",
-                  "en": "Stand by the return"
+                  "en": "Stand by the return",
+                  "code": "sta_ved_returen"
                 },
                 {
-                  "nb": "Åpne for en ny vurdering",
-                  "en": "Open the way to a new assessment"
+                  "nb": "Be om en ny henvisning",
+                  "en": "Ask for a new referral",
+                  "code": "ny_henvisning"
+                },
+                {
+                  "nb": "Vurdere henvisningen på nytt",
+                  "en": "Reassess the referral",
+                  "code": "vurdere_pa_nytt"
                 },
                 {
                   "nb": "Ikke svare nå",
-                  "en": "Not reply now"
+                  "en": "Not reply for now",
+                  "code": "ikke_svare"
                 },
                 {
                   "nb": "Ikke bestemt",
-                  "en": "Not decided"
+                  "en": "Not decided",
+                  "code": "ikke_bestemt"
                 }
               ],
               "required": true,
@@ -2558,19 +2616,28 @@
               "options": [
                 {
                   "nb": "Stå ved returen",
-                  "en": "Stand by the return"
+                  "en": "Stand by the return",
+                  "code": "sta_ved_returen"
                 },
                 {
-                  "nb": "Åpne for en ny vurdering",
-                  "en": "Open the way to a new assessment"
+                  "nb": "Be om en ny henvisning",
+                  "en": "Ask for a new referral",
+                  "code": "ny_henvisning"
+                },
+                {
+                  "nb": "Vurdere henvisningen på nytt",
+                  "en": "Reassess the referral",
+                  "code": "vurdere_pa_nytt"
                 },
                 {
                   "nb": "Ikke svare nå",
-                  "en": "Not reply now"
+                  "en": "Not reply for now",
+                  "code": "ikke_svare"
                 },
                 {
                   "nb": "Ikke bestemt",
-                  "en": "Not decided"
+                  "en": "Not decided",
+                  "code": "ikke_bestemt"
                 }
               ],
               "required": true,

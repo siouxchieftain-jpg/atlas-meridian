@@ -64,13 +64,18 @@ The pilot runs on the live site with forms of its own, so no pilot answer ever l
 
 ### From 3.5.1 to 3.6 (the form pass)
 
-3.6 changes the case forms and S2, and gives Kari's case a form per role. On the laptop, in `app/`, on the release branch and before it is merged:
+3.6 changes the case forms and S2, and gives Kari's case a form per role. Every change is a proposal waiting for the owner's ruling, marked `draft` in the instrument, and the form script makes or updates no form that holds one (it says which items wait, and `--drafts` overrides it on purpose). So, in this order:
 
-1. Close the pilot forms if they are open: `node scripts/nettskjema.mjs close --round pilot`. `update` leaves a form that has answers alone, so delete any test answers in Nettskjema first («Slett alle svar»).
-2. Bring the changed forms in line, the pilot set first: `node scripts/nettskjema.mjs update --round pilot --only S2.fastlege,S2.dps,S3.fastlege,S4.fastlege,S4.dps,S5.fastlege,S5.dps`, then the same without `--round pilot`. `S3.fastlege` keeps the address Kari's one form had; `update` retitles it «Kari, fastlege».
-3. Make the DPS version of Kari's form in each set: `node scripts/nettskjema.mjs create --round pilot --only S3.dps`, then `create --only S3.dps`. Each writes its address into `atlas-config.json`.
-4. `node scripts/nettskjema.mjs verify --round pilot`, then `verify`: every form matches the instrument.
-5. Commit `atlas-config.json` with the two new addresses to the release branch, merge it, and open the pilot forms again. The app and the configuration must go live together: 3.5.1 looks for one form called `S3`.
+1. **Rule first.** The owner rules the items the build sheet marks «waiting for the owner's ruling». The flags of what is ruled are removed or the items changed, and `npm run docs` is run again. Until then nothing below can run.
+2. **Mind the supervisors' window.** R1 and R2 are open for the supervisors' review of 3.5.1 until 20 November 2026, and review mode's «Prøv studien» shows the forms bundled with the site. Merge 3.6 after their review, or tell them the forms changed.
+3. **On `main`, before switching:** `node scripts/nettskjema.mjs status --round pilot`. If any pilot form has answers that are not your own test answers, they are pilot data: export them in Nettskjema and stop here. Never delete pilot answers to get past `update`. Then `node scripts/nettskjema.mjs close --round pilot`, which also closes Kari's old form (663418, «ATLAS: Kari»): 3.6 leaves it closed and kept, with its answers, and makes both Kari forms new, so no form changes its meaning.
+4. **On the 3.6 branch:** bring the changed forms in line, the pilot set first: `node scripts/nettskjema.mjs update --round pilot --only S2.fastlege,S2.dps,S4.fastlege,S4.dps,S5.fastlege,S5.dps`, then the same without `--round pilot`. `update` also sets the codebook names and the named answer codes (`ikke_bestemt`, `vet_ikke` and the rest) where Nettskjema did not keep them.
+5. **Make both Kari forms in each set:** `node scripts/nettskjema.mjs create --round pilot --only S3.fastlege,S3.dps`, then `create --only S3.fastlege,S3.dps`. Each writes its address into `atlas-config.json`. The study set's old Kari form (661824) is closed already; it stays as it is.
+6. **Check:** `node scripts/nettskjema.mjs verify --round pilot`, then `verify`. If `verify` still reports a codebook name or an answer code, set it in Nettskjema's codebook by hand and verify again.
+7. **Release:** commit `atlas-config.json` with the four new addresses to the branch, open the pull request, and merge it when the checks pass. Wait for the workflow to publish, then check the live site: it serves `3.6.0-<commit>`, and in a trial run as DPS (in a private window, not sent) Kari's form opens the DPS form. A browser may keep the old page for up to ten minutes.
+8. **Open the pilot forms again:** `node scripts/nettskjema.mjs open --round pilot --until 2026-11-30`.
+
+**The way back.** Before step 4 nothing has changed but the pilot forms' open period. After it, on `main`: `update --round pilot` and `update` bring the forms back to 3.5.1's instrument, and `open --round pilot --until 2026-11-30` opens the pilot set again, Kari's old form with it, since `main`'s configuration names it. The new Kari forms stay closed and unused.
 
 ## Release check, before the first invitation
 
