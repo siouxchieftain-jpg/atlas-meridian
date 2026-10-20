@@ -21,7 +21,7 @@ The information letter is at **https://siouxchieftain-jpg.github.io/atlas-meridi
 | `app/public/informasjonsskriv.html` | The information letter, both languages; `npm run letter` prints it to the two PDFs beside it (with Microsoft Edge on Windows, where Segoe UI is) |
 | `app/src/content/` | Every text, case and form, in Norwegian and English |
 | `app/src/assets/animals/` | The study name's twenty animals, Fluent Emoji in their flat style (MIT licence, in the folder) |
-| `meridian/` | The Meridian design language as exported from the design tool, unchanged; on the site at `meridian/` |
+| `meridian/` | The design language as exported from the design tool, unchanged; kept in the repository, not published (3.5.2) |
 | `docs/` | [Build note](docs/BUILD-NOTE.md), [plan](docs/PLAN.md), [Nettskjema build sheet](docs/NETTSKJEMA-BUILD-SHEET.md), [Meridian 1.1](docs/MERIDIAN-1.1.md), [clinician check](docs/CLINICIAN-CHECK.md) and [traceability](docs/TRACEABILITY.md) |
 | `.github/workflows/pages.yml` | Runs every check and builds the site; a push to `main` publishes it, a pull request only runs the checks |
 
