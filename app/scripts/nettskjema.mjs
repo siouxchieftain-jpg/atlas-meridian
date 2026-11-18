@@ -296,8 +296,9 @@ async function verifyForm(c, form, formId) {
     if (w.isMandatory !== undefined && Boolean(g.isMandatory) !== w.isMandatory) problems.push(`${where}: required ${Boolean(g.isMandatory)}, expected ${w.isMandatory}`);
     if (w.minimumValue !== undefined && (g.minimumValue !== w.minimumValue || g.maximumValue !== w.maximumValue)) problems.push(`${where}: scale ${g.minimumValue} to ${g.maximumValue}`);
     if (w.answerOptions) {
-      const go = (g.answerOptions ?? []).map((o) => `${o.externalAnswerOptionId ?? ''}=${o.text}`).join('; ');
-      const wo = w.answerOptions.map((o) => `${o.externalAnswerOptionId}=${o.text}`).join('; ');
+      // Nettskjema keeps an option's text with HTML entities («Don&#39;t know»), so both sides are compared as plain text.
+      const go = (g.answerOptions ?? []).map((o) => `${o.externalAnswerOptionId ?? ''}=${plain(o.text)}`).join('; ');
+      const wo = w.answerOptions.map((o) => `${o.externalAnswerOptionId}=${plain(o.text)}`).join('; ');
       if (go !== wo) problems.push(`${where}: options «${go}», expected «${wo}»`);
     }
   });
