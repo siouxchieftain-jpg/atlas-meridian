@@ -3688,8 +3688,8 @@
     "en": "Next:"
   },
   "omDegNextText": {
-    "nb": "Skjemaet «Før du ser ATLAS» har fem spørsmål. Rollen, svaret og studienavnet står ferdig utfylt øverst.",
-    "en": "The form ‘Before you see ATLAS’ has five questions. The role, the answer and the study name are filled in at the top."
+    "nb": "Skjemaet «Før du ser ATLAS» har noen korte spørsmål. Rollen, svaret og studienavnet står ferdig utfylt øverst.",
+    "en": "The form ‘Before you see ATLAS’ has a few short questions. The role, the answer and the study name are filled in at the top."
   },
   "omDegLockNote": {
     "nb": "Rollen, svaret og studienavnet kan ikke endres etter at skjemaet er sendt.",
@@ -4049,7 +4049,7 @@
   },
   "browseIntro": {
     "nb": "Vil du gå gjennom ATLAS en gang til, i ditt eget tempo? «Se deg rundt» åpner ATLAS i en ny fane, uten skjemaer. Du kan klikke deg fritt rundt uten å sitte fast, og ingenting sendes. Studien din i denne fanen blir som den er.",
-    "en": "Would you like to go through ATLAS again, at your own pace? «Look around» opens ATLAS in a new tab, without forms. You can click freely without getting stuck, and nothing is sent. Your study in this tab stays as it is."
+    "en": "Would you like to go through ATLAS again, at your own pace? ‘Look around’ opens ATLAS in a new tab, without forms. You can click freely without getting stuck, and nothing is sent. Your study in this tab stays as it is."
   },
   "browseOpen": {
     "nb": "Åpne i ny fane",
@@ -4089,7 +4089,7 @@
   },
   "browseFormCase": {
     "nb": "Trykk «{{page1}}» og så «{{atlas}}» nedenfor.",
-    "en": "Press «{{page1}}» and then «{{atlas}}» below."
+    "en": "Press ‘{{page1}}’ and then ‘{{atlas}}’ below."
   },
   "browseFormDone": {
     "nb": "Ferdig med skjemaet",
@@ -4101,7 +4101,7 @@
   },
   "browseFormRest": {
     "nb": "Resten av skjemaet kommer etter at du har sett ATLAS. Trykk «Ferdig med skjemaet» for å gå videre.",
-    "en": "The rest of the form comes after you have seen ATLAS. Press «Done with the form» to go on."
+    "en": "The rest of the form comes after you have seen ATLAS. Press ‘Done with the form’ to go on."
   },
   "tourMarkerLine": {
     "nb": "I sakene er denne delen merket med {{n}}.",

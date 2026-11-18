@@ -1,9 +1,10 @@
-import { Button, Popover, PopoverSurface, PopoverTrigger, makeStyles, shorthands, tokens, typographyStyles } from '@fluentui/react-components';
+import { Button, Popover, PopoverSurface, PopoverTrigger, makeStyles, mergeClasses, shorthands, tokens, typographyStyles } from '@fluentui/react-components';
 import { Checkmark16Regular, Dismiss16Regular } from '@fluentui/react-icons';
 import { useEffect, useState, useSyncExternalStore, type ReactNode } from 'react';
 import { createPortal } from 'react-dom';
 import guideData from '../content/guide.json';
 import { useLang } from '../i18n/i18n';
+import { currentPath } from '../router/router';
 import { guide } from '../theme/constants';
 
 /**
@@ -19,6 +20,8 @@ export interface GuideMarker {
   views: string[];
   /** The tour step that shows this part, so the tour can carry the same number. */
   tour?: string;
+  /** «corner»: the pin sits on the part's top corner and the part keeps its width (a field, not a section). */
+  place?: 'corner';
   seksjon: string;
   part: Text;
   where: Text;
@@ -36,6 +39,11 @@ function set(next: Partial<GuideState>) {
   state = { ...state, ...next };
   subs.forEach((f) => f());
 }
+/** Ticks belong to one case: a part ticked on Kari is not ticked on Erlend. */
+function doneKey(n: number): string {
+  return `${currentPath().split('/')[3] ?? ''}:${n}`;
+}
+
 function useGuideState(): GuideState {
   return useSyncExternalStore(
     (f) => {
@@ -65,7 +73,10 @@ const useStyles = makeStyles({
     boxShadow: tokens.shadow4,
     ':hover': { backgroundImage: guide.mark, color: guide.ink, boxShadow: tokens.shadow8 },
     ':hover:active': { backgroundImage: guide.mark, color: guide.ink },
+    // Fluent's focus ring squares the corners; the pin stays round.
+    ':focus-visible': { borderRadius: '50%' },
   },
+  pinCorner: { top: '-12px', left: 'auto', insetInlineEnd: '-10px' },
   pinDone: { backgroundImage: 'none', backgroundColor: tokens.colorNeutralBackground1, color: guide.ink },
   surface: { padding: 0, maxWidth: '340px', borderRadius: tokens.borderRadiusXLarge, overflow: 'hidden', border: `1px solid ${guide.cardEdge}` },
   head: { display: 'flex', alignItems: 'center', gap: tokens.spacingHorizontalS, padding: '12px 12px 10px 14px', backgroundImage: guide.card, borderBottom: `1px solid ${guide.cardEdge}` },
@@ -146,7 +157,7 @@ function MarkerCard({ m, onClose }: { m: GuideMarker; onClose: () => void }) {
   const cls = useStyles();
   const { s, t } = useLang();
   const st = useGuideState();
-  const done = !!st.done[m.n];
+  const done = !!st.done[doneKey(m.n)];
   const L = [s('guideWhere'), s('guideDo'), s('guideLookFor'), s('guideTellUs')];
   return (
     <>
@@ -175,7 +186,7 @@ function MarkerCard({ m, onClose }: { m: GuideMarker; onClose: () => void }) {
             appearance={done ? 'secondary' : 'primary'}
             icon={done ? <Checkmark16Regular /> : undefined}
             onClick={() => {
-              set({ done: { ...state.done, [m.n]: !done }, open: done ? m.n : null });
+              set({ done: { ...state.done, [doneKey(m.n)]: !done }, open: done ? m.n : null });
             }}
           >
             {done ? s('guideDone') : s('guideMarkDone')}
@@ -191,12 +202,12 @@ function Pin({ m, host }: { m: GuideMarker; host: HTMLElement }) {
   const { s, t } = useLang();
   const st = useGuideState();
   const open = st.open === m.n;
-  const done = !!st.done[m.n];
+  const done = !!st.done[doneKey(m.n)];
   return createPortal(
-    <Popover open={open} onOpenChange={(_, d) => set({ open: d.open ? m.n : null })} positioning="below-start" withArrow trapFocus>
+    <Popover open={open} onOpenChange={(_, d) => set({ open: d.open ? m.n : null })} positioning={{ position: 'before', align: 'top', fallbackPositions: ['after-top', 'below-start'] }} withArrow trapFocus>
       <PopoverTrigger disableButtonEnhancement>
         <Button
-          className={`${cls.pin} ${done ? cls.pinDone : ''}`}
+          className={mergeClasses(cls.pin, m.place === 'corner' && cls.pinCorner, done && cls.pinDone)}
           aria-label={`${s('guideLabel')} ${m.n}: ${t(m.part)}${done ? s('guideDoneSuffix') : ''}`}
           data-guide-pin={m.n}
         >
@@ -222,12 +233,21 @@ export function GuideLayer({ role, view }: { role: 'gp' | 'dps'; view: string | 
         const el = document.querySelector<HTMLElement>(`main ${m.selector}`);
         if (!el) continue;
         if (getComputedStyle(el).position === 'static') el.style.position = 'relative';
-        // The number sits before the part's heading, as a guide mark; the part moves in to make room.
-        if (!('guideIndented' in el.dataset)) {
-          el.dataset.guideIndented = '';
-          el.style.paddingLeft = `${parseFloat(getComputedStyle(el).paddingLeft) + 36}px`;
-        }
         found.push({ m, el });
+      }
+      // The numbered parts move in to make room for the number. Where one column holds two or more of them (the ATLAS
+      // panel), its other parts move in too, unnumbered, so the headings stay in line.
+      const columns = new Map<HTMLElement, number>();
+      for (const { m, el } of found) if (m.place !== 'corner' && el.parentElement) columns.set(el.parentElement, (columns.get(el.parentElement) ?? 0) + 1);
+      for (const { m, el } of found) {
+        if (m.place === 'corner') continue;
+        const many = el.parentElement && (columns.get(el.parentElement) ?? 0) >= 2;
+        const row = many ? Array.from(el.parentElement!.children).filter((c): c is HTMLElement => c instanceof HTMLElement && c.hasAttribute('data-section')) : [el];
+        for (const part of row) {
+          if ('guideIndented' in part.dataset) continue;
+          part.dataset.guideIndented = '';
+          part.style.paddingLeft = `${parseFloat(getComputedStyle(part).paddingLeft) + 36}px`;
+        }
       }
       setHosts((prev) => (prev.length === found.length && prev.every((p, i) => p.el === found[i].el) ? prev : found));
       const present = found.map((f) => f.m.n);
@@ -271,7 +291,7 @@ export function GuideTaskStrip({ role, view, task, note }: { role: 'gp' | 'dps';
       {markers.length > 0 && (
         <ol className={cls.chips} aria-label={s('guideStepsHere')}>
           {markers.map((m) => {
-            const done = !!st.done[m.n];
+            const done = !!st.done[doneKey(m.n)];
             return (
               <li key={m.n}>
                 <button

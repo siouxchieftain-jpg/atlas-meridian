@@ -212,8 +212,8 @@ function StudyShell() {
         : undefined,
     },
   });
-  // «Se deg rundt» once the three cases are done, so the cases' before/after design is not primed (3.7).
-  if (!browse && casesDone(st) >= CORE.length)
+  // «Se deg rundt» from «Takk» on: after the three cases and after S2 and S6, so neither the cases nor the closing forms are primed (3.7.1).
+  if (!browse && stepIndex(furthest) >= stepIndex('takk'))
     help.push({ key: 'browse', label: s('helpBrowse'), icon: <Open20Regular />, dialog: { title: s('browseTitle'), body: <BrowseInvite heading={false} /> } });
   help.push({ key: 'glossary', label: s('helpGlossary'), icon: <BookOpen20Regular />, dialog: { title: s('helpGlossary'), body: <GlossaryBody />, wide: true } });
   help.push({ key: 'about', label: s('helpAboutPrototype'), icon: <Info20Regular />, dialog: { title: s('helpAboutPrototype'), body: <AboutBody /> } });

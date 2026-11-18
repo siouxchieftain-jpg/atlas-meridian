@@ -16,6 +16,7 @@ import type { CaseId, CoreCaseId } from '../content/types';
 import { cases } from '../content';
 import { useLang } from '../i18n/i18n';
 import { currentPath, navigate } from '../router/router';
+import { browseFlag } from '../state/persist';
 import { useWork } from '../state/work';
 import { useFormHostOptional } from '../study/formHost';
 import { DesignNote, useSelectedToggle } from '../patterns/basics';
@@ -181,7 +182,8 @@ export function AtlasTaskBar({ caseId }: { caseId: CaseId }) {
   if (!task) return null;
   // The task line is the guide's task strip, with the page's markers as numbered steps (3.7).
   const view = currentPath().split('/')[4];
-  const held = host?.form?.caseId === caseId && host.form.stage === 'held';
+  // «Se deg rundt» has no form to hold.
+  const held = !browseFlag() && host?.form?.caseId === caseId && host.form.stage === 'held';
   return (
     <Silent>
       <GuideTaskStrip
