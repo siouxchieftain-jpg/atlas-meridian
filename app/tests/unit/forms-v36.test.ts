@@ -68,7 +68,7 @@ describe('the decision without and with ATLAS (I-1)', () => {
           expect(d.options?.at(-1)).toEqual({ nb: 'Ikke bestemt', en: 'Not decided', code: 'ikke_bestemt' });
           expect(d.codebook).toMatch(/^d_v[134]_d[12]$/);
           // Waiting for the owner's ruling (D1): the form script leaves the form alone until it is ruled.
-          expect(d.draft).toBe(true);
+          expect(d.draft).toBeUndefined();
         }
         expect(d2.text).toEqual(d1.text);
         expect(d2.options).toEqual(d1.options);
@@ -96,17 +96,17 @@ describe('the decision without and with ATLAS (I-1)', () => {
       expect(d.text.nb).toBe('Hvordan ville du vurdert henvisningen?');
       expect(d.options?.slice(0, 3).map(({ nb: n, en }) => ({ nb: n, en }))).toEqual(outcomes);
       expect(d.options?.map((o) => o.code)).toEqual(['info', 'rett', 'retur', 'ikke_bestemt']);
-      expect(d.draft).toBe(true);
+      expect(d.draft).toBeUndefined();
     }
   });
 
-  it('asks DPS in Astrid\'s case what they would answer the GP, with choices that do not overlap, as a draft', () => {
+  it('asks DPS in Astrid\'s case what they would answer the GP, with choices that do not overlap, ruled as built (3.7)', () => {
     const d = item('S5.dps', 'D-V4-D1');
     expect(d.text.nb).toBe('Hva ville du svart fastlegen?');
     expect(nb(d)).toEqual(['Stå ved returen slik den er', 'Be om en ny henvisning', 'Vurdere henvisningen på nytt', 'Ikke svare nå', 'Ikke bestemt']);
     expect(d.options?.map((o) => o.en)).toEqual(['Stand by the return as it is', 'Ask for a new referral', 'Reassess the referral', 'Not reply for now', 'Not decided']);
     expect(d.options?.map((o) => o.code)).toEqual(['sta_ved_returen', 'ny_henvisning', 'vurdere_pa_nytt', 'ikke_svare', 'ikke_bestemt']);
-    expect(d.draft).toBe(true);
+    expect(d.draft).toBeUndefined();
   });
 
   it('names every decision choice\'s code, so «Ikke bestemt» is the same code in every form', () => {
@@ -134,8 +134,8 @@ describe('Helhetsinntrykk (S2), both roles', () => {
       expect(c.text.nb).toBe('Det var tydelig for meg når jeg kunne støtte meg på det ATLAS viste, og når jeg burde holde meg til min egen vurdering.');
     });
 
-    it(`${key}: every 3.6 change waits for the owner's ruling`, () => {
-      for (const id of ['C1-06', 'C3-01', 'C3-03', 'C4-02', 'C-CUCF-02']) expect(item(key, id).draft, id).toBe(true);
+    it(`${key}: every 3.6 change is ruled (3.7)`, () => {
+      for (const id of ['C1-06', 'C3-01', 'C3-03', 'C4-02', 'C-CUCF-02']) expect(item(key, id).draft, id).toBeUndefined();
     });
 
     it(`${key}: every block of ratings has a required written reason (I-12)`, () => {
@@ -159,10 +159,10 @@ describe('Helhetsinntrykk (S2), both roles', () => {
     });
   }
 
-  it('words C1-01 and the CUCF pair for DPS assessments, as drafts (O-G4)', () => {
+  it('words C1-01 and the CUCF pair for DPS assessments, ruled as built (O-G4, 3.7)', () => {
     for (const id of ['C1-01', 'C-CUCF-01', 'C-CUCF-02']) {
       expect(item('S2.dps', id).text).not.toEqual(item('S2.fastlege', id).text);
-      expect(item('S2.dps', id).draft).toBe(true);
+      expect(item('S2.dps', id).draft).toBeUndefined();
     }
     expect(item('S2.fastlege', 'C1-01').draft).toBeUndefined();
     expect(item('S2.fastlege', 'C-CUCF-01').draft).toBeUndefined();
@@ -175,12 +175,12 @@ describe('Helhetsinntrykk (S2), both roles', () => {
 });
 
 describe('Astrid for DPS asks about answering the GP, not about a refusal they did not write (O-G3)', () => {
-  it('rewords D-V4-01 for DPS, as a draft', () => {
+  it('rewords D-V4-01 for DPS, ruled as built (3.7)', () => {
     const d = item('S5.dps', 'D-V4-01');
     expect(d.text.nb).toBe('Endrer den strukturerte tilbakemeldingen hvordan du ville svart fastlegen? (1-3 setninger)');
     expect(d.text.nb).not.toMatch(/følelsesmessige/);
     expect(d.required).toBe(true);
-    expect(d.draft).toBe(true);
+    expect(d.draft).toBeUndefined();
   });
 });
 
@@ -238,11 +238,9 @@ describe('the form script holds a form back until its items are ruled, and repai
     };
   };
 
-  it('lists the items still waiting for a ruling, and none in a form 3.6 does not touch', async () => {
+  it('lists no item waiting for a ruling: the 3.6 items were ruled as built on 18 November 2026 (3.7)', async () => {
     const m = await load();
-    expect(m.draftItems(form('S3.fastlege'))).toEqual(['D-V1-D1', 'D-V1-D2']);
-    expect(m.draftItems(form('S2.fastlege'))).toEqual(['C1-06', 'C3-01', 'C3-03', 'C4-02', 'C-CUCF-02']);
-    for (const key of ['S1', 'S6', 'S7.fastlege', 'S8', 'S9', 'R1', 'R2']) expect(m.draftItems(form(key)), key).toEqual([]);
+    for (const f of instrument.forms) expect(m.draftItems(f), f.key).toEqual([]);
   });
 
   it('holds back every form a run names when one holds an unruled item, before reading any credential or sending anything', async () => {
@@ -273,15 +271,6 @@ describe('the form script holds a form back until its items are ruled, and repai
       const free = run([mode, '--round', 'pilot', '--only', 'S8']);
       expect(free.stdout + free.stderr, mode).toContain('no credentials file');
     }
-  });
-
-  it('marks as waiting, in the real instrument, every 3.6 item and the four DPS drafts from before (deviation 5)', async () => {
-    const m = await load();
-    const waiting = Object.fromEntries(instrument.forms.map((f) => [f.key, m.draftItems(f)]).filter(([, ids]) => ids.length));
-    expect(Object.keys(waiting).sort()).toEqual(['S2.dps', 'S2.fastlege', 'S3.dps', 'S3.fastlege', 'S4.dps', 'S4.fastlege', 'S5.dps', 'S5.fastlege']);
-    expect(waiting['S2.dps']).toContain('C1-04');
-    expect(waiting['S4.dps']).toEqual(expect.arrayContaining(['D-V3-01', 'D-V3-02']));
-    expect(waiting['S5.dps']).toContain('D-V4-02');
   });
 
   it('sets the codebook names and the named answer codes Nettskjema did not keep, «vet_ikke» among them', async () => {

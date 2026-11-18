@@ -23,6 +23,7 @@ import { useEffect, useId, useState, type ReactNode } from 'react';
 import type { CoreCaseId, DayTodo, Role, Upcoming } from '../content/types';
 import { cases, ordinary, pattern, shared, startDay, vocab } from '../content';
 import { capitalFirst, formatDateWithWeekday, formatDayMonth, formatMonthShort, formatWeekdayDayMonth, numberWord, useLang } from '../i18n/i18n';
+import { FADE_OPACITY } from '../patterns/Faded';
 import { DPS_TODAY, GP_TODAY } from '../engine/clock';
 import { navigate, useRoute } from '../router/router';
 import { useStudy } from '../state/study';
@@ -1093,7 +1094,9 @@ function DayStrip({ items, now, width, legend }: { items: DayItem[]; now: string
                   x.kind === 'routine' && cls.blockRoutine,
                   x.kind === 'other' && cls.blockOther,
                 )}
-                style={{ left: `calc(${at(x.from)} + 2px)`, width: `calc(${len(Math.min(x.to, end) - x.from)} - 4px)` }}
+                style={{ left: `calc(${at(x.from)} + 2px)`, width: `calc(${len(Math.min(x.to, end) - x.from)} - 4px)`, opacity: x.kind === 'case' ? 1 : FADE_OPACITY }}
+                // Faded parts are taken out of the page like the other faded parts (3.7).
+                inert={x.kind !== 'case' || undefined}
                 data-day-item={x.key}
               >
                 <span aria-hidden="true" className={cls.blockLabel}>
@@ -1341,7 +1344,7 @@ function GpReferrals() {
   for (const r of startDay.referralsWaiting) if (r.deadline) byDate.set(r.deadline, [...(byDate.get(r.deadline) ?? []), r.name]);
   const due = [...byDate.entries()].sort(([a], [b]) => a.localeCompare(b)).map(([date, names]) => ({ date, names }));
   const cell = (r: RefRow, quiet: boolean) => (
-    <tr key={r.key} data-ref-row={r.key}>
+    <tr key={r.key} data-ref-row={r.key} style={quiet ? { opacity: FADE_OPACITY } : undefined} inert={quiet || undefined}>
       <th scope="row" className={mergeClasses(cls.td, cls.tdName, quiet && cls.exCell)}>
         {keepAge(r.name)}
       </th>
@@ -1392,9 +1395,11 @@ function GpReferrals() {
               <tbody className={cls.exBody} aria-labelledby={exId} data-examples="">
                 <tr>
                   <th scope="rowgroup" colSpan={4} className={cls.exHead} id={exId}>
-                    {s('examplesLabel')}
+                    {s('notInEvaluation')}
+                    <span style={{ fontWeight: 400 }}> · {s('examplesLabel')}</span>
                   </th>
                 </tr>
+                {/* The example rows fade (3.7). */}
                 {examples.map((r) => cell(r, true))}
               </tbody>
             </table>

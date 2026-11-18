@@ -3,6 +3,7 @@ import { LockClosed20Regular } from '@fluentui/react-icons';
 import { useId, type ReactNode } from 'react';
 import { cases } from '../content';
 import { formatDayMonth, useLang } from '../i18n/i18n';
+import { FADE_OPACITY } from '../patterns/Faded';
 import { DPS_TODAY, isWeekday } from '../engine/clock';
 import { CORE } from './parts';
 import { useStudy } from '../state/study';
@@ -131,9 +132,13 @@ export function ExampleGroup({ children, label }: { children: ReactNode; label?:
   return (
     <div className={cls.examples} role="group" aria-labelledby={id} data-examples="">
       <p className={cls.examplesLabel} id={id}>
-        {label ?? s('examplesLabel')}
+        {s('notInEvaluation')}
+        <span style={{ fontWeight: 400 }}> · {label ?? s('examplesLabel')}</span>
       </p>
-      {children}
+      {/* Faded, not blurred; inert takes it out of clicks, the tab order and axe's contrast check (3.7). */}
+      <div style={{ opacity: FADE_OPACITY }} inert>
+        {children}
+      </div>
     </div>
   );
 }

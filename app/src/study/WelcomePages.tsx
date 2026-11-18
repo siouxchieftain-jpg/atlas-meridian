@@ -18,7 +18,7 @@ import { cases } from '../content';
 import { formatDate, useLang } from '../i18n/i18n';
 import { getConfig, studyClosed } from '../engine/forms';
 import { Redirect, RouterLink, navigate, useRoute } from '../router/router';
-import { readSession, writeSession } from '../state/persist';
+import { browseFlag, clearBrowseKeys, readSession, writeSession } from '../state/persist';
 import { useStudy } from '../state/study';
 import type { Intervju, RoleChoice } from '../state/types';
 import { ChoiceGroup } from '../patterns/ChoiceGroup';
@@ -337,7 +337,6 @@ function IntroText({ withContact }: { withContact: boolean }) {
           </li>
         ))}
       </ul>
-      {cfg.round === 'pilot' && <p className={v.pilot}>{s('velkommenPilot')}</p>}
       <div className={v.letterRow}>
         {/* A missing letter or contact is said, never hidden: the release check confirms both are set. */}
         {cfg.informationLetter ? (
@@ -504,7 +503,9 @@ function WelcomeBack() {
         onConfirm={() => {
           // This browser's study session goes (and a preview's answers); the language, a preview flag and the forms in
           // Nettskjema stay (decision 11).
-          for (const store of [window.localStorage, window.sessionStorage]) {
+          // In «Se deg rundt» only this tab's own keys go; the study in the other tab is never touched.
+          if (browseFlag()) clearBrowseKeys((k) => k.startsWith('atlas.study') || k === PREVIEW_ANSWERS_KEY);
+          else for (const store of [window.localStorage, window.sessionStorage]) {
             try {
               Object.keys(store)
                 .filter((k) => k.startsWith('atlas.study') || k === PREVIEW_ANSWERS_KEY)
@@ -689,25 +690,34 @@ const useOmDeg = makeStyles({
     paddingBlockStart: '120px',
     paddingBlockEnd: '28px',
     boxShadow: tokens.shadow2,
+    // 3.7: the dawn's warm light behind the name, as on the study card, so the card does not go flat under the artwork.
+    backgroundImage:
+      'radial-gradient(60% 38% at 88% 46%, rgba(253,207,180,0.55) 0%, rgba(253,207,180,0) 72%), radial-gradient(55% 40% at 8% 100%, rgba(231,228,251,0.9) 0%, rgba(231,228,251,0) 70%), ' +
+      guide.card,
   },
   nameEyebrow: { ...typographyStyles.caption1Strong, margin: 0, color: guide.ink },
   nameValue: { ...typographyStyles.title2, margin: 0, color: tokens.colorNeutralForeground1, overflowWrap: 'anywhere' },
   nameText: { ...typographyStyles.body1, margin: 0, color: tokens.colorNeutralForeground1, maxWidth: '52ch' },
-  facts: { listStyle: 'none', margin: 0, padding: 0, display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: '8px' },
-  fact: {
-    display: 'inline-flex',
-    alignItems: 'center',
+  facts: {
+    listStyle: 'none',
+    margin: 0,
+    padding: 0,
+    paddingBlockStart: '12px',
+    borderTop: `1px solid ${guide.track}`,
+    display: 'flex',
+    flexDirection: 'column',
     gap: '6px',
-    paddingInline: '10px',
-    paddingBlock: '3px',
-    borderRadius: tokens.borderRadiusCircular,
-    border: `1px solid ${guide.cardEdge}`,
-    backgroundColor: 'rgba(255,255,255,0.9)',
+  },
+  // 3.7: plain lines, not capsules, so the facts read as information and not as buttons.
+  fact: {
+    display: 'grid',
+    gridTemplateColumns: '16px minmax(0, 1fr)',
+    columnGap: '8px',
+    alignItems: 'start',
     ...typographyStyles.body1,
     color: tokens.colorNeutralForeground1,
-    '@media (forced-colors: active)': { border: '1px solid CanvasText' },
   },
-  factIcon: { color: guide.ink, display: 'inline-flex' },
+  factIcon: { color: guide.ink, display: 'inline-flex', marginTop: '2px' },
 });
 
 export function OmDegPage() {
@@ -814,7 +824,7 @@ export function OmDegPage() {
       {st.studienavn && (
         <aside className={o.name} aria-labelledby={nameId} data-studienavn="">
           <GuideImage variant="cover" />
-          <StudyNameMark name={st.studienavn} size={64} ring />
+          <StudyNameMark name={st.studienavn} size={104} ring />
           <p className={o.nameEyebrow} id={nameId}>
             {s('omDegNameTitle')}
           </p>

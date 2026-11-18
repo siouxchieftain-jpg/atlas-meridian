@@ -5,6 +5,8 @@ import type { CaseId, CoreCaseId } from '../content/types';
 import { cases, tour, tourParts, v5 } from '../content';
 import { useLang } from '../i18n/i18n';
 import { previewFlag } from '../engine/forms';
+import { browseFlag } from '../state/persist';
+import { BrowseInvite } from './browse';
 import { navigate } from '../router/router';
 import { stepIndex, useStudy } from '../state/study';
 import { STEP_ORDER, type FormStep, type StepId } from '../state/types';
@@ -235,10 +237,13 @@ export function TakkPage() {
   const steps = tourParts(role).flatMap((p) => p.steps);
   const caseIds: CaseId[] = ['kari', 'erlend', 'astrid'];
   if (role === 'gp' && study.state.ledger.S7) caseIds.push('torbjorn');
+  const browse = browseFlag();
   return (
     <IntroPage
       wide
       after={
+        <>
+        {!browse && <BrowseInvite />}
         <Card aria-label={s('takkReasonsTitle')}>
           <h2 className={cls.h2}>{s('takkReasonsTitle')}</h2>
           <Body>{s('takkReasonsIntro')}</Body>
@@ -271,15 +276,17 @@ export function TakkPage() {
             ))}
           </ul>
         </Card>
+        </>
       }
     >
       <PageHeading title={s('stepTakk')} guide>
         {s('takkTitle')}
       </PageHeading>
-      <Lead>{previewFlag() ? s('takkBodyPreview') : s('takkBody')}</Lead>
+      <Lead>{browse ? s('takkBodyBrowse') : previewFlag() ? s('takkBodyPreview') : s('takkBody')}</Lead>
       {/* The full name only now, after the last form: it names what the forms ask about. */}
       <Body>{s('takkAtlasName')}</Body>
-      <ClearBrowserData />
+      {/* The browse tab clears itself when it closes; the button would reach the study's own data. */}
+      {!browse && <ClearBrowserData />}
     </IntroPage>
   );
 }

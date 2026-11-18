@@ -21,6 +21,7 @@ import { useFormHostOptional } from '../study/formHost';
 import { DesignNote, useSelectedToggle } from '../patterns/basics';
 import { Silent } from '../patterns/announce';
 import { AtlasPanelHead } from './CaseLayout';
+import { GuideTaskStrip } from '../guide/GuideLayer';
 
 const useStyles = makeStyles({
   bar: {
@@ -178,19 +179,23 @@ export function AtlasTaskBar({ caseId }: { caseId: CaseId }) {
   const c = cases[caseId];
   const task = work.viewer === 'gp' ? c.gp.atlasTask : c.dps?.atlasTask;
   if (!task) return null;
-  // Silent: the task was announced once at «Vis ATLAS»; the bar stays as a reminder on each page.
+  // The task line is the guide's task strip, with the page's markers as numbered steps (3.7).
+  const view = currentPath().split('/')[4];
+  const held = host?.form?.caseId === caseId && host.form.stage === 'held';
   return (
     <Silent>
-      <MessageBar intent="info" layout="multiline">
-        <MessageBarBody>
-          {t(task)}{' '}
-          {host?.form?.caseId === caseId && host.form.stage === 'held' && (
-            <span style={{ display: 'block', marginTop: 4 }} data-form-held="">
+      <GuideTaskStrip
+        role={work.viewer}
+        view={view}
+        task={t(task)}
+        note={
+          held ? (
+            <p style={{ margin: 0 }} data-form-held="">
               {s('formRestLater')}.
-            </span>
-          )}
-        </MessageBarBody>
-      </MessageBar>
+            </p>
+          ) : undefined
+        }
+      />
     </Silent>
   );
 }

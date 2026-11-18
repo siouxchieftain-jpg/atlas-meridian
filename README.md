@@ -57,10 +57,22 @@ Until a study form has an address, its step shows «Dette skjemaet er ikke klart
 The pilot runs on the live site with forms of its own, so no pilot answer ever lands in a study form.
 
 1. `node scripts/nettskjema.mjs create --round pilot` makes a copy of the thirteen study forms (S1 to S9, titled «(pilot)») and writes their addresses under `pilotForms`.
-2. With `"round": "pilot"` in `atlas-config.json`, the study forms come from `pilotForms`; the header shows a «Pilot» chip, Velkommen says the answers are kept out of the study's data, and the `versjon` of every study form ends in `-pilot` (R1 and R2, the review forms, keep theirs).
+2. With `"round": "pilot"` in `atlas-config.json`, the study forms come from `pilotForms`; the header shows a «Pilot» chip, and the `versjon` of every study form ends in `-pilot` (R1 and R2, the review forms, keep theirs).
 3. Before the study round, bring the study forms in line (done on 18 October 2026): `node scripts/nettskjema.mjs update`, then `node scripts/nettskjema.mjs verify`. Forms made before v3.1 still have S2 before the cases, «dashbordet» in S2 and S8, B-02, and receipts that do not name their form; `update` leaves any form that has answers alone.
 4. Open the pilot forms for answers: `node scripts/nettskjema.mjs open --round pilot --until YYYY-MM-DD` (through that day, Norwegian time). `close --round pilot` closes them; `status --round pilot` shows answers and whether each is open.
 5. When the pilot is over, close the pilot forms, set `"round"` to `"study"` and fill `studyPeriod` with the first and last day (`YYYY-MM-DD`). Open the study forms the same way, with `--study` added (the script refuses to open the study set without it). After the last day (Norwegian time), Velkommen says the study has ended and nothing starts. The pilot forms and their answers stay in Nettskjema, apart from the study's. A session begun in the pilot is not carried into the study round: in that browser the study link starts afresh, with a new study name.
+
+### From 3.6 to 3.7 (the guided study, 18 November 2026)
+
+3.7 carries the 3.6 form pass, ruled as built on 18 November 2026 (no item is `draft` any more), and adds: one optional S1 item for supervisors («Er du veileder i prosjektet ...»), whose answers are kept out of the study's data; numbered guide markers on the case pages, with a task strip and the same numbers in the tour and in «Gi tilbakemelding»; the ordinary day's examples faded and marked «Ikke en del av evalueringen»; «Se deg rundt», a second tab without forms after the three cases; and 20 to 30 minutes on Velkommen and in the information letter. Velkommen no longer has a pilot line; the «Pilot» chip stays while the round is pilot.
+
+Release, on the laptop, pilot set only (the study set is brought in line on the day the study opens):
+
+1. On `main`: `status --round pilot`, then `close --round pilot` (this also closes Kari's old pilot form, 663418).
+2. On `v3.7`: `update --round pilot --only S1,S2.fastlege,S2.dps,S4.fastlege,S4.dps,S5.fastlege,S5.dps`, then `create --round pilot --only S3.fastlege,S3.dps`, then `verify --round pilot`.
+3. `npm run letter`, commit `atlas-config.json` and the PDFs, push, open the pull request, merge it when the checks pass, and wait for the site to publish.
+4. Check the live site, then `open --round pilot --until 2026-11-30`.
+5. On the day the study opens: the same `update` and `create` without `--round pilot`, `verify`, then close the pilot set, set `"round": "study"` and `studyPeriod`, and open the study set with `--study`.
 
 ### From 3.5.1 to 3.6 (the form pass)
 

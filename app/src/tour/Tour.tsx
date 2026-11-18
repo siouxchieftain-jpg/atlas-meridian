@@ -30,6 +30,7 @@ import { PageHeading } from '../shell/PageHeading';
 import { atlasDawn, guide, size } from '../theme/constants';
 import type { Held } from '../overview/held';
 import { SandboxFrame, isStudyFrame, useSandbox, type Sandbox } from './frames';
+import { MarkerNumber, markerForTour } from '../guide/GuideLayer';
 
 const useStyles = makeStyles({
   // The guide layer's stage: the dawn and the image, the progress on top, the panel and the live window in the middle.
@@ -101,6 +102,15 @@ const useStyles = makeStyles({
     '@media (forced-colors: active)': { backgroundColor: 'Canvas', border: '1px solid CanvasText' },
   },
   part: { ...typographyStyles.caption1Strong, margin: 0, color: guide.ink },
+  markerLine: {
+    ...typographyStyles.body1Strong,
+    color: guide.ink,
+    margin: 0,
+    display: 'flex',
+    alignItems: 'center',
+    gap: tokens.spacingHorizontalS,
+  },
+  seenTitle: { display: 'inline-flex', alignItems: 'center', gap: tokens.spacingHorizontalS },
   tryIt: {
     display: 'flex',
     gap: '10px',
@@ -336,6 +346,12 @@ function StepText({ step, showReason, partLine }: { step: TourStep; showReason: 
       <PageHeading title={s('stepOmvisning')} guide>
         {t(step.title)}
       </PageHeading>
+      {markerForTour(step.id) != null && (
+        <p className={cls.markerLine}>
+          <MarkerNumber n={markerForTour(step.id)!} small />
+          {s('tourMarkerLine', { n: markerForTour(step.id)! })}
+        </p>
+      )}
       <Lead>{t(step.body)}</Lead>
       {step.tryIt && (
         <p className={cls.tryIt}>
@@ -425,7 +441,10 @@ export function TourView({
           <ul className={cls.seen}>
             {all.map(({ st, pi, si }) => (
               <li key={st.id} className={cls.seenItem}>
-                <span>{t(st.title)}</span>
+                <span className={cls.seenTitle}>
+                  {markerForTour(st.id) != null && <MarkerNumber n={markerForTour(st.id)!} small />}
+                  {t(st.title)}
+                </span>
                 <Button size="small" appearance="subtle" onClick={() => onPos({ part: pi, step: si })}>
                   {s('tourSeeAgain')}
                 </Button>
@@ -508,7 +527,14 @@ function StepDialogBody({
   const sandbox: Sandbox = useSandbox(role, false);
   return (
     <DialogBody>
-      <DialogTitle>{t(step.title)}</DialogTitle>
+      <DialogTitle>
+        {markerForTour(step.id) != null && (
+          <span style={{ marginInlineEnd: 8, verticalAlign: 'middle' }}>
+            <MarkerNumber n={markerForTour(step.id)!} small />
+          </span>
+        )}
+        {t(step.title)}
+      </DialogTitle>
       {/* A window with nothing to press (the pattern, Kalibrering) still scrolls by keyboard: the content is a named,
           focusable region (2.1.1, 3.5.1 re-check S1). Its name differs from the live window's, which is a region too. */}
       <DialogContent tabIndex={0} role="region" aria-label={s('tourStepDialogContent', { title: t(step.title) })}>

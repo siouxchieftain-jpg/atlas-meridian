@@ -22,6 +22,7 @@ export default defineConfig({
   define: {
     __ATLAS_VERSJON__: JSON.stringify(versjon),
     __ATLAS_TEST_BUILD__: JSON.stringify(process.env.ATLAS_TEST_BUILD === '1'),
+    __ATLAS_MOCK__: JSON.stringify(process.env.ATLAS_MOCK === '1'),
   },
   build: {
     target: 'es2022',

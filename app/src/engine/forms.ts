@@ -1,6 +1,6 @@
 import type { CoreCaseId, FormKey, Role } from '../content/types';
 import type { FormStep, Intervju, RoleChoice } from '../state/types';
-import { readSession, removeSession, writeSession } from '../state/persist';
+import { readSession, removeSession, writeSession, browseFlag } from '../state/persist';
 import { rolleValue } from '../state/study';
 
 /** The pilot round answers into its own copy of the study forms; the study round into the study forms. */
@@ -199,6 +199,8 @@ const PREVIEW_KEY = 'atlas.preview';
 
 /** True when the address carried `?forhandsvisning` in this browser session. */
 export function previewFlag(): boolean {
+  // The hosted mock (3.7) and «Se deg rundt» never send a form.
+  if (__ATLAS_MOCK__ || browseFlag()) return true;
   return readSession<boolean>(PREVIEW_KEY) === true;
 }
 

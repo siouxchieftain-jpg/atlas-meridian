@@ -14,6 +14,8 @@ import { useEffect, useId, useLayoutEffect, useRef, useState } from 'react';
 import { useLang } from '../i18n/i18n';
 import { size } from '../theme/constants';
 import { findForm, PreviewForm } from './PreviewForm';
+import { BrowseForm } from './browse';
+import { browseFlag } from '../state/persist';
 import { useFormHost } from './formHost';
 import { buildFormUrl, getConfig } from '../engine/forms';
 import { focusInView, Silent, useAtlasAnnounce } from '../patterns/announce';
@@ -346,7 +348,17 @@ export function FormPanel({ actions }: { actions: FormPanelActions | null }) {
               </p>
             </div>
           )}
-          {form.route === 'preview' && (
+          {form.route === 'preview' && browseFlag() && (
+            <BrowseForm
+              key={form.id}
+              formKey={form.formKey}
+              caseForm={!!actions.onPage1}
+              page1Done={!!actions.page1Confirmed}
+              onPageChange={host.previewPageChanged}
+              onSent={host.previewSent}
+            />
+          )}
+          {form.route === 'preview' && !browseFlag() && (
             <PreviewForm
               key={form.id}
               formKey={form.formKey}

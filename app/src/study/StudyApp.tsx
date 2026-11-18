@@ -17,6 +17,7 @@ import {
   QuestionCircle20Regular,
   TaskListLtr20Filled,
   TaskListLtr20Regular,
+  Open20Regular,
 } from '@fluentui/react-icons';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import type { CoreCaseId } from '../content/types';
@@ -24,13 +25,15 @@ import { tourParts } from '../content';
 import { useLang } from '../i18n/i18n';
 import { getConfig, previewFlag, setPreviewFlag, studyClosed } from '../engine/forms';
 import { Redirect, navigate, useRoute } from '../router/router';
-import { removeKey } from '../state/persist';
+import { browseFlag, removeKey } from '../state/persist';
+import { BrowseBanner, BrowseInvite } from './browse';
 import { KEEP_KEY, PENDING_KEY, SENDT_KEY, STUDY_KEY, StudyProvider, stepIndex, useStudy } from '../state/study';
 import { CASE_FORM, STEP_ORDER } from '../state/types';
 import { StudyWorkProvider } from '../state/work';
 import { NoticeBar, useNotice } from '../patterns/notice';
 import { Silent, focusAfterOverlay } from '../patterns/announce';
 import { AppShell, type NavItem } from '../shell/AppShell';
+import { GuideLayer } from '../guide/GuideLayer';
 import { ConfirmDialog, GlossaryBody, HelpMenu, LanguageToggle, Wordmark, type HelpItem } from '../shell/HeaderParts';
 import { AboutBody, HowItWorksBody } from '../shell/HelpBodies';
 import { CaseRoute, isCaseId } from '../case/CaseRoutes';
@@ -140,6 +143,7 @@ function StudyShell() {
   const route = useRoute();
   const [confirmReset, setConfirmReset] = useState(false);
   const preview = previewFlag();
+  const browse = browseFlag();
   const st = study.state;
   const here = `/${route.path.join('/')}`;
   const hereRef = useRef(here);
@@ -147,8 +151,8 @@ function StudyShell() {
 
   // Progress made under the preview flag is a trial run (it never blocks review mode).
   useEffect(() => {
-    if (preview && !st.previewRun && (st.roleChoice || stepIndex(st.furthest) > 0)) study.setPreviewRun();
-  }, [preview, st.previewRun, st.roleChoice, st.furthest, study]);
+    if (preview && !browse && !st.previewRun && (st.roleChoice || stepIndex(st.furthest) > 0)) study.setPreviewRun();
+  }, [preview, browse, st.previewRun, st.roleChoice, st.furthest, study]);
 
   // S9, the feedback form: a send marks the part, closes the panel and says thank you on the page it was about.
   useEffect(
@@ -208,6 +212,9 @@ function StudyShell() {
         : undefined,
     },
   });
+  // «Se deg rundt» once the three cases are done, so the cases' before/after design is not primed (3.7).
+  if (!browse && casesDone(st) >= CORE.length)
+    help.push({ key: 'browse', label: s('helpBrowse'), icon: <Open20Regular />, dialog: { title: s('browseTitle'), body: <BrowseInvite heading={false} /> } });
   help.push({ key: 'glossary', label: s('helpGlossary'), icon: <BookOpen20Regular />, dialog: { title: s('helpGlossary'), body: <GlossaryBody />, wide: true } });
   help.push({ key: 'about', label: s('helpAboutPrototype'), icon: <Info20Regular />, dialog: { title: s('helpAboutPrototype'), body: <AboutBody /> } });
   if (stepIndex(furthest) > 0)
@@ -242,7 +249,7 @@ function StudyShell() {
     };
   }, [form, ctl, st.page1, s, t, study, host, showNotice]);
 
-  const chips = [preview ? s('previewForm') : null, getConfig().round === 'pilot' ? s('roundPilot') : null].filter((x): x is string => !!x);
+  const chips = [browse ? s('browseChip') : preview ? s('previewForm') : null, getConfig().round === 'pilot' ? s('roundPilot') : null].filter((x): x is string => !!x);
   const feedbackNotice = useMemo(() => (key: Parameters<typeof showNotice>[0]) => showNotice(key, hereRef.current), [showNotice]);
 
   return (
@@ -263,7 +270,7 @@ function StudyShell() {
               <StudyAccount />
             </>
           }
-          banner={preview ? <PreviewBanner /> : undefined}
+          banner={browse ? <BrowseBanner /> : preview ? <PreviewBanner /> : undefined}
           notice={<NoticeBar notice={notice} onDismiss={clearNotice} onBind={bindNotice} />}
           nav={nav}
           navExpandedDefault={false}
@@ -277,7 +284,8 @@ function StudyShell() {
         >
           <StudyRoutes path={route.path} igjen={route.query.has('igjen')} />
         </AppShell>
-        {!studyClosed() && <StudyFeedbackTab path={route.path} onResult={(r) => feedbackResult(r, feedbackNotice)} />}
+        {route.path[1] === 'sak' && <GuideLayer role={study.role ?? 'gp'} view={route.path[3]} />}
+        {!studyClosed() && !browse && <StudyFeedbackTab path={route.path} onResult={(r) => feedbackResult(r, feedbackNotice)} />}
         <ConfirmDialog
           open={confirmReset}
           fromHelp

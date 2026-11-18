@@ -17,7 +17,8 @@ import { useStudy } from '../state/study';
 import { focusAfterOverlay } from '../patterns/announce';
 import { ConfirmDialog } from '../shell/HeaderParts';
 import { SrOnly } from '../patterns/basics';
-import { partOf as sectionOf, sectionsFor, sideLabel } from '../review/sections';
+import { partOf as sectionOf, screenOf, sectionsFor, sideLabel } from '../review/sections';
+import { MarkerNumber, markerForSection } from '../guide/GuideLayer';
 import { useFormHost } from './formHost';
 import { useStudyController } from './controller';
 import { studySide } from './parts';
@@ -148,16 +149,19 @@ function PartsList({ side, onPick, isOpen }: { side: string; onPick: (seksjon: s
   const cls = useStyles();
   const { s } = useLang();
   const study = useStudy();
+  const screen = screenOf(side);
+  const anyNumber = sectionsFor(side).some((sec) => markerForSection(screen.role, screen.view, sec.id) != null);
   return (
     <ul className={cls.secList}>
       {sectionsFor(side).map((sec) => {
         const given = study.state.feedbackSent.includes(`${side}#${sec.id}`);
+        const n = markerForSection(screen.role, screen.view, sec.id);
         return (
           <li key={sec.id}>
             <Button
               appearance="subtle"
               data-feedback-part={sec.id}
-              icon={given ? <CheckmarkCircle16Regular /> : undefined}
+              icon={given ? <CheckmarkCircle16Regular /> : n != null ? <MarkerNumber n={n} small /> : anyNumber ? <span style={{ width: 24 }} aria-hidden="true" /> : undefined}
               style={{ justifyContent: 'flex-start', width: '100%', textAlign: 'start' }}
               onClick={() => onPick(sec.id)}
             >
