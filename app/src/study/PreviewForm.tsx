@@ -66,6 +66,9 @@ const useStyles = makeStyles({
   privacy: { ...typographyStyles.caption1, color: tokens.colorNeutralForeground3, margin: 0 },
   scale: { display: 'flex', flexWrap: 'wrap', gap: '2px' },
   anchors: { display: 'flex', justifyContent: 'space-between', ...typographyStyles.caption1, color: tokens.colorNeutralForeground3 },
+  // With «Vet ikke» (3.6, I-18): the anchors sit under the points, inside the group, and «Vet ikke» starts a line of its own.
+  anchorsInGroup: { flexBasis: '100%', display: 'flex', justifyContent: 'space-between', ...typographyStyles.caption1, color: tokens.colorNeutralForeground3 },
+  dontKnow: { flexBasis: '100%', marginTop: tokens.spacingVerticalXS },
 });
 
 function scaleRange(item: InstrumentItem): number[] {
@@ -228,9 +231,17 @@ export function PreviewForm({
                     {range.map((n) => (
                       <Radio key={n} value={String(n)} label={String(n)} />
                     ))}
+                    {/* «Vet ikke» after the scale (3.6, I-18): the anchors under the points first, so «Vet ikke» is not read as a point. */}
+                    {it.dontKnow && it.anchors && (
+                      <div className={cls.anchorsInGroup} id={anchorsId}>
+                        <span>{`${range[0]}: ${t(it.anchors.low)}`}</span>
+                        <span>{`${range[range.length - 1]}: ${t(it.anchors.high)}`}</span>
+                      </div>
+                    )}
+                    {it.dontKnow && <Radio className={cls.dontKnow} value={it.dontKnow.nb} label={t(it.dontKnow)} />}
                   </RadioGroup>
                 </Field>
-                {it.anchors && (
+                {it.anchors && !it.dontKnow && (
                   <div className={cls.anchors} id={anchorsId}>
                     <span>{`${range[0]}: ${t(it.anchors.low)}`}</span>
                     <span>{`${range[range.length - 1]}: ${t(it.anchors.high)}`}</span>

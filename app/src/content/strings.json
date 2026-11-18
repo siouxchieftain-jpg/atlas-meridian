@@ -2624,8 +2624,8 @@
     "en": "Good to know"
   },
   "velkommenTimeTitle": {
-    "nb": "Omtrent en time",
-    "en": "About an hour"
+    "nb": "20 til 30 minutter",
+    "en": "20 to 30 minutes"
   },
   "omDegRoleChange": {
     "nb": "Velg en annen rolle",
@@ -3536,8 +3536,8 @@
     "en": "Pilot round: the answers are marked as pilot and kept out of the study’s data."
   },
   "velkommenStepsLead": {
-    "nb": "Fem steg, omtrent en time i alt. Du kan ta pause mellom stegene.",
-    "en": "Five steps, about an hour in all. You can take a break between the steps."
+    "nb": "Fem steg, 20 til 30 minutter i alt. Du kan ta pause mellom stegene.",
+    "en": "Five steps, 20 to 30 minutes in all. You can take a break between the steps."
   },
   "vStep1Title": {
     "nb": "Rolle og om deg",
@@ -4042,5 +4042,117 @@
   "deadlinesNone": {
     "nb": "Ingen åpne frister i studien.",
     "en": "No open deadlines in the study."
+  },
+  "browseTitle": {
+    "nb": "Se deg rundt",
+    "en": "Look around"
+  },
+  "browseIntro": {
+    "nb": "Vil du gå gjennom ATLAS en gang til, i ditt eget tempo? «Se deg rundt» åpner ATLAS i en ny fane, uten skjemaer. Du kan klikke deg fritt rundt uten å sitte fast, og ingenting sendes. Studien din i denne fanen blir som den er.",
+    "en": "Would you like to go through ATLAS again, at your own pace? «Look around» opens ATLAS in a new tab, without forms. You can click freely without getting stuck, and nothing is sent. Your study in this tab stays as it is."
+  },
+  "browseOpen": {
+    "nb": "Åpne i ny fane",
+    "en": "Open in a new tab"
+  },
+  "helpBrowse": {
+    "nb": "Se deg rundt (ny fane)",
+    "en": "Look around (new tab)"
+  },
+  "browseChip": {
+    "nb": "Se deg rundt",
+    "en": "Looking around"
+  },
+  "browseBannerLead": {
+    "nb": "Du ser deg rundt.",
+    "en": "You are looking around."
+  },
+  "browseBannerBody": {
+    "nb": "Ingen skjemaer sendes, og det du gjør her, forsvinner når du lukker fanen. Studien din er fortsatt åpen i den andre fanen.",
+    "en": "No forms are sent, and what you do here goes when you close this tab. Your study is still open in the other tab."
+  },
+  "browseClose": {
+    "nb": "Lukk fanen",
+    "en": "Close this tab"
+  },
+  "browseFormTitle": {
+    "nb": "Her åpnes et skjema i studien",
+    "en": "In the study, a form opens here"
+  },
+  "browseFormBody": {
+    "nb": "I studien svarer du på et kort skjema her. Når du ser deg rundt, hopper du over det.",
+    "en": "In the study you answer a short form here. When you look around, you skip it."
+  },
+  "browseFormNext": {
+    "nb": "Gå videre",
+    "en": "Go on"
+  },
+  "browseFormCase": {
+    "nb": "Trykk «{{page1}}» og så «{{atlas}}» nedenfor.",
+    "en": "Press «{{page1}}» and then «{{atlas}}» below."
+  },
+  "browseFormDone": {
+    "nb": "Ferdig med skjemaet",
+    "en": "Done with the form"
+  },
+  "takkBodyBrowse": {
+    "nb": "Du har sett deg rundt. Ingenting ble sendt. Du kan lukke denne fanen.",
+    "en": "You have looked around. Nothing was sent. You can close this tab."
+  },
+  "browseFormRest": {
+    "nb": "Resten av skjemaet kommer etter at du har sett ATLAS. Trykk «Ferdig med skjemaet» for å gå videre.",
+    "en": "The rest of the form comes after you have seen ATLAS. Press «Done with the form» to go on."
+  },
+  "tourMarkerLine": {
+    "nb": "I sakene er denne delen merket med {{n}}.",
+    "en": "In the cases, this part carries the marker {{n}}."
+  },
+  "guideWhere": {
+    "nb": "Hvor",
+    "en": "Where"
+  },
+  "guideDo": {
+    "nb": "Gjør",
+    "en": "Do"
+  },
+  "guideLookFor": {
+    "nb": "Se etter",
+    "en": "Look for"
+  },
+  "guideTellUs": {
+    "nb": "Fortell oss",
+    "en": "Tell us"
+  },
+  "guideLabel": {
+    "nb": "Veiledning",
+    "en": "Guide"
+  },
+  "guideClose": {
+    "nb": "Lukk",
+    "en": "Close"
+  },
+  "guideDone": {
+    "nb": "Gjort",
+    "en": "Done"
+  },
+  "guideMarkDone": {
+    "nb": "Merk som gjort",
+    "en": "Mark as done"
+  },
+  "guideDoneSuffix": {
+    "nb": ", gjort",
+    "en": ", done"
+  },
+  "guideTask": {
+    "nb": "Oppgaven din",
+    "en": "Your task"
+  },
+  "guideStepsHere": {
+    "nb": "Stegene på denne siden",
+    "en": "The steps on this page"
+  },
+  "notInEvaluation": {
+    "nb": "Ikke en del av evalueringen",
+    "en": "Not part of this evaluation"
   }
 }

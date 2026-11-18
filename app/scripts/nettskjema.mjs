@@ -1,10 +1,12 @@
-// Builds the 14 Nettskjema forms from src/content/instrument.json through the Nettskjema API v3, the same
+// Builds the 15 Nettskjema forms from src/content/instrument.json through the Nettskjema API v3, the same
 // file the build sheet and the app's preview forms come from.
 //
 //   node scripts/nettskjema.mjs plan     what would be created; no login, nothing is sent
 //   node scripts/nettskjema.mjs create   creates the forms that have no address yet, writes their addresses
 //                                        into public/atlas-config.json, then checks each one (--only S1,S3 limits it)
 //   node scripts/nettskjema.mjs update   brings existing forms in line with the instrument; refuses a form with answers
+//                                        create and update also leave alone a form that holds an item still waiting for
+//                                        the owner's ruling («draft» in the instrument), unless --drafts is passed
 //   node scripts/nettskjema.mjs verify   reads every form back and compares it with the instrument
 //   node scripts/nettskjema.mjs status   answers per form, open or closed
 //   node scripts/nettskjema.mjs open --until 2026-11-30
@@ -28,7 +30,8 @@ import { fileURLToPath } from 'node:url';
 
 const here = dirname(fileURLToPath(import.meta.url));
 const app = join(here, '..');
-const instrument = JSON.parse(readFileSync(join(app, 'src/content/instrument.json'), 'utf8'));
+// ATLAS_INSTRUMENT points the script at another instrument file; the unit tests use it to check the hold on a copy.
+const instrument = JSON.parse(readFileSync(process.env.ATLAS_INSTRUMENT || join(app, 'src/content/instrument.json'), 'utf8'));
 const configPath = join(app, 'public/atlas-config.json');
 
 const SITE = 'https://siouxchieftain-jpg.github.io/atlas-meridian/';
@@ -92,10 +95,39 @@ function question(it, type, extra = {}) {
 }
 
 function options(it) {
-  return it.options.map((o, i) => ({ sequence: i + 1, text: both(o), externalAnswerOptionId: String(i + 1) }));
+  // A choice is coded by its place unless it names its own code (the decision items, 3.6).
+  return it.options.map((o, i) => ({ sequence: i + 1, text: both(o), externalAnswerOptionId: o.code ?? String(i + 1) }));
+}
+
+/** The items still waiting for the owner's ruling (`draft`): a form that holds one is not made or updated without --drafts. */
+export function draftItems(form) {
+  return form.pages.flatMap((p) => p.items).filter((it) => it.draft).map((it) => it.id);
+}
+const draftsAllowed = () => rest.includes('--drafts');
+function heldForDrafts(form) {
+  const ids = draftItems(form);
+  if (!ids.length || draftsAllowed()) return false;
+  console.log(`${pad(form.key, 12)} holds wording or choices waiting for the owner's ruling: ${ids.join(', ')}`);
+  return true;
 }
 
 function itemElement(it) {
+  if (it.dontKnow) {
+    // Nettskjema's linear scale has no «Vet ikke» (I-18, 3.6): one row of single choices, the scale's points and «Vet ikke»,
+    // with the anchors under the English text. «Vet ikke» is coded vet_ikke, so it never counts as a point on the scale.
+    if (it.type !== 'agree7' || !it.anchors) throw new Error(`«Vet ikke» is built only on an agreement scale with anchors (${it.id})`);
+    const [min, max] = SCALES[it.type];
+    const points = Array.from({ length: max - min + 1 }, (_, i) => String(min + i));
+    const q = question(it, 'RADIO', {
+      isHorizontal: true,
+      answerOptions: [
+        ...points.map((n, i) => ({ sequence: i + 1, text: n, externalAnswerOptionId: n })),
+        { sequence: points.length + 1, text: both(it.dontKnow), externalAnswerOptionId: 'vet_ikke' },
+      ],
+    });
+    q.description += para(`${min}: ${both(it.anchors.low)}. ${max}: ${both(it.anchors.high)}.`);
+    return q;
+  }
   if (it.type in SCALES) {
     const [min, max] = SCALES[it.type];
     return question(it, 'LINEAR_SCALE', {
@@ -264,8 +296,9 @@ async function verifyForm(c, form, formId) {
     if (w.isMandatory !== undefined && Boolean(g.isMandatory) !== w.isMandatory) problems.push(`${where}: required ${Boolean(g.isMandatory)}, expected ${w.isMandatory}`);
     if (w.minimumValue !== undefined && (g.minimumValue !== w.minimumValue || g.maximumValue !== w.maximumValue)) problems.push(`${where}: scale ${g.minimumValue} to ${g.maximumValue}`);
     if (w.answerOptions) {
-      const go = (g.answerOptions ?? []).map((o) => `${o.externalAnswerOptionId ?? ''}=${o.text}`).join('; ');
-      const wo = w.answerOptions.map((o) => `${o.externalAnswerOptionId}=${o.text}`).join('; ');
+      // Nettskjema keeps an option's text with HTML entities («Don&#39;t know»), so both sides are compared as plain text.
+      const go = (g.answerOptions ?? []).map((o) => `${o.externalAnswerOptionId ?? ''}=${plain(o.text)}`).join('; ');
+      const wo = w.answerOptions.map((o) => `${o.externalAnswerOptionId}=${plain(o.text)}`).join('; ');
       if (go !== wo) problems.push(`${where}: options «${go}», expected «${wo}»`);
     }
   });
@@ -347,16 +380,39 @@ async function plan() {
   console.log('');
   console.log(`${pad('Form', 12)} ${pad('Title in Nettskjema', 62)} ${pad('Pages', 5)} ${pad('Questions', 9)} ${pad('Required', 8)} Locked fields`);
   for (const f of roundForms()) console.log(summaryRow(f));
+  const waiting = roundForms().filter((f) => draftItems(f).length);
+  if (waiting.length) {
+    console.log('');
+    console.log('Waiting for the owner\'s ruling (create and update leave these forms alone unless --drafts is passed):');
+    for (const f of waiting) console.log(`  ${pad(f.key, 12)} ${draftItems(f).join(', ')}`);
+  }
+}
+
+/**
+ * The forms a run of create or update works on: --only limits them, and a form that holds an item still waiting for the
+ * owner's ruling is held back here, before any credential is read or anything is sent.
+ */
+function formsToWorkOn() {
+  const only = flag('only')?.split(',').map((s) => s.trim());
+  const forms = roundForms().filter((f) => !only || only.includes(f.key));
+  // All or nothing: if any form named is held, none is changed, so a set never ends half one version and half another.
+  const held = forms.filter((f) => heldForDrafts(f));
+  if (held.length) {
+    console.log(`Nothing was changed. Rule the items above first (then remove their «draft» marks), or pass --drafts to change the forms anyway.`);
+    process.exitCode = 1;
+    return [];
+  }
+  return forms;
 }
 
 async function create() {
+  const forms = formsToWorkOn();
+  if (!forms.length) return;
   const c = credentials();
   const editor = await editorFor(c);
   if (!editor) throw new Error('no editor: add "editor" to the credentials file or pass --editor <Nettskjema username>');
-  const only = flag('only')?.split(',').map((s) => s.trim());
   const editors = [`${c.id}@apiclient`, editor];
-  for (const form of roundForms()) {
-    if (only && !only.includes(form.key)) continue;
+  for (const form of forms) {
     const existing = formIdOf(addressOf(readConfig(), form.key));
     if (existing) {
       console.log(`${pad(form.key, 12)} already has an address (form ${existing}); left as it is`);
@@ -366,51 +422,59 @@ async function create() {
     if (titleBad) throw new Error(`${form.key}: ${titleBad}`);
     const { formId } = await api(c, 'POST', '/form', payload(form, editors));
     saveAddress(form.key, formId);
-    // The codebook names: set them explicitly if the create call did not keep them.
-    const got = await api(c, 'GET', `/form/${formId}/elements`);
-    const want = formElements(form);
-    const elementMap = {};
-    const optionMap = {};
-    // The list comes back in the form's order. («sequence» starts again on each page, and a page break has no id.)
-    got.forEach((g, i) => {
-      const w = want[i];
-      if (!w?.externalElementId || g.elementId == null) return;
-      if (g.externalElementId !== w.externalElementId) elementMap[g.elementId] = w.externalElementId;
-      (g.answerOptions ?? []).forEach((o, j) => {
-        const code = w.answerOptions?.[j]?.externalAnswerOptionId;
-        if (code && o.answerOptionId != null && o.externalAnswerOptionId !== code) optionMap[o.answerOptionId] = code;
-      });
-    });
-    if (Object.keys(elementMap).length || Object.keys(optionMap).length) {
-      await api(c, 'PUT', `/form/${formId}/codebook`, { elementIdsAndExternalElementIdsMap: elementMap, subElementIdsAndExternalElementIdsMap: {}, answerOptionIdsAndExternalAnswerOptionIdsMap: optionMap });
-    }
+    await fixCodebook(c, form, formId);
     const problems = await verifyForm(c, form, formId);
     console.log(`${pad(form.key, 12)} created: ${ANSWER_URL(formId)}${problems.length ? `\n  check: ${problems.join('\n  check: ')}` : ', checked: matches the instrument'}`);
   }
 }
 
+/**
+ * The codebook names, set explicitly where Nettskjema did not keep the ones the elements were sent with: after `create`,
+ * and after `update`, whose elements replace the form's and may add questions (3.6 adds the decision items and C1-06).
+ */
+export async function fixCodebook(c, form, formId) {
+  const got = await api(c, 'GET', `/form/${formId}/elements`);
+  const want = formElements(form);
+  const elementMap = {};
+  const optionMap = {};
+  // The list comes back in the form's order. («sequence» starts again on each page, and a page break has no id.)
+  got.forEach((g, i) => {
+    const w = want[i];
+    if (!w?.externalElementId || g.elementId == null) return;
+    if (g.externalElementId !== w.externalElementId) elementMap[g.elementId] = w.externalElementId;
+    (g.answerOptions ?? []).forEach((o, j) => {
+      const code = w.answerOptions?.[j]?.externalAnswerOptionId;
+      if (code && o.answerOptionId != null && o.externalAnswerOptionId !== code) optionMap[o.answerOptionId] = code;
+    });
+  });
+  if (Object.keys(elementMap).length || Object.keys(optionMap).length) {
+    await api(c, 'PUT', `/form/${formId}/codebook`, { elementIdsAndExternalElementIdsMap: elementMap, subElementIdsAndExternalElementIdsMap: {}, answerOptionIdsAndExternalAnswerOptionIdsMap: optionMap });
+  }
+}
+
 /** Brings forms that already exist in line with the instrument. Refuses a form that has answers. */
 async function update() {
+  const forms = formsToWorkOn();
+  if (!forms.length) return;
   const c = credentials();
   const editor = await editorFor(c);
   if (!editor) throw new Error('no editor: add "editor" to the credentials file or pass --editor <Nettskjema username>');
-  const only = flag('only')?.split(',').map((s) => s.trim());
   const editors = [`${c.id}@apiclient`, editor];
   const mine = await api(c, 'GET', '/form/me');
   const answers = new Map((mine ?? []).map((f) => [f.formId, f.numberOfDeliveredSubmissions ?? 0]));
-  for (const form of roundForms()) {
-    if (only && !only.includes(form.key)) continue;
+  for (const form of forms) {
     const id = formIdOf(addressOf(readConfig(), form.key));
     if (!id) {
       console.log(`${pad(form.key, 12)} no address yet: use create`);
       continue;
     }
     if ((answers.get(id) ?? 0) > 0) {
-      console.log(`${pad(form.key, 12)} has ${answers.get(id)} answers: left as it is (delete the test answers in Nettskjema first)`);
+      console.log(`${pad(form.key, 12)} has ${answers.get(id)} answers: left as it is. Only your own test answers may be deleted in Nettskjema («Slett alle svar»); pilot or study answers are kept, so export them and stop`);
       continue;
     }
     await api(c, 'PATCH', `/form/${id}/settings`, formSettings(form, editors));
     await api(c, 'PUT', `/form/${id}/elements`, formElements(form));
+    await fixCodebook(c, form, id);
     const problems = await verifyForm(c, form, id);
     console.log(`${pad(form.key, 12)} updated${problems.length ? `\n  check: ${problems.join('\n  check: ')}` : ', checked: matches the instrument'}`);
   }
@@ -423,7 +487,9 @@ async function verify() {
   for (const form of roundForms()) {
     const id = formIdOf(addressOf(cfg, form.key));
     if (!id) {
-      console.log(`${pad(form.key, 12)} no address yet`);
+      // A form without an address would show «ikke klart ennå» in its step, so verify fails on it.
+      bad++;
+      console.log(`${pad(form.key, 12)} no address yet: use create`);
       continue;
     }
     const problems = await verifyForm(c, form, id);

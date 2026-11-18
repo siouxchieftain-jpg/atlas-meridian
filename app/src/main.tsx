@@ -7,10 +7,18 @@ import { App } from './App';
 import { loadConfig } from './engine/forms';
 import { navigate } from './router/router';
 import { studyEntryPath } from './state/study';
+import { startBrowse } from './state/persist';
+import { BROWSE_PATH } from './study/browse';
 
 const renderer = createDOMRenderer(document, {
   compareMediaQueries: (a, b) => mediaQueryOrder.indexOf(a) - mediaQueryOrder.indexOf(b),
 });
+
+// «Se deg rundt» (3.7): the tab opened at #/studie/se-rundt keeps its own storage and starts the study afresh.
+if (window.location.hash.startsWith(BROWSE_PATH)) {
+  startBrowse();
+  window.history.replaceState(null, '', `${window.location.pathname}#/studie`);
+}
 
 loadConfig().finally(() => {
   // The study link in a browser that holds a session opens the welcome back first (decision 11). After the

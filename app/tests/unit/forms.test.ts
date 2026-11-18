@@ -20,7 +20,8 @@ describe('form keys', () => {
     expect(formKeyFor('S1', 'gp')).toBe('S1');
     expect(formKeyFor('S2', 'gp')).toBe('S2.fastlege');
     expect(formKeyFor('S2', 'dps')).toBe('S2.dps');
-    expect(formKeyFor('S3', 'dps')).toBe('S3');
+    expect(formKeyFor('S3', 'gp')).toBe('S3.fastlege');
+    expect(formKeyFor('S3', 'dps')).toBe('S3.dps');
     expect(formKeyFor('S4', 'dps')).toBe('S4.dps');
     expect(formKeyFor('S5', 'gp')).toBe('S5.fastlege');
     expect(formKeyFor('S7', 'gp')).toBe('S7.fastlege');
@@ -36,7 +37,7 @@ describe('locked context', () => {
       studienavn: 'Rolig elg 27',
       steg: 'S3-etter',
       vignett: 'V1',
-      versjon: expect.stringMatching(/^3\.5\.2-/),
+      versjon: expect.stringMatching(/^3\.7\.0-/),
     });
   });
 
@@ -60,7 +61,7 @@ describe('locked context', () => {
 
   it('matches the locked list of every form in the instrument (the Nettskjema build sheet)', () => {
     const steps: [FormStep, 'gp' | 'dps'][] = [
-      ['S1', 'gp'], ['S2', 'gp'], ['S2', 'dps'], ['S3', 'gp'], ['S4', 'gp'], ['S4', 'dps'], ['S5', 'gp'], ['S5', 'dps'], ['S6', 'gp'], ['S7', 'gp'], ['S8', 'gp'],
+      ['S1', 'gp'], ['S2', 'gp'], ['S2', 'dps'], ['S3', 'gp'], ['S3', 'dps'], ['S4', 'gp'], ['S4', 'dps'], ['S5', 'gp'], ['S5', 'dps'], ['S6', 'gp'], ['S7', 'gp'], ['S8', 'gp'],
     ];
     for (const [step, role] of steps) {
       const key = formKeyFor(step, role);

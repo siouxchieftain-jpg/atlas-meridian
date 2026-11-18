@@ -22,7 +22,7 @@ describe('the pilot round (decision 10)', () => {
     const c = resolveConfig({
       round: 'pilot',
       forms: { S1: 'https://nettskjema.no/a/1', S9: 'https://nettskjema.no/a/9', R1: 'https://nettskjema.no/a/91' },
-      pilotForms: { S1: ' https://nettskjema.no/a/101 ', S3: '' },
+      pilotForms: { S1: ' https://nettskjema.no/a/101 ', 'S3.dps': '' },
     });
     expect(c.round).toBe('pilot');
     // S9 has no pilot address: it is not ready, never the study form.
@@ -36,7 +36,7 @@ describe('the pilot round (decision 10)', () => {
 
   it('marks every answer in the pilot round with a version ending in -pilot', async () => {
     const forms = await freshForms({ round: 'pilot', forms: {}, pilotForms: { S1: 'https://nettskjema.no/a/101' } });
-    expect(forms.versjonValue()).toMatch(/^3\.5\.2-.*-pilot$/);
+    expect(forms.versjonValue()).toMatch(/^3\.7\.0-.*-pilot$/);
     expect(forms.studyLocked('S1', 'fastlege', 'Nei', {}, 'Rolig elg 27').versjon).toMatch(/-pilot$/);
     expect(forms.feedbackLocked('fastlege', 'Rolig elg 27', 'fastlege/hjem', 'hele').versjon).toMatch(/-pilot$/);
   });

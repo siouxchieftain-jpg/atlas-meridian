@@ -5,6 +5,7 @@ import { useWidth } from '../patterns/useWidth';
 import type { CoreCaseId, Role } from '../content/types';
 import { cases, ordinary } from '../content';
 import { formatDateWithWeekday, formatDayMonth, useLang } from '../i18n/i18n';
+import { NotInEvaluation } from '../patterns/Faded';
 import { DPS_TODAY, GP_TODAY } from '../engine/clock';
 import { navigate } from '../router/router';
 import { useStudy } from '../state/study';
@@ -291,6 +292,7 @@ function GpCards({ query }: { query: string }) {
         <ul className={cls.grid} aria-label={s('listRoutineLabel')}>
           {routine.map((o) => (
             <li key={o.id} className={cls.item}>
+              <NotInEvaluation>
               <article className={mergeClasses(cls.card, cls.cardQuiet)} aria-label={s('patientAge', { name: o.name, age: o.age })} data-list-routine={o.id}>
                 <div className={cls.cardTop}>
                   <span className={cls.timeQuiet}>{o.time}</span>
@@ -309,6 +311,7 @@ function GpCards({ query }: { query: string }) {
                   <span className={cls.later}>{s('listRoutineClosed')}</span>
                 </div>
               </article>
+              </NotInEvaluation>
             </li>
           ))}
         </ul>

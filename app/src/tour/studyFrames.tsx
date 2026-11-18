@@ -242,7 +242,7 @@ export function FrameStudyCase() {
 export function FrameStudyStop() {
   const cls = useStyles();
   const { s, t } = useLang();
-  const stop = instrument.forms.find((f) => f.key === 'S3')?.pages[1]?.items[0];
+  const stop = instrument.forms.find((f) => f.key === 'S3.fastlege')?.pages[1]?.items[0];
   return (
     <div className={cls.stack}>
       <div className={cls.form} aria-label={s('studyStopLabel')} role="group">

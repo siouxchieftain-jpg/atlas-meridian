@@ -4,6 +4,7 @@ import { useId, useMemo, useState, type ReactNode } from 'react';
 import type { CaseId, T } from '../content/types';
 import { cases, ordinary, vocab } from '../content';
 import { formatDate, formatDateWithWeekday, useLang } from '../i18n/i18n';
+import { NotInEvaluation } from '../patterns/Faded';
 import { DPS_TODAY, GP_TODAY } from '../engine/clock';
 import { caseStatus, gpHeld } from '../engine/flow';
 import { RouterLink } from '../router/router';
@@ -385,6 +386,7 @@ export function TimelisteView({
               })}
               {routineRows.map((o, i) => (
                 <li key={o.id} className={i === 0 ? cls.tierStart : undefined}>
+                  <NotInEvaluation>
                   <div className={mergeClasses(cls.card, cls.quiet)}>
                     <span className={cls.top}>
                       <span className={cls.time}>{o.time}</span>
@@ -401,6 +403,7 @@ export function TimelisteView({
                     </span>
                     <span className={cls.footQuiet}>{s('listRoutineClosed')}</span>
                   </div>
+                  </NotInEvaluation>
                 </li>
               ))}
             </ul>

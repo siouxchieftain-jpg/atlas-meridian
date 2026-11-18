@@ -299,7 +299,10 @@ const useGuideImage = makeStyles({
     bottom: 'auto',
     // Taller with a taller card, so the fabric fills the top of it as board 8a draws it.
     height: 'max(168px, 44%)',
-    backgroundImage: `linear-gradient(180deg,rgba(255,244,238,0) 55%,${guide.cardTop} 100%), ${ART}`,
+    // 3.7: the fabric fades out into the card (a mask, not a colour), so no edge shows where the cover ends.
+    backgroundImage: ART,
+    maskImage: 'linear-gradient(180deg, #000 50%, transparent 100%)',
+    WebkitMaskImage: 'linear-gradient(180deg, #000 50%, transparent 100%)',
     backgroundPosition: 'right 36%',
     opacity: 0.9,
   },
@@ -461,8 +464,8 @@ export function studyNameAnimal(name: string): { animal: string; url: string } |
 }
 
 /** 28 px is the smallest mark: below it the animals blur (an eagle or a badger at 24 px is a smudge). */
-type MarkSize = 28 | 32 | 40 | 48 | 56 | 64;
-const MARK_TEXT: Record<MarkSize, string> = { 28: '11px', 32: '12px', 40: '14px', 48: '17px', 56: '20px', 64: '22px' };
+type MarkSize = 28 | 32 | 40 | 48 | 56 | 64 | 104;
+const MARK_TEXT: Record<MarkSize, string> = { 28: '11px', 32: '12px', 40: '14px', 48: '17px', 56: '20px', 64: '22px', 104: '34px' };
 
 /**
  * The study name's mark: the name's animal on the guide's warm gradient (its initials when ATLAS has no picture of the
@@ -472,7 +475,8 @@ const MARK_TEXT: Record<MarkSize, string> = { 28: '11px', 32: '12px', 40: '14px'
 export function StudyNameMark({ name, size = 32, ring, className }: { name: string; size?: MarkSize; ring?: boolean; className?: string }) {
   const cls = useNameMark();
   const animal = studyNameAnimal(name);
-  const inner = Math.round(size * 0.6);
+  // The large mark (the study name's card) lets the animal fill more of the circle.
+  const inner = Math.round(size * (size >= 104 ? 0.68 : 0.6));
   return (
     <span
       aria-hidden="true"

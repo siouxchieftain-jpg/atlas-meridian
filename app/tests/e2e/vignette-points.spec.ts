@@ -19,8 +19,8 @@ type Role = 'gp' | 'dps';
 type Vignette = 'kari' | 'erlend' | 'astrid';
 const STEG: Record<Vignette, string> = { kari: 'S3', erlend: 'S4', astrid: 'S5' };
 const FORM_KEY: Record<Role, Record<Vignette, string>> = {
-  gp: { kari: 'S3', erlend: 'S4.fastlege', astrid: 'S5.fastlege' },
-  dps: { kari: 'S3', erlend: 'S4.dps', astrid: 'S5.dps' },
+  gp: { kari: 'S3.fastlege', erlend: 'S4.fastlege', astrid: 'S5.fastlege' },
+  dps: { kari: 'S3.dps', erlend: 'S4.dps', astrid: 'S5.dps' },
 };
 const BEFORE: Record<Vignette, Vignette[]> = { kari: [], erlend: ['kari'], astrid: ['kari', 'erlend'] };
 

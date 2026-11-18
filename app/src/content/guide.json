@@ -1,0 +1,361 @@
+{
+  "gp": [
+    {
+      "n": 1,
+      "selector": "[data-section=\"band\"]",
+      "views": [
+        "konsultasjon",
+        "henvisning"
+      ],
+      "tour": "gp-band",
+      "seksjon": "band",
+      "part": {
+        "nb": "Usikkerhetsvisning",
+        "en": "Uncertainty display"
+      },
+      "where": {
+        "nb": "ATLAS, øverst.",
+        "en": "ATLAS, at the top."
+      },
+      "do": {
+        "nb": "Velg hvor saken ligger under «Plasser saken». Systemets lesning vises etter det.",
+        "en": "Choose where the case lies under «Place the case». The system’s reading appears after that."
+      },
+      "lookFor": {
+        "nb": "Din egen plassering og systemets lesning, på samme bånd fra «Klart utenfor» til «Klart innenfor».",
+        "en": "Your own placement and the system’s reading, on the same band from «Clearly outside» to «Clearly within»."
+      },
+      "tellUs": {
+        "nb": "Er noe her uklart eller i veien, si det under «Gi tilbakemelding», del 1. Det er frivillig.",
+        "en": "If anything here is unclear or in the way, say so under «Give feedback», part 1. It is optional."
+      }
+    },
+    {
+      "n": 2,
+      "selector": "[data-section=\"tags\"]",
+      "views": [
+        "konsultasjon"
+      ],
+      "tour": "gp-tags",
+      "seksjon": "uklart",
+      "part": {
+        "nb": "Hva er uklart",
+        "en": "What is unclear"
+      },
+      "where": {
+        "nb": "Under båndet.",
+        "en": "Under the band."
+      },
+      "do": {
+        "nb": "Velg hva usikkerheten gjelder, og skriv en linje om du vil.",
+        "en": "Choose what the uncertainty concerns, and write a line if you like."
+      },
+      "lookFor": {
+        "nb": "Tre merkelapper: Diagnostisk, Terskel og Epistemisk. (i) ved hver gir definisjonen.",
+        "en": "Three tags: Diagnostic, Threshold and Epistemic. The (i) beside each gives its definition."
+      },
+      "tellUs": {
+        "nb": "Uklart eller i veien? «Gi tilbakemelding», del 2.",
+        "en": "Unclear or in the way? «Give feedback», part 2."
+      }
+    },
+    {
+      "n": 3,
+      "selector": "[data-section=\"guide\"]",
+      "views": [
+        "konsultasjon",
+        "henvisning"
+      ],
+      "tour": "gp-guide",
+      "seksjon": "guide",
+      "part": {
+        "nb": "Informasjonsguiden",
+        "en": "Information completeness guide"
+      },
+      "where": {
+        "nb": "Under «Hva er uklart».",
+        "en": "Under «What is unclear»."
+      },
+      "do": {
+        "nb": "Åpne «Vis detaljer» hvis du vil se kriteriene.",
+        "en": "Open «Show details» if you want to see the criteria."
+      },
+      "lookFor": {
+        "nb": "Hvor mange av fem kriterier fra prioriteringsveilederen notatet omtaler.",
+        "en": "How many of five criteria from the priority-setting guideline the note mentions."
+      },
+      "tellUs": {
+        "nb": "Uklart eller i veien? «Gi tilbakemelding», del 3.",
+        "en": "Unclear or in the way? «Give feedback», part 3."
+      }
+    },
+    {
+      "n": 4,
+      "selector": "[data-section=\"confidence\"]",
+      "views": [
+        "konsultasjon"
+      ],
+      "tour": "gp-trygghet",
+      "seksjon": "trygghet",
+      "part": {
+        "nb": "Din trygghet nå",
+        "en": "Your confidence now"
+      },
+      "where": {
+        "nb": "Under guiden.",
+        "en": "Under the guide."
+      },
+      "do": {
+        "nb": "Velg et trinn fra Lav til Høy.",
+        "en": "Choose a step from Low to High."
+      },
+      "lookFor": {
+        "nb": "Linjen under trinnene sier hva DPS ser hvis du henviser.",
+        "en": "The line under the steps says what DPS sees if you refer."
+      },
+      "tellUs": {
+        "nb": "Uklart eller i veien? «Gi tilbakemelding», del 4.",
+        "en": "Unclear or in the way? «Give feedback», part 4."
+      }
+    },
+    {
+      "n": 5,
+      "selector": "[data-section=\"decision\"]",
+      "views": [
+        "konsultasjon"
+      ],
+      "tour": "gp-beslutning",
+      "seksjon": "beslutning",
+      "part": {
+        "nb": "Din beslutning",
+        "en": "Your decision"
+      },
+      "where": {
+        "nb": "Nederst i ATLAS.",
+        "en": "At the bottom of ATLAS."
+      },
+      "do": {
+        "nb": "Velg «Behold» eller «Henvis», og lagre.",
+        "en": "Choose «Keep in general practice» or «Refer», and save."
+      },
+      "lookFor": {
+        "nb": "Neste steg vises når du har lagret.",
+        "en": "The next step shows once you have saved."
+      },
+      "tellUs": {
+        "nb": "Uklart eller i veien? «Gi tilbakemelding», del 5.",
+        "en": "Unclear or in the way? «Give feedback», part 5."
+      }
+    },
+    {
+      "n": 6,
+      "selector": "[data-section=\"henvisning-aktuelt\"] [data-margin]",
+      "views": [
+        "henvisning"
+      ],
+      "tour": "gp-margin",
+      "seksjon": "margin",
+      "part": {
+        "nb": "Hva DPS ser etter",
+        "en": "What DPS looks for"
+      },
+      "where": {
+        "nb": "Ved hver del av henvisningen.",
+        "en": "Beside each section of the referral."
+      },
+      "do": {
+        "nb": "Skriv eller endre delene slik du ville gjort.",
+        "en": "Write or edit the sections as you would."
+      },
+      "lookFor": {
+        "nb": "Hver merknad sier hva DPS ser etter i den delen, og om teksten omtaler det.",
+        "en": "Each note says what DPS looks for in that section, and whether the text mentions it."
+      },
+      "tellUs": {
+        "nb": "Uklart eller i veien? «Gi tilbakemelding», del 6.",
+        "en": "Unclear or in the way? «Give feedback», part 6."
+      }
+    },
+    {
+      "n": 7,
+      "selector": "[data-section=\"fra-atlas\"]",
+      "views": [
+        "henvisning"
+      ],
+      "seksjon": "fra-atlas",
+      "part": {
+        "nb": "Fra ATLAS-panelet",
+        "en": "From the ATLAS panel"
+      },
+      "where": {
+        "nb": "Under henvisningen.",
+        "en": "Under the referral."
+      },
+      "do": {
+        "nb": "Se hva som følger med henvisningen, og trykk så «Send henvisning».",
+        "en": "Check what goes with the referral, then press «Send referral»."
+      },
+      "lookFor": {
+        "nb": "Hvilke av dine egne valg i ATLAS som går til DPS.",
+        "en": "Which of your own entries in ATLAS go to DPS."
+      },
+      "tellUs": {
+        "nb": "Uklart eller i veien? «Gi tilbakemelding», del 7.",
+        "en": "Unclear or in the way? «Give feedback», part 7."
+      }
+    },
+    {
+      "n": 8,
+      "selector": "[data-section=\"retur\"]",
+      "views": [
+        "konsultasjon"
+      ],
+      "tour": "gp-retur",
+      "seksjon": "retur",
+      "part": {
+        "nb": "Retur med råd fra DPS",
+        "en": "Return with advice from DPS"
+      },
+      "where": {
+        "nb": "Øverst i Astrids konsultasjon.",
+        "en": "At the top of Astrid’s consultation."
+      },
+      "do": {
+        "nb": "Les årsakene og rådet. Skriv et spørsmål til DPS, eller velg «Ikke spør nå».",
+        "en": "Read the reasons and the advice. Write a question to DPS, or choose «Do not ask now»."
+      },
+      "lookFor": {
+        "nb": "Kriteriene DPS vurderte som ikke oppfylt, hver med en kort begrunnelse.",
+        "en": "The criteria DPS judged not met, each with a short reason."
+      },
+      "tellUs": {
+        "nb": "Uklart eller i veien? «Gi tilbakemelding», del 8.",
+        "en": "Unclear or in the way? «Give feedback», part 8."
+      }
+    }
+  ],
+  "dps": [
+    {
+      "n": 1,
+      "selector": "[data-section=\"gp-usikker\"]",
+      "views": [
+        "vurdering"
+      ],
+      "tour": "dps-usikkerhet",
+      "seksjon": "usikker",
+      "part": {
+        "nb": "Hva fastlegen var usikker på",
+        "en": "What the GP was unsure about"
+      },
+      "where": {
+        "nb": "Under henvisningen.",
+        "en": "Under the referral."
+      },
+      "do": {
+        "nb": "Les merkelappene, linjen og tryggheten til fastlegen.",
+        "en": "Read the GP’s tags, line and confidence."
+      },
+      "lookFor": {
+        "nb": "Hva fastlegen merket som uklart i denne henvisningen. Navnet og historikken til fastlegen vises ikke.",
+        "en": "What the GP marked as unclear about this referral. The GP’s name and history are not shown."
+      },
+      "tellUs": {
+        "nb": "Uklart eller i veien? «Gi tilbakemelding», del 1.",
+        "en": "Unclear or in the way? «Give feedback», part 1."
+      }
+    },
+    {
+      "n": 2,
+      "selector": "[data-section=\"band\"]",
+      "views": [
+        "vurdering"
+      ],
+      "tour": "dps-band",
+      "seksjon": "band",
+      "part": {
+        "nb": "Usikkerhetsvisning",
+        "en": "Uncertainty display"
+      },
+      "where": {
+        "nb": "ATLAS, øverst.",
+        "en": "ATLAS, at the top."
+      },
+      "do": {
+        "nb": "Velg hvor saken ligger under «Plasser saken». Fastlegens markør og systemets lesning vises etter det.",
+        "en": "Choose where the case lies under «Place the case». The GP’s marker and the system’s reading appear after that."
+      },
+      "lookFor": {
+        "nb": "Tre markører på ett bånd: din, fastlegens og systemets lesning.",
+        "en": "Three markers on one band: yours, the GP’s and the system’s reading."
+      },
+      "tellUs": {
+        "nb": "Uklart eller i veien? «Gi tilbakemelding», del 2.",
+        "en": "Unclear or in the way? «Give feedback», part 2."
+      }
+    },
+    {
+      "n": 3,
+      "selector": "[data-section=\"guide\"]",
+      "views": [
+        "vurdering"
+      ],
+      "tour": "dps-guide",
+      "seksjon": "guide",
+      "part": {
+        "nb": "Informasjonsguiden",
+        "en": "Information completeness guide"
+      },
+      "where": {
+        "nb": "Under båndet.",
+        "en": "Under the band."
+      },
+      "do": {
+        "nb": "Åpne «Vis detaljer» hvis du vil se kriteriene.",
+        "en": "Open «Show details» if you want to see the criteria."
+      },
+      "lookFor": {
+        "nb": "Hvor mange av fem kriterier henvisningen omtaler, slik den ble sendt.",
+        "en": "How many of five criteria the referral mentions, as it was sent."
+      },
+      "tellUs": {
+        "nb": "Uklart eller i veien? «Gi tilbakemelding», del 3.",
+        "en": "Unclear or in the way? «Give feedback», part 3."
+      }
+    },
+    {
+      "n": 4,
+      "selector": "[data-section=\"vurdering\"]",
+      "views": [
+        "vurdering"
+      ],
+      "tour": "dps-vurdering",
+      "seksjon": "vurdering",
+      "part": {
+        "nb": "Vurdering",
+        "en": "Assessment"
+      },
+      "where": {
+        "nb": "Nederst i ATLAS.",
+        "en": "At the bottom of ATLAS."
+      },
+      "do": {
+        "nb": "Velg et utfall. Ved «Retur med råd», velg årsakene og skriv rådet. Send så vurderingen.",
+        "en": "Choose an outcome. With «Return with advice», choose the reasons and write the advice. Then «Send the assessment»."
+      },
+      "lookFor": {
+        "nb": "Årsakene du kan gi fastlegen, og hva fastlegen får se.",
+        "en": "The reasons you can give the GP, and what the GP will see."
+      },
+      "tellUs": {
+        "nb": "Uklart eller i veien? «Gi tilbakemelding», del 4.",
+        "en": "Unclear or in the way? «Give feedback», part 4."
+      }
+    }
+  ],
+  "tasks": {
+    "gp/henvisning": {
+      "nb": "Skriv henvisningen slik du ville gjort, se hva som følger med fra ATLAS, og send den.",
+      "en": "Write the referral as you would, check what goes with it from ATLAS, and send it."
+    }
+  }
+}

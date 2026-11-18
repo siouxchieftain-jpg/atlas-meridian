@@ -113,7 +113,7 @@ test('S9 from the overview opens in the panel with the role, the study name, the
   expect(q.get('CBstudienavn')).toBe(name);
   expect(q.get('CBside')).toBe('fastlege/hjem');
   expect(q.get('CBseksjon')).toBe('timeliste');
-  expect(q.get('CBversjon')).toMatch(/^3\.5\.2-/);
+  expect(q.get('CBversjon')).toMatch(/^3\.7\.0-/);
   expect(q.get('LCKside')).toBe('true');
   expect(q.get('CBsteg')).toBeNull();
   expect(q.get('CBintervju')).toBeNull();
@@ -188,7 +188,7 @@ test('the end of a case asks once about its screens; from then on the tab is the
   await expect(page.getByRole('button', { name: 'Til timelisten' })).toBeVisible();
   await expect(page.locator('[data-case-prompt]')).toHaveCount(0);
   const sent = await submissions(page);
-  expect(sent.map((s) => s.key)).toEqual(['S1', 'S3', 'S9']);
+  expect(sent.map((s) => s.key)).toEqual(['S1', 'S3.fastlege', 'S9']);
   expect(sent.find((s) => s.key === 'S9')?.fields.side).toBe('fastlege/kari/saken');
 });
 
@@ -295,15 +295,15 @@ test('S9 without an address: a notice, no panel, and the question at the end of 
   await expect(page.locator('[data-tour-prompt]')).toBeVisible();
 });
 
-test('the pilot round: the «Pilot» chip, the line on Velkommen, the pilot forms and -pilot on every answer', async ({ page }) => {
+test('the pilot round: the «Pilot» chip, the pilot forms and -pilot on every answer (3.7: no line on Velkommen, RG-01)', async ({ page }) => {
   await mockNettskjema(page, { round: 'pilot' });
   await recordSubmissions(page);
   await page.goto('/');
-  await expect(page.getByText('Pilotrunde: svarene merkes som pilot og holdes utenfor studiens data.')).toBeVisible();
+  await expect(page.getByText('Pilotrunde: svarene merkes som pilot og holdes utenfor studiens data.')).toHaveCount(0);
   await expect(page.locator('header').getByText('Pilot', { exact: true })).toBeVisible();
   await startStudy(page, 'DPS-kliniker');
   expect(new URL((await page.locator('iframe[data-form-frame]').getAttribute('src'))!).pathname).toBe('/a/pilot-S1');
-  expect((await frameParams(page)).get('CBversjon')).toMatch(/^3\.5\.2-.*-pilot$/);
+  expect((await frameParams(page)).get('CBversjon')).toMatch(/^3\.7\.0-.*-pilot$/);
   await sendForm(page);
   await toHome(page);
   await page.locator('[data-feedback-tab]').click();
