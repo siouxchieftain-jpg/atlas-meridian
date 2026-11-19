@@ -411,12 +411,13 @@ export function FormPanel({ actions }: { actions: FormPanelActions | null }) {
                     </Button>
                   )}
                 </div>
-                {form.pageChanges > 0 && !actions.page1Confirmed && <span className={cls.quiet}>{s('formMovedOn')}</span>}
+                {/* «Se deg rundt» has no page 1 to answer: its card says what to press, so the study's own lines stay out. */}
+                {!browseFlag() && form.pageChanges > 0 && !actions.page1Confirmed && <span className={cls.quiet}>{s('formMovedOn')}</span>}
                 <span className={cls.quiet} role="status">
                   {/* Once the form has moved on, the «kan ikke se» line gives way to «har gått videre» (R2GP-03). */}
                   {askAgainFor === form.id && !actions.page1Confirmed && form.pageChanges === 0 ? s('formPage1NotMoved') : ''}
                 </span>
-                {actions.onShowAtlas && !actions.canShowAtlas && (
+                {actions.onShowAtlas && !actions.canShowAtlas && !browseFlag() && (
                   <span className={cls.quiet} id={`${panelId}-atlas-reason`}>
                     {s('showAtlasReason')}
                   </span>
@@ -431,7 +432,7 @@ export function FormPanel({ actions }: { actions: FormPanelActions | null }) {
                 </Button>
               )}
             </div>
-            {actions.onSkip && (
+            {actions.onSkip && !browseFlag() && (
               // A quiet way past the form, at least 24 px tall (G-02).
               <Button appearance="transparent" size="small" className={cls.skip} onClick={actions.onSkip}>
                 {actions.skipLabel ?? s('formSkip')}

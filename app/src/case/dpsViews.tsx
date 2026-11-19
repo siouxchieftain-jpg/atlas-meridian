@@ -243,7 +243,7 @@ export function DpsAssessment({ caseId }: { caseId: CaseId }) {
     side = (
       <>
         <AtlasPanelHead />
-        <section style={{ display: 'flex', flexDirection: 'column', gap: 8 }} aria-label={s('guideTitle')}>
+        <section style={{ display: 'flex', flexDirection: 'column', gap: 8 }} aria-label={s('guideTitle')} data-section="guide">
           <h3 style={{ ...typographyStyles.subtitle2, margin: 0 }}>{s('guideTitle')}</h3>
           <InfoGuide mentioned={received.mentioned} mode="received" />
         </section>

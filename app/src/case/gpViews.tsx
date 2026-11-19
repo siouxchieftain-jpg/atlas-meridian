@@ -135,7 +135,7 @@ function AstridSide() {
   return (
     <>
       <AtlasPanelHead />
-      <section style={{ display: 'flex', flexDirection: 'column', gap: 8 }} aria-label={s('guideTitle')}>
+      <section style={{ display: 'flex', flexDirection: 'column', gap: 8 }} aria-label={s('guideTitle')} data-section="guide">
         <h3 style={{ ...typographyStyles.subtitle2, margin: 0 }}>{s('guideTitle')}</h3>
         <p className={cls.caption}>{s('firstReferralGuide', { date: formatDate(first.sent, lang) })}</p>
         {/* The GP's own first referral: read as it was when «du» sent it, not as DPS received it (r6F-06). */}
@@ -154,7 +154,7 @@ function SecondDraftSide({ caseId }: { caseId: CaseId }) {
   return (
     <>
       <AtlasPanelHead />
-      <section style={{ display: 'flex', flexDirection: 'column', gap: 8 }} aria-label={s('guideTitle')}>
+      <section style={{ display: 'flex', flexDirection: 'column', gap: 8 }} aria-label={s('guideTitle')} data-section="guide">
         <h3 style={{ ...typographyStyles.subtitle2, margin: 0 }}>{s('guideTitle')}</h3>
         <InfoGuide mentioned={referralCriteria(draftSections(caseId, gp, t, true))} mode={gp.secondReferral === 'sent' ? 'sent' : 'draft'} />
       </section>
