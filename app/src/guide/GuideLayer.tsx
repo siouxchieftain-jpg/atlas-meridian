@@ -5,6 +5,7 @@ import { createPortal } from 'react-dom';
 import guideData from '../content/guide.json';
 import { useLang } from '../i18n/i18n';
 import { currentPath } from '../router/router';
+import { SrOnly } from '../patterns/basics';
 import { guide } from '../theme/constants';
 
 /**
@@ -306,7 +307,7 @@ export function GuideTaskStrip({ role, view, task, note }: { role: 'gp' | 'dps';
                     {done ? <Checkmark16Regular /> : m.n}
                   </span>
                   {t(m.part)}
-                  {done && <span className="visually-hidden">{s('guideDoneSuffix')}</span>}
+                  {done && <SrOnly>{s('guideDoneSuffix')}</SrOnly>}
                 </button>
               </li>
             );
