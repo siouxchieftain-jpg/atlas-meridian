@@ -4,7 +4,8 @@ import type { BrowserContext, Page } from '@playwright/test';
  * A stand-in for Nettskjema at https://nettskjema.no. It behaves like the
  * embedded form as far as ATLAS can see: a height message every second,
  * "scrollToStart" on every page change and after sending, and
- * "submitFinished" or "submitFailed" when the participant sends. Vignette
+ * on a send that goes through "submitFailed" followed by the receipt's "scrollToStart" (as Nettskjema does), and
+ * "submitFailed" alone when a send fails. Vignette
  * forms have three pages (B1, the stop page, the rest). No request ever
  * leaves the test.
  */
@@ -48,7 +49,9 @@ function mockHtml(key: string, failOnce: boolean): string {
   document.getElementById('back').onclick=function(){ page--; render(); post('scrollToStart'); };
   document.getElementById('send').onclick=function(){
     if(failOnce){ failOnce=false; post('submitFailed'); return; }
-    sent=true; render(); document.getElementById('receipt').hidden=false; post('scrollToStart'); post('submitFinished');
+    // As Nettskjema does (3.8, F38): a send that goes through posts "submitFailed" (its own check looks for a status
+    // the response does not carry) and then the receipt's "scrollToStart". A failure posts "submitFailed" alone.
+    sent=true; render(); document.getElementById('receipt').hidden=false; post('submitFailed'); setTimeout(function(){ post('scrollToStart'); }, 30);
     post({ mock: 'submitted', key: '${key}', fields: fields });
   };
   render(); post(document.body.scrollHeight+50);

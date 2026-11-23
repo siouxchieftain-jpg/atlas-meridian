@@ -21,7 +21,7 @@ import {
 } from '@fluentui/react-icons';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import type { CoreCaseId } from '../content/types';
-import { tourParts } from '../content';
+import { cases, tourParts } from '../content';
 import { useLang } from '../i18n/i18n';
 import { getConfig, previewFlag, setPreviewFlag, studyClosed } from '../engine/forms';
 import { Redirect, navigate, useRoute } from '../router/router';
@@ -239,6 +239,7 @@ function StudyShell() {
     }
     return {
       title: `${s('formPanel')}: ${formTitle(form.formKey, form.step, t)}`,
+      caseName: form.caseId ? cases[form.caseId].patient.name.split(' ')[0] : undefined,
       onConfirmSent: () => ctl.confirmSent(form.step),
       onSkip: () => ctl.skipForm(form.step),
       onPage1: form.caseId ? () => ctl.confirmPage1(form.caseId!) : undefined,

@@ -4154,5 +4154,49 @@
   "notInEvaluation": {
     "nb": "Ikke en del av evalueringen",
     "en": "Not part of this evaluation"
+  },
+  "formGoOnNext": {
+    "nb": "Du har gjort saken ferdig. Trykk nå: «Neste side» nederst i skjemaet. Teksten «Stopp her» gjelder ikke lenger.",
+    "en": "You have finished the case. Press now: ‘Next page’ at the bottom of the form. The text ‘Stop here’ no longer applies."
+  },
+  "formTurnToAtlas": {
+    "nb": "Nå følger noen spørsmål om hvordan ATLAS hjalp deg med {{name}}. Send skjemaet på siste side.",
+    "en": "Next come a few questions about how ATLAS helped you with {{name}}. Send the form on its last page."
+  },
+  "nextStepEyebrow": {
+    "nb": "Neste steg",
+    "en": "Next step"
+  },
+  "stopPage1Done": {
+    "nb": "Side 1 er besvart. Nå skal du se saken med ATLAS.",
+    "en": "Page 1 is answered. Now you will see the case with ATLAS."
+  },
+  "pressNow": {
+    "nb": "Trykk nå: {{what}}",
+    "en": "Press now: {{what}}"
+  },
+  "stopRestLater": {
+    "nb": "Resten av skjemaet kommer tilbake her når du har gjort saken ferdig.",
+    "en": "The rest of the form comes back here when you have finished the case."
+  },
+  "stopChangePage1": {
+    "nb": "Endre svarene på side 1",
+    "en": "Change the answers on page 1"
+  },
+  "pressNowInForm": {
+    "nb": "Trykk nå: {{what}} nederst i skjemaet, når du har svart på side 1.",
+    "en": "Press now: {{what}} at the bottom of the form, when you have answered page 1."
+  },
+  "formNextPage": {
+    "nb": "«Neste side»",
+    "en": "‘Next page’"
+  },
+  "formPage1Fallback": {
+    "nb": "Går ikke ATLAS videre etter side 1?",
+    "en": "Does ATLAS not go on after page 1?"
+  },
+  "formSentFallback": {
+    "nb": "Sendt, men ATLAS går ikke videre?",
+    "en": "Sent, but ATLAS does not go on?"
   }
 }
