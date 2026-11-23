@@ -286,7 +286,10 @@ export function FormPanel({ actions }: { actions: FormPanelActions | null }) {
   const restStart = form && restAt.current?.id === form.id ? restAt.current.at : 0;
   // «Endre svarene på side 1» shows the form again until it moves on once more; then the card is back (3.8 review S6).
   const [peek, setPeek] = useState<{ id: number; at: number } | null>(null);
-  const peeking = !!form && peek?.id === form.id && form.pageChanges <= peek.at;
+  // From the stop page each move is one page: an even number of moves since then is the stop page again (back to page 1
+  // and on), an odd number is page 1 or page 3 (gone on past the stop page on purpose).
+  const peekMoves = form && peek?.id === form.id ? form.pageChanges - peek.at : -1;
+  const peeking = peekMoves >= 0 && !(peekMoves > 0 && peekMoves % 2 === 0);
   const showCard = atStop && !peeking;
   const page1Confirmed = !!actions?.page1Confirmed;
   const onPage1 = actions?.onPage1;
@@ -301,6 +304,27 @@ export function FormPanel({ actions }: { actions: FormPanelActions | null }) {
     const id = window.requestAnimationFrame(() => cardBtn.current?.focus());
     return () => window.cancelAnimationFrame(id);
   }, [showCard]);
+
+  // The panel's foot stays at the bottom of the window beside the page: the page keeps that much room at its bottom, so a
+  // control brought into view is never under the foot (WCAG 2.4.11).
+  const footRef = useRef<HTMLDivElement>(null);
+  const footShown = shownId !== null && inline;
+  useEffect(() => {
+    const root = document.documentElement;
+    const el = footRef.current;
+    if (!footShown || !el) {
+      root.style.scrollPaddingBottom = '';
+      return;
+    }
+    const set = () => (root.style.scrollPaddingBottom = `${Math.ceil(el.getBoundingClientRect().height) + 8}px`);
+    set();
+    const ro = new ResizeObserver(set);
+    ro.observe(el);
+    return () => {
+      ro.disconnect();
+      root.style.scrollPaddingBottom = '';
+    };
+  }, [footShown]);
 
   // An overlay panel covers part of the page: Escape hides it from anywhere, unless a dialog,
   // menu or popover is open and the key belongs to that (AX-01).
@@ -487,7 +511,7 @@ export function FormPanel({ actions }: { actions: FormPanelActions | null }) {
           )}
         </div>
         {form.route !== 'notready' && (
-          <div className={mergeClasses(cls.foot, inline && cls.inlineFoot)}>
+          <div className={mergeClasses(cls.foot, inline && cls.inlineFoot)} ref={footRef}>
             {/* One main action at each moment (3.8, F33, F50): in a form ATLAS can watch, the next press is in the form
                 itself, or on the stop card; the panel's own buttons are quiet ways out for when ATLAS cannot see. */}
             {peeking && atStop && (
