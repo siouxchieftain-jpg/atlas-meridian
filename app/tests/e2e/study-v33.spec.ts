@@ -181,7 +181,7 @@ test('a case page reaches the footer too, and the briefing starts the case with 
   expect(await gapToFooter(page, last)).toBeLessThanOrEqual(16);
 });
 
-test('the end of a case: both ways on sit in the warm bar, the feedback first with the sheen (board 9b)', async ({ page }) => {
+test('the end of a case: both ways on sit in the warm bar, the way on first with the sheen (3.8, F33)', async ({ page }) => {
   await mockNettskjema(page);
   await startStudy(page, 'Fastlege');
   await sendForm(page);
@@ -200,11 +200,12 @@ test('the end of a case: both ways on sit in the warm bar, the feedback first wi
   await page.getByRole('button', { name: 'Gå til oppsummeringen' }).click();
   const bar = page.locator('[data-case-prompt="kari"]');
   await expect(bar).toBeVisible();
-  expect(await hasSheen(bar.locator('[data-prompt-feedback]'))).toBe(true);
+  // 3.8 (F33): the way on is the one main action, with the sheen; the feedback beside it is a plain button.
+  expect(await hasSheen(bar.locator('[data-prompt-feedback]'))).toBe(false);
   // 3.4: after case 1 the way on is the list.
   const home = bar.getByRole('button', { name: 'Til timelisten' });
   await expect(home).toBeVisible();
-  expect(await hasSheen(home)).toBe(false);
+  expect(await hasSheen(home)).toBe(true);
   // Nothing on the summary's white card outside the bar carries the sheen.
   const sheens = await page.locator('main button').evaluateAll((els) => els.filter((el) => getComputedStyle(el).backgroundImage.includes('linear-gradient')).length);
   expect(sheens).toBe(1);

@@ -136,7 +136,7 @@ test('review: R1 for one part of a screen and R2 at the end go through the form 
   // The overview shows what has been given, with the case; the role is now locked.
   await page.getByRole('link', { name: 'Tilbakemeldinger' }).first().click();
   await expect(page).toHaveURL(/#\/gjennomgang\/tilbakemeldinger$/);
-  const row = page.getByRole('listitem').filter({ hasText: 'Fastlege · Kari Nordli · Konsultasjon · Usikkerhetsvisning' });
+  const row = page.getByRole('listitem').filter({ hasText: 'Fastlege · Kari Nordli · Konsultasjon · Usikkerhetsskala' });
   await expect(row.locator('code')).toHaveText('fastlege/kari/konsultasjon#band');
   await expect(row.getByText('Tilbakemelding gitt')).toBeVisible();
   // The screen list counts the part for Kari only, and links to the screen.

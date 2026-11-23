@@ -176,7 +176,11 @@ export function FormHostProvider({ children }: { children: ReactNode }) {
   const pendingFail = useRef<{ id: number; timer: number } | null>(null);
   const lastPageChange = useRef<{ id: number; at: number } | null>(null);
   useEffect(() => {
+    // Nettskjema posts the receipt's "scrollToStart" and "submitFailed" for one send in the same moment, in either order.
+    // A page change the participant made comes long before a send (a page has to be answered), and a real failure
+    // comes after a request that failed, so a short window before and a longer one after tell them apart.
     const SEND_WINDOW = 2500;
+    const RECEIPT_BEFORE = 200;
     const sent = (cur: OpenForm) => {
       if (pendingFail.current) window.clearTimeout(pendingFail.current.timer);
       pendingFail.current = null;
@@ -208,7 +212,7 @@ export function FormHostProvider({ children }: { children: ReactNode }) {
       } else if (data === 'submitFailed') {
         const recent = lastPageChange.current;
         // The receipt's page change came first: the send went through.
-        if (recent && recent.id === cur.id && Date.now() - recent.at < SEND_WINDOW) {
+        if (recent && recent.id === cur.id && Date.now() - recent.at < RECEIPT_BEFORE) {
           sent(cur);
           return;
         }

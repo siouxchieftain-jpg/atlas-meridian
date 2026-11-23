@@ -736,8 +736,8 @@
     "en": "With ‘Save the draft without sending’ no referral is sent now, and the case is followed up in general practice."
   },
   "draftMeansShort": {
-    "nb": "«Lagre utkast» betyr at henvisningen ikke sendes nå.",
-    "en": "‘Save draft’ means the referral is not sent now."
+    "nb": "Med «Lagre utkast uten å sende» sendes ingen henvisning nå.",
+    "en": "With ‘Save the draft without sending’ no referral is sent now."
   },
   "draftSaved": {
     "nb": "Utkastet er lagret. Ingen henvisning er sendt.",
@@ -4156,8 +4156,8 @@
     "en": "Not part of this evaluation"
   },
   "formGoOnNext": {
-    "nb": "Du har gjort saken ferdig. Trykk nå: «Neste side» nederst i skjemaet. Teksten «Stopp her» gjelder ikke lenger.",
-    "en": "You have finished the case. Press now: ‘Next page’ at the bottom of the form. The text ‘Stop here’ no longer applies."
+    "nb": "Nå skal du svare på resten av skjemaet. Trykk nå: «Neste side» nederst i skjemaet. Teksten «Stopp her» gjelder ikke lenger.",
+    "en": "Now answer the rest of the form. Press now: ‘Next page’ at the bottom of the form. The text ‘Stop here’ no longer applies."
   },
   "formTurnToAtlas": {
     "nb": "Nå følger noen spørsmål om hvordan ATLAS hjalp deg med {{name}}. Send skjemaet på siste side.",
@@ -4280,12 +4280,12 @@
     "en": "You are now done. Thank you for taking time out of your work in DPS intake. The forms you sent are stored in Nettskjema, and you can close the tab now."
   },
   "takkOtherRoleTitle": {
-    "nb": "Vil du også prøve den andre rollen?",
-    "en": "Would you also like to try the other role?"
+    "nb": "Skal du også gå gjennom den andre rollen?",
+    "en": "Are you also going through the other role?"
   },
   "takkOtherRoleIntro": {
-    "nb": "Det er frivillig. Den andre rollen er en ny gjennomgang av studien, med et nytt studienavn. Det du har gjort her, blir som det er.",
-    "en": "It is optional. The other role is a new run through the study, with a new study name. What you have done here stays as it is."
+    "nb": "Dette gjelder bare deg som er bedt om å prøve begge rollene, for eksempel veiledere i prosjektet. Den andre rollen er en ny gjennomgang med et nytt studienavn. Det du har gjort her, blir som det er.",
+    "en": "This applies only if you have been asked to try both roles, for example as a supervisor in the project. The other role is a new run through the study with a new study name. What you have done here stays as it is."
   },
   "takkOtherRoleStep1": {
     "nb": "Åpne et privat vindu i nettleseren: Ctrl+Shift+N i Edge og Chrome (Cmd+Shift+N på Mac), Ctrl+Shift+P i Firefox.",
@@ -4340,7 +4340,15 @@
     "en": "Not one of the five criteria, and not counted. DPS assesses the benefit of treatment itself."
   },
   "summaryNoAnswer": {
-    "nb": "Sakene er bygget på det klinikere har fortalt i intervjuer. Det finnes ingen fasit: systemets vurdering er ett syn på saken, ikke svaret.",
-    "en": "The cases are built from what clinicians told in interviews. There is no right answer: the system's assessment is one view of the case, not the answer."
+    "nb": "Sakene bygger på virkelige erfaringer fra klinisk praksis. Det finnes ingen fasit: systemets vurdering er ett syn på saken, ikke svaret.",
+    "en": "The cases draw on real experiences from clinical practice. There is no right answer: the system's assessment is one view of the case, not the answer."
+  },
+  "remainReplyGpKariReferral": {
+    "nb": "se svaret fra DPS, svar hvis du vil, og gå til oppsummeringen",
+    "en": "see the reply from DPS, answer it if you like, and go to the summary"
+  },
+  "stopPeekLine": {
+    "nb": "Når du har endret svarene, trykker du «Neste side» i skjemaet. Da kommer «Vis ATLAS» tilbake.",
+    "en": "When you have changed the answers, press ‘Next page’ in the form. Then ‘Show ATLAS’ comes back."
   }
 }

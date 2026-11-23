@@ -284,12 +284,23 @@ export function FormPanel({ actions }: { actions: FormPanelActions | null }) {
   const restAt = useRef<{ id: number; at: number } | null>(null);
   if (form && form.stage === 'rest' && restAt.current?.id !== form.id) restAt.current = { id: form.id, at: form.pageChanges };
   const restStart = form && restAt.current?.id === form.id ? restAt.current.at : 0;
-  const [peekId, setPeekId] = useState<number | null>(null);
+  // «Endre svarene på side 1» shows the form again until it moves on once more; then the card is back (3.8 review S6).
+  const [peek, setPeek] = useState<{ id: number; at: number } | null>(null);
+  const peeking = !!form && peek?.id === form.id && form.pageChanges <= peek.at;
+  const showCard = atStop && !peeking;
   const page1Confirmed = !!actions?.page1Confirmed;
   const onPage1 = actions?.onPage1;
   useEffect(() => {
     if (atStop && !page1Confirmed) onPage1?.();
   }, [atStop, page1Confirmed, onPage1]);
+  // When the card appears, focus moves to its one action and the card is said once (3.8 review S5).
+  const cardBtn = useRef<HTMLButtonElement>(null);
+  useEffect(() => {
+    if (!showCard) return;
+    latest.current.announce(`${latest.current.s('stopPage1Done')} ${latest.current.s('pressNow', { what: latest.current.s('showAtlas') })}`);
+    const id = window.requestAnimationFrame(() => cardBtn.current?.focus());
+    return () => window.cancelAnimationFrame(id);
+  }, [showCard]);
 
   // An overlay panel covers part of the page: Escape hides it from anywhere, unless a dialog,
   // menu or popover is open and the key belongs to that (AX-01).
@@ -385,7 +396,7 @@ export function FormPanel({ actions }: { actions: FormPanelActions | null }) {
               )}
             </MessageBar>
           )}
-          {atStop && peekId !== form.id && (
+          {showCard && (
             <section className={cls.next} aria-labelledby={`${panelId}-next`} data-next-step="show-atlas">
               <p className={cls.nextEyebrow}>{s('nextStepEyebrow')}</p>
               <p className={cls.nextQuiet}>{s('stopPage1Done')}</p>
@@ -394,6 +405,7 @@ export function FormPanel({ actions }: { actions: FormPanelActions | null }) {
               </p>
               <div>
                 <Button
+                  ref={cardBtn}
                   appearance="primary"
                   icon={<Eye20Regular />}
                   disabledFocusable={!actions.canShowAtlas}
@@ -405,7 +417,7 @@ export function FormPanel({ actions }: { actions: FormPanelActions | null }) {
               </div>
               <p className={cls.nextQuiet}>{s('stopRestLater')}</p>
               <div>
-                <Button appearance="transparent" size="small" className={cls.fallbackBtn} onClick={() => setPeekId(form.id)}>
+                <Button appearance="transparent" size="small" className={cls.fallbackBtn} onClick={() => setPeek({ id: form.id, at: form.pageChanges })}>
                   {s('stopChangePage1')}
                 </Button>
               </div>
@@ -429,7 +441,7 @@ export function FormPanel({ actions }: { actions: FormPanelActions | null }) {
               <iframe
                 key={form.id}
                 data-form-frame=""
-                className={mergeClasses(cls.frame, atStop && peekId !== form.id && cls.frameAway)}
+                className={mergeClasses(cls.frame, showCard && cls.frameAway)}
                 src={form.url}
                 title={actions.title}
                 // The panel or the page scrolls, never the form inside it: Nettskjema reports its height (3.8, F43).
@@ -478,6 +490,11 @@ export function FormPanel({ actions }: { actions: FormPanelActions | null }) {
           <div className={mergeClasses(cls.foot, inline && cls.inlineFoot)}>
             {/* One main action at each moment (3.8, F33, F50): in a form ATLAS can watch, the next press is in the form
                 itself, or on the stop card; the panel's own buttons are quiet ways out for when ATLAS cannot see. */}
+            {peeking && atStop && (
+              <p className={cls.info} role="status">
+                {s('stopPeekLine')}
+              </p>
+            )}
             {showPage1 && actions.onPage1 && form.route === 'panel' && !atStop && (
               <>
                 <p className={cls.info} role="status">
@@ -559,9 +576,14 @@ export function FormPanel({ actions }: { actions: FormPanelActions | null }) {
                 <Button appearance="transparent" size="small" className={cls.fallbackBtn} onClick={actions.onConfirmSent}>
                   {s('formSentConfirm')}
                 </Button>
+                {tabUrl && (
+                  <Button appearance="transparent" size="small" className={cls.fallbackBtn} icon={<Open16Regular />} onClick={openTab}>
+                    {s('formOpenTab')}
+                  </Button>
+                )}
               </span>
             )}
-            {actions.onSkip && !browseFlag() && !atStop && (
+            {actions.onSkip && !browseFlag() && !showCard && (
               // A quiet way past the form, at least 24 px tall (G-02).
               <Button appearance="transparent" size="small" className={cls.skip} onClick={actions.onSkip}>
                 {actions.skipLabel ?? s('formSkip')}

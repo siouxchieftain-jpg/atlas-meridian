@@ -189,7 +189,7 @@ test('R2GP-01: Astrid «Henvis på nytt» then «Send henvisning» leads on to t
   await page.getByRole('button', { name: 'Lagre plan' }).click();
   await page.getByRole('button', { name: 'Skriv den nye henvisningen' }).click();
   // The new draft says what «Lagre utkast» means too (R2GP-07).
-  await expect(page.getByText(/betyr at den nye henvisningen ikke sendes nå/)).toBeVisible();
+  await expect(page.getByText(/sendes ikke den nye henvisningen nå/)).toBeVisible();
   await page.getByRole('button', { name: 'Send henvisning' }).click();
   await expect(page).toHaveURL(/#\/studie\/sak\/astrid\/sendt$/);
   // The sent page names only what went with the new referral (R2GP-04).

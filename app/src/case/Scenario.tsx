@@ -2,6 +2,7 @@ import { makeStyles, mergeClasses, tokens, typographyStyles } from '@fluentui/re
 import { cases } from '../content';
 import type { CaseId, Role } from '../content/types';
 import { useLang } from '../i18n/i18n';
+import { useCaseStatus } from './useCaseStatus';
 
 const ORDER: Partial<Record<CaseId, number>> = { kari: 1, erlend: 2, astrid: 3 };
 
@@ -45,6 +46,7 @@ type RemainKey =
   | 'remainAtlasDps'
   | 'remainAtlasDpsAstrid'
   | 'remainReplyGpKari'
+  | 'remainReplyGpKariReferral'
   | 'remainReplyGpPlan'
   | 'remainReplyDpsKari'
   | 'remainSummary';
@@ -53,7 +55,12 @@ type RemainKey =
  * What is left of a case, in one plain line (3.8, F107): «Gjenstår: svar på resten av skjemaet og send det». Null when
  * the case is done or is not one of the three.
  */
-export function remainingKey(caseId: CaseId, role: Role, phase: Phase): RemainKey | null {
+export function remainingKey(
+  caseId: CaseId,
+  role: Role,
+  phase: Phase,
+  status?: { complete: boolean; referralSent: boolean },
+): RemainKey | null {
   if (!ORDER[caseId]) return null;
   switch (phase) {
     case 'briefing':
@@ -66,7 +73,14 @@ export function remainingKey(caseId: CaseId, role: Role, phase: Phase): RemainKe
     case 'page2':
       return 'remainRest';
     case 'reply':
-      if (role === 'gp') return caseId === 'kari' ? 'remainReplyGpKari' : 'remainReplyGpPlan';
+      // What is left after the form depends on what was done (3.8 review S1, S2): a case that can go to its summary says
+      // only that; after a referral the GP has DPS's reply, after Behold or a kept draft the GP's plan.
+      if (status?.complete) return 'remainSummary';
+      if (role === 'gp') {
+        if (caseId === 'astrid') return 'remainReplyGpPlan';
+        if (status && !status.referralSent) return 'remainReplyGpPlan';
+        return caseId === 'kari' ? 'remainReplyGpKariReferral' : 'remainReplyGpKari';
+      }
       return caseId === 'kari' ? 'remainReplyDpsKari' : 'remainSummary';
     default:
       return null;
@@ -82,7 +96,8 @@ const useRemainStyles = makeStyles({
 export function CaseRemaining({ caseId, role, phase, className }: { caseId: CaseId; role: Role; phase: Phase; className?: string }) {
   const cls = useRemainStyles();
   const { s } = useLang();
-  const key = remainingKey(caseId, role, phase);
+  const status = useCaseStatus(caseId);
+  const key = remainingKey(caseId, role, phase, status);
   if (!key) return null;
   return (
     <p className={mergeClasses(cls.line, className)} data-case-remaining={caseId}>

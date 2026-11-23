@@ -48,7 +48,8 @@ function mockHtml(key: string, failOnce: boolean): string {
   document.getElementById('next').onclick=function(){ page++; render(); post('scrollToStart'); };
   document.getElementById('back').onclick=function(){ page--; render(); post('scrollToStart'); };
   document.getElementById('send').onclick=function(){
-    if(failOnce){ failOnce=false; post('submitFailed'); return; }
+    // A real failure comes after the request has failed, never in the same moment as a page change.
+    if(failOnce){ failOnce=false; setTimeout(function(){ post('submitFailed'); }, 400); return; }
     // As Nettskjema does (3.8, F38): a send that goes through posts "submitFailed" (its own check looks for a status
     // the response does not carry) and then the receipt's "scrollToStart". A failure posts "submitFailed" alone.
     sent=true; render(); document.getElementById('receipt').hidden=false; post('submitFailed'); setTimeout(function(){ post('scrollToStart'); }, 30);

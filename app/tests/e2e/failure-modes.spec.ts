@@ -81,6 +81,9 @@ test('a vignette form sent whole before «Vis ATLAS» counts as sent, and is not
   await recordSubmissions(page);
   await toKari(page);
   await page.getByRole('button', { name: 'Start saken' }).click();
+  // 3.8: past page 1 the stop card covers the form; sending it whole means showing it again on purpose.
+  await toStopPage(page);
+  await panel(page).getByRole('button', { name: 'Endre svarene på side 1' }).click();
   await sendForm(page);
   await expect(page.locator('iframe[data-form-frame]')).toHaveCount(0);
   await page.getByRole('button', { name: 'Vis ATLAS' }).first().click();
@@ -93,14 +96,17 @@ test('a vignette form sent whole before «Vis ATLAS» counts as sent, and is not
   expect(s3[0].fields.steg).toBe('S3');
 });
 
-test('going past the stop page before «Vis ATLAS» shows the hint, and the confirmation is still asked', async ({ page }) => {
+test('the stop card covers the form until «Vis ATLAS», and the form can still be shown on purpose', async ({ page }) => {
   await mockNettskjema(page);
   await toKari(page);
   await page.getByRole('button', { name: 'Start saken' }).click();
   await toStopPage(page);
-  await frame(page).locator('#next').click();
-  await expect(panel(page).getByText('Skjemaet har gått videre. Trykk på knappen når du har svart på side 1.')).toBeVisible();
-  await expect(panel(page).getByRole('button', { name: 'Vis ATLAS' })).toHaveAttribute('aria-disabled', 'true');
+  // 3.8: the stop card covers the form, so its «Neste» cannot be pressed past the stop page by mistake.
+  await expect(panel(page).locator('[data-next-step="show-atlas"]')).toBeVisible();
+  await expect(page.locator('iframe[data-form-frame]')).not.toBeInViewport();
+  // Going back to page 1 on purpose shows the form again, at the stop page.
+  await panel(page).getByRole('button', { name: 'Endre svarene på side 1' }).click();
+  await expect(frame(page).locator('#page')).toHaveText('Side 2 av 3');
 });
 
 test('resizing across the inline threshold keeps the open form where it was', async ({ page }) => {

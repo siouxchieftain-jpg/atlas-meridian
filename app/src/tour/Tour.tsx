@@ -385,7 +385,8 @@ function StepText({ step, showReason, partLine }: { step: TourStep; showReason: 
           {t(step.tryIt)}
         </p>
       )}
-      {/* The bridge lines to the forms' words are gone (3.8, F8): the forms now use ATLAS's own names. */}
+      {/* The bridge lines to the forms' words are gone (3.8, F8). The forms take ATLAS's own names with part C (the F90 list),
+          so 3.8 is released together with those forms. */}
       {showReason && (
         <div className={cls.why}>
           <Button

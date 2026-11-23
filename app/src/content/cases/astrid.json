@@ -77,12 +77,12 @@
       },
       "scenario": {
         "kind": {
-          "nb": "avslag med spørsmål",
-          "en": "rejection with a question"
+          "nb": "avslag fra DPS",
+          "en": "rejection from DPS"
         },
         "task": {
-          "nb": "Du leser svaret fra DPS og kan stille et spørsmål om det.",
-          "en": "You read the reply from DPS and can ask a question about it."
+          "nb": "Du leser svaret fra DPS og bestemmer hva du gjør videre.",
+          "en": "You read the reply from DPS and decide what to do next."
         }
       }
     },

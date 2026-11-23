@@ -55,7 +55,7 @@ test('keyboard only, GP: place, tag, confidence, decide, write and send the refe
   await page.keyboard.type('Usikker på varighet og funksjon.');
 
   // Native radios: Tab enters the group, the arrows choose.
-  await tabTo(page, page.getByRole('radio', { name: 'Lav', exact: true }));
+  await tabTo(page, page.getByRole('radio', { name: 'Veldig usikker', exact: true }));
   await page.keyboard.press('ArrowRight');
   await page.keyboard.press('ArrowRight');
   await expect(page.getByRole('radio', { name: 'Middels' })).toBeChecked();
