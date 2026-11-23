@@ -160,7 +160,7 @@ for (const [role, v] of CASES) {
       // Held between «Vis ATLAS» and the page-2 moment: no way to open it early.
       await expect(page.getByRole('button', { name: 'Vis skjemaet' })).toHaveCount(0);
       await ownDecision(page, role, v);
-      await expect(panel(page).getByText('Du har gjort saken ferdig. Trykk nå: «Neste side» nederst i skjemaet. Teksten «Stopp her» gjelder ikke lenger.')).toBeVisible();
+      await expect(panel(page).getByText('Nå skal du svare på resten av skjemaet. Trykk nå: «Neste side» nederst i skjemaet. Teksten «Stopp her» gjelder ikke lenger.')).toBeVisible();
       await expect(frame(page).locator('#page')).toHaveText('Side 2 av 3');
       await sendForm(page);
       await expect(panel(page)).toBeHidden();

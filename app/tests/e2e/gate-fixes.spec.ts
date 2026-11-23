@@ -496,7 +496,7 @@ test('r4A-02: at 320 × 256 the page-2 moment opens the form at its top, with th
   const heading = panel(page).getByRole('heading', { level: 2 });
   await expect(heading).toBeFocused();
   await expect(heading).toBeInViewport();
-  await expect(panel(page).getByText('Du har gjort saken ferdig. Trykk nå: «Neste side» nederst i skjemaet. Teksten «Stopp her» gjelder ikke lenger.')).toBeInViewport();
+  await expect(panel(page).getByText('Nå skal du svare på resten av skjemaet. Trykk nå: «Neste side» nederst i skjemaet. Teksten «Stopp her» gjelder ikke lenger.')).toBeInViewport();
 });
 
 test('r4A-03: at 400 % zoom the chosen role stays in view in the feedback popover', async ({ page }) => {

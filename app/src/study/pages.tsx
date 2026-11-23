@@ -1,3 +1,4 @@
+import { getConfig } from '../engine/forms';
 import { Button, makeStyles, mergeClasses, tokens, typographyStyles } from '@fluentui/react-components';
 import { ArrowRight20Regular, CheckmarkCircle20Regular, Circle20Regular, Delete20Regular, Form20Regular, RecordStop20Regular } from '@fluentui/react-icons';
 import { useRef, useState, type ReactNode } from 'react';
@@ -294,7 +295,8 @@ export function TakkPage() {
       <Body>{s('takkAtlasName')}</Body>
       {/* The browse tab clears itself when it closes; the button would reach the study's own data. */}
       {!browse && <ClearBrowserData />}
-      {!browse && !previewFlag() && <OtherRole role={role} />}
+      {/* For supervisors trying both roles in the pilot round only; study participants take one role (review S7, R5). */}
+      {!browse && !previewFlag() && getConfig().round === 'pilot' && <OtherRole role={role} />}
     </IntroPage>
   );
 }

@@ -124,8 +124,12 @@ export async function place(page: Page, index: number) {
 export async function confirmPage1(page: Page) {
   const card = panel(page).locator('[data-next-step="show-atlas"]');
   const btn = panel(page).getByRole('button', { name: /^(Ja, )?[Jj]eg har svart på side 1$/ });
-  await expect(card.or(btn).first()).toBeVisible();
-  if (!(await card.isVisible())) await btn.click();
+  // The quiet fallback shows for a moment before the form's page change reaches ATLAS: wait for the card first.
+  const carded = await card.waitFor({ state: 'visible', timeout: 3000 }).then(
+    () => true,
+    () => false,
+  );
+  if (!carded) await btn.click();
 }
 
 /** Start a case and answer page 1 up to the stop page, then press «Vis ATLAS» from the panel. */

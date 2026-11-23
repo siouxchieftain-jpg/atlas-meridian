@@ -176,7 +176,7 @@ for (const role of ['fastlege', 'dps-kliniker'] as const) {
       await confirmPage1(page);
       await panel(page).getByRole('button', { name: 'Vis ATLAS' }).click();
       await WORK[role][c](page);
-      await expect(panel(page).getByText('Du har gjort saken ferdig. Trykk nå: «Neste side» nederst i skjemaet. Teksten «Stopp her» gjelder ikke lenger.')).toBeVisible();
+      await expect(panel(page).getByText('Nå skal du svare på resten av skjemaet. Trykk nå: «Neste side» nederst i skjemaet. Teksten «Stopp her» gjelder ikke lenger.')).toBeVisible();
       await form.getByRole('button', { name: 'Neste', exact: true }).click();
       await expect(form.getByRole('heading', { level: 2 })).toContainText('Side 3 av 3');
       const names = await questionNames(form);

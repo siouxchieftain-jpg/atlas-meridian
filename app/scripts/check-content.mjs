@@ -325,6 +325,22 @@ if (Array.isArray(sources)) {
   });
 }
 
+/* ---------- 6. Release gate (3.8): ATLAS and the forms use the same names ---------- */
+// 3.8 renamed parts of ATLAS (F29, F65, F95) and took out the tour's lines that translated ATLAS's names into the
+// forms' words (F8). Until the forms are changed (part C, the F90 list), the instrument still uses the old names, so a
+// release would show participants names the forms do not use. In CI, which every merge to main runs, this fails; on a
+// laptop it warns, so a preview can still be built.
+const RETIRED_IN_FORMS = ['usikkerhetsvisning', 'indikasjonen fra ATLAS', 'Din trygghet', 'kriteriesynlighet'];
+{
+  const formText = JSON.stringify(files['instrument.json'] ?? {});
+  const left = RETIRED_IN_FORMS.filter((w) => formText.toLowerCase().includes(w.toLowerCase()));
+  if (left.length) {
+    const msg = `release gate: the forms still use names ATLAS 3.8 retired (${left.join(', ')}); release 3.8 only with part C (the F90 list)`;
+    if (process.env.CI) fail(msg);
+    else console.warn(`check-content: WARNING ${msg}`);
+  }
+}
+
 /* ---------- Report ---------- */
 
 if (errors.length) {

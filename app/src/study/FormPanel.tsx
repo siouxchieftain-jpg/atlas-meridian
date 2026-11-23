@@ -316,13 +316,20 @@ export function FormPanel({ actions }: { actions: FormPanelActions | null }) {
       root.style.scrollPaddingBottom = '';
       return;
     }
-    const set = () => (root.style.scrollPaddingBottom = `${Math.ceil(el.getBoundingClientRect().height) + 8}px`);
+    // The panel's heading sticks under the app's header too: the page keeps that room at its top as well.
+    const head = el.closest('[data-form-panel]')?.firstElementChild as HTMLElement | null;
+    const set = () => {
+      root.style.scrollPaddingBottom = `${Math.ceil(el.getBoundingClientRect().height) + 8}px`;
+      if (head) root.style.scrollPaddingTop = `calc(var(--atlas-header-h, 48px) + ${Math.ceil(head.getBoundingClientRect().height) + 8}px)`;
+    };
     set();
     const ro = new ResizeObserver(set);
     ro.observe(el);
+    if (head) ro.observe(head);
     return () => {
       ro.disconnect();
       root.style.scrollPaddingBottom = '';
+      root.style.scrollPaddingTop = '';
     };
   }, [footShown]);
 
@@ -516,7 +523,8 @@ export function FormPanel({ actions }: { actions: FormPanelActions | null }) {
                 itself, or on the stop card; the panel's own buttons are quiet ways out for when ATLAS cannot see. */}
             {peeking && atStop && (
               <p className={cls.info} role="status">
-                {s('stopPeekLine')}
+                {/* At the stop page the way back is «Forrige side»; after a move, only «Neste side» brings the card back (review R1). */}
+                {peekMoves === 0 ? s('stopPeekLine') : s('stopPeekLineAfter')}
               </p>
             )}
             {showPage1 && actions.onPage1 && form.route === 'panel' && !atStop && (

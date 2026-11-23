@@ -32,7 +32,7 @@ test('a GP completes the whole study on the panel route, with the right locked v
   await page.getByRole('button', { name: 'Skriv henvisningen' }).click();
   await page.getByRole('button', { name: 'Send henvisning' }).click();
   await expect(panel(page)).toBeVisible();
-  await expect(panel(page).getByText('Du har gjort saken ferdig. Trykk nå: «Neste side» nederst i skjemaet. Teksten «Stopp her» gjelder ikke lenger.')).toBeVisible();
+  await expect(panel(page).getByText('Nå skal du svare på resten av skjemaet. Trykk nå: «Neste side» nederst i skjemaet. Teksten «Stopp her» gjelder ikke lenger.')).toBeVisible();
   // The reply from DPS is held until the last page is sent.
   await expect(page.getByText('Svaret fra DPS vises når du har sendt resten av skjemaet.')).toBeVisible();
   await expect(frame(page).locator('#page')).toHaveText('Side 2 av 3');

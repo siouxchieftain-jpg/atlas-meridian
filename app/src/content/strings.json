@@ -4348,7 +4348,11 @@
     "en": "see the reply from DPS, answer it if you like, and go to the summary"
   },
   "stopPeekLine": {
-    "nb": "Når du har endret svarene, trykker du «Neste side» i skjemaet. Da kommer «Vis ATLAS» tilbake.",
-    "en": "When you have changed the answers, press ‘Next page’ in the form. Then ‘Show ATLAS’ comes back."
+    "nb": "Trykk «Forrige side» i skjemaet for å endre svarene på side 1. Trykk deretter «Neste side»: da kommer «Vis ATLAS» tilbake.",
+    "en": "Press ‘Previous page’ in the form to change the answers on page 1. Then press ‘Next page’: ‘Show ATLAS’ comes back."
+  },
+  "stopPeekLineAfter": {
+    "nb": "Har du endret svarene på side 1, trykker du «Neste side». Da kommer «Vis ATLAS» tilbake.",
+    "en": "If you have changed the answers on page 1, press ‘Next page’. Then ‘Show ATLAS’ comes back."
   }
 }
