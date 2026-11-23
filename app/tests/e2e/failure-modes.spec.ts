@@ -1,6 +1,6 @@
 import { expect, test, type Page } from '@playwright/test';
 import { mockNettskjema, recordSubmissions, submissions, configWithoutForms } from './mock';
-import { caseOnlyThenAtlas, frame, frameSteg, openCurrentCase, panel, place, sendForm, startStudy, toFirstCase, toStopPage } from './helpers';
+import { caseOnlyThenAtlas, frame, frameSteg, openCurrentCase, panel, place, sendForm, startStudy, toFirstCase, toStopPage, confirmPage1 } from './helpers';
 
 // No check depends on the addresses the site holds: with none, review mode gives feedback in its preview forms.
 // A check that needs forms routes them to the stand-in (mockNettskjema), which takes precedence.
@@ -39,11 +39,13 @@ test('a reload in the case-only state reopens page 1 with S3 and asks for page 1
   await toKari(page);
   await page.getByRole('button', { name: 'Start saken' }).click();
   await toStopPage(page);
-  await panel(page).getByRole('button', { name: 'Jeg har svart på side 1' }).click();
+  await confirmPage1(page);
   await page.reload();
   await expect(page.locator('iframe[data-form-frame]')).toBeVisible();
   expect(await frameSteg(page)).toBe('S3');
-  await expect(panel(page).getByRole('button', { name: 'Vis ATLAS' })).toHaveAttribute('aria-disabled', 'true');
+  // Page 1 is asked for again: the form shows it, and the panel names the press in the form, with no «Vis ATLAS» (3.8).
+  await expect(panel(page).getByText('Trykk nå: «Neste side» nederst i skjemaet, når du har svart på side 1.')).toBeVisible();
+  await expect(panel(page).getByRole('button', { name: 'Vis ATLAS' })).toHaveCount(0);
 });
 
 test('a failed send offers a retry in the same form, and the retry counts', async ({ page }) => {

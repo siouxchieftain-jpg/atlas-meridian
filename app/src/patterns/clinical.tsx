@@ -150,7 +150,9 @@ export function ConfidenceScale({
       <ChoiceGroup<ConfLevel>
         legend={s('confidenceTitle')}
         chip={<ProvenanceChip source="own" />}
-        layout="scale"
+        // One level a line, top to bottom (3.8, F29): the longer plain words, «Veldig usikker» to «Veldig sikker», do not fit
+        // five to a row in the panel.
+        layout="column"
         value={value}
         onChange={onChange}
         disabled={disabled}

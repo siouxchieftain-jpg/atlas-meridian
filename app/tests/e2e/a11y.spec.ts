@@ -1,7 +1,7 @@
 import AxeBuilder from '@axe-core/playwright';
 import { expect, test, type Page } from '@playwright/test';
 import { mockNettskjema, configWithoutForms } from './mock';
-import { clickThroughTour, finishCaseHome, openCurrentCase, panel, place, sendForm, startStudy, toHome, toStopPage } from './helpers';
+import { clickThroughTour, finishCaseHome, openCurrentCase, panel, place, sendForm, startStudy, toHome, toStopPage, confirmPage1 } from './helpers';
 
 // No check depends on the addresses the site holds: with none, review mode gives feedback in its preview forms.
 // A check that needs forms routes them to the stand-in (mockNettskjema), which takes precedence.
@@ -91,11 +91,11 @@ test('study screens have no serious or critical axe violations', async ({ page }
   await page.getByRole('button', { name: 'Start saken' }).click();
   await toStopPage(page);
   await scan(page, 'kari case-only', found);
-  await panel(page).getByRole('button', { name: 'Jeg har svart på side 1' }).click();
+  await confirmPage1(page);
   await panel(page).getByRole('button', { name: 'Vis ATLAS' }).click();
   await scan(page, 'kari atlas', found);
   await place(page, 3);
-  await page.getByRole('button', { name: 'Diagnostisk', exact: true }).click();
+  await page.getByRole('button', { name: 'Uklar diagnose', exact: true }).click();
   await page.getByLabel('Middels').check({ force: true });
   await page.getByLabel('Henvis', { exact: true }).check({ force: true });
   await page.getByRole('button', { name: 'Lagre beslutning' }).click();

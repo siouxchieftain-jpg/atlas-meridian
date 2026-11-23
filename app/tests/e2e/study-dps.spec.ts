@@ -1,6 +1,6 @@
 import { expect, test } from '@playwright/test';
 import { mockNettskjema, recordSubmissions, submissions, configWithoutForms } from './mock';
-import { caseOnlyThenAtlas, doTour, finishCaseHome, openCurrentCase, panel, place, sendForm, startStudy, toHome, toStopPage } from './helpers';
+import { caseOnlyThenAtlas, doTour, finishCaseHome, openCurrentCase, panel, place, sendForm, startStudy, toHome, toStopPage, confirmPage1 } from './helpers';
 
 // No check depends on the addresses the site holds: with none, review mode gives feedback in its preview forms.
 // A check that needs forms routes them to the stand-in (mockNettskjema), which takes precedence.
@@ -23,7 +23,7 @@ test('a DPS clinician completes the core study, with the GP marker shown only af
   await page.getByRole('button', { name: 'Start saken' }).click();
   await expect(page.getByText('Hva fastlegen var usikker på')).toHaveCount(0);
   await toStopPage(page);
-  await panel(page).getByRole('button', { name: 'Jeg har svart på side 1' }).click();
+  await confirmPage1(page);
   await panel(page).getByRole('button', { name: 'Vis ATLAS' }).click();
   await expect(page.getByText('Hva fastlegen var usikker på').first()).toBeVisible();
   // B7: no GP marker or reading before the DPS clinician places the case.
@@ -50,7 +50,7 @@ test('a DPS clinician completes the core study, with the GP marker shown only af
   await page.getByRole('button', { name: 'Start saken' }).click();
   await expect(page.getByText('Tidligere henvisning avslått 12. november 2025')).toBeVisible();
   await toStopPage(page);
-  await panel(page).getByRole('button', { name: 'Jeg har svart på side 1' }).click();
+  await confirmPage1(page);
   await panel(page).getByRole('button', { name: 'Vis ATLAS' }).click();
   await place(page, 5);
   await page.getByLabel('Rett til helsehjelp').check({ force: true });
@@ -90,7 +90,7 @@ test('the DPS card covers every role in intake, sends DPS-inntak and the study n
   await page.goto('/');
   const card = page.locator('[data-role-card="dps"]');
   await expect(card.getByText('Gjelder også andre roller i inntaket.', { exact: false })).toBeVisible();
-  await card.getByRole('button', { name: 'Start i DPS-inntaket' }).click();
+  await card.getByRole('button', { name: 'Start som ansatt i DPS' }).click();
   await expect(page.getByRole('heading', { level: 1, name: 'Om deg' })).toBeVisible();
   const name = (await page.locator('[data-studienavn-value]').first().textContent())?.trim() ?? '';
   expect(name).toMatch(/^\S+ \S+ \d{2}$/);

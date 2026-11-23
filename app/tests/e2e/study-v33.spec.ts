@@ -34,7 +34,7 @@ test('Velkommen reaches the footer at a laptop and a desktop size, and each role
     // The panel's wrap ends one inset above the footer, whether the content is shorter than the window or not.
     expect(await gapToFooter(page, hero), `${width} × ${height}`).toBeLessThanOrEqual(16);
   }
-  for (const name of ['Start som fastlege', 'Start i DPS-inntaket']) expect(await hasSheen(page.getByRole('button', { name })), name).toBe(true);
+  for (const name of ['Start som fastlege', 'Start som ansatt i DPS']) expect(await hasSheen(page.getByRole('button', { name })), name).toBe(true);
   // The tour's step carries the guide's solid coral mark (board 10b).
   const marks = page.locator('[data-welcome="first"] ol li span[aria-hidden="true"]');
   expect(await marks.nth(2).evaluate((el) => getComputedStyle(el).backgroundColor)).toBe('rgb(245, 158, 133)');

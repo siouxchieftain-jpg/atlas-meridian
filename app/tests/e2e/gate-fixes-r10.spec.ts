@@ -110,7 +110,7 @@ test('r9F-05: when the played GP side sent the referral without placing the case
   await go(page, '#/gjennomgang/dps/sak/erlend/vurdering');
   await place(page, 3);
   await go(page, '#/gjennomgang/dps/sak/erlend/oppsummering');
-  await expect(page.getByText('Fastlegen plasserte ikke saken. DPS plasserte den før systemets lesning ble vist.')).toBeVisible();
+  await expect(page.getByText('Fastlegen plasserte ikke saken. DPS plasserte den før systemets vurdering ble vist.')).toBeVisible();
   await expect(page.getByText(/Fastlegen og DPS plasserte saken hver for seg/)).toHaveCount(0);
 });
 

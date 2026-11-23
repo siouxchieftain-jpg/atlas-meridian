@@ -31,7 +31,7 @@ export async function toStopPage(page: Page) {
 export async function startStudy(page: Page, role: 'Fastlege' | 'DPS-kliniker', intervju: 'Ja' | 'Nei' | 'Vil ikke svare' = 'Nei') {
   await page.goto('/');
   // The role is chosen on Velkommen, with its card; Om deg asks the one question left.
-  await page.getByRole('button', { name: role === 'Fastlege' ? 'Start som fastlege' : 'Start i DPS-inntaket' }).click();
+  await page.getByRole('button', { name: role === 'Fastlege' ? 'Start som fastlege' : 'Start som ansatt i DPS' }).click();
   await expect(page.getByRole('heading', { level: 1, name: 'Om deg' })).toBeVisible();
   await page.getByLabel(intervju, { exact: true }).check({ force: true });
   await page.getByRole('button', { name: 'Lagre og åpne skjemaet' }).click();
@@ -117,12 +117,23 @@ export async function place(page: Page, index: number) {
   await page.getByRole('option').nth(index).click();
 }
 
+/**
+ * Page 1 is answered (3.8): in a form ATLAS can watch, its move to the stop page is taken as the answer and a card covers
+ * the stop page with «Trykk nå: Vis ATLAS»; elsewhere «Jeg har svart på side 1» is pressed.
+ */
+export async function confirmPage1(page: Page) {
+  const card = panel(page).locator('[data-next-step="show-atlas"]');
+  const btn = panel(page).getByRole('button', { name: /^(Ja, )?[Jj]eg har svart på side 1$/ });
+  await expect(card.or(btn).first()).toBeVisible();
+  if (!(await card.isVisible())) await btn.click();
+}
+
 /** Start a case and answer page 1 up to the stop page, then press «Vis ATLAS» from the panel. */
 export async function caseOnlyThenAtlas(page: Page) {
   await page.getByRole('button', { name: 'Start saken' }).click();
   await expect(page.getByText('Uten ATLAS', { exact: true }).first()).toBeVisible();
   await toStopPage(page);
-  await panel(page).getByRole('button', { name: 'Jeg har svart på side 1' }).click();
+  await confirmPage1(page);
   await panel(page).getByRole('button', { name: 'Vis ATLAS' }).click();
 }
 

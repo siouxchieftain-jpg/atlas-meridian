@@ -83,7 +83,7 @@ test('r10A-05: «Gi tilbakemelding» on the new referral offers its own parts: D
   const parts = page.locator('[data-feedback-part]');
   await expect(parts.filter({ hasText: 'Råd fra DPS' })).toHaveCount(1);
   await expect(parts.filter({ hasText: 'Fra ATLAS-panelet' })).toHaveCount(0);
-  await expect(parts.filter({ hasText: 'Usikkerhetsvisning' })).toHaveCount(0);
+  await expect(parts.filter({ hasText: 'Usikkerhetsskala' })).toHaveCount(0);
 });
 
 test('r10F-04, r10A-07: once the new referral is sent it reads as sent, and «Fortsett» leads to the summary', async ({ page }) => {
@@ -94,7 +94,7 @@ test('r10F-04, r10A-07: once the new referral is sent it reads as sent, and «Fo
   await go(page, '#/gjennomgang/fastlege/sak/kari/henvisning');
   await expect(page.getByText('Den nye henvisningen bygde på den første henvisningen og rådene fra DPS.')).toBeVisible();
   await expect(page.getByText('Det nye utkastet tar med den første henvisningen og rådene fra DPS.')).toHaveCount(0);
-  await expect(page.getByText('Slik guiden leste henvisningen da du sendte den.', { exact: false }).filter({ visible: true })).toHaveCount(1);
+  await expect(page.getByText('Leste henvisningen slik du sendte den', { exact: false }).filter({ visible: true })).toHaveCount(1);
   await expect(page.getByText('Leser henvisningen del for del mens du skriver.', { exact: false }).filter({ visible: true })).toHaveCount(0);
 });
 
@@ -126,7 +126,7 @@ test('r10F-07: on the DPS summary, what rests on the example referral or the GP�
   await page.getByLabel('Rett til helsehjelp').check({ force: true });
   await page.getByRole('button', { name: 'Send vurderingen' }).click();
   await go(page, '#/gjennomgang/dps/sak/kari/oppsummering');
-  await expect(page.locator('dt:has-text("Fastlegens trygghet") + dd')).toHaveText(/\(eksempel\)$/);
+  await expect(page.locator('dt:has-text("Hvor sikker fastlegen er") + dd')).toHaveText(/\(eksempel\)$/);
   await expect(page.locator('dt:has-text("Omtalt i henvisningen") + dd')).toHaveText(/\(eksempel\)$/);
   await expect(page.locator('dt:has-text("DPS-vurdering") + dd')).toHaveText(/\(etter fastlegens eksempelsvar\)$/);
 });

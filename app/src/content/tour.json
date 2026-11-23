@@ -171,8 +171,8 @@
           {
             "id": "gp-tags",
             "title": {
-              "nb": "Hva er uklart",
-              "en": "What is unclear"
+              "nb": "Hva er uklart i saken?",
+              "en": "What is unclear in the case?"
             },
             "body": {
               "nb": "Tre merkelapper beskriver hva som er uklart: «Uklar diagnose», «Uklart om kriteriene er oppfylt» og «Ikke nok informasjon», hver med en kort forklaring. Under dem er et felt der du beskriver det med egne ord. Alt starter tomt, og det du fyller inn, følger med en henvisning som en egen del.",

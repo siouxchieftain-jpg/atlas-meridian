@@ -1,7 +1,7 @@
 import AxeBuilder from '@axe-core/playwright';
 import { expect, test, type Locator, type Page } from '@playwright/test';
 import { configWithoutForms } from './mock';
-import { HOME_HEADING, openCurrentCase, panel, place } from './helpers';
+import { HOME_HEADING, openCurrentCase, panel, place, confirmPage1 } from './helpers';
 
 // ATLAS 3.6, the form pass, in the app's own preview forms (built from the same instrument as the Nettskjema forms): the
 // decision without ATLAS comes before B1 and again with ATLAS before B2, in each role's and case's words, with «Ikke
@@ -173,10 +173,10 @@ for (const role of ['fastlege', 'dps-kliniker'] as const) {
       await form.getByRole('radiogroup').nth(1).getByRole('radio', { name: '3', exact: true }).check({ force: true });
       await form.getByRole('button', { name: 'Neste', exact: true }).click();
       await expect(form.getByRole('heading', { level: 2 })).toContainText('Side 2 av 3');
-      await panel(page).getByRole('button', { name: 'Jeg har svart på side 1' }).click();
+      await confirmPage1(page);
       await panel(page).getByRole('button', { name: 'Vis ATLAS' }).click();
       await WORK[role][c](page);
-      await expect(panel(page).getByText('Gå videre i skjemaet og svar på resten nå.')).toBeVisible();
+      await expect(panel(page).getByText('Du har gjort saken ferdig. Trykk nå: «Neste side» nederst i skjemaet. Teksten «Stopp her» gjelder ikke lenger.')).toBeVisible();
       await form.getByRole('button', { name: 'Neste', exact: true }).click();
       await expect(form.getByRole('heading', { level: 2 })).toContainText('Side 3 av 3');
       const names = await questionNames(form);

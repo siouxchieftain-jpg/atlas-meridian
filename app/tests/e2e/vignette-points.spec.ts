@@ -1,6 +1,6 @@
 import { expect, test, type Page } from '@playwright/test';
 import { mockNettskjema, recordSubmissions, submissions, configWithoutForms } from './mock';
-import { HOME_HEADING, frame, frameSteg, openCurrentCase, panel, place, sendForm, toStopPage } from './helpers';
+import { HOME_HEADING, frame, frameSteg, openCurrentCase, panel, place, sendForm, toStopPage, confirmPage1 } from './helpers';
 
 // No check depends on the addresses the site holds: with none, review mode gives feedback in its preview forms.
 // A check that needs forms routes them to the stand-in (mockNettskjema), which takes precedence.
@@ -106,7 +106,7 @@ async function startCase(page: Page) {
 }
 
 async function confirmAndShow(page: Page) {
-  await panel(page).getByRole('button', { name: 'Jeg har svart på side 1' }).click();
+  await confirmPage1(page);
   await panel(page).getByRole('button', { name: 'Vis ATLAS' }).click();
   await expect(panel(page)).toBeHidden();
 }
@@ -160,7 +160,7 @@ for (const [role, v] of CASES) {
       // Held between «Vis ATLAS» and the page-2 moment: no way to open it early.
       await expect(page.getByRole('button', { name: 'Vis skjemaet' })).toHaveCount(0);
       await ownDecision(page, role, v);
-      await expect(panel(page).getByText('Gå videre i skjemaet og svar på resten nå.')).toBeVisible();
+      await expect(panel(page).getByText('Du har gjort saken ferdig. Trykk nå: «Neste side» nederst i skjemaet. Teksten «Stopp her» gjelder ikke lenger.')).toBeVisible();
       await expect(frame(page).locator('#page')).toHaveText('Side 2 av 3');
       await sendForm(page);
       await expect(panel(page)).toBeHidden();
