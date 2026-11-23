@@ -125,6 +125,7 @@ export function StructuredReturnView({
             aria-expanded={open}
             aria-controls={unmetId}
             onClick={() => setOpen(!open)}
+            data-try-target="unmet"
             style={{ paddingInline: 0, minWidth: 0, fontWeight: 600 }}
           >
             {s('criteriaNotMet')}

@@ -315,6 +315,12 @@ export function DpsDialog({ caseId }: { caseId: CaseId }) {
       <OtherSideButton caseId={caseId} view="dialog" />
       <Panel aria-label={s('dialogWithGp')}>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
+          {/* What to do here, before the thread (3.8, F82). */}
+          {status.thread.awaiting === 'dpsFinal' && (
+            <p style={{ margin: 0 }} data-dialog-lead="">
+              {s('dialogFinalLead')}
+            </p>
+          )}
           {/* The GP's «Ikke svar nå» or «Ikke spør nå» is a divider in the thread, where it happened (r6F-04, r7F-02, r7A-08). */}
           <ThreadView thread={status.thread} />
           {status.thread.awaiting === 'dpsFinal' && <FinalChoiceSection caseId={caseId} thread={status.thread} />}

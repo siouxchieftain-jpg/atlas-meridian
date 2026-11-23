@@ -35,23 +35,23 @@
   "band": {
     "id": "band",
     "title": {
-      "nb": "Usikkerhetsvisning",
-      "en": "Uncertainty display"
+      "nb": "Usikkerhetsskala",
+      "en": "Uncertainty scale"
     },
     "text": {
-      "nb": "Båndet viser saken som et spenn uten tall, med like grå ender og sand i midten, så ingen ende ser foretrukket ut. Klinikeren plasserer saken selv, og båndet har alltid teksten «Viser usikkerhet, anbefaler ikke».",
-      "en": "The band shows the case as a span with no number, with equal grey ends and sand in the middle, so neither end looks preferred. The clinician places the case, and the band always carries the caption ‘Shows uncertainty, does not recommend’."
+      "nb": "Skalaen viser saken som et spenn uten tall, med like grå ender og sand i midten, så ingen ende ser foretrukket ut. Klinikeren plasserer saken selv, og skalaen har alltid teksten «Viser usikkerhet, anbefaler ikke».",
+      "en": "The scale shows the case as a span with no number, with equal grey ends and sand in the middle, so neither end looks preferred. The clinician places the case, and the scale always carries the caption ‘Shows uncertainty, does not recommend’."
     }
   },
   "systemets-lesning": {
     "id": "systemets-lesning",
     "title": {
-      "nb": "Systemets lesning",
-      "en": "The system’s reading"
+      "nb": "Systemets vurdering",
+      "en": "The system’s assessment"
     },
     "text": {
-      "nb": "Klinikerne plasserer saken før de ser systemets lesning, slik at lesningen blir noe å sammenlikne med, ikke noe å følge. Lesningen er merket som skrevet for vignetten, ikke beregnet, og den sier aldri hva klinikeren skal gjøre.",
-      "en": "Clinicians place the case before they see the system’s reading, so the reading becomes something to compare with, not something to follow. The reading is labelled as written for the vignette, not calculated, and it never says what the clinician is to do."
+      "nb": "Klinikerne plasserer saken før de ser systemets vurdering, slik at vurderingen blir noe å sammenlikne med, ikke noe å følge. Vurderingen er merket som skrevet for vignetten, ikke beregnet, og den sier aldri hva klinikeren skal gjøre.",
+      "en": "Clinicians place the case before they see the system’s assessment, so the assessment becomes something to compare with, not something to follow. The assessment is labelled as written for the vignette, not calculated, and it never says what the clinician is to do."
     }
   },
   "hva-er-uklart": {
@@ -61,8 +61,8 @@
       "en": "What is unclear"
     },
     "text": {
-      "nb": "Usikkerhet kan gjelde diagnosen, terskelen eller om opplysningene er nok, og merkelappene skiller disse tre. Beskrivelsen går til DPS som en egen del, så den ikke må leses mellom linjene, og alt starter tomt fordi bare klinikeren kan si hva som er uklart.",
-      "en": "Uncertainty can concern the diagnosis, the threshold or whether the information is enough, and the tags tell these three apart. The description goes to DPS as its own part, so it need not be read between the lines, and everything starts empty because only the clinician can say what is unclear."
+      "nb": "Usikkerhet kan gjelde diagnosen, om kriteriene er oppfylt, eller om opplysningene er nok, og merkelappene skiller disse tre. Beskrivelsen går til DPS som en egen del, så den ikke må leses mellom linjene, og alt starter tomt fordi bare klinikeren kan si hva som er uklart.",
+      "en": "Uncertainty can concern the diagnosis, whether the criteria are met, or whether the information is enough, and the tags tell these three apart. The description goes to DPS as its own part, so it need not be read between the lines, and everything starts empty because only the clinician can say what is unclear."
     }
   },
   "informasjonsguiden": {
@@ -79,12 +79,12 @@
   "trygghet": {
     "id": "trygghet",
     "title": {
-      "nb": "Din trygghet nå",
-      "en": "Your confidence now"
+      "nb": "Hvor sikker er du nå?",
+      "en": "How sure are you now?"
     },
     "text": {
-      "nb": "Tryggheten vises i ord, ikke tall, og er tom til klinikeren velger, så den ikke ser ut som en score. DPS ser tryggheten for denne ene henvisningen og aldri en historikk, så ingen fastlege får et rykte i systemet.",
-      "en": "Confidence shows in words, not numbers, and is empty until the clinician chooses, so it does not look like a score. DPS sees the confidence for this one referral and never a history, so no GP gets a reputation in the system."
+      "nb": "Hvor sikker klinikeren er, vises i ord, ikke tall, og feltet er tomt til klinikeren velger, så det ikke ser ut som en score. DPS ser det for denne ene henvisningen og aldri en historikk, så ingen fastlege får et rykte i systemet.",
+      "en": "How sure the clinician is shows in words, not numbers, and the field is empty until the clinician chooses, so it does not look like a score. DPS sees it for this one referral and never a history, so no GP gets a reputation in the system."
     }
   },
   "beslutning": {
@@ -116,8 +116,8 @@
       "en": "From the ATLAS panel"
     },
     "text": {
-      "nb": "Usikkerheten, beskrivelsen og tryggheten i ord følger henvisningen som en egen blokk, så DPS får dem som opplysninger og ikke som en undertone i teksten. Fastlegens plassering vises for DPS først etter at DPS har plassert saken selv.",
-      "en": "The uncertainty, the description and the confidence in words go with the referral as their own block, so DPS gets them as information and not as an undertone in the text. The GP’s placement is shown to DPS only after DPS has placed the case."
+      "nb": "Usikkerheten, beskrivelsen og hvor sikker fastlegen er, følger henvisningen som en egen blokk, kopiert fra ATLAS-panelet, så DPS får dem som opplysninger og ikke som en undertone i teksten. Fastlegens plassering vises for DPS først etter at DPS har plassert saken selv.",
+      "en": "The uncertainty, the description and how sure the GP is go with the referral as their own block, copied from the ATLAS panel, so DPS gets them as information and not as an undertone in the text. The GP’s placement is shown to DPS only after DPS has placed the case."
     }
   },
   "sendt": {
@@ -215,19 +215,19 @@
       "en": "What the GP was unsure about"
     },
     "text": {
-      "nb": "Fastlegens egen beskrivelse og trygghet for denne henvisningen vises som egne opplysninger, så DPS ikke må lese dem mellom linjene. Ingen historikk for den enkelte fastlege vises, så vurderingen gjelder saken og ikke legen.",
-      "en": "The GP’s own description and confidence for this referral show as information of their own, so DPS need not read them between the lines. No history for the individual GP is shown, so the assessment concerns the case and not the doctor."
+      "nb": "Fastlegens egen beskrivelse og hvor sikker fastlegen er på denne henvisningen, vises som egne opplysninger, så DPS ikke må lese dem mellom linjene. Ingen historikk for den enkelte fastlege vises, så vurderingen gjelder saken og ikke legen.",
+      "en": "The GP’s own description and how sure the GP is about this referral show as information of their own, so DPS need not read them between the lines. No history for the individual GP is shown, so the assessment concerns the case and not the doctor."
     }
   },
   "dps-band": {
     "id": "dps-band",
     "title": {
-      "nb": "Usikkerhetsvisning for DPS",
-      "en": "Uncertainty display for DPS"
+      "nb": "Usikkerhetsskala for DPS",
+      "en": "Uncertainty scale for DPS"
     },
     "text": {
-      "nb": "DPS plasserer saken før fastlegens markør og systemets lesning vises, så ingen av dem styrer vurderingen. Markørene har de samme rollene i alle visninger, med en forklaring i ord: egen markør mørk, den andre klinikerens hvit og systemets lilla.",
-      "en": "DPS places the case before the GP’s marker and the system’s reading appear, so neither steers the assessment. The markers keep the same roles in every view, with a legend in words: own marker dark, the other clinician’s white and the system’s lavender."
+      "nb": "DPS plasserer saken før fastlegens markør og systemets vurdering vises, så ingen av dem styrer vurderingen. Markørene har de samme rollene i alle visninger, med en forklaring i ord: egen markør mørk, den andre klinikerens hvit og systemets lilla.",
+      "en": "DPS places the case before the GP’s marker and the system’s assessment appear, so neither steers the assessment. The markers keep the same roles in every view, with a legend in words: own marker dark, the other clinician’s white and the system’s lavender."
     }
   },
   "dps-vurdering": {

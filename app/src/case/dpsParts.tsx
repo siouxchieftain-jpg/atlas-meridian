@@ -131,11 +131,14 @@ export function receivedReferral(caseId: CaseId, work: WorkApi, t: (x: { nb: str
   };
 }
 
-/** The consultation note sent with the referral: collapsed, the same block in the case-only state and the ATLAS view. */
+/**
+ * The consultation note sent with the referral: open, since it is part of the decision (3.8, F77), and it can be folded;
+ * the same block in the case-only state and the ATLAS view.
+ */
 export function NoteAttachment({ caseId }: { caseId: CaseId }) {
   const cls = useStyles();
   const { s, t } = useLang();
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(true);
   const attachId = useId();
   const d = cases[caseId].dps!;
   return (

@@ -263,7 +263,12 @@ export function StudyControllerProvider({ children }: { children: ReactNode }) {
         return !!step && st.ledger[step]?.status === 'sent';
       },
       toSummary: (caseId) => {
-        study.setPhase(caseId, 'debrief');
+        // The summary is the case's end: nothing is left to do there but go on (3.8, F107). The case counts as done
+        // when its summary opens, so the header says «3 av 3 ferdig» on case 3's summary, not «2 av 3».
+        if (isCore(caseId)) {
+          study.setPhase(caseId, 'done');
+          study.advanceTo(CASE_NEXT[caseId]);
+        } else study.setPhase(caseId, 'debrief');
         navigate(`/studie/sak/${caseId}/oppsummering`);
       },
       finishCase: (caseId) => {

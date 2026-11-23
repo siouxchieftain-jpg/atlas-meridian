@@ -10,6 +10,7 @@ import { GuideImage, SheenButton, SrOnly, guideCardSurface } from '../patterns/b
 import { guide } from '../theme/constants';
 import { useStudyController } from './controller';
 import { CORE, caseInProgress, currentCase, partTwoLabel } from './parts';
+import { ScenarioLine } from '../case/Scenario';
 
 /**
  * Where the participant is in the study, said once for the two places that say it: the start page's greeting (with
@@ -211,6 +212,7 @@ export function StudyCard({ onStartTour }: { onStartTour: () => void }) {
       <h2 id={titleId} className={cls.title}>
         {step.title}
       </h2>
+      {step.kind === 'case' && current && <ScenarioLine caseId={current} role={role} quiet />}
       {step.kind === 'case' && <StudyMeta meta={step.meta} />}
       {step.text && <p className={cls.text}>{step.text}</p>}
       {step.kind !== 'case' && <StudyMeta meta={step.meta} />}

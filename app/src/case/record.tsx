@@ -125,6 +125,7 @@ export function SelfReport({ content, defaultOpen = false }: { content: CaseCont
           aria-expanded={open}
           aria-controls={listId}
           onClick={() => setOpen(!open)}
+          data-try-target="self-report"
         >
           {open ? s('hideAnswers') : s('showAnswers')}
         </Button>

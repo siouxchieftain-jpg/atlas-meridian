@@ -92,6 +92,12 @@ export interface Briefing {
   rows: Row[];
   /** For example «Omtrent 10 minutter». */
   time: T;
+  /**
+   * The three cases only (3.8, F51, F70, F76): what kind of case it is and what the participant is asked to do, in one
+   * short, neutral line («Sak 1: ny henvisning. Du avgjør om du vil henvise Kari til DPS.»). The same pattern for both
+   * roles; it names no outcome and no ATLAS element.
+   */
+  scenario?: { kind: T; task: T };
 }
 
 export interface SystemReading {

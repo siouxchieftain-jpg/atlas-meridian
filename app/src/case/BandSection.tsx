@@ -56,7 +56,6 @@ export function ReadingBlock({ reading, notes }: { reading: SystemReading; notes
     <div className={cls.reading} data-reading="">
       <div className={cls.readingHead}>
         <h4 className={cls.readingTitle}>{s('readingTitle')}</h4>
-        <ProvenanceChip source="system" label={s('illustrationChip')} />
       </div>
       <p className={cls.readingText}>{t(reading.summary)}</p>
       <Button
@@ -138,6 +137,10 @@ export function BandSection({
         <H className={cls.title}>{s('bandTitle')}</H>
         {placed && <ProvenanceChip source="own" />}
       </div>
+      {/* Who places what, in one line (3.8, F21, F96). */}
+      <p className={cls.waits} data-band-who="">
+        {s(viewer === 'gp' ? 'bandWhoGp' : 'bandWhoDps')}
+      </p>
       <UncertaintyBand
         own={own}
         other={showOther ? other : undefined}
@@ -148,7 +151,6 @@ export function BandSection({
       />
       {!readOnly && onPlace && <PlacementControl value={own} onChange={onPlace} hint={placed ? undefined : s('bandPlaceHint')} />}
       <DesignNote id={viewer === 'gp' ? 'band' : 'dps-band'} show={!!notes} />
-      {reading && !placed && <p className={cls.waits}>{s('readingWaits')}</p>}
       {showSystem && <ReadingBlock reading={reading!} notes={notes} />}
     </section>
   );

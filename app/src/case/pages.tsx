@@ -24,6 +24,7 @@ import { OtherSideButton } from './CaseChrome';
 import { CaseTitle } from './CaseTitle';
 import { receivedReferral } from './dpsParts';
 import { atlasLine, draftSections } from './ReferralEditor';
+import { ScenarioLine } from './Scenario';
 import { useCaseStatus } from './useCaseStatus';
 import { CaseEndPrompt } from '../study/CaseEndPrompt';
 
@@ -122,6 +123,7 @@ export function BriefingPage({ caseId }: { caseId: CaseId }) {
         <GuideImage variant="brief" />
         <OtherSideButton caseId={caseId} view="orientering" />
         <div className={cls.briefText}>
+          <ScenarioLine caseId={caseId} role={work.viewer} />
           <Lead>{t(b.task)}</Lead>
           <MetaChips time={t(b.time)} fictional={s('fictionalPatient')} />
         </div>
@@ -180,7 +182,8 @@ export function SentPage({ caseId }: { caseId: CaseId }) {
   // While the form is held: a reply is promised only where one will come.
   const noReply =
     (work.viewer === 'dps' && (dps.outcome === 'rett' || caseId === 'astrid')) || (work.viewer === 'gp' && caseId === 'torbjorn');
-  const heldLine = caseId === 'torbjorn' ? s('heldOnePage') : noReply ? s('heldNoReply') : s('heldReply');
+  // The reply is named by who sends it (3.8, F112).
+  const heldLine = caseId === 'torbjorn' ? s('heldOnePage') : noReply ? s('heldNoReply') : work.viewer === 'dps' ? s('heldReplyDps') : s('heldReply');
   const page2 = work.phase(caseId) === 'page2';
   return (
     <CaseFlow caseId={caseId} view={s('sentLabel')} heading={title}>
@@ -558,6 +561,10 @@ export function DebriefPage({ caseId }: { caseId: CaseId }) {
                 {s('placements')}
               </h2>
               <UncertaintyBand own={own} other={other} system={reading!.placement} legend sentence={sentence} />
+              {/* The system's assessment is not a verdict (3.8, F100). */}
+              <p className={cls.reason} style={{ marginTop: 8 }} data-no-answer="">
+                {s('summaryNoAnswer')}
+              </p>
             </div>
           )}
           <div className={cls.bandBox}>

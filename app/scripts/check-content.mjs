@@ -39,7 +39,11 @@ for (const f of readdirSync(join(contentDir, 'cases'))) if (f.endsWith('.json'))
 
 const T = { type: 'object', required: ['nb', 'en'], additionalProperties: false, properties: { nb: { type: 'string' }, en: { type: 'string' } } };
 const rows = { type: 'array', items: { type: 'object', required: ['label', 'value'], properties: { label: T, value: T } } };
-const briefing = { type: 'object', required: ['task', 'rows', 'time'], properties: { task: T, rows, time: T } };
+const briefing = {
+  type: 'object',
+  required: ['task', 'rows', 'time'],
+  properties: { task: T, rows, time: T, scenario: { type: 'object', required: ['kind', 'task'], additionalProperties: false, properties: { kind: T, task: T } } },
+};
 const iso = { type: 'string', pattern: '^\\d{4}-\\d{2}-\\d{2}$' };
 const sections = { type: 'object', required: ['aktuelt', 'tidligere', 'funksjon', 'risiko', 'sporsmal'] };
 const reading = { type: 'object', required: ['placement', 'summary', 'reasoning'], properties: { placement: { type: 'number', minimum: 0, maximum: 100 }, summary: T, reasoning: T } };
@@ -263,6 +267,10 @@ const ALLOWED_SUBSTITUTIONS = new Map([
   ['Vignetten→Saken', 'research word replaced on a clinical screen (Norwegian)'],
   ['vignette→case', 'research word replaced on a clinical screen (English)'],
   [' %→%', 'English typography: no space before the per cent sign'],
+  ['Ny henvisning.→Ny konsultasjon etter avslag.', 'visit word replaced (3.8, F42: Erlend is seen again after a rejection, not referred again)'],
+  ['New referral.→New consultation after a rejection.', 'visit word replaced (3.8, F42, English)'],
+  ['Tre plasseringer av samme sak→Tre plasseringer av samme sak: ATLAS, fastlegen og deg', 'the three placements named (3.8, F75)'],
+  ['Three placements of the same case→Three placements of the same case: ATLAS, the GP and you', 'the three placements named (3.8, F75, English)'],
 ]);
 // A date written in words in running text («31. mars 2026», "31 March 2026",
 // «desember 2025») is also allowed: the same date, only its format changes.

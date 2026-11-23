@@ -132,12 +132,18 @@ export function AvslutningPage() {
       <FormStepCard step="S6" autoOpen />
       {ctl.stepDone('S6') ? (
         // Finishing is the expected path and the primary action; the extras are optional (Meridian: primary first).
+        // The next press is named (3.8, F59).
+        <>
+        <p style={{ margin: 0 }} data-press-now="">
+          <strong>{s('avslutningPressFinish', { finish: s('finish') })}</strong>
+        </p>
         <Actions>
           <Button appearance="primary" onClick={() => ctl.goToStep('takk')}>
             {s('finish')}
           </Button>
           <Button onClick={() => ctl.goToStep('ekstra')}>{s('toExtra')}</Button>
         </Actions>
+        </>
       ) : (
         <FormWaiting step="S6" />
       )}
@@ -282,12 +288,54 @@ export function TakkPage() {
       <PageHeading title={s('stepTakk')} guide>
         {s('takkTitle')}
       </PageHeading>
-      <Lead>{browse ? s('takkBodyBrowse') : previewFlag() ? s('takkBodyPreview') : s('takkBody')}</Lead>
+      {/* One thank-you per role (3.8, F59, F94). */}
+      <Lead>{browse ? s('takkBodyBrowse') : previewFlag() ? s('takkBodyPreview') : s(role === 'gp' ? 'takkBodyGp' : 'takkBodyDps')}</Lead>
       {/* The full name only now, after the last form: it names what the forms ask about. */}
       <Body>{s('takkAtlasName')}</Body>
       {/* The browse tab clears itself when it closes; the button would reach the study's own data. */}
       {!browse && <ClearBrowserData />}
+      {!browse && !previewFlag() && <OtherRole role={role} />}
     </IntroPage>
+  );
+}
+
+/**
+ * The other role, step by step (3.8, F60): a private window keeps the two runs apart in one browser, each with its own
+ * study name. Optional, and said so.
+ */
+function OtherRole({ role }: { role: 'gp' | 'dps' }) {
+  const cls = useStyles();
+  const { s } = useLang();
+  const [copied, setCopied] = useState(false);
+  const link = `${window.location.origin}${window.location.pathname}`;
+  const button = role === 'gp' ? s('velkommenRoleDpsStart') : s('velkommenRoleGpStart');
+  return (
+    <div className={cls.section} data-other-role="">
+      <h2 className={cls.h2}>{s('takkOtherRoleTitle')}</h2>
+      <Body>{s('takkOtherRoleIntro')}</Body>
+      <ol style={{ margin: 0, paddingInlineStart: 20, display: 'flex', flexDirection: 'column', gap: 4 }}>
+        <li>{s('takkOtherRoleStep1')}</li>
+        <li>
+          {s('takkOtherRoleStep2', { link })}{' '}
+          <Button
+            size="small"
+            appearance="transparent"
+            onClick={() => {
+              void navigator.clipboard?.writeText(link).then(
+                () => setCopied(true),
+                () => undefined,
+              );
+            }}
+          >
+            {s('takkOtherRoleCopy')}
+          </Button>
+          <span role="status" style={{ marginInlineStart: 4 }}>
+            {copied ? s('takkOtherRoleCopied') : ''}
+          </span>
+        </li>
+        <li>{s('takkOtherRoleStep3', { button })}</li>
+      </ol>
+    </div>
   );
 }
 
