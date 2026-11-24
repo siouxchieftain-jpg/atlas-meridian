@@ -5,7 +5,8 @@ import { cases, vocab } from '../content';
 import { formatDate, useLang } from '../i18n/i18n';
 import { navigate } from '../router/router';
 import { useWork } from '../state/work';
-import { DesignNote, Panel, ProvenanceChip, RoleAvatar, StatusChip } from '../patterns/basics';
+import { DesignNote, NextMark, Panel, ProvenanceChip, RoleAvatar, StatusChip } from '../patterns/basics';
+import { positionKey } from '../engine/placement';
 import { InfoGuide, PlainLetter } from '../patterns/clinical';
 import { Actions } from '../patterns/layout';
 import { Responsibility } from './AtlasPanelGp';
@@ -237,6 +238,22 @@ export function DpsAssessment({ caseId }: { caseId: CaseId }) {
     work.ownDecision(caseId);
     navigate(work.casePath(caseId, 'sendt'));
   };
+  // 3.8: in the study, the ATLAS parts sit in the boxes under «Oppgaven din»; no side panel (Jishnu, 24 November).
+  const inTask = work.mode === 'study' && !without && caseId !== 'astrid';
+  const modules = inTask
+    ? {
+        ...(d.systemReading ? { 2: <AtlasPanelDps caseId={caseId} received={received} onSent={onSent} withOutcome only="band" /> } : {}),
+        3: <AtlasPanelDps caseId={caseId} received={received} onSent={onSent} withOutcome only="guide" />,
+        4: <AtlasPanelDps caseId={caseId} received={received} onSent={onSent} withOutcome only="vurdering" />,
+      }
+    : undefined;
+  const summaries = inTask
+    ? {
+        2: dps.placement !== undefined ? s(positionKey(dps.placement)) : undefined,
+        3: s('guideCount', { n: received.mentioned.length }),
+        4: dps.sent && dps.outcome ? t(vocab.outcomes[dps.outcome].label) : undefined,
+      }
+    : undefined;
   let side;
   if (without) side = work.mode === 'review' ? <AtlasPlaceholder caseId={caseId} /> : undefined;
   else if (caseId === 'astrid')
@@ -249,7 +266,7 @@ export function DpsAssessment({ caseId }: { caseId: CaseId }) {
         </section>
       </>
     );
-  else side = <AtlasPanelDps caseId={caseId} received={received} onSent={onSent} withOutcome />;
+  else if (!inTask) side = <AtlasPanelDps caseId={caseId} received={received} onSent={onSent} withOutcome />;
   const compact = !without && d.systemReading ? (
     <CompactBand own={dps.placement} other={received.placement !== undefined ? { role: 'gp', value: received.placement } : undefined} reading={d.systemReading} />
   ) : undefined;
@@ -264,7 +281,7 @@ export function DpsAssessment({ caseId }: { caseId: CaseId }) {
       />
       {/* Notices sit under the title (G-16). */}
       <CaseModeBar caseId={caseId} />
-      <AtlasTaskBar caseId={caseId} />
+      <AtlasTaskBar caseId={caseId} modules={modules} summaries={summaries} />
       {caseId === 'astrid' ? (
         <AstridDps without={without} />
       ) : (
@@ -286,9 +303,11 @@ export function DpsAssessment({ caseId }: { caseId: CaseId }) {
           </div>
           {dps.sent && !work.held(caseId) && (
             <Actions>
-              <Button appearance="primary" icon={<ArrowRight16Regular />} iconPosition="after" onClick={() => navigate(work.casePath(caseId, status.next === 'vurdering' ? 'dialog' : status.next))}>
-                {s('continue')}
-              </Button>
+              <NextMark on={work.mode === 'study'}>
+                <Button appearance="primary" size="large" icon={<ArrowRight16Regular />} iconPosition="after" onClick={() => navigate(work.casePath(caseId, status.next === 'vurdering' ? 'dialog' : status.next))}>
+                  {s('continue')}
+                </Button>
+              </NextMark>
             </Actions>
           )}
         </>

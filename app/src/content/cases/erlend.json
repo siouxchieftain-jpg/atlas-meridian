@@ -106,8 +106,8 @@
       }
     },
     "atlasTask": {
-      "nb": "Saken åpner i utkastet til en ny henvisning, fordi spørsmålet er om Erlend skal henvises på nytt. Start med 1 i ATLAS-panelet: plasser saken på skalaen. Skriv deretter henvisningen, og velg «Send henvisning» eller «Lagre utkast uten å sende».",
-      "en": "The case opens in the draft of a new referral, because the question is whether to refer Erlend again. Start with 1 in the ATLAS panel: place the case on the scale. Then write the referral, and choose ‘Send referral’ or ‘Save the draft without sending’."
+      "nb": "Saken åpner i utkastet til en ny henvisning, fordi spørsmålet er om Erlend skal henvises på nytt. Start med boks 1: plasser saken på skalaen. Skriv deretter henvisningen, og velg «Send henvisning» eller «Lagre utkast uten å sende».",
+      "en": "The case opens in the draft of a new referral, because the question is whether to refer Erlend again. Start with box 1: place the case on the scale. Then write the referral, and choose ‘Send referral’ or ‘Save the draft without sending’."
     },
     "profile": [
       {

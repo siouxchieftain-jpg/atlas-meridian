@@ -1,6 +1,6 @@
 import { expect, test, type Page } from '@playwright/test';
 import { mockNettskjema, recordSubmissions, submissions, configWithoutForms } from './mock';
-import { caseOnlyThenAtlas, frame, frameSteg, openCurrentCase, panel, place, sendForm, startStudy, toFirstCase, toStopPage, confirmPage1 } from './helpers';
+import { caseOnlyThenAtlas, frame, frameSteg, openCurrentCase, panel, place, sendForm, startStudy, toFirstCase, toStopPage, confirmPage1, showAllParts } from './helpers';
 
 // No check depends on the addresses the site holds: with none, review mode gives feedback in its preview forms.
 // A check that needs forms routes them to the stand-in (mockNettskjema), which takes precedence.
@@ -66,6 +66,7 @@ test('a skipped vignette form lets the case go on, and «Svar likevel» opens it
   await panel(page).getByRole('button', { name: 'Hopp over skjemaet' }).click();
   await expect(panel(page)).toHaveCount(0);
   await page.getByRole('button', { name: 'Vis ATLAS' }).first().click();
+  await showAllParts(page);
   await kariDecision(page);
   // No page-2 moment for a skipped form: the reply is not held.
   await page.getByRole('button', { name: 'Fortsett' }).click();
@@ -87,6 +88,7 @@ test('a vignette form sent whole before «Vis ATLAS» counts as sent, and is not
   await sendForm(page);
   await expect(page.locator('iframe[data-form-frame]')).toHaveCount(0);
   await page.getByRole('button', { name: 'Vis ATLAS' }).first().click();
+  await showAllParts(page);
   await kariDecision(page);
   await expect(page.locator('iframe[data-form-frame]')).toHaveCount(0);
   await page.getByRole('button', { name: 'Fortsett' }).click();

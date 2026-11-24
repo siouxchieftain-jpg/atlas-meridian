@@ -5,6 +5,7 @@ import { createPortal } from 'react-dom';
 import guideData from '../content/guide.json';
 import { useLang } from '../i18n/i18n';
 import { currentPath } from '../router/router';
+import { readJSON, writeJSON } from '../state/persist';
 import { NextMark, SrOnly } from '../patterns/basics';
 import { guide } from '../theme/constants';
 
@@ -337,7 +338,7 @@ export function GuideLayer({ role, view }: { role: 'gp' | 'dps'; view: string | 
           part.style.paddingLeft = `${parseFloat(getComputedStyle(part).paddingLeft) + 36}px`;
         }
       }
-      // Parts that live in the task boxes carry their number on the box, not a pin (3.8 mock).
+      // Parts that live in the task boxes carry their number on the box, not a pin (3.8).
       const pinned = found.filter((f) => !f.el.closest('[data-task-modules]'));
       setHosts((prev) => (prev.length === pinned.length && prev.every((p, i) => p.el === pinned[i].el) ? prev : pinned));
       const present = found.map((f) => f.m.n);
@@ -410,6 +411,9 @@ export function GuideLayer({ role, view }: { role: 'gp' | 'dps'; view: string | 
 }
 
 /** The task line on a case page, with the page's markers as numbered steps that tick off. */
+const SHOW_ALL_KEY = 'atlas.guide.showAll';
+const readShowAll = (): boolean => readJSON<boolean>(SHOW_ALL_KEY) === true;
+
 const TASKS: Record<string, Text> = (guideData as unknown as { tasks: Record<string, Text> }).tasks ?? {};
 
 export function GuideTaskStrip({
@@ -425,10 +429,10 @@ export function GuideTaskStrip({
   view: string | undefined;
   task: string;
   note?: ReactNode;
-  /** Mock (3.8): the ATLAS part each box opens in place, keyed by marker number. */
+  /** 3.8: the ATLAS part each box opens in place, keyed by marker number. */
   modules?: Partial<Record<number, ReactNode>>;
   atlasLabel?: ReactNode;
-  /** Mock (3.8): what each part says once done, shown on its box, so the whole case reads at a glance. */
+  /** 3.8: what each part says once done, shown on its box, so the whole case reads at a glance. */
   summaries?: Partial<Record<number, string>>;
 }) {
   const cls = useStyles();
@@ -440,8 +444,13 @@ export function GuideTaskStrip({
   const doneCount = markers.filter((m) => isDone(st, m.n)).length;
   const firstOpen = markers.find((m) => modules?.[m.n] && !isDone(st, m.n))?.n ?? null;
   const [active, setActive] = useState<number | null>(firstOpen);
-  const [showAll, setShowAll] = useState(false);
-  // A done part does not close by itself: «Neste» under it, marked, opens the next (3.8 mock, Jishnu 24 Nov).
+  // The choice holds across pages and cases in this browser: one way of working, not one per page.
+  const [showAll, setShowAllState] = useState(readShowAll);
+  const setShowAll = (on: boolean) => {
+    setShowAllState(on);
+    writeJSON(SHOW_ALL_KEY, on);
+  };
+  // A done part does not close by itself: «Neste» under it, marked, opens the next (3.8, Jishnu 24 November).
   const nextAfter = (n: number) => markers.find((x) => x.n > n && modules?.[x.n] && !isDone(st, x.n)) ?? markers.find((x) => modules?.[x.n] && !isDone(st, x.n));
   const openPart = (n: number) => {
     setActive(n);

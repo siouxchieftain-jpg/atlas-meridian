@@ -105,8 +105,8 @@
       "en": "Uncertainty scale"
     },
     "text": {
-      "nb": "Delen av ATLAS-panelet med en skala fra klart utenfor til klart innenfor kriteriene i prioriteringsveilederen. Klinikeren plasserer saken selv, og skalaen viser ingen tall. Etter egen plassering viser den systemets vurdering, og for DPS også fastlegens plassering.",
-      "en": "The part of the ATLAS panel with a scale from clearly outside to clearly within the criteria in the priority-setting guideline. The clinician places the case, and the scale shows no number. After one’s own placement it shows the system’s assessment, and for DPS also the GP’s placement."
+      "nb": "Delen av ATLAS med en skala fra klart utenfor til klart innenfor kriteriene i prioriteringsveilederen. Klinikeren plasserer saken selv, og skalaen viser ingen tall. Etter egen plassering viser den systemets vurdering, og for DPS også fastlegens plassering.",
+      "en": "The part of ATLAS with a scale from clearly outside to clearly within the criteria in the priority-setting guideline. The clinician places the case, and the scale shows no number. After one’s own placement it shows the system’s assessment, and for DPS also the GP’s placement."
     }
   },
   {

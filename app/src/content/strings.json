@@ -640,16 +640,16 @@
     "en": "With ‘Save the draft without sending’ the new referral is not sent now, and the case is followed up in general practice."
   },
   "sentAtlasOne": {
-    "nb": "Fra ATLAS-panelet følger {{list}} med henvisningen.",
-    "en": "From the ATLAS panel, {{list}} goes with the referral."
+    "nb": "Fra ATLAS følger {{list}} med henvisningen.",
+    "en": "From ATLAS, {{list}} goes with the referral."
   },
   "sentAtlasMany": {
-    "nb": "Fra ATLAS-panelet følger {{list}} med henvisningen.",
-    "en": "From the ATLAS panel, {{list}} go with the referral."
+    "nb": "Fra ATLAS følger {{list}} med henvisningen.",
+    "en": "From ATLAS, {{list}} go with the referral."
   },
   "sentAtlasNone": {
-    "nb": "Ingenting fra ATLAS-panelet følger med henvisningen, fordi feltene der er tomme.",
-    "en": "Nothing from the ATLAS panel goes with the referral, because its fields are empty."
+    "nb": "Ingenting fra ATLAS følger med henvisningen, fordi feltene der er tomme.",
+    "en": "Nothing from ATLAS goes with the referral, because its fields are empty."
   },
   "sentPlacementLater": {
     "nb": "DPS ser plasseringen din først etter å ha plassert saken selv.",
@@ -704,8 +704,8 @@
     "en": "From the first referral"
   },
   "fromAtlasPanel": {
-    "nb": "Fra ATLAS-panelet",
-    "en": "From the ATLAS panel"
+    "nb": "Fra ATLAS",
+    "en": "From ATLAS"
   },
   "attachmentNote": {
     "nb": "Vedlegg: konsultasjonsnotat",
@@ -904,8 +904,8 @@
     "en": "The first referral was sent on {{date}}."
   },
   "erlendDraftLine": {
-    "nb": "Utkastet til ny henvisning ligger klart, med ATLAS-panelet ved siden av.",
-    "en": "The draft of the new referral is ready, with the ATLAS panel beside it."
+    "nb": "Utkastet til ny henvisning ligger klart.",
+    "en": "The draft of the new referral is ready."
   },
   "openDraft": {
     "nb": "Åpne utkastet",
@@ -3344,12 +3344,12 @@
     "en": "Where everything is"
   },
   "tourStartWhereGp": {
-    "nb": "Oversikten, pasienten, ATLAS-panelet, skjemapanelet og knappen for tilbakemelding.",
-    "en": "The overview, the patient, the ATLAS panel, the form panel and the feedback button."
+    "nb": "Oversikten, pasienten, ATLAS, skjemapanelet og knappen for tilbakemelding.",
+    "en": "The overview, the patient, ATLAS, the form panel and the feedback button."
   },
   "tourStartWhereDps": {
-    "nb": "Oversikten, henvisningen, ATLAS-panelet, skjemapanelet og knappen for tilbakemelding.",
-    "en": "The overview, the referral, the ATLAS panel, the form panel and the feedback button."
+    "nb": "Oversikten, henvisningen, ATLAS, skjemapanelet og knappen for tilbakemelding.",
+    "en": "The overview, the referral, ATLAS, the form panel and the feedback button."
   },
   "tourStartCaseTitle": {
     "nb": "Hvordan en sak går",
@@ -3484,8 +3484,8 @@
     "en": "The consultation"
   },
   "secAtlasPanel": {
-    "nb": "ATLAS-panelet",
-    "en": "The ATLAS panel"
+    "nb": "ATLAS",
+    "en": "ATLAS"
   },
   "secReferralPart": {
     "nb": "Henvisningen",
@@ -4232,8 +4232,8 @@
     "en": "answer the rest of the form, and send it"
   },
   "remainAtlasGpKari": {
-    "nb": "velg «Behold» eller «Henvis» i ATLAS-panelet og lagre. Henviser du, skriver og sender du henvisningen",
-    "en": "choose ‘Keep’ or ‘Refer’ in the ATLAS panel and save. If you refer, write and send the referral"
+    "nb": "velg «Behold» eller «Henvis» under «Din beslutning» og lagre. Henviser du, skriver og sender du henvisningen",
+    "en": "choose ‘Keep’ or ‘Refer’ under ‘Your decision’ and save. If you refer, write and send the referral"
   },
   "remainAtlasGpErlend": {
     "nb": "skriv henvisningen, og send den eller lagre utkastet",
@@ -4316,8 +4316,8 @@
     "en": "How sure you are"
   },
   "fromAtlasCopied": {
-    "nb": "Kopiert fra ATLAS-panelet ved siden av. Vil du endre noe, gjør du det i panelet.",
-    "en": "Copied from the ATLAS panel beside it. To change anything, change it in the panel."
+    "nb": "Kopiert fra det du valgte i ATLAS. Vil du endre noe, gjør du det i ATLAS.",
+    "en": "Copied from what you chose in ATLAS. To change anything, change it in ATLAS."
   },
   "heldReplyDps": {
     "nb": "Svaret fra fastlegen vises når du har sendt resten av skjemaet.",
@@ -4372,8 +4372,8 @@
     "en": "Everything on this page is done."
   },
   "taskShowAll": {
-    "nb": "Vis alle fem delene",
-    "en": "Show all five parts"
+    "nb": "Vis alle delene",
+    "en": "Show all parts"
   },
   "taskShowOne": {
     "nb": "Vis én del om gangen",
@@ -4394,5 +4394,9 @@
   "summaryOwnWords": {
     "nb": "Med egne ord",
     "en": "In your own words"
+  },
+  "previewStopDone": {
+    "nb": "Du er ferdig med saken. Trykk «Neste» for resten av skjemaet.",
+    "en": "You have finished the case. Press ‘Next’ for the rest of the form."
   }
 }

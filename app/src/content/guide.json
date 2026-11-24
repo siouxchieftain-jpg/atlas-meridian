@@ -34,7 +34,8 @@
       "n": 2,
       "selector": "[data-section=\"tags\"]",
       "views": [
-        "konsultasjon"
+        "konsultasjon",
+        "henvisning"
       ],
       "tour": "gp-tags",
       "seksjon": "uklart",
@@ -93,7 +94,8 @@
       "n": 4,
       "selector": "[data-section=\"confidence\"]",
       "views": [
-        "konsultasjon"
+        "konsultasjon",
+        "henvisning"
       ],
       "tour": "gp-trygghet",
       "seksjon": "trygghet",
@@ -185,16 +187,16 @@
       ],
       "seksjon": "fra-atlas",
       "part": {
-        "nb": "Fra ATLAS-panelet",
-        "en": "From the ATLAS panel"
+        "nb": "Fra ATLAS",
+        "en": "From ATLAS"
       },
       "where": {
         "nb": "Under henvisningen.",
         "en": "Under the referral."
       },
       "do": {
-        "nb": "Se hva som er kopiert fra ATLAS-panelet. Vil du endre noe, gjør du det i panelet.",
-        "en": "See what has been copied from the ATLAS panel. To change anything, change it in the panel."
+        "nb": "Se hva som er kopiert fra det du valgte i ATLAS. Vil du endre noe, gjør du det i ATLAS.",
+        "en": "See what has been copied from what you chose in ATLAS. To change anything, change it in ATLAS."
       },
       "lookFor": {
         "nb": "Hvilke av dine egne valg i ATLAS som går til DPS.",

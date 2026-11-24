@@ -176,7 +176,10 @@ export function AtlasTaskBar({ caseId, modules, summaries }: { caseId: CaseId; m
   const { s, t } = useLang();
   const work = useWork();
   const host = useFormHostOptional();
-  if (work.mode !== 'study' || work.phase(caseId) !== 'atlas') return null;
+  if (work.mode !== 'study') return null;
+  // With the ATLAS parts in the boxes (3.8), the task card stays after the decision: ATLAS lives there now.
+  const phase = work.phase(caseId);
+  if (modules ? phase === 'briefing' || phase === 'uten' : phase !== 'atlas') return null;
   const c = cases[caseId];
   const task = work.viewer === 'gp' ? c.gp.atlasTask : c.dps?.atlasTask;
   if (!task) return null;

@@ -1,7 +1,7 @@
 import AxeBuilder from '@axe-core/playwright';
 import { expect, test, type Locator, type Page } from '@playwright/test';
 import { configWithoutForms } from './mock';
-import { HOME_HEADING, openCurrentCase, panel, place, confirmPage1 } from './helpers';
+import { HOME_HEADING, openCurrentCase, panel, place, confirmPage1, showAllParts } from './helpers';
 
 // ATLAS 3.6, the form pass, in the app's own preview forms (built from the same instrument as the Nettskjema forms): the
 // decision without ATLAS comes before B1 and again with ATLAS before B2, in each role's and case's words, with «Ikke
@@ -175,6 +175,7 @@ for (const role of ['fastlege', 'dps-kliniker'] as const) {
       await form.getByRole('button', { name: 'Neste', exact: true }).click();
       await confirmPage1(page);
       await panel(page).getByRole('button', { name: 'Vis ATLAS' }).click();
+      await showAllParts(page);
       await WORK[role][c](page);
       await expect(panel(page).getByText('Nå skal du svare på resten av skjemaet. Trykk nå: «Neste side» nederst i skjemaet. Teksten «Stopp her» gjelder ikke lenger.')).toBeVisible();
       await form.getByRole('button', { name: 'Neste', exact: true }).click();

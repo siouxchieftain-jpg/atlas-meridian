@@ -139,6 +139,25 @@ export async function caseOnlyThenAtlas(page: Page) {
   await toStopPage(page);
   await confirmPage1(page);
   await panel(page).getByRole('button', { name: 'Vis ATLAS' }).click();
+  await showAllParts(page);
+}
+
+/**
+ * 3.8: the ATLAS parts sit in the boxes under «Oppgaven din», one open at a time. Tests that act on several parts turn
+ * on «Vis alle delene» once; the choice holds in this browser.
+ */
+export async function showAllParts(page: Page) {
+  const btn = page.getByRole('button', { name: 'Vis alle delene' });
+  // Review mode and Astrid keep the panel: no boxes there, so nothing to do.
+  const there = await btn
+    .or(page.getByRole('button', { name: 'Vis én del om gangen' }))
+    .first()
+    .waitFor({ state: 'visible', timeout: 4000 })
+    .then(
+      () => true,
+      () => false,
+    );
+  if (there && (await btn.isVisible())) await btn.click();
 }
 
 export async function noHorizontalScroll(page: Page) {

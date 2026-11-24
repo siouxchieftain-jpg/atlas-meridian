@@ -124,8 +124,8 @@
       },
       {
         "title": {
-          "nb": "ATLAS-panelet",
-          "en": "The ATLAS panel"
+          "nb": "ATLAS i oppgaven",
+          "en": "ATLAS in your task"
         },
         "steps": [
           {
@@ -135,8 +135,8 @@
               "en": "Uncertainty scale"
             },
             "body": {
-              "nb": "Panelet ved siden av journalen er ATLAS, med teksten «Viser usikkerhet, anbefaler ikke». Usikkerhetsskalaen går fra «Klart utenfor» via «Gråsone» til «Klart innenfor» kriteriene i prioriteringsveilederen. Du plasserer saken selv, og skalaen viser ingen tall.",
-              "en": "The panel beside the record is ATLAS, with the caption ‘Shows uncertainty, does not recommend’. The uncertainty scale runs from ‘Clearly outside’ through ‘Grey zone’ to ‘Clearly within’ the criteria in the priority-setting guideline. You place the case yourself, and the scale shows no number."
+              "nb": "ATLAS ligger i boksene under «Oppgaven din», med teksten «Viser usikkerhet, anbefaler ikke». Hver boks åpner én del og krysses av når den er gjort. Usikkerhetsskalaen går fra «Klart utenfor» via «Gråsone» til «Klart innenfor» kriteriene i prioriteringsveilederen. Du plasserer saken selv, og skalaen viser ingen tall.",
+              "en": "ATLAS sits in the boxes under ‘Your task’, with the caption ‘Shows uncertainty, does not recommend’. Each box opens one part and is ticked when that part is done. The uncertainty scale runs from ‘Clearly outside’ through ‘Grey zone’ to ‘Clearly within’ the criteria in the priority-setting guideline. You place the case yourself, and the scale shows no number."
             },
             "tryIt": {
               "nb": "Prøv: plasser saken på skalaen.",
@@ -259,8 +259,8 @@
               "en": "What DPS looks for"
             },
             "body": {
-              "nb": "Ny henvisning har fem deler. Ved hver del står hva DPS ser etter, hentet fra prioriteringsveilederen, og om teksten omtaler det. ATLAS prøver å hoppe over setninger som sier at noe ikke er vurdert, men kan likevel telle dem. «Omtalt» betyr ikke at det som står, er nok. Tekst fra notatet er merket «Hentet fra notatet» og kan endres. «Fra ATLAS-panelet» er kopiert fra panelet ved siden av.",
-              "en": "The new referral has five sections. By each section is what DPS looks for, taken from the priority-setting guideline, and whether the text mentions it. ATLAS tries to skip sentences that say something was not assessed, but it can still count them. ‘Mentioned’ does not mean that what is written is enough. Text from the note is marked ‘Taken from the note’ and can be edited. ‘From the ATLAS panel’ is copied from the panel beside it."
+              "nb": "Ny henvisning har fem deler. Ved hver del står hva DPS ser etter, hentet fra prioriteringsveilederen, og om teksten omtaler det. ATLAS prøver å hoppe over setninger som sier at noe ikke er vurdert, men kan likevel telle dem. «Omtalt» betyr ikke at det som står, er nok. Tekst fra notatet er merket «Hentet fra notatet» og kan endres. «Fra ATLAS» er kopiert fra det du valgte i ATLAS.",
+              "en": "The new referral has five sections. By each section is what DPS looks for, taken from the priority-setting guideline, and whether the text mentions it. ATLAS tries to skip sentences that say something was not assessed, but it can still count them. ‘Mentioned’ does not mean that what is written is enough. Text from the note is marked ‘Taken from the note’ and can be edited. ‘From ATLAS’ is copied from what you chose in ATLAS."
             },
             "tryIt": {
               "nb": "Prøv: skriv noe i Risikovurdering, som er tom.",
@@ -488,8 +488,8 @@
               "en": "Uncertainty scale"
             },
             "body": {
-              "nb": "ATLAS-panelet har teksten «Viser usikkerhet, anbefaler ikke». Du plasserer saken selv på skalaen fra «Klart utenfor» via «Gråsone» til «Klart innenfor» kriteriene i prioriteringsveilederen. Skalaen viser ingen tall, og fastlegens plassering og systemets vurdering er skjult til du har plassert saken.",
-              "en": "The ATLAS panel carries the caption ‘Shows uncertainty, does not recommend’. You place the case yourself on the scale from ‘Clearly outside’ through ‘Grey zone’ to ‘Clearly within’ the criteria in the priority-setting guideline. The scale shows no number, and the GP’s placement and the system’s assessment stay hidden until you have placed the case."
+              "nb": "ATLAS ligger i boksene under «Oppgaven din», med teksten «Viser usikkerhet, anbefaler ikke». Hver boks åpner én del og krysses av når den er gjort. Du plasserer saken selv på skalaen fra «Klart utenfor» via «Gråsone» til «Klart innenfor» kriteriene i prioriteringsveilederen. Skalaen viser ingen tall, og fastlegens plassering og systemets vurdering er skjult til du har plassert saken.",
+              "en": "ATLAS sits in the boxes under ‘Your task’, with the caption ‘Shows uncertainty, does not recommend’. Each box opens one part and is ticked when that part is done. You place the case yourself on the scale from ‘Clearly outside’ through ‘Grey zone’ to ‘Clearly within’ the criteria in the priority-setting guideline. The scale shows no number, and the GP’s placement and the system’s assessment stay hidden until you have placed the case."
             },
             "tryIt": {
               "nb": "Prøv: plasser saken på skalaen.",

@@ -154,7 +154,7 @@ export function RecordTabs({ content, extraTop }: { content: CaseContent; extraT
   return (
     <Panel aria-label={s('consultation')}>
       <div className={cls.tabsWrap}>
-        {/* Mock (3.8): tabs as large pills with what each holds, so «Legemidler» and «Historikk» are not missed. */}
+        {/* 3.8: tabs as large pills with what each holds, so «Legemidler» and «Historikk» are not missed. */}
         <TabList className={cls.tabs} selectedValue={tab} onTabSelect={(_, d) => setTab(d.value as typeof tab)} size="large" appearance="filled-circular">
           <Tab value="note" icon={<Note16Regular />}>
             {s('tabNote')}

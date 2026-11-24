@@ -1,6 +1,6 @@
 import { expect, test, type Page } from '@playwright/test';
 import { mockNettskjema, configWithoutForms } from './mock';
-import { caseOnlyThenAtlas, finishCaseHome, openCurrentCase, panel, place, sendForm, startStudy, toFirstCase, toStopPage, confirmPage1 } from './helpers';
+import { caseOnlyThenAtlas, finishCaseHome, openCurrentCase, panel, place, sendForm, startStudy, toFirstCase, toStopPage, confirmPage1, showAllParts } from './helpers';
 
 // No check depends on the addresses the site holds: with none, review mode gives feedback in its preview forms.
 // A check that needs forms routes them to the stand-in (mockNettskjema), which takes precedence.
@@ -24,7 +24,7 @@ async function go(page: Page, hash: string) {
   }, hash);
 }
 
-test('AX-01: at 1366 px the case form at the page-2 moment sits beside the ATLAS panel, not over it', async ({ page }) => {
+test('AX-01: at 1366 px the case form at the page-2 moment sits beside ATLAS, not over it', async ({ page }) => {
   await page.setViewportSize({ width: 1366, height: 768 });
   await mockNettskjema(page);
   await toKari(page);
@@ -36,8 +36,8 @@ test('AX-01: at 1366 px the case form at the page-2 moment sits beside the ATLAS
   await expect(panel(page)).toHaveAttribute('data-inline', 'true');
   // Focus moved into the panel, to its heading.
   await expect(panel(page).getByRole('heading', { level: 2 })).toBeFocused();
-  // The ATLAS panel is not covered: its decision block is fully in view beside the form.
-  const atlas = await page.getByRole('complementary', { name: 'ATLAS' }).boundingBox();
+  // ATLAS is not covered: its decision block (3.8: in the boxes under «Oppgaven din») is fully in view beside the form.
+  const atlas = await page.locator('[data-section="decision"]').boundingBox();
   const form = await panel(page).boundingBox();
   expect(atlas && form && atlas.x + atlas.width <= form.x + 1).toBe(true);
   const overflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
@@ -181,6 +181,7 @@ test('R2GP-01: Astrid «Henvis på nytt» then «Send henvisning» leads on to t
   await toStopPage(page);
   await confirmPage1(page);
   await panel(page).getByRole('button', { name: 'Vis ATLAS' }).click();
+  await showAllParts(page);
   await page.locator('[data-section="composer"] textarea').fill('Hva skal til for at DPS vurderer henne på nytt?');
   await page.getByRole('button', { name: 'Send', exact: true }).click();
   await sendForm(page);
@@ -332,8 +333,10 @@ test('R3A-01: at 320 × 256 «Skjul skjemaet» and «Vis ATLAS» both hide the f
   await toStopPage(page);
   await confirmPage1(page);
   await panel(page).getByRole('button', { name: 'Vis ATLAS' }).click();
+  await showAllParts(page);
   await expect(panel(page)).toBeHidden();
-  expect(await notUnderFormPanel(page, page.getByRole('button', { name: 'Vis ATLAS-panelet' }))).toBe(true);
+  // 3.8: ATLAS sits in the boxes under «Oppgaven din»; the first box is not under the form panel.
+  expect(await notUnderFormPanel(page, page.locator('[data-guide-step]').first())).toBe(true);
 });
 
 test('R3A-02: a page chosen in the navigation drawer gets focus on its heading', async ({ page }) => {
@@ -441,12 +444,12 @@ test('R3F-03: the tour’s decision frame has no button that leads nowhere after
 test('R3F-04: the draft names only what goes with it from the ATLAS panel', async ({ page }) => {
   await page.goto('/#/gjennomgang/fastlege/sak/kari/henvisning');
   const block = page.locator('[data-section="fra-atlas"]');
-  await expect(block).toContainText('Ingenting fra ATLAS-panelet følger med henvisningen, fordi feltene der er tomme.');
+  await expect(block).toContainText('Ingenting fra ATLAS følger med henvisningen, fordi feltene der er tomme.');
   await expect(block).not.toContainText('Plasseringen din, hva som er uklart og tryggheten din følger henvisningen.');
   await page.goto('/#/gjennomgang/fastlege/sak/kari/konsultasjon');
   await page.getByRole('button', { name: 'Uklar diagnose', exact: true }).click();
   await page.goto('/#/gjennomgang/fastlege/sak/kari/henvisning');
-  await expect(block).toContainText('Fra ATLAS-panelet følger beskrivelsen av hva som er uklart med henvisningen.');
+  await expect(block).toContainText('Fra ATLAS følger beskrivelsen av hva som er uklart med henvisningen.');
 });
 
 test('R3F-07: in the DPS queue Astrid’s question shows its status and when the referral was assessed', async ({ page }) => {
@@ -489,10 +492,10 @@ test('r4A-02: at 320 × 256 the page-2 moment opens the form at its top, with th
   await panel(page).evaluate((el) => (el.scrollTop = el.scrollHeight));
   await confirmPage1(page);
   await panel(page).getByRole('button', { name: 'Vis ATLAS' }).click();
-  await page.getByRole('button', { name: 'Vis ATLAS-panelet' }).click();
+  await showAllParts(page);
   await place(page, 3);
-  await page.getByRole('dialog').getByLabel('Behold', { exact: true }).check({ force: true });
-  await page.getByRole('dialog').getByRole('button', { name: 'Lagre beslutning' }).click();
+  await page.getByLabel('Behold', { exact: true }).check({ force: true });
+  await page.getByRole('button', { name: 'Lagre beslutning' }).click();
   const heading = panel(page).getByRole('heading', { level: 2 });
   await expect(heading).toBeFocused();
   await expect(heading).toBeInViewport();
@@ -663,6 +666,7 @@ test('r5F-05: Astrid’s new referral is dated after the last message in the thr
   await toStopPage(page);
   await confirmPage1(page);
   await panel(page).getByRole('button', { name: 'Vis ATLAS' }).click();
+  await showAllParts(page);
   await page.locator('[data-section="composer"] textarea').fill('Hva skal til for at DPS vurderer henne på nytt?');
   await page.getByRole('button', { name: 'Send', exact: true }).click();
   await sendForm(page);

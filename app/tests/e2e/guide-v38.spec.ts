@@ -20,17 +20,39 @@ test('3.8: the stop card carries the «Trykk her» mark; the checklist under the
   await expect(card.locator('[data-next-mark]').getByRole('button', { name: 'Vis ATLAS' })).toBeVisible();
   await card.getByRole('button', { name: 'Vis ATLAS' }).click();
   const box = (n: number) => page.locator(`[data-guide-step="${n}"]`);
-  await expect(box(1)).toBeVisible();
+  const part = (n: number) => page.locator(`#task-part-${n}`);
+  // 3.8: the ATLAS parts sit in the boxes under «Oppgaven din»; there is no side panel, and box 1 is open.
+  await expect(page.locator('[data-atlas-side], aside[aria-label="ATLAS"]')).toHaveCount(0);
+  await expect(part(1)).toBeVisible();
+  await expect(part(2)).toBeHidden();
   await expect(page.locator('[data-guide-step][data-done]')).toHaveCount(0);
   await place(page, 3);
   await expect(box(1)).toHaveAttribute('data-done', '');
+  // The box shows its answer, and the part stays open until «Neste» is pressed.
+  await expect(box(1)).toContainText('midt i gråsonen');
+  await expect(part(1)).toBeVisible();
+  const next = part(1).locator('[data-next-mark]').getByRole('button', { name: /^Neste: Hva er uklart i saken/ });
+  await expect(next).toBeVisible();
+  await next.click();
+  await expect(part(2)).toBeVisible();
+  await expect(part(1)).toBeHidden();
+  // A box can be opened directly.
+  await box(4).click();
   await page.getByLabel('Middels', { exact: true }).check({ force: true });
   await expect(box(4)).toHaveAttribute('data-done', '');
+  await expect(box(4)).toContainText('Middels');
+  await box(5).click();
   await page.getByLabel('Henvis', { exact: true }).check({ force: true });
   await expect(box(5)).not.toHaveAttribute('data-done', '');
   await page.getByRole('button', { name: 'Lagre beslutning' }).click();
   await expect(box(5)).toHaveAttribute('data-done', '');
+  await expect(part(5).locator('[data-next-mark]').getByRole('button', { name: /Skriv henvisningen/ })).toBeVisible();
   await expect(page.getByText(/^\d av \d gjort$/)).toBeVisible();
+  // «Vis alle delene» shows every part at once, and the choice holds.
+  await page.getByRole('button', { name: 'Vis alle delene' }).click();
+  for (const n of [1, 2, 3, 4, 5]) await expect(part(n)).toBeVisible();
+  await page.reload();
+  await expect(page.getByRole('button', { name: 'Vis én del om gangen' })).toBeVisible();
 });
 
 test('3.8: Om deg marks «Lagre og åpne skjemaet» once the question is answered, and «Til oversikten» once the form is sent', async ({ page }) => {

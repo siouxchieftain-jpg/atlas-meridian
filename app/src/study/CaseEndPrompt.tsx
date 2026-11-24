@@ -16,7 +16,7 @@ const useStyles = makeStyles({
   bar: {
     display: 'flex',
     flexWrap: 'wrap',
-    alignItems: 'center',
+    alignItems: 'flex-end',
     justifyContent: 'space-between',
     columnGap: '16px',
     rowGap: '12px',
@@ -32,7 +32,8 @@ const useStyles = makeStyles({
   q: { ...typographyStyles.body1Strong, margin: 0 },
   why: { ...typographyStyles.body1, margin: 0, color: tokens.colorNeutralForeground2 },
   quiet: { ...typographyStyles.body1, margin: 0, color: tokens.colorNeutralForeground2 },
-  actions: { display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: tokens.spacingHorizontalS },
+  // Bottom-aligned, so the button with the «Trykk her» mark and the one beside it sit on one line (3.8).
+  actions: { display: 'flex', flexWrap: 'wrap', alignItems: 'flex-end', gap: tokens.spacingHorizontalS },
 });
 
 /**

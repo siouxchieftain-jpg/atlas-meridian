@@ -8,7 +8,7 @@ import { mentionedCriteria, referralCriteria } from '../engine/criteria';
 import { gpLocked } from '../engine/flow';
 import { useWork } from '../state/work';
 import { ChoiceGroup } from '../patterns/ChoiceGroup';
-import { DesignNote, GrowingTextarea, ProvenanceChip } from '../patterns/basics';
+import { DesignNote, GrowingTextarea, NextMark, ProvenanceChip } from '../patterns/basics';
 import { useAtlasAnnounce } from '../patterns/announce';
 import { ConfidenceScale, InfoGuide, UncertaintyTags } from '../patterns/clinical';
 import { AtlasPanelHead } from './CaseLayout';
@@ -26,7 +26,7 @@ const useStyles = makeStyles({
     margin: 0,
   },
   reason: { ...typographyStyles.caption1, color: tokens.colorNeutralForeground3, margin: 0 },
-  row: { display: 'flex', flexWrap: 'wrap', gap: tokens.spacingHorizontalS, alignItems: 'center' },
+  row: { display: 'flex', flexWrap: 'wrap', gap: tokens.spacingHorizontalS, alignItems: 'flex-end' },
   status: { ...typographyStyles.caption1, color: tokens.colorNeutralForeground2, margin: 0 },
   lockedLine: {
     ...typographyStyles.caption1,
@@ -96,9 +96,11 @@ export function DecisionSection({ caseId }: { caseId: CaseId }) {
             {s('decisionSave')}
           </Button>
           {gp.decisionSaved && chosen === 'henvis' && !work.sandbox && (
-            <Button appearance="primary" icon={<ArrowRight16Regular />} iconPosition="after" onClick={() => work.go(work.casePath(caseId, 'henvisning'))}>
-              {s('writeReferral')}
-            </Button>
+            <NextMark on>
+              <Button appearance="primary" size="large" icon={<ArrowRight16Regular />} iconPosition="after" onClick={() => work.go(work.casePath(caseId, 'henvisning'))}>
+                {s('writeReferral')}
+              </Button>
+            </NextMark>
           )}
         </div>
       )}
@@ -110,9 +112,11 @@ export function DecisionSection({ caseId }: { caseId: CaseId }) {
       {gp.decisionSaved && <p className={cls.status}>{savedLine}</p>}
       {gp.decisionSaved && chosen === 'behold' && !work.held(caseId) && (
         <div className={cls.row}>
-          <Button appearance="primary" icon={<ArrowRight16Regular />} iconPosition="after" onClick={() => work.go(work.casePath(caseId, status.next))}>
-            {s('continue')}
-          </Button>
+          <NextMark on>
+            <Button appearance="primary" size="large" icon={<ArrowRight16Regular />} iconPosition="after" onClick={() => work.go(work.casePath(caseId, status.next))}>
+              {s('continue')}
+            </Button>
+          </NextMark>
         </div>
       )}
       <Responsibility />
@@ -128,9 +132,9 @@ export function DecisionSection({ caseId }: { caseId: CaseId }) {
  */
 export type GpPart = 'band' | 'tags' | 'guide' | 'confidence' | 'decision';
 
-/** Mock (3.8): one ATLAS part on its own, for the boxes under «Oppgaven din». */
-export function AtlasPartGp({ caseId, part }: { caseId: CaseId; part: GpPart }) {
-  return <AtlasPanelGp caseId={caseId} variant="consult" only={part} />;
+/** 3.8: one ATLAS part on its own, for the boxes under «Oppgaven din». */
+export function AtlasPartGp({ caseId, part, variant = 'consult' }: { caseId: CaseId; part: GpPart; variant?: 'consult' | 'referral' }) {
+  return <AtlasPanelGp caseId={caseId} variant={variant} only={part} />;
 }
 
 export function AtlasPanelGp({ caseId, variant, only }: { caseId: CaseId; variant: 'consult' | 'referral'; only?: GpPart }) {
@@ -150,8 +154,9 @@ export function AtlasPanelGp({ caseId, variant, only }: { caseId: CaseId; varian
     <>
       {!only && <AtlasPanelHead />}
       {/* Locked controls stay readable and focusable; one line says why (G-18). */}
-      {locked && <p className={cls.lockedLine}>{s('lockedGp')}</p>}
-      {!only && content.gp.previousReferral && (
+      {locked && (!only || only === 'band') && <p className={cls.lockedLine}>{s('lockedGp')}</p>}
+      {/* In the task boxes the previous referral opens with the scale, the first part (3.8). */}
+      {(!only || only === 'band') && content.gp.previousReferral && (
         <>
           <PreviousReferralCard prev={content.gp.previousReferral} source="record" />
           <Divider />

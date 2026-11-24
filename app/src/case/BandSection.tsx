@@ -60,7 +60,7 @@ export function ReadingBlock({ reading, notes }: { reading: SystemReading; notes
         <h4 className={cls.readingTitle}>{s('readingTitle')}</h4>
       </div>
       <p className={cls.readingText}>{t(reading.summary)}</p>
-      {/* Mock (3.8): an outlined button, not a quiet link, so the reasoning is not missed. */}
+      {/* 3.8: an outlined button, not a quiet link, so the reasoning is not missed. */}
       <Button
         appearance="outline"
         size="medium"

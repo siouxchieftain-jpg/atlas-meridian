@@ -458,7 +458,22 @@ export function FinalChoiceSection({ caseId, thread }: { caseId: CaseId; thread:
 }
 
 /** The DPS ATLAS panel: place first, then the GP's marker and the system's reading; Informasjonsguiden as received; Vurdering. */
-export function AtlasPanelDps({ caseId, received, onSent, withOutcome }: { caseId: CaseId; received: Received; onSent: () => void; withOutcome: boolean }) {
+export type DpsPart = 'band' | 'guide' | 'vurdering';
+
+export function AtlasPanelDps({
+  caseId,
+  received,
+  onSent,
+  withOutcome,
+  only,
+}: {
+  caseId: CaseId;
+  received: Received;
+  onSent: () => void;
+  withOutcome: boolean;
+  /** 3.8: one part on its own, for the boxes under «Oppgaven din». */
+  only?: DpsPart;
+}) {
   const cls = useStyles();
   const { s } = useLang();
   const work = useWork();
@@ -467,16 +482,17 @@ export function AtlasPanelDps({ caseId, received, onSent, withOutcome }: { caseI
   const dps = work.dps(caseId);
   // A form sent before «Vis ATLAS» leaves the ATLAS work open; the assessment itself locks once sent.
   const locked = dps.sent === true;
+  const show = (p: DpsPart) => !only || only === p;
   return (
     <>
-      <AtlasPanelHead />
-      {d.previousReferral && (
+      {!only && <AtlasPanelHead />}
+      {(!only || only === 'band') && d.previousReferral && (
         <>
           <PreviousReferralCard prev={d.previousReferral} source="dpsRecord" />
           <Divider />
         </>
       )}
-      {d.systemReading && (
+      {show('band') && d.systemReading && (
         <>
           <BandSection
             viewer="dps"
@@ -487,16 +503,18 @@ export function AtlasPanelDps({ caseId, received, onSent, withOutcome }: { caseI
             readOnly={locked}
             notes={work.notes}
           />
-          <Divider />
+          {!only && <Divider />}
         </>
       )}
-      <section className={cls.section} aria-label={s('guideTitle')} data-section="guide">
-        <h3 className={cls.h3}>{s('guideTitle')}</h3>
-        <InfoGuide mentioned={received.mentioned} mode="received" />
-      </section>
-      {withOutcome && (
+      {show('guide') && (
+        <section className={cls.section} aria-label={s('guideTitle')} data-section="guide">
+          <h3 className={cls.h3}>{s('guideTitle')}</h3>
+          <InfoGuide mentioned={received.mentioned} mode="received" />
+        </section>
+      )}
+      {withOutcome && show('vurdering') && (
         <>
-          <Divider />
+          {!only && <Divider />}
           <DpsOutcomeSection caseId={caseId} onSent={onSent} />
         </>
       )}

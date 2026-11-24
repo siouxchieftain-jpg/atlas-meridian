@@ -62,7 +62,8 @@ const useStyles = makeStyles({
     borderRadius: tokens.borderRadiusMedium,
     border: `1px solid ${tokens.colorNeutralStroke1}`,
   },
-  nav: { display: 'flex', gap: tokens.spacingHorizontalS, justifyContent: 'space-between', flexWrap: 'wrap' },
+  // Bottom-aligned: the «Trykk her» mark above «Neste» must not stretch «Tilbake» (3.8).
+  nav: { display: 'flex', gap: tokens.spacingHorizontalS, justifyContent: 'space-between', alignItems: 'flex-end', flexWrap: 'wrap' },
   privacy: { ...typographyStyles.caption1, color: tokens.colorNeutralForeground3, margin: 0 },
   scale: { display: 'flex', flexWrap: 'wrap', gap: '2px' },
   anchors: { display: 'flex', justifyContent: 'space-between', ...typographyStyles.caption1, color: tokens.colorNeutralForeground3 },
@@ -96,6 +97,7 @@ export function PreviewForm({
   onPageChange,
   onSent,
   markForward,
+  resumed,
 }: {
   formKey: string;
   locked: LockedFields;
@@ -103,6 +105,8 @@ export function PreviewForm({
   onSent: () => void;
   /** The form's forward press is the study's next step: it carries the «Trykk her» mark (3.8). */
   markForward?: boolean;
+  /** The case is done and the rest of the form is open: the stop page says so instead of «Stopp her» (3.8). */
+  resumed?: boolean;
 }) {
   const cls = useStyles();
   const { t, s } = useLang();
@@ -197,7 +201,7 @@ export function PreviewForm({
           if (it.type === 'stop') {
             return (
               <p key={it.id} className={cls.stop}>
-                {t(it.text)}
+                {resumed ? s('previewStopDone') : t(it.text)}
               </p>
             );
           }

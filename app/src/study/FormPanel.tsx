@@ -238,9 +238,9 @@ export function FormPanel({ actions }: { actions: FormPanelActions | null }) {
   const announce = useAtlasAnnounce();
   const notReady = form?.route === 'notready';
   // Read at the moment the panel opens; a language switch does not move focus or speak again.
-  const latest = useRef({ announce, s, notReady });
+  const latest = useRef({ announce, s, notReady, inline });
   useLayoutEffect(() => {
-    latest.current = { announce, s, notReady };
+    latest.current = { announce, s, notReady, inline };
   });
   // What «Skjul skjemaet» or Escape leaves: the scroll (which a hidden element loses) and the control in use (r5A-03).
   const leftAt = useRef<{ key: string; panel: number; body: number; active: HTMLElement | null } | null>(null);
@@ -266,6 +266,13 @@ export function FormPanel({ actions }: { actions: FormPanelActions | null }) {
       if (fresh || back) {
         if (panelRef.current) panelRef.current.scrollTop = back?.panel ?? 0;
         if (bodyRef.current) bodyRef.current.scrollTop = back?.body ?? 0;
+      }
+      // Beside the page the panel scrolls with the window: a new stage (the rest of the form, after the decision far down
+      // the page) brings the form's top into view, so its first words are seen (3.8).
+      if (!back && latest.current.inline && panelRef.current) {
+        const top = panelRef.current.getBoundingClientRect().top + window.scrollY;
+        const header = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--atlas-header-h')) || 0;
+        if (window.scrollY > top - header) window.scrollTo({ top: Math.max(0, top - header) });
       }
       // Back to the control in use when it is in view; else the heading when it is in view; else the panel
       // itself at the kept place. A new form or stage starts at its heading.
@@ -527,6 +534,7 @@ export function FormPanel({ actions }: { actions: FormPanelActions | null }) {
                 onPageChange={host.previewPageChanged}
                 onSent={host.previewSent}
                 markForward={!showCard}
+                resumed={caseForm && stage === 'rest'}
               />
             </div>
           )}

@@ -163,6 +163,33 @@ function SecondDraftSide({ caseId }: { caseId: CaseId }) {
   );
 }
 
+/** 3.8: the GP's ATLAS parts for the boxes under «Oppgaven din», and what each says once done. */
+function useGpTaskParts(caseId: CaseId, variant: 'consult' | 'referral', on: boolean) {
+  const { s, t } = useLang();
+  const work = useWork();
+  const c = cases[caseId];
+  const gp = work.gp(caseId);
+  if (!on) return { modules: undefined, summaries: undefined };
+  const withDecision = variant === 'consult' && caseId !== 'erlend';
+  const mentioned =
+    variant === 'referral' ? referralCriteria(draftSections(caseId, gp, (x) => t(x))) : mentionedCriteria(t(c.gp.note.text));
+  const modules = {
+    1: <AtlasPartGp caseId={caseId} part="band" variant={variant} />,
+    2: <AtlasPartGp caseId={caseId} part="tags" variant={variant} />,
+    3: <AtlasPartGp caseId={caseId} part="guide" variant={variant} />,
+    4: <AtlasPartGp caseId={caseId} part="confidence" variant={variant} />,
+    ...(withDecision ? { 5: <AtlasPartGp caseId={caseId} part="decision" /> } : {}),
+  };
+  const summaries = {
+    1: gp.placement !== undefined ? s(positionKey(gp.placement)) : undefined,
+    2: gp.tags.length ? gp.tags.map((x) => t(vocab.tags[x].label)).join(', ') : gp.description?.trim() ? s('summaryOwnWords') : undefined,
+    3: s('guideCount', { n: mentioned.length }),
+    4: gp.confidence ? t(vocab.confidence[gp.confidence]) : undefined,
+    5: gp.decisionSaved && gp.decision ? (gp.decision === 'behold' ? s('decisionHold') : s('decisionRefer')) : undefined,
+  };
+  return { modules, summaries };
+}
+
 /** Konsultasjon: the workspace, with the ATLAS panel or its placeholder. */
 export function GpConsultation({ caseId }: { caseId: CaseId }) {
   const { s, t } = useLang();
@@ -171,7 +198,7 @@ export function GpConsultation({ caseId }: { caseId: CaseId }) {
   const gp = work.gp(caseId);
   const without = work.withoutAtlas(caseId);
   // Study: the case-only bar carries the placeholder, so the form panel can sit inline beside the case.
-  // Mock (3.8): in the study, the ATLAS parts move into the boxes under «Oppgaven din»; no side panel.
+  // 3.8: in the study, the ATLAS parts sit in the boxes under «Oppgaven din»; no side panel (Jishnu, 24 November).
   const inTask = work.mode === 'study' && !without && caseId !== 'astrid';
   const side = without
     ? work.mode === 'review'
@@ -182,25 +209,7 @@ export function GpConsultation({ caseId }: { caseId: CaseId }) {
       : inTask
         ? undefined
         : <AtlasPanelGp caseId={caseId} variant="consult" />;
-  const modules = inTask
-    ? {
-        1: <AtlasPartGp caseId={caseId} part="band" />,
-        2: <AtlasPartGp caseId={caseId} part="tags" />,
-        3: <AtlasPartGp caseId={caseId} part="guide" />,
-        4: <AtlasPartGp caseId={caseId} part="confidence" />,
-        ...(caseId !== 'erlend' ? { 5: <AtlasPartGp caseId={caseId} part="decision" /> } : {}),
-      }
-    : undefined;
-  // What each part says once done, for its box (mock 3.8).
-  const summaries = inTask
-    ? {
-        1: gp.placement !== undefined ? s(positionKey(gp.placement)) : undefined,
-        2: gp.tags.length ? gp.tags.map((x) => t(vocab.tags[x].label)).join(', ') : gp.description?.trim() ? s('summaryOwnWords') : undefined,
-        3: s('guideCount', { n: mentionedCriteria(t(c.gp.note.text)).length }),
-        4: gp.confidence ? t(vocab.confidence[gp.confidence]) : undefined,
-        5: gp.decisionSaved && gp.decision ? (gp.decision === 'behold' ? s('decisionHold') : s('decisionRefer')) : undefined,
-      }
-    : undefined;
+  const { modules, summaries } = useGpTaskParts(caseId, 'consult', inTask);
   const compact = !without && c.gp.systemReading ? <CompactBand own={gp.placement} reading={c.gp.systemReading} /> : undefined;
   return (
     <CaseLayout side={side} compactSummary={compact}>
@@ -249,8 +258,10 @@ export function GpReferral({ caseId }: { caseId: CaseId }) {
   const [tab, setTab] = useState<'draft' | 'record'>('draft');
   // The new referral after «Henvis på nytt»: Astrid's, or Kari's and Erlend's after a return the DPS side played (r9F-01).
   const second = caseId === 'astrid' || (gp.referral === 'sent' && gp.planSaved === true && gp.plan === 'henvisPaNytt');
+  const inTask = work.mode === 'study' && !second;
+  const { modules, summaries } = useGpTaskParts(caseId, 'referral', inTask);
   if (work.withoutAtlas(caseId)) return <GpConsultation caseId={caseId} />;
-  const side = second ? <SecondDraftSide caseId={caseId} /> : <AtlasPanelGp caseId={caseId} variant="referral" />;
+  const side = second ? <SecondDraftSide caseId={caseId} /> : inTask ? undefined : <AtlasPanelGp caseId={caseId} variant="referral" />;
   const compact = !second && c.gp.systemReading ? <CompactBand own={gp.placement} reading={c.gp.systemReading} /> : undefined;
   const ret = c.gp.dpsScript.return;
   const dps = work.dps(caseId);
@@ -270,7 +281,7 @@ export function GpReferral({ caseId }: { caseId: CaseId }) {
       />
       {/* Notices sit under the title (G-16). */}
       <CaseModeBar caseId={caseId} />
-      <AtlasTaskBar caseId={caseId} />
+      <AtlasTaskBar caseId={caseId} modules={modules} summaries={summaries} />
       {caseId === 'erlend' && (
         <TabList selectedValue={tab} onTabSelect={(_, d) => setTab(d.value as 'draft' | 'record')}>
           <Tab value="draft">{s('newReferral')}</Tab>

@@ -1,6 +1,6 @@
 import { expect, test, type Page } from '@playwright/test';
 import { mockNettskjema, recordSubmissions, submissions, configWithoutForms } from './mock';
-import { HOME_HEADING, frame, frameSteg, openCurrentCase, panel, place, sendForm, toStopPage, confirmPage1 } from './helpers';
+import { HOME_HEADING, frame, frameSteg, openCurrentCase, panel, place, sendForm, toStopPage, confirmPage1, showAllParts } from './helpers';
 
 // No check depends on the addresses the site holds: with none, review mode gives feedback in its preview forms.
 // A check that needs forms routes them to the stand-in (mockNettskjema), which takes precedence.
@@ -108,6 +108,7 @@ async function startCase(page: Page) {
 async function confirmAndShow(page: Page) {
   await confirmPage1(page);
   await panel(page).getByRole('button', { name: 'Vis ATLAS' }).click();
+  await showAllParts(page);
   await expect(panel(page)).toBeHidden();
 }
 
