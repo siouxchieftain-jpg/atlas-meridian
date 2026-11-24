@@ -113,7 +113,12 @@ export function AtlasCard({
     // After the route's own focus move (the page heading), so the card's heading is where the participant lands.
     const id = window.setTimeout(() => {
       const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      rootRef.current?.scrollIntoView({ block: 'start', behavior: reduce ? 'auto' : 'smooth' });
+      // The task strip above the card comes into view with it, so the task is read first (review N2).
+      // On a short screen, where strip and heading do not fit together, the card itself comes into view, so the focused
+      // heading is seen (WCAG 2.4.11).
+      const strip = rootRef.current?.previousElementSibling as HTMLElement | null;
+      const fits = !!strip && strip.hasAttribute('data-task-parts') && strip.offsetHeight + 160 < window.innerHeight;
+      (fits ? strip : rootRef.current)?.scrollIntoView({ block: 'start', behavior: reduce ? 'auto' : 'smooth' });
       headRef.current?.focus({ preventScroll: true });
     }, 80);
     return () => window.clearTimeout(id);

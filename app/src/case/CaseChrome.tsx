@@ -121,6 +121,8 @@ export function CaseModeBar({ caseId }: { caseId: CaseId }) {
       <Silent>
         <LockedSeen caseId={caseId} />
         <AtlasCard on={false} locked>
+          {/* The card says what is left; the title's «Gjenstår» would repeat it (review R21). */}
+          <style>{'[data-case-remaining]{display:none}'}</style>
           <p className={cls.lockedLead}>{s('lockedLead')}</p>
           <p className={cls.lockedLine}>
             {work.viewer === 'gp' ? s('lockedThinkGp') : caseId === 'astrid' ? s('lockedThinkDpsAstrid') : s('lockedThinkDps')}
@@ -238,7 +240,15 @@ export function AtlasTaskBar({
         caseId={caseId}
         role={work.viewer}
         view={view}
-        task={t(task)}
+        task={
+          work.viewer === 'dps'
+            ? s('taskPathDps')
+            : view === 'henvisning'
+              ? caseId === 'erlend'
+                ? t(task)
+                : s('taskPathGpReferral')
+              : s('taskPathGp')
+        }
         modules={modules}
         summaries={summaries}
         arrive={!!arrive.current}

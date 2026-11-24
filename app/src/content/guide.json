@@ -28,6 +28,10 @@
       "tellUs": {
         "nb": "Er noe her uklart eller i veien, si det under «Gi tilbakemelding», del 1. Det er frivillig.",
         "en": "If anything here is unclear or in the way, say so under ‘Give feedback’, part 1. It is optional."
+      },
+      "box": {
+        "nb": "Usikkerhets­skala",
+        "en": "Uncertainty scale"
       }
     },
     {
@@ -88,6 +92,10 @@
       "tellUs": {
         "nb": "Uklart eller i veien? «Gi tilbakemelding», del 3.",
         "en": "Unclear or in the way? ‘Give feedback’, part 3."
+      },
+      "box": {
+        "nb": "Informasjons­guiden",
+        "en": "Information completeness guide"
       }
     },
     {
@@ -298,6 +306,10 @@
       "tellUs": {
         "nb": "Uklart eller i veien? «Gi tilbakemelding», del 2.",
         "en": "Unclear or in the way? ‘Give feedback’, part 2."
+      },
+      "box": {
+        "nb": "Usikkerhets­skala",
+        "en": "Uncertainty scale"
       }
     },
     {
@@ -327,6 +339,10 @@
       "tellUs": {
         "nb": "Uklart eller i veien? «Gi tilbakemelding», del 3.",
         "en": "Unclear or in the way? ‘Give feedback’, part 3."
+      },
+      "box": {
+        "nb": "Informasjons­guiden",
+        "en": "Information completeness guide"
       }
     },
     {
@@ -338,8 +354,8 @@
       "tour": "dps-vurdering",
       "seksjon": "vurdering",
       "part": {
-        "nb": "Din vurdering",
-        "en": "Your assessment"
+        "nb": "Vurdering",
+        "en": "Assessment"
       },
       "where": {
         "nb": "Nederst i ATLAS.",
@@ -356,6 +372,10 @@
       "tellUs": {
         "nb": "Uklart eller i veien? «Gi tilbakemelding», del 4.",
         "en": "Unclear or in the way? ‘Give feedback’, part 4."
+      },
+      "box": {
+        "nb": "Utfall",
+        "en": "Outcome"
       }
     }
   ],

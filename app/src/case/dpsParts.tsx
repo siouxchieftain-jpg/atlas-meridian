@@ -1,4 +1,4 @@
-import { Button, Checkbox, Divider, Field, makeStyles, tokens, typographyStyles } from '@fluentui/react-components';
+import { Button, Checkbox, Divider, Field, makeStyles, mergeClasses, tokens, typographyStyles } from '@fluentui/react-components';
 import { ArrowEnter20Regular, ArrowReply20Regular, ChevronDown16Regular, ChevronRight16Regular, QuestionCircle20Regular } from '@fluentui/react-icons';
 import { useId, useState, type ReactNode } from 'react';
 import type { CaseId, ConfLevel, CriterionId, Outcome, ReasonId, SectionId, TagId } from '../content/types';
@@ -44,6 +44,7 @@ const useStyles = makeStyles({
     borderRadius: tokens.borderRadiusMedium,
     backgroundColor: tokens.colorNeutralBackground2,
   },
+  unsureInCard: { paddingInline: 0, paddingBlock: 0, border: 'none' },
   unsure: {
     display: 'flex',
     flexDirection: 'column',
@@ -200,14 +201,14 @@ export function ReferralLetter({ caseId, received, letterFrame }: { caseId: Case
 }
 
 /** «Hva fastlegen var usikker på»: tags, the GP's words, confidence in words. Never a history. */
-export function GpUnsureBlock({ received }: { received: Received }) {
+export function GpUnsureBlock({ received, inCard }: { received: Received; /** In the ATLAS card (3.8): no frame of its own, a level-3 heading. */ inCard?: boolean }) {
   const cls = useStyles();
   const { s, t } = useLang();
   const work = useWork();
   return (
-    <section className={cls.unsure} aria-label={s('gpUnsure')} data-section="gp-usikker">
+    <section className={mergeClasses(cls.unsure, inCard && cls.unsureInCard)} aria-label={s('gpUnsure')} data-section="gp-usikker">
       <div className={cls.unsureHead}>
-        <h2 className={cls.h3}>{s('gpUnsure')}</h2>
+        {inCard ? <h3 className={cls.h3}>{s('gpUnsure')}</h3> : <h2 className={cls.h3}>{s('gpUnsure')}</h2>}
         <ProvenanceChip source="gp" />
       </div>
       {received.tags.length ? <TagList tags={received.tags} /> : <p className={cls.caption}>{s('noTagsChosen')}</p>}

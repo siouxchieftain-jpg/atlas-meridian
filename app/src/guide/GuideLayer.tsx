@@ -350,7 +350,9 @@ export function GuideLayer({ role, view }: { role: 'gp' | 'dps'; view: string | 
       let auto = state.auto;
       for (const { m, el } of found) {
         if (el.matches(READ_PARTS)) {
-          watchRead(m.n, el);
+          // A part to read inside the ATLAS card, one at a time, ticks when the participant leaves it (TaskParts), not
+          // when it scrolls past (review R4).
+          if (!el.closest('[data-task-modules]:not([data-show-all])')) watchRead(m.n, el);
           continue;
         }
         const k = doneKey(m.n);
@@ -392,7 +394,7 @@ export function GuideLayer({ role, view }: { role: 'gp' | 'dps'; view: string | 
     scan();
     const main = document.querySelector('main');
     const obs = new MutationObserver(scan);
-    if (main) obs.observe(main, { childList: true, subtree: true, attributes: true, attributeFilter: ['data-section-done'] });
+    if (main) obs.observe(main, { childList: true, subtree: true, attributes: true, attributeFilter: ['data-section-done', 'data-show-all'] });
     return () => {
       obs.disconnect();
       io.disconnect();
@@ -520,7 +522,10 @@ const useParts = makeStyles({
     fontWeight: tokens.fontWeightBold,
   },
   badgeDone: { backgroundImage: 'none', backgroundColor: tokens.colorPaletteGreenForeground1, color: '#FFFFFF' },
-  label: { minWidth: 0, display: 'flex', flexDirection: 'column', overflowWrap: 'anywhere', hyphens: 'auto' },
+  // Soft hyphens in the box labels break long words at the joint (review N1); no break inside a word.
+  label: { minWidth: 0, display: 'flex', flexDirection: 'column', hyphens: 'manual' },
+  tickWide: { display: 'inline-flex', '@media (max-width: 639px)': { display: 'none' } },
+  numNarrow: { display: 'none', '@media (max-width: 639px)': { display: 'inline' } },
   labelNarrowHidden: { '@media (max-width: 639px)': { display: 'none' } },
   summary: { ...typographyStyles.caption1, color: tokens.colorNeutralForeground2 },
   meta: { display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: tokens.spacingHorizontalS, flexWrap: 'wrap' },
@@ -580,13 +585,25 @@ export function TaskParts({
     writeJSON(key, on);
   };
   const rowRef = useRef<HTMLOListElement>(null);
+  // Parts to read (the guide, what the GP was unsure about) tick when left after at least 1.2 s open (review R4).
+  const isRead = (m: GuideMarker) => /guide"|gp-usikker|fra-atlas|retur/.test(m.selector);
+  const openedAt = useRef<{ n: number; at: number }>({ n: active, at: Date.now() });
+  useEffect(() => {
+    openedAt.current = { n: active, at: Date.now() };
+  }, [active]);
+  const leave = () => {
+    const m = parts.find((x) => x.n === openedAt.current.n);
+    if (m && isRead(m) && Date.now() - openedAt.current.at >= 1200 && !isDone(st, m.n)) set({ auto: { ...state.auto, [doneKey(m.n)]: true } });
+  };
   const boxLabel = (m: GuideMarker) => t(m.box ?? m.part).replace(/\?$/, '');
   const nextAfter = (n: number) => parts.find((x) => x.n > n && !isDone(st, x.n)) ?? parts.find((x) => x.n !== n && !isDone(st, x.n));
   // Focus to the part's heading, the boxes back in view (review R2, R3).
   const focusPart = (n: number, scrollRow: boolean) => {
     window.requestAnimationFrame(() => {
-      if (scrollRow) rowRef.current?.scrollIntoView({ block: 'start', behavior: 'smooth' });
       const part = document.getElementById(`task-part-${n}`);
+      if (scrollRow) rowRef.current?.scrollIntoView({ block: 'start', behavior: 'smooth' });
+      // All parts shown: a box brings its part into view (review N3).
+      else if (showAll) part?.scrollIntoView({ block: 'start', behavior: 'smooth' });
       const head = part?.querySelector<HTMLElement>('h2, h3, h4, legend') ?? part;
       if (head) {
         if (!head.hasAttribute('tabindex')) head.setAttribute('tabindex', '-1');
@@ -595,12 +612,13 @@ export function TaskParts({
     });
   };
   const open = (n: number, scrollRow: boolean) => {
+    if (!showAll) leave();
     setStarted(true);
     if (!showAll) setActive(n);
     focusPart(n, scrollRow);
   };
   const current = parts.find((m) => m.n === active);
-  const nextFor = (m: GuideMarker) => (isDone(st, m.n) ? nextAfter(m.n) : undefined);
+  const nextFor = (m: GuideMarker) => (isDone(st, m.n) || isRead(m) ? nextAfter(m.n) : undefined);
   return (
     <>
       <section className={base.strip} aria-label={s('guideTask')} data-task-parts="">
@@ -622,11 +640,27 @@ export function TaskParts({
                   data-done={done ? '' : undefined}
                   aria-current={isOpen ? 'step' : undefined}
                   aria-controls={`task-part-${m.n}`}
-                  aria-label={`${m.n}. ${boxLabel(m)}${done ? ` (${s('guideDoneSuffix').trim()})` : ''}`}
+                  aria-label={
+                    done
+                      ? summaries?.[m.n]
+                        ? s('boxDoneNameWith', { n: m.n, part: boxLabel(m), summary: summaries[m.n]! })
+                        : s('boxDoneName', { n: m.n, part: boxLabel(m) })
+                      : `${m.n}. ${boxLabel(m)}`
+                  }
                   onClick={() => open(m.n, false)}
                 >
                   <span className={mergeClasses(cls.badge, done && cls.badgeDone)} aria-hidden="true">
-                    {done ? <Checkmark16Filled /> : m.n}
+                    {done ? (
+                      <>
+                        <span className={cls.tickWide}>
+                          <Checkmark16Filled />
+                        </span>
+                        {/* Narrow, the done pills keep their numbers (review N6). */}
+                        <span className={cls.numNarrow}>{m.n}</span>
+                      </>
+                    ) : (
+                      m.n
+                    )}
                   </span>
                   <span className={mergeClasses(cls.label, !isOpen && cls.labelNarrowHidden)} aria-hidden="true">
                     {boxLabel(m)}
@@ -650,7 +684,7 @@ export function TaskParts({
         )}
       </section>
       <AtlasCard on arrive={arrive} arriveLine={arrive && !started && doneCount === 0}>
-        <div className={cls.parts} data-task-modules="">
+        <div className={cls.parts} data-task-modules="" data-show-all={showAll ? '' : undefined}>
           {/* Every part stays in the page, so each can tick itself; one at a time shows, or all. */}
           {parts.map((m) => {
             const next = nextFor(m);

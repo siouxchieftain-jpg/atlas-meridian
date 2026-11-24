@@ -243,7 +243,7 @@ export function DpsAssessment({ caseId }: { caseId: CaseId }) {
   const modules = inTask
     ? {
         // What the GP was unsure about comes with ATLAS, so it is ATLAS's first part, in the card (review R5).
-        1: <GpUnsureBlock received={received} />,
+        1: <GpUnsureBlock received={received} inCard />,
         ...(d.systemReading ? { 2: <AtlasPanelDps caseId={caseId} received={received} onSent={onSent} withOutcome only="band" /> } : {}),
         3: <AtlasPanelDps caseId={caseId} received={received} onSent={onSent} withOutcome only="guide" />,
         4: <AtlasPanelDps caseId={caseId} received={received} onSent={onSent} withOutcome only="vurdering" />,

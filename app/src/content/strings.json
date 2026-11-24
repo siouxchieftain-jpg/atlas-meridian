@@ -397,7 +397,7 @@
   },
   "guideTitle": {
     "nb": "Informasjonsguiden",
-    "en": "Information guide"
+    "en": "Information completeness guide"
   },
   "guideCount": {
     "nb": "{{n}} av 5 kriterier omtalt",
@@ -4424,8 +4424,8 @@
     "en": "write and send the referral"
   },
   "lockedLead": {
-    "nb": "ATLAS åpner her når du har svart på side 1 i skjemaet.",
-    "en": "ATLAS opens here once you have answered page 1 of the form."
+    "nb": "ATLAS åpner her når du har svart på side 1 og trykket «Vis ATLAS».",
+    "en": "ATLAS opens here once you have answered page 1 and pressed ‘Show ATLAS’."
   },
   "lockedThinkGp": {
     "nb": "Tenk gjennom hva du ville gjort med saken ut fra det du ser her.",
@@ -4438,5 +4438,25 @@
   "lockedThinkDpsAstrid": {
     "nb": "Tenk gjennom hvordan du ville svart fastlegen ut fra det du ser her.",
     "en": "Think through how you would answer the GP from what you see here."
+  },
+  "boxDoneName": {
+    "nb": "{{n}}. {{part}}, gjort",
+    "en": "{{n}}. {{part}}, done"
+  },
+  "boxDoneNameWith": {
+    "nb": "{{n}}. {{part}}, gjort: {{summary}}",
+    "en": "{{n}}. {{part}}, done: {{summary}}"
+  },
+  "taskPathGp": {
+    "nb": "Gå gjennom delene én om gangen. Den siste er beslutningen din.",
+    "en": "Go through the parts one at a time. The last is your decision."
+  },
+  "taskPathGpReferral": {
+    "nb": "Gå gjennom delene én om gangen. Skriv deretter henvisningen, og send den eller lagre utkastet.",
+    "en": "Go through the parts one at a time. Then write the referral, and send it or save the draft."
+  },
+  "taskPathDps": {
+    "nb": "Gå gjennom delene én om gangen. Den siste er utfallet ditt.",
+    "en": "Go through the parts one at a time. The last is your outcome."
   }
 }

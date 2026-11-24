@@ -16,7 +16,7 @@ test('3.8: the stop card carries the «Trykk her» mark; the checklist under the
   await page.getByRole('button', { name: 'Start saken' }).click();
   // Before «Vis ATLAS», the locked ATLAS card stands where ATLAS will open.
   const locked = page.locator('[data-atlas-card="locked"]');
-  await expect(locked).toContainText('ATLAS åpner her når du har svart på side 1 i skjemaet.');
+  await expect(locked).toContainText('ATLAS åpner her når du har svart på side 1 og trykket «Vis ATLAS».');
   // Locked, the card names nothing of what ATLAS shows (review R1).
   await expect(locked).not.toContainText('Viser usikkerhet');
   await toStopPage(page);
