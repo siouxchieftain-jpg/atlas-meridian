@@ -63,7 +63,8 @@ describe('the study period (decision 12)', () => {
 describe('S9, feedback in the moment (decision 4)', () => {
   it('is in the instrument with its locked context and five items', () => {
     const s9 = instrument.forms.find((f) => f.key === 'S9')!;
-    expect(s9.locked).toEqual(['rolle', 'studienavn', 'side', 'seksjon', 'versjon']);
+    // 3.8, part C: the study name and where the feedback points; role and build are joined through the study name.
+    expect(s9.locked).toEqual(['studienavn', 'side', 'seksjon']);
     const items = s9.pages.flatMap((p) => p.items).filter((i) => i.type !== 'locked');
     expect(items.map((i) => i.id)).toEqual(['S9-01', 'S9-02', 'S9-03', 'S9-04', 'S9-05']);
     expect(items.every((i) => !i.required)).toBe(true);

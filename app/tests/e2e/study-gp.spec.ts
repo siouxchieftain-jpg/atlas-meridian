@@ -92,18 +92,12 @@ test('a GP completes the whole study on the panel route, with the right locked v
   await expect(page.getByRole('heading', { name: 'Hvorfor ATLAS ser slik ut' })).toBeVisible();
 
   const sent = await submissions(page);
-  const steg = Object.fromEntries(sent.map((s) => [s.key, s.fields.steg]));
-  expect(steg).toEqual({ S1: 'S1', 'S3.fastlege': 'S3', 'S4.fastlege': 'S4', 'S5.fastlege': 'S5', 'S2.fastlege': 'S2' });
   // The order of the forms is the v3.1 order: the overall impression after the cases.
   expect(sent.map((s) => s.key)).toEqual(['S1', 'S3.fastlege', 'S4.fastlege', 'S5.fastlege', 'S2.fastlege']);
-  for (const s of sent) {
-    expect(s.fields.rolle).toBe('Fastlege');
-    expect(s.fields.intervju).toBe('Nei');
-    expect(s.fields.versjon).toMatch(/^3\.8\.0-/);
-    expect(s.fields.versjon).not.toMatch(/-pilot$/);
-  }
-  expect(sent.find((s) => s.key === 'S3.fastlege')?.fields.vignett).toBe('V1');
-  expect(sent.find((s) => s.key === 'S4.fastlege')?.fields.vignett).toBe('V3');
-  expect(sent.find((s) => s.key === 'S5.fastlege')?.fields.vignett).toBe('V4');
-  expect(sent.find((s) => s.key === 'S1')?.fields.vignett).toBeUndefined();
+  // 3.8, part C (Jishnu, 24 November): S1 carries the role, the interview answer and the study name; every other
+  // form only the study name, which joins it to S1. The form itself says the step, the case and the role.
+  const name = sent[0].fields.studienavn;
+  expect(name).toBeTruthy();
+  expect(sent[0].fields).toEqual({ rolle: 'Fastlege', intervju: 'Nei', studienavn: name });
+  for (const s of sent.slice(1)) expect(s.fields, s.key).toEqual({ studienavn: name });
 });

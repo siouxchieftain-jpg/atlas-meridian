@@ -303,7 +303,8 @@ test('the pilot round: the «Pilot» chip, the pilot forms and -pilot on every a
   await expect(page.locator('header').getByText('Pilot', { exact: true })).toBeVisible();
   await startStudy(page, 'DPS-kliniker');
   expect(new URL((await page.locator('iframe[data-form-frame]').getAttribute('src'))!).pathname).toBe('/a/pilot-S1');
-  expect((await frameParams(page)).get('CBversjon')).toMatch(/^3\.8\.0-.*-pilot$/);
+  // The pilot is told apart by its own form set; since 3.8 (part C) no build number goes with the answers.
+  expect((await frameParams(page)).get('CBversjon')).toBeNull();
   await sendForm(page);
   await toHome(page);
   await page.locator('[data-feedback-tab]').click();
@@ -313,7 +314,7 @@ test('the pilot round: the «Pilot» chip, the pilot forms and -pilot on every a
   await expect(page.getByText('Takk. Tilbakemeldingen er registrert.')).toBeVisible();
   const sent = await submissions(page);
   expect(sent.map((s) => s.key)).toEqual(['pilot-S1', 'pilot-S9']);
-  for (const s of sent) expect(s.fields.versjon).toMatch(/-pilot$/);
+  for (const s of sent) expect(s.fields.versjon).toBeUndefined();
 });
 
 test('after the study’s last day: Velkommen says the study has ended, and nothing starts', async ({ page }) => {

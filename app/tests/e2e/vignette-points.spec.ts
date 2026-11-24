@@ -166,7 +166,8 @@ for (const [role, v] of CASES) {
       await sendForm(page);
       await expect(panel(page)).toBeHidden();
       const sent = await submissions(page);
-      expect(sent.map((s) => [s.key, s.fields.steg])).toEqual([[FORM_KEY[role][v], steg]]);
+      // Since 3.8 (part C) the form is told by its own address; no step value goes with the answers.
+      expect(sent.map((s) => [s.key, s.fields.steg])).toEqual([[FORM_KEY[role][v], undefined]]);
     });
 
     test(`a reset after «Vis ATLAS» keeps the record: the form opens as ${steg}-etter`, async ({ page }) => {
@@ -215,7 +216,8 @@ for (const [role, v] of CASES) {
       await frame(page).locator('#send').click();
       await expect(panel(page)).toBeHidden();
       const sent = await submissions(page);
-      expect(sent.map((s) => [s.key, s.fields.steg])).toEqual([[FORM_KEY[role][v], steg]]);
+      // Since 3.8 (part C) the form is told by its own address; no step value goes with the answers.
+      expect(sent.map((s) => [s.key, s.fields.steg])).toEqual([[FORM_KEY[role][v], undefined]]);
     });
   });
 }

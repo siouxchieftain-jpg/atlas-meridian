@@ -2,6 +2,7 @@ import type { CoreCaseId, FormKey, Role } from '../content/types';
 import type { FormStep, Intervju, RoleChoice } from '../state/types';
 import { readSession, removeSession, writeSession, browseFlag } from '../state/persist';
 import { rolleValue } from '../state/study';
+import { instrument } from '../content';
 
 /** The pilot round answers into its own copy of the study forms; the study round into the study forms. */
 export type Round = 'pilot' | 'study';
@@ -179,10 +180,14 @@ export function feedbackLocked(roleChoice: RoleChoice | undefined, studienavn: s
  * (never URLSearchParams, which writes spaces as +). Empty values are never
  * sent. The new-tab address never carries embed=1.
  */
-export function buildFormUrl(address: string, locked: LockedFields, embed: boolean): string {
+export function buildFormUrl(address: string, locked: LockedFields, embed: boolean, formKey?: FormKey): string {
   const parts: string[] = [];
   if (embed) parts.push('embed=1');
+  // Only the fields the form has (3.8, part C, F19): since Jishnu's ruling of 24 November the forms keep «studienavn»
+  // alone (S1 also «rolle» and «intervju»; S9 also where the feedback is about). The app keeps the rest for itself.
+  const keep = formKey ? instrument.forms.find((f) => f.key === formKey)?.locked : undefined;
   Object.entries(locked).forEach(([k, v]) => {
+    if (keep && !(keep as string[]).includes(k)) return;
     if (v === undefined || v === null || String(v).trim() === '') return;
     parts.push(`CB${k}=${encodeURIComponent(String(v))}`);
     parts.push(`LCK${k}=true`);
