@@ -4,7 +4,7 @@ import type { CoreCaseId } from '../content/types';
 import { cases } from '../content';
 import { useLang } from '../i18n/i18n';
 import { useStudy } from '../state/study';
-import { SheenButton } from '../patterns/basics';
+import { NextMark, SheenButton } from '../patterns/basics';
 import { guide } from '../theme/constants';
 import { CORE, roleSeg } from './parts';
 import { FeedbackPartsPopover, feedbackOpened, type FeedbackResult } from './StudyFeedback';
@@ -81,9 +81,11 @@ export function CaseEndPrompt({ caseId, onContinue }: { caseId: CoreCaseId; onCo
       </div>
       {/* One main action (3.8, F33): the way on. The feedback, which is optional, sits beside it as a plain button. */}
       <div className={cls.actions}>
-        <SheenButton icon={<ArrowRight20Regular />} iconPosition="after" onClick={goOn} data-case-go-on="">
-          {onLabel}
-        </SheenButton>
+        <NextMark on>
+          <SheenButton icon={<ArrowRight20Regular />} iconPosition="after" onClick={goOn} data-case-go-on="">
+            {onLabel}
+          </SheenButton>
+        </NextMark>
         <FeedbackPartsPopover
           side={side}
           trigger={
@@ -104,9 +106,11 @@ export function CaseEndPrompt({ caseId, onContinue }: { caseId: CoreCaseId; onCo
         </p>
         <p className={cls.quiet}>{s('promptAlways')}</p>
       </div>
-      <SheenButton icon={<ArrowRight20Regular />} iconPosition="after" onClick={goOn} data-case-go-on="">
-        {onLabel}
-      </SheenButton>
+      <NextMark on>
+        <SheenButton icon={<ArrowRight20Regular />} iconPosition="after" onClick={goOn} data-case-go-on="">
+          {onLabel}
+        </SheenButton>
+      </NextMark>
     </section>
   );
 }

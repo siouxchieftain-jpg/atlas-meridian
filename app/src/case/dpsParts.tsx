@@ -323,7 +323,7 @@ export function DpsOutcomeSection({ caseId, onSent }: { caseId: CaseId; onSent: 
   const problem = outcomeValid(dps.outcome, dps);
   const upd = (p: Partial<DpsWork>) => work.updateDps(caseId, p);
   return (
-    <section className={cls.section} aria-label={s('assessmentTitle')} data-section="vurdering">
+    <section className={cls.section} aria-label={s('assessmentTitle')} data-section="vurdering" data-section-done={sent ? '' : undefined}>
       {sent && dps.outcome ? (
         <>
           <div className={cls.unsureHead}>

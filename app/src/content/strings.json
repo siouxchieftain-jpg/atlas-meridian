@@ -4354,5 +4354,13 @@
   "stopPeekLineAfter": {
     "nb": "Har du endret svarene på side 1, trykker du «Neste side». Da kommer «Vis ATLAS» tilbake.",
     "en": "If you have changed the answers on page 1, press ‘Next page’. Then ‘Show ATLAS’ comes back."
+  },
+  "markHere": {
+    "nb": "Trykk her",
+    "en": "Press here"
+  },
+  "guideProgress": {
+    "nb": "{{n}} av {{total}} gjort",
+    "en": "{{n}} of {{total}} done"
   }
 }

@@ -132,7 +132,7 @@ export function BandSection({
     </div>
   );
   return (
-    <section ref={rootRef} className={cls.root} aria-label={s('bandTitle')} data-section="band">
+    <section ref={rootRef} className={cls.root} aria-label={s('bandTitle')} data-section="band" data-section-done={placed ? '' : undefined}>
       <div className={cls.head}>
         <H className={cls.title}>{s('bandTitle')}</H>
         {placed && <ProvenanceChip source="own" />}

@@ -816,7 +816,8 @@ test('r6A-01: another part asks before the open R1 is replaced; the open part sh
   await tab.click();
   await page.getByRole('dialog').getByRole('button', { name: 'Systemets vurdering' }).click();
   await page.getByRole('dialog', { name: 'Bytte skjema?' }).getByRole('button', { name: 'Åpne det nye skjemaet' }).click();
-  await expect(panel(page)).toContainText('lesning');
+  // The new form names its part (the locked context is no longer shown, 3.8).
+  await expect(panel(page)).toContainText('Systemets vurdering');
   await expect(panel(page).getByRole('textbox', { name: 'Hva fungerer her?' })).toHaveValue('');
 });
 

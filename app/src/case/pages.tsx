@@ -12,7 +12,7 @@ import { navigate } from '../router/router';
 import type { DpsWork, GpWork } from '../state/types';
 import { useWork } from '../state/work';
 import { ChoiceGroup } from '../patterns/ChoiceGroup';
-import { DesignNote, GuideImage, ProvenanceChip, GrowingTextarea, SheenButton, StartButton } from '../patterns/basics';
+import { DesignNote, GuideImage, NextMark, ProvenanceChip, GrowingTextarea, SheenButton, StartButton } from '../patterns/basics';
 import { atlasDawn } from '../theme/constants';
 import { Silent, useAtlasAnnounce } from '../patterns/announce';
 import { Rows } from '../patterns/clinical';
@@ -128,9 +128,11 @@ export function BriefingPage({ caseId }: { caseId: CaseId }) {
           <MetaChips time={t(b.time)} fictional={s('fictionalPatient')} />
         </div>
         <Actions>
-          <SheenButton icon={<ArrowRight20Regular />} iconPosition="after" onClick={() => work.startCase(caseId)}>
-            {startLabel}
-          </SheenButton>
+          <NextMark on={work.mode === 'study'}>
+            <SheenButton icon={<ArrowRight20Regular />} iconPosition="after" onClick={() => work.startCase(caseId)}>
+              {startLabel}
+            </SheenButton>
+          </NextMark>
         </Actions>
       </section>
       <Card aria-label={s('about')}>

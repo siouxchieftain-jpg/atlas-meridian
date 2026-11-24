@@ -11,7 +11,7 @@ import { BrowseInvite } from './browse';
 import { navigate } from '../router/router';
 import { stepIndex, useStudy } from '../state/study';
 import { STEP_ORDER, type FormStep, type StepId } from '../state/types';
-import { Panel } from '../patterns/basics';
+import { NextMark, Panel } from '../patterns/basics';
 import { focusAfterOverlay } from '../patterns/announce';
 import { Actions, Body, Card, IntroPage, Lead, Muted, PageCard } from '../patterns/layout';
 import { FOCUS_HEADING_ON_LOAD, PageHeading } from '../shell/PageHeading';
@@ -139,9 +139,11 @@ export function AvslutningPage() {
           <strong>{s('avslutningPressFinish', { finish: s('finish') })}</strong>
         </p>
         <Actions>
-          <Button appearance="primary" onClick={() => ctl.goToStep('takk')}>
-            {s('finish')}
-          </Button>
+          <NextMark on>
+            <Button appearance="primary" onClick={() => ctl.goToStep('takk')}>
+              {s('finish')}
+            </Button>
+          </NextMark>
           <Button onClick={() => ctl.goToStep('ekstra')}>{s('toExtra')}</Button>
         </Actions>
         </>

@@ -59,7 +59,7 @@ export function DecisionSection({ caseId }: { caseId: CaseId }) {
   const chosen = gp.decision;
   const savedLine = s('decisionSavedAs', { v: chosen === 'behold' ? s('decisionHold') : s('decisionRefer') });
   return (
-    <section className={cls.section} aria-label={s('decisionTitle')} data-section="decision">
+    <section className={cls.section} aria-label={s('decisionTitle')} data-section="decision" data-section-done={gp.decisionSaved && chosen ? '' : undefined}>
       <ChoiceGroup<'behold' | 'henvis'>
         legend={s('decisionTitle')}
         chip={<ProvenanceChip source="own" />}
@@ -157,7 +157,7 @@ export function AtlasPanelGp({ caseId, variant }: { caseId: CaseId; variant: 'co
         notes={work.notes}
       />
       <Divider />
-      <div data-section="tags">
+      <div data-section="tags" data-section-done={gp.tags.length > 0 || !!gp.description?.trim() ? '' : undefined}>
         <UncertaintyTags
           tags={gp.tags}
           description={gp.description}
@@ -175,7 +175,7 @@ export function AtlasPanelGp({ caseId, variant }: { caseId: CaseId; variant: 'co
         <DesignNote id="informasjonsguiden" show={work.notes} />
       </section>
       <Divider />
-      <section className={cls.section} aria-label={s('confidenceTitle')} data-section="confidence">
+      <section className={cls.section} aria-label={s('confidenceTitle')} data-section="confidence" data-section-done={gp.confidence ? '' : undefined}>
         <ConfidenceScale
           value={gp.confidence}
           disabled={locked}

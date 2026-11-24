@@ -16,7 +16,7 @@ import type { InstrumentForm, InstrumentItem } from '../content/types';
 import { instrument } from '../content';
 import { useLang } from '../i18n/i18n';
 import { readJSON, writeJSON } from '../state/persist';
-import { GrowingTextarea } from '../patterns/basics';
+import { GrowingTextarea, NextMark } from '../patterns/basics';
 import type { LockedFields } from '../engine/forms';
 
 /**
@@ -95,11 +95,14 @@ export function PreviewForm({
   locked,
   onPageChange,
   onSent,
+  markForward,
 }: {
   formKey: string;
   locked: LockedFields;
   onPageChange: () => void;
   onSent: () => void;
+  /** The form's forward press is the study's next step: it carries the «Trykk her» mark (3.8). */
+  markForward?: boolean;
 }) {
   const cls = useStyles();
   const { t, s } = useLang();
@@ -164,22 +167,8 @@ export function PreviewForm({
     );
   }
 
-  // The locked fields sit where the instrument puts them: first in S1 (A-01 is the role), after B1 in a vignette form.
-  const lockedItems = items.filter((it) => it.type === 'locked');
-  const lockedFirst = lockedItems.length > 0 && items[0]?.type === 'locked';
-  const lockedBox = lockedItems.length > 0 && Object.keys(locked).length > 0 && (
-    <div className={cls.locked}>
-      <span className={cls.lockedHead}>{t(instrument.lockedHeading)}</span>
-      {lockedItems.map((it) => (
-        <span key={it.codebook} className={cls.lockedRow}>
-          {/[?:]$/.test(t(it.text)) ? t(it.text) : `${t(it.text)}:`}{' '}
-          {/* Locked values are Norwegian in both languages (F-27). */}
-          <strong lang="nb">{locked[it.codebook] ?? ''}</strong>
-        </span>
-      ))}
-    </div>
-  );
-
+  // 3.8: the locked fields (role, interview answer, study name, step, version) go with the answers but are not shown:
+  // the participant does not need them (Jishnu, 24 November).
   return (
     <form
       className={cls.root}
@@ -198,7 +187,6 @@ export function PreviewForm({
       </h2>
       {page === 0 && <p className={cls.intro}>{t(form.intro)}</p>}
       {page === 0 && <p className={cls.privacy}>{t(instrument.privacyLine)}</p>}
-      {lockedFirst && lockedBox}
       {items
         .filter((it) => it.type !== 'locked')
         .map((it) => {
@@ -312,14 +300,15 @@ export function PreviewForm({
             </div>
           );
         })}
-      {!lockedFirst && lockedBox}
       <div className={cls.nav}>
         <Button type="button" disabledFocusable={page === 0} onClick={() => page > 0 && turn(page - 1)}>
           {s('back')}
         </Button>
-        <Button type="submit" appearance="primary">
-          {page < total - 1 ? s('next') : s('previewSend')}
-        </Button>
+        <NextMark on={!!markForward}>
+          <Button type="submit" appearance="primary">
+            {page < total - 1 ? s('next') : s('previewSend')}
+          </Button>
+        </NextMark>
       </div>
     </form>
   );

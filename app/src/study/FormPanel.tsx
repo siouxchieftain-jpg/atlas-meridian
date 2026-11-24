@@ -9,10 +9,11 @@ import {
   tokens,
   typographyStyles,
 } from '@fluentui/react-components';
-import { Dismiss20Regular, Eye20Regular, Form20Regular, Open16Regular } from '@fluentui/react-icons';
+import { ArrowUp16Filled, Dismiss20Regular, Eye20Regular, Form20Regular, Open16Regular } from '@fluentui/react-icons';
 import { useEffect, useId, useLayoutEffect, useRef, useState } from 'react';
 import { useLang } from '../i18n/i18n';
-import { size } from '../theme/constants';
+import { guide, size } from '../theme/constants';
+import { NextMark } from '../patterns/basics';
 import { findForm, PreviewForm } from './PreviewForm';
 import { BrowseForm } from './browse';
 import { browseFlag } from '../state/persist';
@@ -113,6 +114,20 @@ const useStyles = makeStyles({
   },
   footRow: { display: 'flex', flexWrap: 'wrap', gap: tokens.spacingHorizontalS, alignItems: 'center' },
   info: { ...typographyStyles.body1, margin: 0 },
+  // 3.8: the next press is in Nettskjema's own form, below: a coral line that points up to it.
+  point: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '8px',
+    margin: 0,
+    paddingInline: '10px',
+    paddingBlock: '6px',
+    borderRadius: tokens.borderRadiusMedium,
+    borderLeft: `3px solid ${guide.coral}`,
+    backgroundColor: 'rgba(245,158,133,0.14)',
+    ...typographyStyles.body1Strong,
+    '& svg': { flexShrink: 0, color: guide.ink },
+  },
   quiet: { ...typographyStyles.caption1, color: tokens.colorNeutralForeground3 },
   skip: { alignSelf: 'flex-start', minWidth: 0, paddingInline: tokens.spacingHorizontalXS, marginInlineStart: `calc(-1 * ${tokens.spacingHorizontalXS})`, fontWeight: tokens.fontWeightRegular },
   toggle: {
@@ -279,7 +294,9 @@ export function FormPanel({ actions }: { actions: FormPanelActions | null }) {
 
   // The stop page (3.8, F20, F45, F74, F103): when page 1 has moved on in a form ATLAS can watch, ATLAS takes it as
   // answered and covers the form's stop page with one action, named: «Trykk nå: Vis ATLAS».
-  const atStop = !!form && !!form.caseId && form.stage === 'page1' && form.route === 'panel' && form.pageChanges > 0 && !browseFlag();
+  // The practice form (preview) is watched the same way, so it too has one action at each moment.
+  const atStop =
+    !!form && !!form.caseId && form.stage === 'page1' && (form.route === 'panel' || form.route === 'preview') && form.pageChanges > 0 && !browseFlag();
   // Where the form stood when the rest of it was asked for: until it moves on from there, ATLAS names the next press.
   const restAt = useRef<{ id: number; at: number } | null>(null);
   if (form && form.stage === 'rest' && restAt.current?.id !== form.id) restAt.current = { id: form.id, at: form.pageChanges };
@@ -434,7 +451,7 @@ export function FormPanel({ actions }: { actions: FormPanelActions | null }) {
               <p className={cls.nextLine} id={`${panelId}-next`}>
                 {s('pressNow', { what: s('showAtlas') })}
               </p>
-              <div>
+              <NextMark on>
                 <Button
                   ref={cardBtn}
                   appearance="primary"
@@ -445,7 +462,7 @@ export function FormPanel({ actions }: { actions: FormPanelActions | null }) {
                 >
                   {s('showAtlas')}
                 </Button>
-              </div>
+              </NextMark>
               <p className={cls.nextQuiet}>{s('stopRestLater')}</p>
               <div>
                 <Button appearance="transparent" size="small" className={cls.fallbackBtn} onClick={() => setPeek({ id: form.id, at: form.pageChanges })}>
@@ -502,13 +519,16 @@ export function FormPanel({ actions }: { actions: FormPanelActions | null }) {
             />
           )}
           {form.route === 'preview' && !browseFlag() && (
-            <PreviewForm
-              key={form.id}
-              formKey={form.formKey}
-              locked={form.locked}
-              onPageChange={host.previewPageChanged}
-              onSent={host.previewSent}
-            />
+            <div className={mergeClasses(showCard && cls.frameAway)}>
+              <PreviewForm
+                key={form.id}
+                formKey={form.formKey}
+                locked={form.locked}
+                onPageChange={host.previewPageChanged}
+                onSent={host.previewSent}
+                markForward={!showCard}
+              />
+            </div>
           )}
           {/* Said once when the form opens, as one sentence (the bar would read its button too, r4A-05). */}
           {form.route === 'notready' && (
@@ -527,11 +547,19 @@ export function FormPanel({ actions }: { actions: FormPanelActions | null }) {
                 {peekMoves === 0 ? s('stopPeekLine') : s('stopPeekLineAfter')}
               </p>
             )}
-            {showPage1 && actions.onPage1 && form.route === 'panel' && !atStop && (
+            {showPage1 && actions.onPage1 && (form.route === 'panel' || form.route === 'preview') && !atStop && (
               <>
-                <p className={cls.info} role="status">
-                  {s('pressNowInForm', { what: s('formNextPage') })}
-                </p>
+                {form.route === 'panel' ? (
+                  // The form's own buttons cannot be marked (they are Nettskjema's): this line, in the foot under the form, points up to them.
+                  <p className={cls.point} role="status">
+                    <ArrowUp16Filled aria-hidden="true" />
+                    {s('pressNowInForm', { what: s('formNextPage') })}
+                  </p>
+                ) : (
+                  <p className={cls.info} role="status">
+                    {s('pressNow', { what: s('next') })}
+                  </p>
+                )}
                 <span className={cls.fallback}>
                   {askAgainFor === form.id && !actions.page1Confirmed ? s('formPage1NotMoved') : s('formPage1Fallback')}
                   <Button
@@ -560,8 +588,8 @@ export function FormPanel({ actions }: { actions: FormPanelActions | null }) {
                 )}
               </>
             )}
-            {showPage1 && actions.onPage1 && form.route !== 'panel' && (
-              // A form in a new tab, or the practice form: ATLAS cannot see it move, so the two presses stay here, in order.
+            {showPage1 && actions.onPage1 && form.route === 'tab' && (
+              // A form in a new tab: ATLAS cannot see it move, so the two presses stay here, in order.
               <>
                 <p className={cls.info} role="status">
                   {actions.page1Confirmed ? s('pressNow', { what: s('showAtlas') }) : s('pressNow', { what: s('formPage1Confirm') })}

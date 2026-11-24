@@ -23,7 +23,7 @@ import { browseFlag, clearBrowseKeys, readSession, writeSession } from '../state
 import { useStudy } from '../state/study';
 import type { Intervju, RoleChoice } from '../state/types';
 import { ChoiceGroup } from '../patterns/ChoiceGroup';
-import { GuideImage, SheenButton, StudyNameMark } from '../patterns/basics';
+import { GuideImage, NextMark, SheenButton, StudyNameMark } from '../patterns/basics';
 import { focusAfterOverlay } from '../patterns/announce';
 import { Actions, Body, Eyebrow, Lead, Muted } from '../patterns/layout';
 import { atlasDawn, guide, size } from '../theme/constants';
@@ -887,6 +887,7 @@ export function OmDegPage() {
                   </span>
                 </p>
                 <div>
+                  <NextMark on={!!intervju && !pendingOpen}>
                   <Button
                     appearance="primary"
                     size="large"
@@ -905,6 +906,7 @@ export function OmDegPage() {
                   >
                     {s('omDegSave')}
                   </Button>
+                  </NextMark>
                   <p id={reasonId} className={mergeClasses(o.reason, asked && !intervju && o.reasonAsk)} role={asked && !intervju ? 'alert' : undefined}>
                     {!intervju ? s('omDegSaveReason') : s('omDegLockNote')}
                   </p>
@@ -923,18 +925,20 @@ export function OmDegPage() {
           )}
           {s1Done ? (
             <Actions>
-              <Button
-                appearance="primary"
-                size="large"
-                icon={<ArrowRight20Regular />}
-                iconPosition="after"
-                onClick={() => {
-                  study.advanceTo('omvisning');
-                  navigate(HOME_PATH);
-                }}
-              >
-                {s('toHome')}
-              </Button>
+              <NextMark on>
+                <Button
+                  appearance="primary"
+                  size="large"
+                  icon={<ArrowRight20Regular />}
+                  iconPosition="after"
+                  onClick={() => {
+                    study.advanceTo('omvisning');
+                    navigate(HOME_PATH);
+                  }}
+                >
+                  {s('toHome')}
+                </Button>
+              </NextMark>
             </Actions>
           ) : (
             saved && !changed && <FormWaiting step="S1" />

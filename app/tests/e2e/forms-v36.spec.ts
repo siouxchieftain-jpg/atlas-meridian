@@ -118,7 +118,8 @@ for (const role of ['fastlege', 'dps-kliniker'] as const) {
       await expect(form.getByRole('heading', { level: 2 })).toContainText('Side 1 av 3');
       await form.getByRole('radiogroup').nth(1).getByRole('radio', { name: '4', exact: true }).check({ force: true });
       await form.getByRole('button', { name: 'Neste', exact: true }).click();
-      await expect(form.getByRole('heading', { level: 2 })).toContainText('Side 2 av 3');
+      // 3.8: the practice form is watched like Nettskjema: page 2 is the stop page, covered by the card with one action.
+      await expect(panel(page).locator('[data-next-step="show-atlas"]')).toBeVisible();
       const axe = await new AxeBuilder({ page }).include('[data-form-panel]').withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa']).analyze();
       expect(axe.violations.map((v) => `${v.id} ${v.nodes.map((n) => n.target.join(' ')).join(', ')}`)).toEqual([]);
     });
@@ -172,7 +173,6 @@ for (const role of ['fastlege', 'dps-kliniker'] as const) {
       await answerDecision(form, role, c, 0);
       await form.getByRole('radiogroup').nth(1).getByRole('radio', { name: '3', exact: true }).check({ force: true });
       await form.getByRole('button', { name: 'Neste', exact: true }).click();
-      await expect(form.getByRole('heading', { level: 2 })).toContainText('Side 2 av 3');
       await confirmPage1(page);
       await panel(page).getByRole('button', { name: 'Vis ATLAS' }).click();
       await WORK[role][c](page);

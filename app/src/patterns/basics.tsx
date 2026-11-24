@@ -650,3 +650,81 @@ export function SrOnly({ children, as = 'span' }: { children: ReactNode; as?: 's
   const Tag = as;
   return <Tag style={srOnly}>{children}</Tag>;
 }
+
+/* ---------- Next-step mark (3.8) ---------- */
+
+const useNextMark = makeStyles({
+  wrap: {
+    position: 'relative',
+    display: 'inline-flex',
+    alignSelf: 'flex-start',
+    width: 'fit-content',
+    // Room above for the tag, so it never covers the line before the control.
+    marginBlockStart: '30px',
+    borderRadius: tokens.borderRadiusMedium,
+    // The ring in the coral the tour uses for «Prøv»: participants have met it as "here". It pulses twice when it
+    // appears, then stays still; no motion under reduced motion.
+    '::after': {
+      content: '""',
+      position: 'absolute',
+      inset: '-5px',
+      borderRadius: '10px',
+      border: `2px solid ${guide.coral}`,
+      pointerEvents: 'none',
+      animationName: {
+        '0%': { boxShadow: `0 0 0 0 rgba(245,158,133,0.55)` },
+        '70%': { boxShadow: `0 0 0 10px rgba(245,158,133,0)` },
+        '100%': { boxShadow: `0 0 0 0 rgba(245,158,133,0)` },
+      },
+      animationDuration: '1.1s',
+      animationIterationCount: 2,
+      '@media (prefers-reduced-motion: reduce)': { animationName: 'none' },
+    },
+    '@media (forced-colors: active)': { '::after': { border: '2px solid Highlight' } },
+  },
+  tag: {
+    position: 'absolute',
+    bottom: 'calc(100% + 9px)',
+    left: '-5px',
+    zIndex: 1,
+    whiteSpace: 'nowrap',
+    paddingInline: '8px',
+    paddingBlock: '2px',
+    borderRadius: tokens.borderRadiusCircular,
+    backgroundColor: guide.coral,
+    color: '#3D1408',
+    ...typographyStyles.caption1Strong,
+    pointerEvents: 'none',
+    // A small point down to the control.
+    '::after': {
+      content: '""',
+      position: 'absolute',
+      top: '100%',
+      left: '14px',
+      borderLeft: '5px solid transparent',
+      borderRight: '5px solid transparent',
+      borderTop: `5px solid ${guide.coral}`,
+    },
+    '@media (forced-colors: active)': { backgroundColor: 'Highlight', color: 'HighlightText' },
+  },
+});
+
+/**
+ * The next step's mark (3.8): a coral ring and a small «Trykk her» on the one control that moves the study on. Only on
+ * navigation (never on an answer, a placement or anything ATLAS shows, so it cannot lead to a choice), at most one per
+ * screen, gone once the step moves on. The tag is decoration: the control has its own name, and a «Trykk nå» line says
+ * the same in words.
+ */
+export function NextMark({ on, children }: { on: boolean; children: ReactNode }) {
+  const cls = useNextMark();
+  const { s } = useLang();
+  if (!on) return <>{children}</>;
+  return (
+    <span className={cls.wrap} data-next-mark="">
+      {children}
+      <span className={cls.tag} aria-hidden="true">
+        {s('markHere')}
+      </span>
+    </span>
+  );
+}

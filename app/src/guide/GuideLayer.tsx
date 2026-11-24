@@ -1,5 +1,5 @@
 import { Button, Popover, PopoverSurface, PopoverTrigger, makeStyles, mergeClasses, shorthands, tokens, typographyStyles } from '@fluentui/react-components';
-import { Checkmark16Regular, Dismiss16Regular } from '@fluentui/react-icons';
+import { Checkmark16Filled, Checkmark16Regular, Dismiss16Regular } from '@fluentui/react-icons';
 import { useEffect, useState, useSyncExternalStore, type ReactNode } from 'react';
 import { createPortal } from 'react-dom';
 import guideData from '../content/guide.json';
@@ -33,8 +33,8 @@ export interface GuideMarker {
 const DATA = guideData as { gp: GuideMarker[]; dps: GuideMarker[] };
 
 // One small store: which marker is open, which are done, which are on the page now.
-type GuideState = { open: number | null; done: Record<string, boolean>; present: number[] };
-let state: GuideState = { open: null, done: {}, present: [] };
+type GuideState = { open: number | null; done: Record<string, boolean>; auto: Record<string, boolean>; present: number[] };
+let state: GuideState = { open: null, done: {}, auto: {}, present: [] };
 const subs = new Set<() => void>();
 function set(next: Partial<GuideState>) {
   state = { ...state, ...next };
@@ -44,6 +44,14 @@ function set(next: Partial<GuideState>) {
 function doneKey(n: number): string {
   return `${currentPath().split('/')[3] ?? ''}:${n}`;
 }
+
+/** A part is done when the participant ticked it, or (3.8) when the page says so: a part to act on carries
+ * `data-section-done` once its work is done; a part to read is done once it has been in view for a moment. */
+function isDone(st: GuideState, n: number): boolean {
+  const k = doneKey(n);
+  return !!st.done[k] || !!st.auto[k];
+}
+const READ_PARTS = '[data-section="guide"], [data-section="gp-usikker"], [data-section="fra-atlas"], [data-section="retur"], [data-margin]';
 
 function useGuideState(): GuideState {
   return useSyncExternalStore(
@@ -126,6 +134,61 @@ const useStyles = makeStyles({
   },
   chipNum: { width: '24px', height: '24px', fontSize: tokens.fontSizeBase200 },
   chipDone: { color: tokens.colorNeutralForeground2 },
+  // 3.8: the checklist under the task: small boxes in a grid, each ticking itself.
+  checklist: {
+    listStyle: 'none',
+    margin: 0,
+    padding: 0,
+    display: 'grid',
+    gridTemplateColumns: 'repeat(auto-fill, minmax(168px, 1fr))',
+    gap: '8px',
+  },
+  box: {
+    width: '100%',
+    height: '100%',
+    display: 'flex',
+    alignItems: 'center',
+    gap: '10px',
+    minHeight: '48px',
+    padding: '8px 12px 8px 8px',
+    borderRadius: tokens.borderRadiusLarge,
+    border: `1px solid ${guide.track}`,
+    backgroundColor: 'rgba(255,255,255,0.9)',
+    color: tokens.colorNeutralForeground1,
+    textAlign: 'start',
+    ...typographyStyles.body1,
+    cursor: 'pointer',
+    transitionProperty: 'background-color, border-color',
+    transitionDuration: '0.2s',
+    ':hover': { ...shorthands.borderColor(guide.coral) },
+    ':focus-visible': { outline: `2px solid ${tokens.colorStrokeFocus2}`, outlineOffset: '2px' },
+  },
+  boxDone: {
+    ...shorthands.borderColor(tokens.colorPaletteGreenBorder1),
+    backgroundColor: tokens.colorPaletteGreenBackground1,
+  },
+  tick: {
+    flexShrink: 0,
+    width: '24px',
+    height: '24px',
+    borderRadius: tokens.borderRadiusMedium,
+    border: `2px solid ${guide.track}`,
+    backgroundColor: tokens.colorNeutralBackground1,
+    color: guide.ink,
+    display: 'inline-flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    fontSize: tokens.fontSizeBase200,
+    fontWeight: tokens.fontWeightBold,
+    boxSizing: 'border-box',
+  },
+  tickDone: {
+    ...shorthands.borderColor(tokens.colorPaletteGreenForeground1),
+    backgroundColor: tokens.colorPaletteGreenForeground1,
+    color: '#FFFFFF',
+  },
+  boxText: { minWidth: 0 },
+  progress: { ...typographyStyles.caption1, color: tokens.colorNeutralForeground2 },
 });
 
 /** The marker a tour step shows, if any: the tour and the case pages use the same numbers. */
@@ -158,7 +221,7 @@ function MarkerCard({ m, onClose }: { m: GuideMarker; onClose: () => void }) {
   const cls = useStyles();
   const { s, t } = useLang();
   const st = useGuideState();
-  const done = !!st.done[doneKey(m.n)];
+  const done = isDone(st, m.n);
   const L = [s('guideWhere'), s('guideDo'), s('guideLookFor'), s('guideTellUs')];
   return (
     <>
@@ -203,7 +266,7 @@ function Pin({ m, host }: { m: GuideMarker; host: HTMLElement }) {
   const { s, t } = useLang();
   const st = useGuideState();
   const open = st.open === m.n;
-  const done = !!st.done[doneKey(m.n)];
+  const done = isDone(st, m.n);
   return createPortal(
     <Popover open={open} onOpenChange={(_, d) => set({ open: d.open ? m.n : null })} positioning={{ position: 'before', align: 'top', fallbackPositions: ['after-top', 'below-start'] }} withArrow trapFocus>
       <PopoverTrigger disableButtonEnhancement>
@@ -253,13 +316,57 @@ export function GuideLayer({ role, view }: { role: 'gp' | 'dps'; view: string | 
       setHosts((prev) => (prev.length === found.length && prev.every((p, i) => p.el === found[i].el) ? prev : found));
       const present = found.map((f) => f.m.n);
       if (present.join() !== state.present.join()) set({ present });
+      // Parts to act on say when they are done (3.8).
+      let auto = state.auto;
+      for (const { m, el } of found) {
+        if (el.matches(READ_PARTS)) {
+          watchRead(m.n, el);
+          continue;
+        }
+        const k = doneKey(m.n);
+        const now = el.hasAttribute('data-section-done') || !!el.querySelector('[data-section-done]');
+        if (!!auto[k] !== now) auto = { ...auto, [k]: now };
+      }
+      if (auto !== state.auto) set({ auto });
     };
+    // Parts to read: done once at least half of the part has been in view for a little over a second.
+    const timers = new Map<number, number>();
+    const watched = new Map<HTMLElement, number>();
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const e of entries) {
+          const n = watched.get(e.target as HTMLElement);
+          if (n === undefined) continue;
+          if (e.isIntersecting) {
+            if (!timers.has(n))
+              timers.set(
+                n,
+                window.setTimeout(() => {
+                  const k = doneKey(n);
+                  if (!state.auto[k]) set({ auto: { ...state.auto, [k]: true } });
+                }, 1200),
+              );
+          } else {
+            window.clearTimeout(timers.get(n));
+            timers.delete(n);
+          }
+        }
+      },
+      { threshold: 0.5 },
+    );
+    function watchRead(n: number, el: HTMLElement) {
+      if (watched.has(el) || state.auto[doneKey(n)]) return;
+      watched.set(el, n);
+      io.observe(el);
+    }
     scan();
     const main = document.querySelector('main');
     const obs = new MutationObserver(scan);
-    if (main) obs.observe(main, { childList: true, subtree: true });
+    if (main) obs.observe(main, { childList: true, subtree: true, attributes: true, attributeFilter: ['data-section-done'] });
     return () => {
       obs.disconnect();
+      io.disconnect();
+      timers.forEach((t) => window.clearTimeout(t));
       document.querySelectorAll<HTMLElement>('[data-guide-indented]').forEach((el) => {
         el.style.paddingLeft = '';
         delete el.dataset.guideIndented;
@@ -284,35 +391,44 @@ export function GuideTaskStrip({ role, view, task, note }: { role: 'gp' | 'dps';
   const { s, t } = useLang();
   const st = useGuideState();
   const markers = markersFor(role, view).filter((m) => st.present.includes(m.n));
+  const doneCount = markers.filter((m) => isDone(st, m.n)).length;
   return (
     <section className={cls.strip} aria-label={s('guideTask')}>
       <span className={cls.eyebrow}>{s('guideTask')}</span>
       <p style={{ margin: 0 }}>{TASKS[`${role}/${view}`] ? t(TASKS[`${role}/${view}`]) : task}</p>
       {note}
       {markers.length > 0 && (
-        <ol className={cls.chips} aria-label={s('guideStepsHere')}>
-          {markers.map((m) => {
-            const done = !!st.done[doneKey(m.n)];
-            return (
-              <li key={m.n}>
-                <button
-                  type="button"
-                  className={`${cls.chip} ${done ? cls.chipDone : ''}`}
-                  onClick={() => {
-                    document.querySelector<HTMLElement>(`[data-guide-pin="${m.n}"]`)?.scrollIntoView({ block: 'center', behavior: 'smooth' });
-                    set({ open: m.n });
-                  }}
-                >
-                  <span className={`${cls.num} ${cls.chipNum}`} aria-hidden="true">
-                    {done ? <Checkmark16Regular /> : m.n}
-                  </span>
-                  {t(m.part)}
-                  {done && <SrOnly>{s('guideDoneSuffix')}</SrOnly>}
-                </button>
-              </li>
-            );
-          })}
-        </ol>
+        <>
+          {/* 3.8: the page's parts as a checklist under the task; each ticks itself as its work is done. */}
+          <ol className={cls.checklist} aria-label={s('guideStepsHere')}>
+            {markers.map((m) => {
+              const done = isDone(st, m.n);
+              return (
+                <li key={m.n}>
+                  <button
+                    type="button"
+                    className={mergeClasses(cls.box, done && cls.boxDone)}
+                    data-guide-step={m.n}
+                    data-done={done ? '' : undefined}
+                    onClick={() => {
+                      document.querySelector<HTMLElement>(`[data-guide-pin="${m.n}"]`)?.scrollIntoView({ block: 'center', behavior: 'smooth' });
+                      set({ open: m.n });
+                    }}
+                  >
+                    <span className={mergeClasses(cls.tick, done && cls.tickDone)} aria-hidden="true">
+                      {done ? <Checkmark16Filled /> : m.n}
+                    </span>
+                    <span className={cls.boxText}>{t(m.part)}</span>
+                    {done && <SrOnly>{s('guideDoneSuffix')}</SrOnly>}
+                  </button>
+                </li>
+              );
+            })}
+          </ol>
+          <span className={cls.progress} aria-live="polite">
+            {s('guideProgress', { n: doneCount, total: markers.length })}
+          </span>
+        </>
       )}
     </section>
   );
