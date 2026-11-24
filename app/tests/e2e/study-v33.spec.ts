@@ -40,19 +40,31 @@ test('Velkommen reaches the footer at a laptop and a desktop size, and each role
   expect(await marks.nth(2).evaluate((el) => getComputedStyle(el).backgroundColor)).toBe('rgb(245, 158, 133)');
 });
 
-test('Om deg: the study name as a profile card with its mark, both panels down to the footer, and the mark in the header', async ({ page }) => {
+test('Om deg (3.8): one card, the study name as its profile over the cover, Om deg below, and the mark in the header', async ({ page }) => {
   await page.setViewportSize({ width: 1536, height: 713 });
   await mockNettskjema(page);
   await page.goto('/');
   await page.getByRole('button', { name: 'Start som fastlege' }).click();
   await expect(page.getByRole('heading', { level: 1, name: 'Om deg' })).toBeVisible();
-  const card = page.locator('aside[data-studienavn]');
+  // 3.8: no card of its own beside the page (a supervisor read the two boxes as unrelated): one card holds the name and
+  // the question.
+  await expect(page.locator('aside[data-studienavn]')).toHaveCount(0);
+  const card = page.locator('section[data-studienavn]');
+  await expect(card.getByRole('heading', { level: 1, name: 'Om deg' })).toBeVisible();
   const name = (await card.locator('[data-studienavn-value]').textContent())!.trim();
-  // 3.4: the mark shows the name's animal, a picture with no text of its own; the cover wears the GP's wave.
-  await expect(card.locator('[data-name-mark]')).toHaveAttribute('data-animal', name.split(' ')[1]);
+  expect(name).toMatch(/^\S+ \S+ \d+$/);
+  // 3.4: the mark shows the name's animal, a picture with no text of its own; the cover wears the GP's wave, once.
+  const mark = card.locator('[data-name-mark]');
+  await expect(mark).toHaveAttribute('data-animal', name.split(' ')[1]);
   await expect(card.locator('[data-name-mark] img')).toHaveAttribute('alt', '');
+  await expect(card.locator('[data-guide-image]')).toHaveCount(1);
   await expect(card.locator('[data-guide-image="cover"]')).toHaveAttribute('data-guide-art', 'gp');
-  expect(await gapToFooter(page, card)).toBeLessThanOrEqual(16);
+  // The mark is large and sits level with the name: their bottoms within a few pixels of each other's line.
+  const m = (await mark.boundingBox())!;
+  expect(m.width).toBeGreaterThanOrEqual(160);
+  const nameBox = (await card.locator('[data-studienavn-value]').boundingBox())!;
+  expect(nameBox.x).toBeGreaterThan(m.x + m.width);
+  expect(nameBox.y + nameBox.height).toBeLessThan(m.y + m.height);
   // The header's account: the mark opens a card with the name and the role.
   const account = page.locator('[data-study-account]');
   await expect(account).toHaveAccessibleName(`Studienavnet ditt: ${name}`);
@@ -211,4 +223,19 @@ test('the end of a case: both ways on sit in the warm bar, the way on first with
   expect(sheens).toBe(1);
   await home.click();
   await expect(page.getByRole('heading', { level: 1, name: 'Timeliste i dag' })).toBeVisible();
+});
+
+test('Om deg (3.8): «Lagre og åpne skjemaet» is never greyed out; with no answer it says so in red and the question takes focus', async ({ page }) => {
+  await mockNettskjema(page);
+  await page.goto('/');
+  await page.getByRole('button', { name: 'Start som fastlege' }).click();
+  const save = page.getByRole('button', { name: 'Lagre og åpne skjemaet' });
+  await expect(save).toBeEnabled();
+  await save.click();
+  await expect(page.getByRole('alert')).toHaveText('Svar på spørsmålet for å gå videre.');
+  await expect(page.getByRole('radio', { name: 'Ja' })).toBeFocused();
+  await expect(page.locator('iframe[data-form-frame]')).toHaveCount(0);
+  await page.getByLabel('Nei', { exact: true }).check({ force: true });
+  await save.click();
+  await expect(page.locator('iframe[data-form-frame]')).toBeVisible();
 });

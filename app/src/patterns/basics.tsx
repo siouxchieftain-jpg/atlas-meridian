@@ -464,8 +464,8 @@ export function studyNameAnimal(name: string): { animal: string; url: string } |
 }
 
 /** 28 px is the smallest mark: below it the animals blur (an eagle or a badger at 24 px is a smudge). */
-type MarkSize = 28 | 32 | 40 | 48 | 56 | 64 | 104;
-const MARK_TEXT: Record<MarkSize, string> = { 28: '11px', 32: '12px', 40: '14px', 48: '17px', 56: '20px', 64: '22px', 104: '34px' };
+type MarkSize = 28 | 32 | 40 | 48 | 56 | 64 | 104 | 168;
+const MARK_TEXT: Record<MarkSize, string> = { 28: '11px', 32: '12px', 40: '14px', 48: '17px', 56: '20px', 64: '22px', 104: '34px', 168: '54px' };
 
 /**
  * The study name's mark: the name's animal on the guide's warm gradient (its initials when ATLAS has no picture of the
@@ -476,7 +476,7 @@ export function StudyNameMark({ name, size = 32, ring, className }: { name: stri
   const cls = useNameMark();
   const animal = studyNameAnimal(name);
   // The large mark (the study name's card) lets the animal fill more of the circle.
-  const inner = Math.round(size * (size >= 104 ? 0.68 : 0.6));
+  const inner = Math.round(size * (size >= 168 ? 0.62 : size >= 104 ? 0.68 : 0.6));
   return (
     <span
       aria-hidden="true"

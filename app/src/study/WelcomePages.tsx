@@ -1,6 +1,7 @@
 import { Button, Link, MessageBar, MessageBarActions, MessageBarBody, MessageBarTitle, makeStyles, mergeClasses, tokens, typographyStyles } from '@fluentui/react-components';
 import {
   ArrowRight20Regular,
+  ArrowSwap20Regular,
   CheckmarkCircle16Regular,
   CheckmarkCircle20Filled,
   Circle20Regular,
@@ -17,12 +18,12 @@ import { useEffect, useId, useState, type ReactNode } from 'react';
 import { cases } from '../content';
 import { formatDate, useLang } from '../i18n/i18n';
 import { getConfig, studyClosed } from '../engine/forms';
-import { Redirect, RouterLink, navigate, useRoute } from '../router/router';
+import { Redirect, navigate, useRoute } from '../router/router';
 import { browseFlag, clearBrowseKeys, readSession, writeSession } from '../state/persist';
 import { useStudy } from '../state/study';
 import type { Intervju, RoleChoice } from '../state/types';
 import { ChoiceGroup } from '../patterns/ChoiceGroup';
-import { GuideImage, SheenButton, StudyNameMark, guideCardSurface } from '../patterns/basics';
+import { GuideImage, SheenButton, StudyNameMark } from '../patterns/basics';
 import { focusAfterOverlay } from '../patterns/announce';
 import { Actions, Body, Eyebrow, Lead, Muted } from '../patterns/layout';
 import { atlasDawn, guide, size } from '../theme/constants';
@@ -621,104 +622,155 @@ export function VelkommenPage() {
 /* ---------- 2 Om deg ---------- */
 
 const useOmDeg = makeStyles({
-  // The two panels share the width, two to one, and stack when the content is narrow (beside an open form panel too).
-  // Side by side they reach down to the footer together (board 8a); each grows with its content.
-  wrap: { flexGrow: 1, marginBlockStart: `${size.panelInset}px`, display: 'flex', flexWrap: 'wrap', alignItems: 'stretch', gap: `${size.panelInset}px` },
-  // Its content sits in the middle of the panel when there is room, as board 8a draws it.
-  main: {
-    flex: '2 1 460px',
-    minWidth: 0,
+  // 3.8: one card. One fabric across it: the wave turned upside down, so its richest band runs across a cover and the
+  // rest fades out behind the header; a white veil keeps the text readable. The study name is the page's profile (a large
+  // mark over the cover's edge, the name beside it), and Om deg sits below on a white panel. The card ends with its content.
+  outer: { flexGrow: 1, marginBlockStart: `${size.panelInset}px`, display: 'flex', alignItems: 'flex-start', containerType: 'inline-size' },
+  card: {
+    position: 'relative',
+    isolation: 'isolate',
+    overflow: 'hidden',
+    flexGrow: 1,
     display: 'flex',
     flexDirection: 'column',
-    justifyContent: 'center',
-    gap: '14px',
+    borderRadius: tokens.borderRadiusXLarge,
+    boxShadow: tokens.shadow4,
     backgroundColor: tokens.colorNeutralBackground1,
-    borderRadius: tokens.borderRadiusLarge,
-    boxShadow: tokens.shadow2,
-    padding: tokens.spacingHorizontalL,
-    '@media only screen and (min-width: 640px)': { padding: tokens.spacingHorizontalXXL },
     boxSizing: 'border-box',
+    paddingBlockEnd: '8px',
     '@media (forced-colors: active)': { border: '1px solid CanvasText' },
   },
-  roleRow: {
+  art: {
+    bottom: 'auto',
+    height: '600px',
+    transform: 'scaleY(-1)',
+    opacity: 1,
+    maskImage: 'linear-gradient(180deg, transparent 0%, #000 55%)',
+    WebkitMaskImage: 'linear-gradient(180deg, transparent 0%, #000 55%)',
+  },
+  veil: {
+    position: 'absolute',
+    inset: 0,
+    zIndex: -1,
+    pointerEvents: 'none',
+    backgroundImage:
+      'linear-gradient(180deg, rgba(255,255,255,0) 0px, rgba(255,255,255,0.04) 120px, rgba(255,255,255,0.9) 200px, rgba(255,255,255,0.82) 100%)',
+  },
+  top: { height: '128px', flexShrink: 0, '@container (min-width: 900px)': { height: '164px' } },
+  profile: {
+    position: 'relative',
+    zIndex: 1,
     display: 'flex',
     flexWrap: 'wrap',
-    alignItems: 'center',
-    gap: '12px',
-    paddingInline: '14px',
-    paddingBlock: '10px',
-    borderRadius: tokens.borderRadiusLarge,
-    backgroundColor: tokens.colorNeutralBackground2,
-    border: `1px solid ${tokens.colorNeutralStroke3}`,
+    alignItems: 'flex-end',
+    gap: '12px 28px',
+    paddingInline: '24px',
+    '@container (min-width: 900px)': { paddingInline: '44px' },
   },
-  roleIcon: {
-    width: '32px',
-    height: '32px',
-    borderRadius: tokens.borderRadiusCircular,
-    backgroundColor: tokens.colorBrandBackground2,
-    border: `1px solid ${tokens.colorBrandStroke2}`,
-    color: tokens.colorBrandForeground2,
+  avatar: {
+    marginBlockStart: '-72px',
+    border: '6px solid #FFFFFF',
+    boxShadow: '0 12px 32px rgba(91,79,214,0.28), 0 2px 6px rgba(0,0,0,0.08)',
+    flexShrink: 0,
+    animationName: { from: { opacity: 0, transform: 'scale(0.9)' }, to: { opacity: 1, transform: 'scale(1)' } },
+    animationDuration: '320ms',
+    animationTimingFunction: 'cubic-bezier(0.2, 0.8, 0.2, 1)',
+    '@media (prefers-reduced-motion: reduce)': { animationName: 'none' },
+    '@container (min-width: 900px)': { marginBlockStart: '-84px' },
+  },
+  who: { display: 'flex', flexDirection: 'column', gap: '4px', flex: '1 1 300px', paddingBlockEnd: '6px', maxWidth: '720px' },
+  eyebrow: { ...typographyStyles.body1Strong, margin: 0, color: guide.ink },
+  name: {
+    ...typographyStyles.largeTitle,
+    fontSize: 'clamp(28px, 7cqi, 40px)',
+    margin: 0,
+    lineHeight: 1.05,
+    color: tokens.colorNeutralForeground1,
+    overflowWrap: 'anywhere',
+  },
+  nowrap: { whiteSpace: 'nowrap' },
+  roleRow: { display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: '8px 12px', marginBlockStart: '8px' },
+  roleBadge: {
     display: 'inline-flex',
     alignItems: 'center',
-    justifyContent: 'center',
-    boxSizing: 'border-box',
-    flexShrink: 0,
+    gap: '8px',
+    paddingInline: '12px',
+    minHeight: '32px',
+    borderRadius: tokens.borderRadiusCircular,
+    backgroundColor: tokens.colorBrandBackground2,
+    color: tokens.colorBrandForeground2,
+    ...typographyStyles.body1Strong,
   },
-  roleText: { ...typographyStyles.body1, margin: 0, flexGrow: 1 },
+  // What the name is for, under the name's column (beside the mark from 600 px).
+  about: {
+    margin: '20px 24px 0',
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '8px',
+    '@container (min-width: 600px)': { paddingInlineStart: '196px' },
+    '@container (min-width: 900px)': { margin: '18px 44px 0', paddingInlineStart: '196px' },
+  },
+  lead: { ...typographyStyles.body1, margin: 0, maxWidth: '68ch', color: tokens.colorNeutralForeground2 },
+  facts: {
+    listStyle: 'none',
+    margin: 0,
+    padding: 0,
+    display: 'flex',
+    flexWrap: 'wrap',
+    gap: '4px 20px',
+    '@container (max-width: 1099px)': { flexDirection: 'column' },
+  },
+  // Plain lines, not capsules, so the facts read as information and not as buttons.
+  fact: { display: 'inline-flex', alignItems: 'center', gap: '6px', ...typographyStyles.caption1, color: tokens.colorNeutralForeground2 },
+  factIcon: { display: 'inline-flex', color: tokens.colorNeutralForeground3 },
+  panel: {
+    margin: '24px 16px 16px',
+    padding: tokens.spacingHorizontalL,
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '14px',
+    borderRadius: tokens.borderRadiusLarge,
+    backgroundColor: 'rgba(255,255,255,0.92)',
+    border: `1px solid ${tokens.colorNeutralStroke3}`,
+    boxShadow: '0 6px 24px rgba(91,79,214,0.08)',
+    '@container (min-width: 900px)': { margin: '28px 44px 36px', padding: '28px 32px', maxWidth: '980px' },
+    '& h1': { ...typographyStyles.title3 },
+    // The three answers as clear choices: taller, a radio circle, the brand ring when chosen.
+    '& fieldset': { maxWidth: '760px' },
+    '& fieldset label': { minHeight: '56px', paddingInlineStart: '44px', fontSize: tokens.fontSizeBase400, boxShadow: '0 1px 2px rgba(0,0,0,0.04)' },
+    '& fieldset label::before': {
+      content: '""',
+      position: 'absolute',
+      left: '16px',
+      top: '50%',
+      width: '18px',
+      height: '18px',
+      marginTop: '-9px',
+      borderRadius: '50%',
+      border: `2px solid ${tokens.colorNeutralStrokeAccessible}`,
+      boxSizing: 'border-box',
+      backgroundColor: tokens.colorNeutralBackground1,
+    },
+    '& fieldset label:has(input:checked)::before': { border: `5px solid ${tokens.colorBrandBackground}` },
+    '& fieldset legend': { ...typographyStyles.subtitle2, marginBlockEnd: '10px' },
+    '@container (max-width: 520px)': { '& fieldset > div': { gridTemplateColumns: 'minmax(0, 1fr)' } },
+    '@media (forced-colors: active)': { border: '1px solid CanvasText' },
+  },
+  // Its own full-width line: the page's reading width (#main p) would cut a border on the «Neste» line short.
+  rule: { height: '1px', backgroundColor: tokens.colorNeutralStroke3, marginBlockStart: '4px' },
   next: {
     display: 'grid',
     gridTemplateColumns: '16px minmax(0, 1fr)',
     columnGap: '8px',
     ...typographyStyles.body1,
     margin: 0,
-    paddingBlockStart: '12px',
-    borderTop: `1px solid ${tokens.colorNeutralStroke3}`,
   },
   nextIcon: { marginTop: '2px', color: tokens.colorNeutralForeground2, display: 'inline-flex' },
   reason: { ...typographyStyles.caption1, color: tokens.colorNeutralForeground3, margin: '8px 0 0' },
-  // The study name as the participant's profile card (board 8a): a guide card with the artwork as its cover, the name's
-  // mark over the cover's edge, the name large, what it is for, and three short facts.
-  name: {
-    ...guideCardSurface,
-    flex: '1 1 300px',
-    minWidth: 0,
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    gap: '12px',
-    paddingInline: 'clamp(20px, 2.2vw, 32px)',
-    paddingBlockStart: '120px',
-    paddingBlockEnd: '28px',
-    boxShadow: tokens.shadow2,
-    // 3.7: the dawn's warm light behind the name, as on the study card, so the card does not go flat under the artwork.
-    backgroundImage:
-      'radial-gradient(60% 38% at 88% 46%, rgba(253,207,180,0.55) 0%, rgba(253,207,180,0) 72%), radial-gradient(55% 40% at 8% 100%, rgba(231,228,251,0.9) 0%, rgba(231,228,251,0) 70%), ' +
-      guide.card,
-  },
-  nameEyebrow: { ...typographyStyles.caption1Strong, margin: 0, color: guide.ink },
-  nameValue: { ...typographyStyles.title2, margin: 0, color: tokens.colorNeutralForeground1, overflowWrap: 'anywhere' },
-  nameText: { ...typographyStyles.body1, margin: 0, color: tokens.colorNeutralForeground1, maxWidth: '52ch' },
-  facts: {
-    listStyle: 'none',
-    margin: 0,
-    padding: 0,
-    paddingBlockStart: '12px',
-    borderTop: `1px solid ${guide.track}`,
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '6px',
-  },
-  // 3.7: plain lines, not capsules, so the facts read as information and not as buttons.
-  fact: {
-    display: 'grid',
-    gridTemplateColumns: '16px minmax(0, 1fr)',
-    columnGap: '8px',
-    alignItems: 'start',
-    ...typographyStyles.body1,
-    color: tokens.colorNeutralForeground1,
-  },
-  factIcon: { color: guide.ink, display: 'inline-flex', marginTop: '2px' },
+  reasonAsk: { ...typographyStyles.caption1Strong, color: tokens.colorPaletteRedForeground1 },
+  done: { display: 'flex', alignItems: 'center', gap: '10px', ...typographyStyles.body1Strong, color: tokens.colorPaletteGreenForeground1, margin: 0 },
 });
+
 
 export function OmDegPage() {
   const o = useOmDeg();
@@ -732,6 +784,9 @@ export function OmDegPage() {
   const role = st.roleChoice;
   const [intervju, setIntervju] = useState<Intervju | undefined>(st.intervju);
   const [pendingOpen, setPendingOpen] = useState(false);
+  // 3.8: «Lagre og åpne skjemaet» is never greyed out; pressed with no answer, the question takes focus and the line
+  // under the button turns red.
+  const [asked, setAsked] = useState(false);
   const saved = !!role && !!st.intervju;
   const changed = intervju !== st.intervju;
   // Open (or re-create) S1 once the stored answer carries the new value, so its locked fields are right.
@@ -744,106 +799,148 @@ export function OmDegPage() {
   // The role is chosen on Velkommen; without one, that is where the study starts.
   if (!role) return <Redirect to="/studie/velkommen" />;
   const s1Done = ctl.stepDone('S1');
+  const sent = ctl.formStatus('S1') === 'sent';
   const gp = role === 'fastlege';
+  const name = st.studienavn;
+  // The animal and the number stay together when the name wraps (the text itself keeps plain spaces).
+  const cut = name ? name.lastIndexOf(' ', name.lastIndexOf(' ') - 1) : -1;
+  const shownName = name ? (
+    <>
+      {name.slice(0, cut + 1)}
+      <span className={o.nowrap}>{name.slice(cut + 1)}</span>
+    </>
+  ) : null;
+  const facts = (['omDegNameFact1', 'omDegNameFact2', 'omDegNameFact3'] as const).map((k) => s(k));
   return (
-    <div className={o.wrap}>
-      <div className={o.main}>
-        <PageHeading title={s('omDegTitle')}>{s('omDegTitle')}</PageHeading>
-        <Lead>{s('omDegLead')}</Lead>
-        <div className={o.roleRow}>
-          <span className={o.roleIcon} aria-hidden="true">
-            {gp ? <Stethoscope20Regular /> : <People20Regular />}
-          </span>
-          <p className={o.roleText}>{s(gp ? 'omDegAsGp' : 'omDegAsDps')}</p>
-          {!locked && <RouterLink to="/studie/velkommen">{s('omDegRoleChange')}</RouterLink>}
-        </div>
-        <ChoiceGroup<Intervju>
-          legend={s('interviewQuestion')}
-          layout="row"
-          value={intervju}
-          disabled={locked}
-          onChange={setIntervju}
-          choices={[
-            { value: 'Ja', label: s('intervjuJa') },
-            { value: 'Nei', label: s('intervjuNei') },
-            { value: 'Vil ikke svare', label: s('intervjuVilIkke') },
-          ]}
-        />
-        {locked ? (
-          <Muted>{s('omDegLocked')}</Muted>
-        ) : (
-          (!saved || changed) && (
-            <>
-              <p className={o.next}>
-                <span className={o.nextIcon} aria-hidden="true">
-                  <Info16Regular />
-                </span>
-                <span>
-                  <strong>{s('omDegNext')}</strong> {s('omDegNextText')}
-                </span>
-              </p>
-              <div>
-                <Button
-                  appearance={intervju ? 'primary' : 'secondary'}
-                  disabledFocusable={!intervju}
-                  aria-describedby={!intervju ? reasonId : undefined}
-                  onClick={() => {
-                    if (!intervju) return;
-                    study.setRole(role, intervju);
-                    setPendingOpen(true);
-                  }}
-                >
-                  {s('omDegSave')}
-                </Button>
-                <p id={reasonId} className={o.reason}>
-                  {!intervju ? s('omDegSaveReason') : s('omDegLockNote')}
+    <div className={o.outer}>
+      <section className={o.card} aria-labelledby={name ? nameId : undefined} data-studienavn={name ? '' : undefined}>
+        {/* 3.8 (F-Om deg): the study name as a profile at the top of the one card, not a card of its own beside the page. */}
+        <GuideImage variant="cover" className={o.art} />
+        <div className={o.veil} aria-hidden="true" />
+        <div className={o.top} />
+        {name && (
+          <>
+            <div className={o.profile}>
+              <StudyNameMark name={name} size={168} className={o.avatar} />
+              <div className={o.who}>
+                <p className={o.eyebrow} id={nameId}>
+                  {s('omDegNameTitle')}
                 </p>
+                <p className={o.name} lang="nb" data-studienavn-value="">
+                  {shownName}
+                </p>
+                <div className={o.roleRow}>
+                  <span className={o.roleBadge}>
+                    {gp ? <Stethoscope20Regular aria-hidden="true" /> : <People20Regular aria-hidden="true" />}
+                    {s(gp ? 'omDegAsGp' : 'omDegAsDps').replace(/\.$/, '')}
+                  </span>
+                  {!locked && (
+                    <Button appearance="secondary" icon={<ArrowSwap20Regular />} onClick={() => navigate('/studie/velkommen')}>
+                      {s('omDegRoleChange')}
+                    </Button>
+                  )}
+                </div>
               </div>
-            </>
-          )
+            </div>
+            <div className={o.about}>
+              <p className={o.lead}>{s('omDegNameLead')}</p>
+              <ul className={o.facts}>
+                {facts.map((f) => (
+                  <li key={f} className={o.fact}>
+                    <span className={o.factIcon} aria-hidden="true">
+                      <CheckmarkCircle16Regular />
+                    </span>
+                    {f}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </>
         )}
-        {saved && !changed && <FormStepCard step="S1" intro={s('s1Intro')} />}
-        {s1Done ? (
-          <Actions>
-            <Button
-              appearance="primary"
-              icon={<ArrowRight20Regular />}
-              iconPosition="after"
-              onClick={() => {
-                study.advanceTo('omvisning');
-                navigate(HOME_PATH);
-              }}
-            >
-              {s('toHome')}
-            </Button>
-          </Actions>
-        ) : (
-          saved && !changed && <FormWaiting step="S1" />
-        )}
-      </div>
-      {st.studienavn && (
-        <aside className={o.name} aria-labelledby={nameId} data-studienavn="">
-          <GuideImage variant="cover" />
-          <StudyNameMark name={st.studienavn} size={104} ring />
-          <p className={o.nameEyebrow} id={nameId}>
-            {s('omDegNameTitle')}
-          </p>
-          <p className={o.nameValue} lang="nb" data-studienavn-value="">
-            {st.studienavn}
-          </p>
-          <p className={o.nameText}>{s('omDegNameLead')}</p>
-          <ul className={o.facts}>
-            {(['omDegNameFact1', 'omDegNameFact2', 'omDegNameFact3'] as const).map((k) => (
-              <li key={k} className={o.fact}>
-                <span className={o.factIcon} aria-hidden="true">
-                  <CheckmarkCircle16Regular />
-                </span>
-                {s(k)}
-              </li>
-            ))}
-          </ul>
-        </aside>
-      )}
+        <div className={o.panel} data-om-deg-panel="">
+          <PageHeading title={s('omDegTitle')}>{s('omDegTitle')}</PageHeading>
+          <Lead>{s('omDegLead')}</Lead>
+          <ChoiceGroup<Intervju>
+            legend={s('interviewQuestion')}
+            layout="row"
+            value={intervju}
+            disabled={locked}
+            onChange={setIntervju}
+            choices={[
+              { value: 'Ja', label: s('intervjuJa') },
+              { value: 'Nei', label: s('intervjuNei') },
+              { value: 'Vil ikke svare', label: s('intervjuVilIkke') },
+            ]}
+          />
+          {locked ? (
+            <Muted>{s('omDegLocked')}</Muted>
+          ) : (
+            (!saved || changed) && (
+              <>
+                <div className={o.rule} aria-hidden="true" />
+                <p className={o.next}>
+                  <span className={o.nextIcon} aria-hidden="true">
+                    <Info16Regular />
+                  </span>
+                  <span>
+                    <strong>{s('omDegNext')}</strong> {s('omDegNextText')}
+                  </span>
+                </p>
+                <div>
+                  <Button
+                    appearance="primary"
+                    size="large"
+                    icon={<ArrowRight20Regular />}
+                    iconPosition="after"
+                    aria-describedby={!intervju ? reasonId : undefined}
+                    onClick={() => {
+                      if (!intervju) {
+                        setAsked(true);
+                        document.querySelector<HTMLInputElement>('[data-om-deg-panel] fieldset input[type="radio"]')?.focus();
+                        return;
+                      }
+                      study.setRole(role, intervju);
+                      setPendingOpen(true);
+                    }}
+                  >
+                    {s('omDegSave')}
+                  </Button>
+                  <p id={reasonId} className={mergeClasses(o.reason, asked && !intervju && o.reasonAsk)} role={asked && !intervju ? 'alert' : undefined}>
+                    {!intervju ? s('omDegSaveReason') : s('omDegLockNote')}
+                  </p>
+                </div>
+              </>
+            )
+          )}
+          {/* Once sent, one line says so: no frame inside a frame (3.8 review). */}
+          {saved && !changed && sent ? (
+            <p className={o.done} role="status">
+              <CheckmarkCircle20Filled aria-hidden="true" />
+              {s('formStepDone')}
+            </p>
+          ) : (
+            saved && !changed && <FormStepCard step="S1" intro={s('s1Intro')} />
+          )}
+          {s1Done ? (
+            <Actions>
+              <Button
+                appearance="primary"
+                size="large"
+                icon={<ArrowRight20Regular />}
+                iconPosition="after"
+                onClick={() => {
+                  study.advanceTo('omvisning');
+                  navigate(HOME_PATH);
+                }}
+              >
+                {s('toHome')}
+              </Button>
+            </Actions>
+          ) : (
+            saved && !changed && <FormWaiting step="S1" />
+          )}
+        </div>
+      </section>
     </div>
   );
 }
