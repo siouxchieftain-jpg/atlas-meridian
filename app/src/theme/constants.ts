@@ -5,7 +5,7 @@
 
 /** Uncertainty band, option C (settled). */
 export const band = {
-  trackHeight: 6,
+  trackHeight: 12, // mock 3.8: was 6
   endGrey: '#D1D1D1',
   sand: '#D6C8A0',
   /** The grey zone (sand) spans 40 to 60 per cent of the track. */
@@ -14,10 +14,10 @@ export const band = {
   /** The track fades into and out of the grey zone (Meridian sample: 28 to 40 and 60 to 72 per cent). */
   fadeStart: 0.28,
   fadeEnd: 0.72,
-  ownMarker: { width: 3, colour: '#242424', keyline: '#FFFFFF' },
-  otherMarker: { width: 6, fill: '#FFFFFF', outline: '#616161' },
-  systemMarker: { width: 4, colour: '#7160E8' },
-  markerHeight: 16,
+  ownMarker: { width: 5, colour: '#242424', keyline: '#FFFFFF' }, // mock 3.8: was 3
+  otherMarker: { width: 9, fill: '#FFFFFF', outline: '#616161' }, // mock 3.8: was 6
+  systemMarker: { width: 7, colour: '#7160E8' }, // mock 3.8: was 4
+  markerHeight: 28, // mock 3.8: was 16
 } as const;
 
 /** The neutral proportion bar in Mitt henvisningsmønster: greys only, never status colours (B1). */

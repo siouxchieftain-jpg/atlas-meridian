@@ -1,11 +1,11 @@
 import { Button, Popover, PopoverSurface, PopoverTrigger, makeStyles, mergeClasses, shorthands, tokens, typographyStyles } from '@fluentui/react-components';
-import { Checkmark16Filled, Checkmark16Regular, Dismiss16Regular } from '@fluentui/react-icons';
-import { useEffect, useRef, useState, useSyncExternalStore, type ReactNode } from 'react';
+import { ArrowRight20Regular, Checkmark16Filled, Checkmark16Regular, Dismiss16Regular } from '@fluentui/react-icons';
+import { useEffect, useState, useSyncExternalStore, type ReactNode } from 'react';
 import { createPortal } from 'react-dom';
 import guideData from '../content/guide.json';
 import { useLang } from '../i18n/i18n';
 import { currentPath } from '../router/router';
-import { SrOnly } from '../patterns/basics';
+import { NextMark, SrOnly } from '../patterns/basics';
 import { guide } from '../theme/constants';
 
 /**
@@ -187,7 +187,10 @@ const useStyles = makeStyles({
     backgroundColor: tokens.colorPaletteGreenForeground1,
     color: '#FFFFFF',
   },
-  boxText: { minWidth: 0 },
+  boxText: { minWidth: 0, display: 'flex', flexDirection: 'column' },
+  boxSummary: { ...typographyStyles.caption1, color: tokens.colorPaletteGreenForeground1, overflowWrap: 'anywhere' },
+  progressRow: { display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: tokens.spacingHorizontalS, flexWrap: 'wrap' },
+  moduleNext: { display: 'flex', justifyContent: 'flex-end', paddingTop: tokens.spacingVerticalS, borderTop: `1px solid ${tokens.colorNeutralStroke2}` },
   boxOpen: {
     ...shorthands.borderColor(guide.coral),
     boxShadow: `0 0 0 1px ${guide.coral}`,
@@ -416,6 +419,7 @@ export function GuideTaskStrip({
   note,
   modules,
   atlasLabel,
+  summaries,
 }: {
   role: 'gp' | 'dps';
   view: string | undefined;
@@ -424,6 +428,8 @@ export function GuideTaskStrip({
   /** Mock (3.8): the ATLAS part each box opens in place, keyed by marker number. */
   modules?: Partial<Record<number, ReactNode>>;
   atlasLabel?: ReactNode;
+  /** Mock (3.8): what each part says once done, shown on its box, so the whole case reads at a glance. */
+  summaries?: Partial<Record<number, string>>;
 }) {
   const cls = useStyles();
   const { s, t } = useLang();
@@ -434,20 +440,13 @@ export function GuideTaskStrip({
   const doneCount = markers.filter((m) => isDone(st, m.n)).length;
   const firstOpen = markers.find((m) => modules?.[m.n] && !isDone(st, m.n))?.n ?? null;
   const [active, setActive] = useState<number | null>(firstOpen);
-  // When the open part is done, its box ticks, and after a moment the next part opens (3.8 mock).
-  const wasDone = useRef<Record<number, boolean>>({});
-  useEffect(() => {
-    if (!modules) return;
-    for (const m of markers) {
-      const d = isDone(st, m.n);
-      if (d && !wasDone.current[m.n] && m.n === active) {
-        // The last part stays open: its own next step (for example «Skriv henvisning») sits inside it.
-        const next = markers.find((x) => modules[x.n] && !isDone(st, x.n))?.n;
-        if (next !== undefined) window.setTimeout(() => setActive(next), 900);
-      }
-      wasDone.current[m.n] = d;
-    }
-  });
+  const [showAll, setShowAll] = useState(false);
+  // A done part does not close by itself: «Neste» under it, marked, opens the next (3.8 mock, Jishnu 24 Nov).
+  const nextAfter = (n: number) => markers.find((x) => x.n > n && modules?.[x.n] && !isDone(st, x.n)) ?? markers.find((x) => modules?.[x.n] && !isDone(st, x.n));
+  const openPart = (n: number) => {
+    setActive(n);
+    window.requestAnimationFrame(() => document.getElementById(`task-part-${n}`)?.scrollIntoView({ block: 'nearest', behavior: 'smooth' }));
+  };
   return (
     <section className={cls.strip} aria-label={s('guideTask')}>
       <span className={cls.eyebrow}>{s('guideTask')}</span>
@@ -467,11 +466,12 @@ export function GuideTaskStrip({
                     className={mergeClasses(cls.box, done && cls.boxDone, isOpen && cls.boxOpen)}
                     data-guide-step={m.n}
                     data-done={done ? '' : undefined}
-                    aria-expanded={modules?.[m.n] ? isOpen : undefined}
+                    aria-expanded={modules?.[m.n] && !showAll ? isOpen : undefined}
                     aria-controls={modules?.[m.n] ? `task-part-${m.n}` : undefined}
                     onClick={() => {
                       if (modules?.[m.n]) {
-                        setActive(isOpen ? null : m.n);
+                        if (showAll) document.getElementById(`task-part-${m.n}`)?.scrollIntoView({ block: 'start', behavior: 'smooth' });
+                        else setActive(isOpen ? null : m.n);
                         return;
                       }
                       document.querySelector<HTMLElement>(`[data-guide-pin="${m.n}"]`)?.scrollIntoView({ block: 'center', behavior: 'smooth' });
@@ -481,16 +481,26 @@ export function GuideTaskStrip({
                     <span className={mergeClasses(cls.tick, done && cls.tickDone)} aria-hidden="true">
                       {done ? <Checkmark16Filled /> : m.n}
                     </span>
-                    <span className={cls.boxText}>{t(m.part)}</span>
+                    <span className={cls.boxText}>
+                      {t(m.part)}
+                      {done && summaries?.[m.n] && <span className={cls.boxSummary}>{summaries[m.n]}</span>}
+                    </span>
                     {done && <SrOnly>{s('guideDoneSuffix')}</SrOnly>}
                   </button>
                 </li>
               );
             })}
           </ol>
-          <span className={cls.progress} aria-live="polite">
-            {s('guideProgress', { n: doneCount, total: markers.length })}
-          </span>
+          <div className={cls.progressRow}>
+            <span className={cls.progress} aria-live="polite">
+              {s('guideProgress', { n: doneCount, total: markers.length })}
+            </span>
+            {modules && (
+              <Button appearance="subtle" size="small" aria-pressed={showAll} onClick={() => setShowAll(!showAll)}>
+                {showAll ? s('taskShowOne') : s('taskShowAll')}
+              </Button>
+            )}
+          </div>
           {modules && (
             <div className={cls.modules} data-task-modules="">
               {doneCount === markers.length && (
@@ -501,7 +511,7 @@ export function GuideTaskStrip({
               {/* Every part stays in the page, so each can tick itself; only the open one shows. */}
               {markers.map((m) =>
                 modules[m.n] ? (
-                  <div key={m.n} id={`task-part-${m.n}`} className={cls.module} hidden={m.n !== active} role="region" aria-label={t(m.part)}>
+                  <div key={m.n} id={`task-part-${m.n}`} className={cls.module} hidden={!showAll && m.n !== active} role="region" aria-label={t(m.part)}>
                     <div className={cls.moduleHead}>
                       <span className={cls.num} aria-hidden="true">
                         {isDone(st, m.n) ? <Checkmark16Filled /> : m.n}
@@ -512,6 +522,15 @@ export function GuideTaskStrip({
                       </div>
                     </div>
                     {modules[m.n]}
+                    {!showAll && isDone(st, m.n) && nextAfter(m.n) && (
+                      <div className={cls.moduleNext}>
+                        <NextMark on>
+                          <Button appearance="primary" size="large" icon={<ArrowRight20Regular />} iconPosition="after" onClick={() => openPart(nextAfter(m.n)!.n)}>
+                            {s('taskNextPart', { part: t(nextAfter(m.n)!.part) })}
+                          </Button>
+                        </NextMark>
+                      </div>
+                    )}
                   </div>
                 ) : null,
               )}

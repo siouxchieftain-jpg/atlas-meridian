@@ -172,7 +172,7 @@ export function CaseModeBar({ caseId }: { caseId: CaseId }) {
 }
 
 /** The line that brings the ATLAS part of the task, shown once ATLAS is open (study). */
-export function AtlasTaskBar({ caseId, modules }: { caseId: CaseId; modules?: Partial<Record<number, ReactNode>> }) {
+export function AtlasTaskBar({ caseId, modules, summaries }: { caseId: CaseId; modules?: Partial<Record<number, ReactNode>>; summaries?: Partial<Record<number, string>> }) {
   const { s, t } = useLang();
   const work = useWork();
   const host = useFormHostOptional();
@@ -191,6 +191,7 @@ export function AtlasTaskBar({ caseId, modules }: { caseId: CaseId; modules?: Pa
         view={view}
         task={t(task)}
         modules={modules}
+        summaries={summaries}
         atlasLabel={modules ? `${s('atlasPanel')} · ${t(vocab.band.caption)}` : undefined}
         note={
           held ? (

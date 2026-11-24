@@ -288,8 +288,8 @@
     "en": "The task"
   },
   "bandTitle": {
-    "nb": "Usikkerhetsskala",
-    "en": "Uncertainty scale"
+    "nb": "Usikkerhetsskala: saken mot DPS-kriteriene",
+    "en": "Uncertainty scale: the case against the DPS criteria"
   },
   "bandPlace": {
     "nb": "Plasser saken",
@@ -352,8 +352,8 @@
     "en": "clearly within the criteria"
   },
   "readingTitle": {
-    "nb": "Systemets vurdering",
-    "en": "The system’s assessment"
+    "nb": "Systemets vurdering av saken",
+    "en": "The system’s assessment of the case"
   },
   "illustrationChip": {
     "nb": "Illustrasjon",
@@ -4324,8 +4324,8 @@
     "en": "The reply from the GP is shown once you have sent the rest of the form."
   },
   "bandWhoGp": {
-    "nb": "Du plasserer saken selv. Systemets vurdering vises etter at du har plassert den.",
-    "en": "You place the case yourself. The system's assessment appears after you have placed it."
+    "nb": "Hvor ligger saken mellom klart utenfor og klart innenfor kriteriene i prioriteringsveilederen? Du plasserer den selv. Systemets vurdering vises etterpå.",
+    "en": "Where does the case lie between clearly outside and clearly within the priority guideline's criteria? You place it yourself. The system's assessment appears afterwards."
   },
   "bandWhoDps": {
     "nb": "Du plasserer saken selv. Fastlegens plassering og systemets vurdering vises etter at du har plassert den.",
@@ -4370,5 +4370,29 @@
   "guideAllDone": {
     "nb": "Alt på denne siden er gjort.",
     "en": "Everything on this page is done."
+  },
+  "taskShowAll": {
+    "nb": "Vis alle fem delene",
+    "en": "Show all five parts"
+  },
+  "taskShowOne": {
+    "nb": "Vis én del om gangen",
+    "en": "Show one part at a time"
+  },
+  "taskNextPart": {
+    "nb": "Neste: {{part}}",
+    "en": "Next: {{part}}"
+  },
+  "readingShow": {
+    "nb": "Les begrunnelsen",
+    "en": "Read the reasoning"
+  },
+  "readingHide": {
+    "nb": "Skjul begrunnelsen",
+    "en": "Hide the reasoning"
+  },
+  "summaryOwnWords": {
+    "nb": "Med egne ord",
+    "en": "In your own words"
   }
 }

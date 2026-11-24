@@ -4,7 +4,8 @@ import { useState } from 'react';
 import type { CaseId } from '../content/types';
 import { cases, vocab } from '../content';
 import { formatDate, useLang } from '../i18n/i18n';
-import { referralCriteria } from '../engine/criteria';
+import { mentionedCriteria, referralCriteria } from '../engine/criteria';
+import { positionKey } from '../engine/placement';
 import { navigate } from '../router/router';
 import { useWork } from '../state/work';
 import { DesignNote, Panel, ProvenanceChip } from '../patterns/basics';
@@ -190,6 +191,16 @@ export function GpConsultation({ caseId }: { caseId: CaseId }) {
         ...(caseId !== 'erlend' ? { 5: <AtlasPartGp caseId={caseId} part="decision" /> } : {}),
       }
     : undefined;
+  // What each part says once done, for its box (mock 3.8).
+  const summaries = inTask
+    ? {
+        1: gp.placement !== undefined ? s(positionKey(gp.placement)) : undefined,
+        2: gp.tags.length ? gp.tags.map((x) => t(vocab.tags[x].label)).join(', ') : gp.description?.trim() ? s('summaryOwnWords') : undefined,
+        3: s('guideCount', { n: mentionedCriteria(t(c.gp.note.text)).length }),
+        4: gp.confidence ? t(vocab.confidence[gp.confidence]) : undefined,
+        5: gp.decisionSaved && gp.decision ? (gp.decision === 'behold' ? s('decisionHold') : s('decisionRefer')) : undefined,
+      }
+    : undefined;
   const compact = !without && c.gp.systemReading ? <CompactBand own={gp.placement} reading={c.gp.systemReading} /> : undefined;
   return (
     <CaseLayout side={side} compactSummary={compact}>
@@ -201,7 +212,7 @@ export function GpConsultation({ caseId }: { caseId: CaseId }) {
       />
       {/* Notices sit under the title (G-16). */}
       <CaseModeBar caseId={caseId} />
-      <AtlasTaskBar caseId={caseId} modules={modules} />
+      <AtlasTaskBar caseId={caseId} modules={modules} summaries={summaries} />
       {caseId === 'erlend' && without && c.gp.caseOnlyLetter && (
         <Panel aria-label={s('previousRefusalLetter')}>
           <PlainLetter letter={c.gp.caseOnlyLetter} source="dps" />

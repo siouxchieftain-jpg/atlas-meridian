@@ -42,6 +42,8 @@ const useStyles = makeStyles({
   readingText: { ...typographyStyles.body1, margin: 0 },
   illustration: { ...typographyStyles.caption1, color: tokens.colorNeutralForeground3, margin: 0 },
   toggle: { alignSelf: 'flex-start', paddingInline: 0, minWidth: 0 },
+  toggleBtn: { alignSelf: 'flex-start' },
+  reasoningText: { ...typographyStyles.body1, margin: 0, padding: '8px 12px', borderRadius: tokens.borderRadiusMedium, backgroundColor: tokens.colorNeutralBackground2 },
   waits: { ...typographyStyles.caption1, color: tokens.colorNeutralForeground3, margin: 0 },
   sentences: { display: 'flex', flexDirection: 'column', gap: '2px' },
 });
@@ -58,18 +60,19 @@ export function ReadingBlock({ reading, notes }: { reading: SystemReading; notes
         <h4 className={cls.readingTitle}>{s('readingTitle')}</h4>
       </div>
       <p className={cls.readingText}>{t(reading.summary)}</p>
+      {/* Mock (3.8): an outlined button, not a quiet link, so the reasoning is not missed. */}
       <Button
-        appearance="transparent"
-        size="small"
-        className={cls.toggle}
+        appearance="outline"
+        size="medium"
+        className={cls.toggleBtn}
         icon={open ? <ChevronDown16Regular /> : <ChevronRight16Regular />}
         aria-expanded={open}
         aria-controls={id}
         onClick={() => setOpen(!open)}
       >
-        {t(vocab.band.reasoningLabel)}
+        {open ? s('readingHide') : s('readingShow')}
       </Button>
-      <p className={cls.readingText} id={id} hidden={!open}>
+      <p className={cls.reasoningText} id={id} hidden={!open}>
         {t(reading.reasoning)}
       </p>
       <p className={cls.illustration}>{t(vocab.band.illustration)}</p>
