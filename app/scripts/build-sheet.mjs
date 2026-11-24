@@ -16,31 +16,33 @@ const VERSION = JSON.parse(readFileSync(join(app, 'package.json'), 'utf8')).vers
 /** How each item type is built in Nettskjema. */
 const TYPE = {
   locked: 'Tekstsvar (kort), locked',
-  agree7: 'Lineær skala 1 to 7',
-  confidence7: 'Lineær skala 1 to 7',
-  helpful7: 'Lineær skala 1 to 7',
-  nps11: 'Lineær skala 0 to 10',
-  clarity5: 'Lineær skala 1 to 5',
+  agree7: 'Flervalg (én), in one row: 1 to 7',
+  confidence7: 'Flervalg (én), in one row: 1 to 7',
+  helpful7: 'Flervalg (én), in one row: 1 to 7',
+  likely7: 'Flervalg (én), in one row: 1 to 7',
+  nps11: 'Flervalg (én), in one row: 0 to 10',
+  clarity5: 'Flervalg (én), in one row: 1 to 5',
   importance3: 'Flervalg (én)',
   choice: 'Flervalg (én)',
   text: 'Tekstsvar (kort)',
   longtext: 'Tekstsvar (langt), at most 3,800 characters',
   stop: 'Tekst (no question)',
+  note: 'Tekst (no question)',
+  heading: 'Overskrift (no question)',
   consent: 'Avkrysningsbokser, one box',
 };
 
 /** Which step and role use each form, and the vignette it carries. */
 const USE = {
   S1: 'Step S1, both roles',
-  'S2.fastlege': 'Step S2 (after the three cases), GPs',
-  'S2.dps': 'Step S2 (after the three cases), DPS participants',
+  'S2.fastlege': 'Step S2, «Avslutning» (after the three cases; S6 merged into it in 3.8), GPs',
+  'S2.dps': 'Step S2, «Avslutning» (after the three cases; S6 merged into it in 3.8), DPS participants',
   'S3.fastlege': 'Step S3 (V1 Kari), GPs',
   'S3.dps': 'Step S3 (V1 Kari), DPS participants',
   'S4.fastlege': 'Step S4 (V3 Erlend), GPs',
   'S4.dps': 'Step S4 (V3 Erlend), DPS participants',
   'S5.fastlege': 'Step S5 (V4 Astrid), GPs',
   'S5.dps': 'Step S5 (V4 Astrid), DPS participants',
-  S6: 'Step S6, both roles',
   'S7.fastlege': 'Step S7 (V2 Torbjørn, optional), GPs',
   S8: 'Step S8 (V5 two GPs, optional), both roles',
   S9: 'Any study page after S1, per part of a screen (optional feedback along the way), both roles; no step',
@@ -56,7 +58,7 @@ const typeOf = (item) => (item.dontKnow ? 'Flervalg (én), in one row: 1 to 7, t
 
 function scale(item) {
   if (item.dontKnow) return `1 to 7: ${both(item.anchors.low)} … ${both(item.anchors.high)}; then ${both(item.dontKnow)}, coded \`vet_ikke\``;
-  const range = { agree7: '1 to 7', confidence7: '1 to 7', helpful7: '1 to 7', nps11: '0 to 10', clarity5: '1 to 5' }[item.type];
+  const range = { agree7: '1 to 7', confidence7: '1 to 7', helpful7: '1 to 7', likely7: '1 to 7', nps11: '0 to 10', clarity5: '1 to 5' }[item.type];
   if (range && item.anchors) return `${range}: ${both(item.anchors.low)} … ${both(item.anchors.high)}`;
   if (range) return range;
   if (item.options) return item.options.map((o) => `${both(o)}${o.code ? ` (\`${o.code}\`)` : ''}`).join('; ');
@@ -76,20 +78,21 @@ push(
   '- «Innsamling av personopplysninger»: **Nei**.',
   '- «Hvem kan svare på skjemaet»: **«Uten innlogging - alle med lenke»**, set before any answer arrives. Embedding and pre-filling need it.',
   '- The codebook is on, and every question gets the codebook name listed below.',
-  '- Every question carries the Norwegian text first and the English text under it.',
+  '- The forms are in Norwegian only (3.8, part C). The English below is for reading this sheet and never goes into a form.',
+  '- Every scale is one row of single choices, its points coded by their values (1 to 7); the anchors stand in the description («1 = Helt uenig, 7 = Helt enig»). The progress line is hidden («shouldHideProgressBar»).',
   `- At the top of every form: «${instrument.consentLine.nb}» / "${instrument.consentLine.en}", and «${instrument.privacyLine.nb}» / "${instrument.privacyLine.en}".`,
   `- Above every long text question: «${instrument.privacyLine.nb}» / "${instrument.privacyLine.en}".`,
   '- Long text answers take at most 3,800 characters.',
   '- The options of a single choice («Flervalg») are coded 1, 2, 3 and on, in the order listed, unless the sheet gives a code in brackets: the decision items name every choice (so «Ikke bestemt» is `ikke_bestemt` in every form), and «Vet ikke» after a scale is coded `vet_ikke`.',
   `- «Melding på kvitteringsside etter levert svar»: the form's receipt text below, then a button back to the site, written as Nettskjema documents it: \`<div><a class="receipt-link-as-button" href="${SITE}sendt.html?skjema=<step>" rel="noopener noreferrer">Tilbake til ATLAS</a></div>\`, where \`<step>\` is the form's step (\`S1\` to \`S9\`; every version of a step names the step, so both versions of S2 to S5 name \`S2\` to \`S5\`). \`sendt.html\` marks the step it names as sent, when that step is the one waiting, and leads back to the study; S9's receipt marks no step and offers to close its tab. \`node scripts/nettskjema.mjs verify\` checks the link. Check in the pilot that Nettskjema keeps the button.`,
   '- A closing date.',
-  `- Locked fields: one «Tekstsvar» per field, under the heading «${instrument.lockedHeading.nb}» / "${instrument.lockedHeading.en}". ATLAS fills and locks each from the form's address (\`CB<codebook>=<value>&LCK<codebook>=true\`); in the panel the address also carries \`embed=1\`.`,
+  `- Locked fields, last on the form's last page (Nettskjema has no hidden field): one «Tekstsvar» per field, under the heading «${instrument.lockedHeading.nb}» / "${instrument.lockedHeading.en}". ATLAS fills and locks each from the form's address (\`CB<codebook>=<value>&LCK<codebook>=true\`); in the panel the address also carries \`embed=1\`.`,
   '- When the form is open for answers, copy its address from «Innhent svar» (it looks like `https://nettskjema.no/a/123456`) into `app/public/atlas-config.json` under the key given for the form.',
   '- Before the first invitation, delete every test answer with «Slett alle svar».',
   '',
   '## The pilot set',
   '',
-  'The pilot answers into a copy of the thirteen study forms (S1 to S9, not R1 and R2), titled «(pilot)»: `node scripts/nettskjema.mjs create --round pilot` makes them and writes their addresses under `pilotForms` in `app/public/atlas-config.json`. While that file says `"round": "pilot"`, the app opens these forms, and every `versjon` ends in `-pilot`, so no pilot answer lands in a study form.',
+  'The pilot answers into a copy of the twelve study forms (S1 to S9, not R1 and R2; S6 merged into S2 in 3.8), titled «(pilot)»: `node scripts/nettskjema.mjs create --round pilot` makes them and writes their addresses under `pilotForms` in `app/public/atlas-config.json`. While that file says `"round": "pilot"`, the app opens these forms, and every `versjon` ends in `-pilot`, so no pilot answer lands in a study form.',
   '',
   '## Locked values',
   '',

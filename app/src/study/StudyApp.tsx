@@ -42,7 +42,7 @@ import { FormHostProvider, useFormHost } from './formHost';
 import { FormPanel, formTitle, type FormPanelActions } from './FormPanel';
 import { HOME_PATH, LIST_PATH, STEP_PATH, StudyControllerProvider, stepReachable, useStudyController } from './controller';
 import { ListPage } from './ListPage';
-import { AvslutningPage, EkstraPage, HelhetPage, OmDegPage, StepperPage, TakkPage, V5Page, VelkommenPage } from './pages';
+import { EkstraPage, HelhetPage, OmDegPage, StepperPage, TakkPage, V5Page, VelkommenPage } from './pages';
 import { HomePage } from './HomePage';
 import { RoleLabel, StudyAccount, StudyProgress } from './StudyHeader';
 import { StudyFeedbackTab, feedbackOpened, useStudyFeedback } from './StudyFeedback';
@@ -476,7 +476,8 @@ function StudyRoutes({ path, igjen }: { path: string[]; igjen: boolean }) {
       );
     }
     case 'avslutning':
-      return guard('avslutning') ? <AvslutningPage /> : <Redirect to={current} />;
+      // The step left the path in 3.8 (part C, F92); an old link lands on the closing form.
+      return <Redirect to={guard('helhet') ? STEP_PATH.helhet : current} />;
     case 'ekstra':
       if (furthest !== 'ekstra') return <Redirect to={current} />;
       if (a === 'to-fastleger') return <V5Page />;

@@ -45,6 +45,24 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
   return <LangContext.Provider value={value}>{children}</LangContext.Provider>;
 }
 
+/**
+ * Text in one language whatever the app shows: the study's forms are in Norwegian only (3.8, part C, F17), so the
+ * preview of a form is too. The switch still works for everything around it.
+ */
+export function FixedLang({ lang, children }: { lang: Lang; children: ReactNode }) {
+  const outer = useContext(LangContext);
+  const value = useMemo<LangContextValue>(
+    () => ({
+      lang,
+      setLang: outer?.setLang ?? (() => undefined),
+      t: (text) => (text ? text[lang] : ''),
+      s: (key, vars) => fill(S[key][lang], vars),
+    }),
+    [lang, outer?.setLang],
+  );
+  return <LangContext.Provider value={value}>{children}</LangContext.Provider>;
+}
+
 export function useLang(): LangContextValue {
   const ctx = useContext(LangContext);
   if (!ctx) throw new Error('useLang outside LanguageProvider');

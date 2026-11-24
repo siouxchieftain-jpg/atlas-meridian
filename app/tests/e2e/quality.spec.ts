@@ -137,7 +137,7 @@ test('English coverage: no Norwegian left in English mode, review and study', as
   });
   await page.reload();
   await page.goto('/#/studie/helhet');
-  await expect(page.getByRole('heading', { level: 1, name: 'Helhetsinntrykk' })).toBeVisible();
+  await expect(page.getByRole('heading', { level: 1, name: 'Avslutning' })).toBeVisible();
   await english('helhet');
   expect([...new Set(found)], [...new Set(found)].join('\n')).toEqual([]);
 });

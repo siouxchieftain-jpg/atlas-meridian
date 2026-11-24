@@ -40,7 +40,7 @@ const TOKEN_URL = 'https://authorization.nettskjema.no/oauth2/token';
 const ANSWER_URL = (id) => `https://nettskjema.no/a/${id}`;
 const LONG_TEXT_MAX = 3800;
 
-const SCALES = { agree7: [1, 7], confidence7: [1, 7], helpful7: [1, 7], nps11: [0, 10], clarity5: [1, 5] };
+const SCALES = { agree7: [1, 7], confidence7: [1, 7], helpful7: [1, 7], likely7: [1, 7], nps11: [0, 10], clarity5: [1, 5] };
 const ROLE_LABEL = { fastlege: { nb: 'fastlege', en: 'GP' }, dps: { nb: 'DPS', en: 'DPS' } };
 
 const [, , mode = 'plan', ...rest] = process.argv;
@@ -62,14 +62,15 @@ const stepOf = (key) => key.split('.')[0];
 
 const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 const para = (s) => `<p>${esc(s)}</p>`;
-const both = (t) => (t.nb === t.en ? t.nb : `${t.nb} / ${t.en}`);
+// 3.8, part C: the forms are in Norwegian only (Jishnu, 24 November; F17, F62). The English stays in the instrument
+// for the build sheet and the thesis, and never reaches Nettskjema.
+const nb = (t) => t.nb;
 
 export function formTitle(form, round = ROUND) {
   const variant = form.key.split('.')[1];
   const role = variant ? ROLE_LABEL[variant] : undefined;
-  const nb = role ? `${form.title.nb}, ${role.nb}` : form.title.nb;
-  const en = role ? `${form.title.en}, ${role.en}` : form.title.en;
-  return `ATLAS: ${nb === en ? nb : `${nb} / ${en}`}${round === 'pilot' ? ' (pilot)' : ''}`;
+  const title = role ? `${form.title.nb}, ${role.nb}` : form.title.nb;
+  return `ATLAS: ${title}${round === 'pilot' ? ' (pilot)' : ''}`;
 }
 
 // Nettskjema's rule for a form title (the API schema's pattern, written so a JavaScript expression accepts it):
@@ -82,12 +83,12 @@ export function titleProblem(title) {
 }
 
 function question(it, type, extra = {}) {
-  const description = [para(it.text.en)];
-  if (it.privacyLine) description.push(`<p><em>${esc(both(instrument.privacyLine))}</em></p>`);
+  const description = [];
+  if (it.privacyLine) description.push(`<p><em>${esc(nb(instrument.privacyLine))}</em></p>`);
   return {
     elementType: type,
     text: it.text.nb,
-    description: description.join(''),
+    ...(description.length ? { description: description.join('') } : {}),
     isMandatory: it.required === true,
     externalElementId: it.codebook,
     ...extra,
@@ -96,7 +97,7 @@ function question(it, type, extra = {}) {
 
 function options(it) {
   // A choice is coded by its place unless it names its own code (the decision items, 3.6).
-  return it.options.map((o, i) => ({ sequence: i + 1, text: both(o), externalAnswerOptionId: o.code ?? String(i + 1) }));
+  return it.options.map((o, i) => ({ sequence: i + 1, text: nb(o), externalAnswerOptionId: o.code ?? String(i + 1) }));
 }
 
 /** The items still waiting for the owner's ruling (`draft`): a form that holds one is not made or updated without --drafts. */
@@ -112,31 +113,22 @@ function heldForDrafts(form) {
 }
 
 function itemElement(it) {
-  if (it.dontKnow) {
-    // Nettskjema's linear scale has no «Vet ikke» (I-18, 3.6): one row of single choices, the scale's points and «Vet ikke»,
-    // with the anchors under the English text. «Vet ikke» is coded vet_ikke, so it never counts as a point on the scale.
-    if (it.type !== 'agree7' || !it.anchors) throw new Error(`«Vet ikke» is built only on an agreement scale with anchors (${it.id})`);
+  if (it.type in SCALES) {
+    // Every scale is one row of single choices (3.8, part C; F18, F86): Nettskjema draws its linear scale as a column
+    // and a single choice with isHorizontal as a row. The points keep their values (1 to 7), so the data read as before;
+    // the anchors stand in the description, and «Vet ikke» after the points is coded vet_ikke (I-18).
+    if (it.dontKnow && !it.anchors) throw new Error(`«Vet ikke» is built only on a scale with anchors (${it.id})`);
     const [min, max] = SCALES[it.type];
     const points = Array.from({ length: max - min + 1 }, (_, i) => String(min + i));
     const q = question(it, 'RADIO', {
       isHorizontal: true,
       answerOptions: [
         ...points.map((n, i) => ({ sequence: i + 1, text: n, externalAnswerOptionId: n })),
-        { sequence: points.length + 1, text: both(it.dontKnow), externalAnswerOptionId: 'vet_ikke' },
+        ...(it.dontKnow ? [{ sequence: points.length + 1, text: nb(it.dontKnow), externalAnswerOptionId: 'vet_ikke' }] : []),
       ],
     });
-    q.description += para(`${min}: ${both(it.anchors.low)}. ${max}: ${both(it.anchors.high)}.`);
+    if (it.anchors) q.description = (q.description ?? '') + para(`${min} = ${nb(it.anchors.low)}, ${max} = ${nb(it.anchors.high)}`);
     return q;
-  }
-  if (it.type in SCALES) {
-    const [min, max] = SCALES[it.type];
-    return question(it, 'LINEAR_SCALE', {
-      minimumValue: min,
-      maximumValue: max,
-      linearScaleType: 'START_END',
-      minimumValueText: it.anchors ? both(it.anchors.low) : undefined,
-      maximumValueText: it.anchors ? both(it.anchors.high) : undefined,
-    });
   }
   switch (it.type) {
     case 'choice':
@@ -150,7 +142,11 @@ function itemElement(it) {
       return question(it, 'QUESTION_MULTILINE', { maxNumberOfCharacters: LONG_TEXT_MAX });
     case 'stop':
       // A text element's content is its description; Nettskjema keeps «text» for headings (at most 180 characters).
-      return { elementType: 'TEXT', description: `<p><strong>${esc(it.text.nb)}</strong></p>${para(it.text.en)}` };
+      return { elementType: 'TEXT', description: `<p><strong>${esc(it.text.nb)}</strong></p>` };
+    case 'note':
+      return { elementType: 'TEXT', description: para(it.text.nb) };
+    case 'heading':
+      return { elementType: 'HEADING', text: it.text.nb };
     case 'locked':
       // Filled and locked by ATLAS from the address: CB<codebook>=<value>&LCK<codebook>=true.
       return question({ ...it, required: false }, 'QUESTION');
@@ -163,14 +159,14 @@ function itemElement(it) {
 export function formElements(form) {
   const out = [];
   // At the top of every form: the intro (with the consent line) and the privacy line.
-  const intro = [para(form.intro.nb), para(form.intro.en)];
-  if (!form.intro.nb.includes(instrument.consentLine.nb)) intro.push(para(instrument.consentLine.nb), para(instrument.consentLine.en));
-  intro.push(`<p><em>${esc(both(instrument.privacyLine))}</em></p>`);
+  const intro = [para(form.intro.nb)];
+  if (!form.intro.nb.includes(instrument.consentLine.nb)) intro.push(para(instrument.consentLine.nb));
+  intro.push(`<p><em>${esc(nb(instrument.privacyLine))}</em></p>`);
   out.push({ elementType: 'TEXT', description: intro.join('') });
   form.pages.forEach((page, pi) => {
     if (pi > 0) out.push({ elementType: 'PAGE_BREAK' });
     const locked = page.items.filter((it) => it.type === 'locked');
-    const lockedBlock = () => [{ elementType: 'HEADING', text: both(instrument.lockedHeading) }, ...locked.map(itemElement)];
+    const lockedBlock = () => [{ elementType: 'HEADING', text: nb(instrument.lockedHeading) }, ...locked.map(itemElement)];
     // The locked fields sit where the preview puts them: first when the page starts with them, else last.
     const lockedFirst = locked.length > 0 && page.items[0]?.type === 'locked';
     if (lockedFirst) out.push(...lockedBlock());
@@ -185,6 +181,8 @@ export function formSettings(form, editors) {
     title: formTitle(form),
     formType: 'DEFAULT',
     languageCode: 'nb',
+    // The progress line («2/3, 67 %») drew the eye away from the step at hand (F20).
+    shouldHideProgressBar: true,
     collectsPersonalData: false,
     sensitivePersonalDataCollected: false,
     respondentGroup: 'ALL',
@@ -193,7 +191,7 @@ export function formSettings(form, editors) {
     sendingReceiptToRespondent: false,
     offeringReceiptToRespondent: false,
     editorsSubmissionEmailType: 'NONE',
-    receiptText: `${para(form.receipt.nb)}${para(form.receipt.en)}<div><a class="receipt-link-as-button" href="${SITE}sendt.html?skjema=${stepOf(form.key)}" rel="noopener noreferrer">Tilbake til ATLAS</a></div>`,
+    receiptText: `${para(form.receipt.nb)}<div><a class="receipt-link-as-button" href="${SITE}sendt.html?skjema=${stepOf(form.key)}" rel="noopener noreferrer">Tilbake til ATLAS</a></div>`,
     editors: editors.map((username) => ({ username })),
   };
 }
@@ -291,7 +289,7 @@ async function verifyForm(c, form, formId) {
     if (!g) return;
     if (g.elementType !== w.elementType) problems.push(`${where}: type ${g.elementType}, expected ${w.elementType}`);
     if (w.text !== undefined && w.elementType !== 'TEXT' && norm(g.text) !== norm(w.text)) problems.push(`${where}: text differs`);
-    if (w.description !== undefined && plain(g.description) !== plain(w.description)) problems.push(`${where}: English text differs`);
+    if (plain(g.description ?? '') !== plain(w.description ?? '')) problems.push(`${where}: description differs`);
     if (w.externalElementId && g.externalElementId !== w.externalElementId) problems.push(`${where}: codebook «${g.externalElementId ?? ''}», expected «${w.externalElementId}»`);
     if (w.isMandatory !== undefined && Boolean(g.isMandatory) !== w.isMandatory) problems.push(`${where}: required ${Boolean(g.isMandatory)}, expected ${w.isMandatory}`);
     if (w.minimumValue !== undefined && (g.minimumValue !== w.minimumValue || g.maximumValue !== w.maximumValue)) problems.push(`${where}: scale ${g.minimumValue} to ${g.maximumValue}`);
@@ -304,7 +302,7 @@ async function verifyForm(c, form, formId) {
   });
   const s = await api(c, 'GET', `/form/${formId}/settings`);
   const ws = formSettings(form, []);
-  for (const k of ['title', 'respondentGroup', 'collectsPersonalData', 'sensitivePersonalDataCollected', 'codebookActivated']) {
+  for (const k of ['title', 'respondentGroup', 'collectsPersonalData', 'sensitivePersonalDataCollected', 'codebookActivated', 'shouldHideProgressBar']) {
     if (s?.[k] !== ws[k]) problems.push(`setting ${k}: ${JSON.stringify(s?.[k])}, expected ${JSON.stringify(ws[k])}`);
   }
   problems.push(...receiptProblems(s?.receiptText, form.key));
@@ -336,7 +334,7 @@ const pad = (s, n) => String(s).padEnd(n);
 
 function summaryRow(form) {
   const items = form.pages.flatMap((p) => p.items);
-  const questions = items.filter((it) => it.type !== 'locked' && it.type !== 'stop');
+  const questions = items.filter((it) => !['locked', 'stop', 'note', 'heading'].includes(it.type));
   const required = questions.filter((it) => it.required).length;
   return `${pad(form.key, 12)} ${pad(formTitle(form), 62)} ${pad(form.pages.length, 5)} ${pad(questions.length, 9)} ${pad(required, 8)} ${form.locked.join(', ')}`;
 }

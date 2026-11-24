@@ -1992,12 +1992,12 @@
     "en": "Steps in the tour"
   },
   "helhetTitle": {
-    "nb": "Helhetsinntrykk",
-    "en": "Overall impression"
+    "nb": "Avslutning",
+    "en": "Closing questions"
   },
   "helhetIntro": {
-    "nb": "Skjemaet «Helhetsinntrykk» åpnes i panelet. Nå som du har arbeidet med de tre sakene, spør det om ATLAS som helhet. Med «Se igjen» kan du åpne et steg fra omvisningen på nytt.",
-    "en": "The form ‘Overall impression’ opens in the panel. Now that you have worked through the three cases, it asks about ATLAS as a whole. With ‘See again’ you can open a step from the tour once more."
+    "nb": "Skjemaet «Avslutning» åpnes i panelet. Nå som du har arbeidet med de tre sakene, spør det om ATLAS som helhet, og har noen spørsmål til slutt. Med «Se igjen» kan du åpne et steg fra omvisningen på nytt.",
+    "en": "The form ‘Closing questions’ opens in the panel. Now that you have worked through the three cases, it asks about ATLAS as a whole, with a few questions at the end. With ‘See again’ you can open a step from the tour once more."
   },
   "helhetGoOn": {
     "nb": "Gå videre til avslutningen",
@@ -2136,8 +2136,8 @@
     "en": "Tour"
   },
   "stepHelhet": {
-    "nb": "Helhetsinntrykk",
-    "en": "Overall impression"
+    "nb": "Avslutning",
+    "en": "Closing questions"
   },
   "stepKari": {
     "nb": "Sak 1: Kari",
@@ -4470,5 +4470,9 @@
   "mapClose": {
     "nb": "Lukk oversikten over studien",
     "en": "Close the study overview"
+  },
+  "formsInNorwegian": {
+    "nb": "Skjemaene er på norsk.",
+    "en": "The forms are in Norwegian, as in Nettskjema."
   }
 }

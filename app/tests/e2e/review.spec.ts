@@ -179,7 +179,7 @@ test('review: R1 opens as a preview when the form address is not set', async ({ 
   await page.getByRole('dialog').getByRole('button', { name: 'Hele skjermbildet' }).click();
   await expect(panel(page).locator('form')).toBeVisible();
   // 3.8: the locked context goes with the answers but is not shown (Jishnu, 24 November).
-  await expect(panel(page).getByText('Fylt ut automatisk av ATLAS')).toHaveCount(0);
+  await expect(panel(page).getByText(/Fylt ut (automatisk )?av ATLAS/)).toHaveCount(0);
   await expect(page.locator('iframe[data-form-frame]')).toHaveCount(0);
 });
 

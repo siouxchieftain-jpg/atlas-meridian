@@ -95,7 +95,7 @@ const item = {
   type: 'object',
   required: ['id', 'type', 'codebook', 'text', 'required'],
   properties: {
-    type: { enum: ['locked', 'agree7', 'confidence7', 'helpful7', 'nps11', 'clarity5', 'importance3', 'choice', 'text', 'longtext', 'stop', 'consent'] },
+    type: { enum: ['locked', 'agree7', 'confidence7', 'helpful7', 'likely7', 'nps11', 'clarity5', 'importance3', 'choice', 'text', 'longtext', 'stop', 'note', 'heading', 'consent'] },
     codebook: { type: 'string', pattern: '^[a-z0-9_]+$' },
     text: T,
   },
@@ -189,7 +189,7 @@ for (const { path, t } of texts) for (const r of retired) if (`${t.nb} ${t.en}`.
 
 /* ---------- 4. Instrument and configuration ---------- */
 
-const STUDY_KEYS = ['S1', 'S2.fastlege', 'S2.dps', 'S3.fastlege', 'S3.dps', 'S4.fastlege', 'S4.dps', 'S5.fastlege', 'S5.dps', 'S6', 'S7.fastlege', 'S8', 'S9'];
+const STUDY_KEYS = ['S1', 'S2.fastlege', 'S2.dps', 'S3.fastlege', 'S3.dps', 'S4.fastlege', 'S4.dps', 'S5.fastlege', 'S5.dps', 'S7.fastlege', 'S8', 'S9'];
 const FORM_KEYS = [...STUDY_KEYS, 'R1', 'R2'];
 const instrument = files['instrument.json'];
 if (instrument) {
@@ -201,7 +201,7 @@ if (instrument) {
       if (seen.has(it.codebook)) fail(`instrument.json ${f.key}: codebook «${it.codebook}» is used twice`);
       seen.add(it.codebook);
       if (/[æøå]/i.test(it.codebook)) fail(`instrument.json ${f.key}: codebook «${it.codebook}» has æ, ø or å`);
-      if ((it.type === 'agree7' || it.type === 'confidence7' || it.type === 'helpful7' || it.type === 'nps11') && !it.anchors) fail(`instrument.json ${f.key} ${it.id}: scale without anchors`);
+      if ((it.type === 'agree7' || it.type === 'confidence7' || it.type === 'helpful7' || it.type === 'likely7' || it.type === 'nps11') && !it.anchors) fail(`instrument.json ${f.key} ${it.id}: scale without anchors`);
       if ((it.type === 'choice' || it.type === 'importance3') && !(it.options && it.options.length)) fail(`instrument.json ${f.key} ${it.id}: choice without options`);
       if (it.type === 'consent' && !(it.required && it.options && it.options.length === 1)) fail(`instrument.json ${f.key} ${it.id}: the consent tick box must be required and have exactly one option`);
       if (it.dontKnow && !(it.type === 'agree7' && it.anchors && it.dontKnow.nb && it.dontKnow.en)) fail(`instrument.json ${f.key} ${it.id}: «Vet ikke» is built only on an agreement scale with anchors, in both languages`);
@@ -222,7 +222,8 @@ if (instrument) {
         // 3.6 (I-1): the decision comes first on page 1, before B1, and again on the last page after the check item and
         // before B2, in the same words, with «Ikke bestemt» as its last choice.
         const [d1, b1] = f.pages[0].items;
-        const [check, d2, b2] = f.pages[2].items;
+        // A plain line may open the last page (3.8, F37); the questions start after it.
+        const [check, d2, b2] = f.pages[2].items.filter((it) => it.type !== 'note');
         const decision = (it) => it?.type === 'choice' && it.required === true && it.options?.at(-1)?.nb === 'Ikke bestemt';
         if (!decision(d1) || b1?.type !== 'confidence7' || !b1.required) fail(`instrument.json ${f.key}: page 1 must open with the decision item, then B1`);
         if (check?.codebook !== 'kontroll' || !decision(d2) || b2?.type !== 'confidence7' || !b2.required) fail(`instrument.json ${f.key}: the last page must open with the check item, the decision item, then B2`);

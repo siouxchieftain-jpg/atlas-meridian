@@ -14,7 +14,7 @@ import {
 import { useEffect, useId, useMemo, useRef, useState } from 'react';
 import type { InstrumentForm, InstrumentItem } from '../content/types';
 import { instrument } from '../content';
-import { useLang } from '../i18n/i18n';
+import { FixedLang, useLang } from '../i18n/i18n';
 import { readJSON, writeJSON } from '../state/persist';
 import { GrowingTextarea, NextMark } from '../patterns/basics';
 import type { LockedFields } from '../engine/forms';
@@ -74,6 +74,8 @@ const useStyles = makeStyles({
   // «(valgfritt)» mark in regular grey after it, and a hairline between questions so one ends before the next begins.
   question: { ...typographyStyles.body1Strong, color: tokens.colorNeutralForeground1, paddingBottom: tokens.spacingVerticalXS },
   optional: { ...typographyStyles.body1, color: tokens.colorNeutralForeground3 },
+  partHead: { ...typographyStyles.subtitle2, margin: 0, paddingTop: tokens.spacingVerticalM },
+  note: { ...typographyStyles.body1, margin: 0, padding: tokens.spacingHorizontalM, borderRadius: tokens.borderRadiusMedium, backgroundColor: tokens.colorNeutralBackground3 },
   item: { paddingTop: tokens.spacingVerticalL, borderTopWidth: '1px', borderTopStyle: 'solid', borderTopColor: tokens.colorNeutralStroke2 },
 });
 
@@ -82,6 +84,7 @@ function scaleRange(item: InstrumentItem): number[] {
     case 'agree7':
     case 'confidence7':
     case 'helpful7':
+    case 'likely7':
       return [1, 2, 3, 4, 5, 6, 7];
     case 'nps11':
       return [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
@@ -96,7 +99,7 @@ export function findForm(formKey: string): InstrumentForm | undefined {
   return instrument.forms.find((f) => f.key === formKey);
 }
 
-export function PreviewForm({
+function PreviewFormInner({
   formKey,
   locked,
   onPageChange,
@@ -203,6 +206,21 @@ export function PreviewForm({
       {items
         .filter((it) => it.type !== 'locked')
         .map((it) => {
+          // 3.8, part C: a part's heading (the closing form) and a plain line (where a case form turns to ATLAS).
+          if (it.type === 'heading') {
+            return (
+              <h3 key={it.id} className={cls.partHead}>
+                {t(it.text)}
+              </h3>
+            );
+          }
+          if (it.type === 'note') {
+            return (
+              <p key={it.id} className={cls.note}>
+                {t(it.text)}
+              </p>
+            );
+          }
           if (it.type === 'stop') {
             return (
               <p key={it.id} className={cls.stop}>
@@ -361,4 +379,22 @@ export function downloadPreviewCsv(name = 'atlas-forhandsvisning.csv') {
   a.click();
   a.remove();
   URL.revokeObjectURL(url);
+}
+
+/**
+ * The preview of a form, in Norwegian like the form in Nettskjema (3.8, part C, F17). In English, one line above it
+ * says so; the panel and the app around it keep the reader's language.
+ */
+export function PreviewForm(props: Parameters<typeof PreviewFormInner>[0]) {
+  const { lang, s } = useLang();
+  return (
+    <>
+      {lang === 'en' && <p style={{ margin: 0 }} data-forms-norwegian="">{s('formsInNorwegian')}</p>}
+      <FixedLang lang="nb">
+        <div lang="nb">
+          <PreviewFormInner {...props} />
+        </div>
+      </FixedLang>
+    </>
+  );
 }

@@ -11,7 +11,7 @@ describe('steg', () => {
     expect(stegValue('S4', { erlend: true })).toBe('S4-etter');
     expect(stegValue('S5', { astrid: true })).toBe('S5-etter');
     expect(stegValue('S1', { kari: true, erlend: true, astrid: true })).toBe('S1');
-    expect(stegValue('S6', { kari: true })).toBe('S6');
+    expect(stegValue('S2', { kari: true })).toBe('S2');
   });
 });
 
@@ -61,7 +61,7 @@ describe('locked context', () => {
 
   it('matches the locked list of every form in the instrument (the Nettskjema build sheet)', () => {
     const steps: [FormStep, 'gp' | 'dps'][] = [
-      ['S1', 'gp'], ['S2', 'gp'], ['S2', 'dps'], ['S3', 'gp'], ['S3', 'dps'], ['S4', 'gp'], ['S4', 'dps'], ['S5', 'gp'], ['S5', 'dps'], ['S6', 'gp'], ['S7', 'gp'], ['S8', 'gp'],
+      ['S1', 'gp'], ['S2', 'gp'], ['S2', 'dps'], ['S3', 'gp'], ['S3', 'dps'], ['S4', 'gp'], ['S4', 'dps'], ['S5', 'gp'], ['S5', 'dps'], ['S7', 'gp'], ['S8', 'gp'],
     ];
     for (const [step, role] of steps) {
       const key = formKeyFor(step, role);

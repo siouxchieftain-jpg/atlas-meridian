@@ -26,7 +26,6 @@ export const STEP_PATH: Record<StepId, string> = {
   kari: '/studie/sak/kari',
   erlend: '/studie/sak/erlend',
   astrid: '/studie/sak/astrid',
-  avslutning: '/studie/avslutning',
   ekstra: '/studie/ekstra',
   takk: '/studie/takk',
 };
@@ -37,7 +36,6 @@ export const STEP_FORM: Partial<Record<StepId, FormStep>> = {
   kari: 'S3',
   erlend: 'S4',
   astrid: 'S5',
-  avslutning: 'S6',
 };
 
 const CASE_NEXT: Record<CoreCaseId, StepId> = { kari: 'erlend', erlend: 'astrid', astrid: 'helhet' };

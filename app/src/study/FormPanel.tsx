@@ -217,7 +217,7 @@ function useInline(visible: boolean, atlasInline: boolean, caseForm: boolean): {
 export function FormPanel({ actions }: { actions: FormPanelActions | null }) {
   const cls = useStyles();
   const host = useFormHost();
-  const { s } = useLang();
+  const { s, lang } = useLang();
   const { form, visible } = host;
   const { inline } = useInline(!!form && visible, host.atlasInline, !!form?.caseId);
   const panelId = useId();
@@ -493,6 +493,8 @@ export function FormPanel({ actions }: { actions: FormPanelActions | null }) {
                   )}
                 </MessageBar>
               )}
+              {/* The forms are in Norwegian only (3.8, part C, F17): in English, say so once above the form. */}
+              {lang === 'en' && <p className={cls.notice} style={{ margin: 0 }} data-forms-norwegian="">{s('formsInNorwegian')}</p>}
               <iframe
                 key={form.id}
                 data-form-frame=""

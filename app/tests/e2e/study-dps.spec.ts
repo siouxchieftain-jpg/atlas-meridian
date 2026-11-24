@@ -69,17 +69,15 @@ test('a DPS clinician completes the core study, with the GP marker shown only af
   await sendForm(page);
   await page.getByRole('button', { name: 'Fortsett' }).click();
   await finishCaseHome(page);
-  // After the three referrals: S2 (now about ATLAS as a whole, after the cases), then S6.
+  // After the three referrals: S2, the one closing form (S6 merged into it in 3.8, F92).
   await page.locator('[data-start-hero]').getByRole('button', { name: 'Gå til avslutningen' }).click();
-  await sendForm(page);
-  await page.getByRole('button', { name: 'Gå videre til avslutningen' }).click();
   await sendForm(page);
   await page.getByRole('button', { name: 'Avslutt', exact: true }).click();
   await expect(page.getByRole('heading', { name: 'Hvorfor ATLAS ser slik ut' })).toBeVisible();
 
   const sent = await submissions(page);
-  expect(Object.fromEntries(sent.map((s) => [s.key, s.fields.steg]))).toEqual({ S1: 'S1', 'S2.dps': 'S2', 'S3.dps': 'S3', 'S4.dps': 'S4', 'S5.dps': 'S5', S6: 'S6' });
-  expect(sent.map((s) => s.key)).toEqual(['S1', 'S3.dps', 'S4.dps', 'S5.dps', 'S2.dps', 'S6']);
+  expect(Object.fromEntries(sent.map((s) => [s.key, s.fields.steg]))).toEqual({ S1: 'S1', 'S2.dps': 'S2', 'S3.dps': 'S3', 'S4.dps': 'S4', 'S5.dps': 'S5' });
+  expect(sent.map((s) => s.key)).toEqual(['S1', 'S3.dps', 'S4.dps', 'S5.dps', 'S2.dps']);
   for (const s of sent) {
     expect(s.fields.rolle).toBe('DPS-inntak');
     expect(s.fields.intervju).toBe('Ja');

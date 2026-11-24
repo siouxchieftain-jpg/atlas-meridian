@@ -66,7 +66,6 @@ const STEP_FORM: Partial<Record<StepId, FormStep>> = {
   kari: 'S3',
   erlend: 'S4',
   astrid: 'S5',
-  avslutning: 'S6',
 };
 
 /**
@@ -98,7 +97,9 @@ export function loadStudy(round: NonNullable<StudyState['round']> = getConfig().
   // Every step whose form is in the ledger is behind the participant, except a case still under way: after its form
   // is sent or skipped the case goes on (the reply, the plan, the summary), and it ends only when its phase is done.
   // A case form in the ledger with no phase at all comes from the keep record alone: that case counts as done.
-  let minIndex = STEP_ORDER.indexOf(s.furthest);
+  // «avslutning» left the path in 3.8 (part C, F92): a session stored there goes on from the closing form.
+  if ((s.furthest as string) === 'avslutning') s = { ...s, furthest: 'helhet' };
+  let minIndex = Math.max(0, STEP_ORDER.indexOf(s.furthest));
   STEP_ORDER.forEach((step, i) => {
     const f = STEP_FORM[step];
     if (!f || !s.ledger[f]) return;

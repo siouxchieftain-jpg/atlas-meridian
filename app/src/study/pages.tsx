@@ -109,46 +109,23 @@ export function HelhetPage() {
         }}
       />
       {ctl.stepDone('S2') ? (
-        <Actions>
-          <Button appearance="primary" icon={<ArrowRight20Regular />} iconPosition="after" onClick={() => ctl.goToStep('avslutning')}>
-            {s('helhetGoOn')}
-          </Button>
-        </Actions>
-      ) : (
-        <FormWaiting step="S2" />
-      )}
-    </PageCard>
-  );
-}
-
-/* ---------- 8 Avslutning ---------- */
-
-export function AvslutningPage() {
-  const { s } = useLang();
-  const ctl = useStudyController();
-  return (
-    <PageCard narrow>
-      <PageHeading title={s('avslutningTitle')}>{s('avslutningTitle')}</PageHeading>
-      <Body>{s('avslutningIntro')}</Body>
-      <FormStepCard step="S6" autoOpen />
-      {ctl.stepDone('S6') ? (
-        // Finishing is the expected path and the primary action; the extras are optional (Meridian: primary first).
-        // The next press is named (3.8, F59).
+        // 3.8, part C (F92): this is the one closing form, so the study ends here. Finishing is the expected path and
+        // the primary action; the extras are optional (Meridian: primary first). The next press is named (F59).
         <>
-        <p style={{ margin: 0 }} data-press-now="">
-          <strong>{s('avslutningPressFinish', { finish: s('finish') })}</strong>
-        </p>
-        <Actions>
-          <NextMark on>
-            <Button appearance="primary" onClick={() => ctl.goToStep('takk')}>
-              {s('finish')}
-            </Button>
-          </NextMark>
-          <Button onClick={() => ctl.goToStep('ekstra')}>{s('toExtra')}</Button>
-        </Actions>
+          <p style={{ margin: 0 }} data-press-now="">
+            <strong>{s('avslutningPressFinish', { finish: s('finish') })}</strong>
+          </p>
+          <Actions>
+            <NextMark on>
+              <Button appearance="primary" onClick={() => ctl.goToStep('takk')}>
+                {s('finish')}
+              </Button>
+            </NextMark>
+            <Button onClick={() => ctl.goToStep('ekstra')}>{s('toExtra')}</Button>
+          </Actions>
         </>
       ) : (
-        <FormWaiting step="S6" />
+        <FormWaiting step="S2" />
       )}
     </PageCard>
   );
@@ -417,7 +394,6 @@ const STEP_LABEL: Record<StepId, Parameters<ReturnType<typeof useLang>['s']>[0]>
   kari: 'stepKari',
   erlend: 'stepErlend',
   astrid: 'stepAstrid',
-  avslutning: 'stepAvslutning',
   ekstra: 'stepEkstra',
   takk: 'stepTakk',
 };
