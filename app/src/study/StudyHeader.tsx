@@ -1,6 +1,21 @@
-import { Button, Popover, PopoverSurface, PopoverTrigger, makeStyles, mergeClasses, tokens, typographyStyles } from '@fluentui/react-components';
-import { Checkmark12Filled, People16Regular, Stethoscope20Regular } from '@fluentui/react-icons';
-import { useId } from 'react';
+import {
+  Button,
+  DrawerBody,
+  DrawerHeader,
+  DrawerHeaderTitle,
+  OverlayDrawer,
+  Popover,
+  PopoverSurface,
+  PopoverTrigger,
+  makeStyles,
+  mergeClasses,
+  tokens,
+  typographyStyles,
+  useRestoreFocusTarget,
+} from '@fluentui/react-components';
+import { Checkmark12Filled, ChevronDown16Regular, Dismiss20Regular, People16Regular, Stethoscope20Regular, TaskListLtr20Regular } from '@fluentui/react-icons';
+import { useId, useState } from 'react';
+import { StudyMap } from './pages';
 import { useLang } from '../i18n/i18n';
 import { useStudy } from '../state/study';
 import { SrOnly, StudyNameMark } from '../patterns/basics';
@@ -17,7 +32,13 @@ const useStyles = makeStyles({
     '@media only screen and (max-width: 639px)': { display: 'none' },
   },
   roleIcon: { display: 'inline-flex', color: tokens.colorNeutralForeground2 },
-  // The three parts of the study as quiet pills, the current one outlined (board 8b). Status only, never a control.
+  // The part pills are one button since 3.8: it opens the study map as a panel over the page (Jishnu, 24 November).
+  mapButton: { minHeight: '36px', paddingInline: '6px', columnGap: '6px', fontWeight: 'inherit', borderRadius: tokens.borderRadiusXLarge },
+  chev: { display: 'inline-flex', color: tokens.colorNeutralForeground2 },
+  // Under 640 px there is room for neither the pills nor the line: the map's icon says where the button leads.
+  narrowIcon: { display: 'inline-flex', color: tokens.colorNeutralForeground2, '@media only screen and (min-width: 640px)': { display: 'none' } },
+  mapLead: { ...typographyStyles.body1, margin: 0, marginBottom: tokens.spacingVerticalL, color: tokens.colorNeutralForeground2 },
+  // The three parts of the study as quiet pills, the current one outlined (board 8b).
   pills: {
     listStyle: 'none',
     margin: 0,
@@ -101,7 +122,7 @@ export function RoleLabel() {
 }
 
 /** «Bli kjent» · «Tre pasienter · 1 av 3 ferdig» · «Avslutning»: where the participant is, in three parts. */
-export function StudyProgress() {
+export function StudyProgress({ here }: { here?: string }) {
   const cls = useStyles();
   const { s } = useLang();
   const study = useStudy();
@@ -116,9 +137,25 @@ export function StudyProgress() {
     return now === 2 && done > 0 ? `${base} · ${s('partCasesDone', { n: done })}` : base;
   };
   const parts: StudyPart[] = [1, 2, 3];
+  const [open, setOpen] = useState(false);
+  // Closing the panel (X, Escape, «Fortsett») puts focus back on this button (2.4.3).
+  const restoreFocus = useRestoreFocusTarget();
   return (
     <>
-      <ol className={cls.pills} aria-label={s('partsLabel')} data-study-progress="">
+      <Button
+        appearance="subtle"
+        className={cls.mapButton}
+        aria-label={`${s('mapOpen')}: ${s('partCompact', { n: now, title: label(now) })}`}
+        aria-expanded={open}
+        aria-haspopup="dialog"
+        onClick={() => setOpen((o) => !o)}
+        data-study-map-open=""
+        {...restoreFocus}
+      >
+      <span className={cls.narrowIcon} aria-hidden="true">
+        <TaskListLtr20Regular />
+      </span>
+      <ol className={cls.pills} aria-hidden="true" data-study-progress="">
         {parts.map((p) => {
           const isNow = p === now;
           const isDone = p < now;
@@ -136,7 +173,34 @@ export function StudyProgress() {
           );
         })}
       </ol>
-      <span className={cls.compact}>{s('partCompact', { n: now, title: label(now) })}</span>
+      <span className={cls.compact} aria-hidden="true">
+        {s('partCompact', { n: now, title: label(now) })}
+      </span>
+      <span className={cls.chev} aria-hidden="true">
+        <ChevronDown16Regular />
+      </span>
+      </Button>
+      <OverlayDrawer
+        open={open}
+        onOpenChange={(_, d) => setOpen(d.open)}
+        position="end"
+        modalType="modal"
+        style={{ width: 'min(400px, 100vw)' }}
+        aria-label={s('stepperTitle')}
+        data-study-map=""
+      >
+        <DrawerHeader>
+          <DrawerHeaderTitle action={<Button appearance="subtle" aria-label={s('mapClose')} icon={<Dismiss20Regular />} onClick={() => setOpen(false)} />}>
+            {s('stepperTitle')}
+          </DrawerHeaderTitle>
+        </DrawerHeader>
+        <DrawerBody>
+          <p className={cls.mapLead}>{s('mapLead')}</p>
+          <div style={{ paddingBottom: 24 }}>
+            <StudyMap inPanel here={here} onGo={() => setOpen(false)} />
+          </div>
+        </DrawerBody>
+      </OverlayDrawer>
     </>
   );
 }

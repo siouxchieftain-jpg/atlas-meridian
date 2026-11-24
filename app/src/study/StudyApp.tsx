@@ -15,8 +15,6 @@ import {
   ArrowCounterclockwise20Regular,
   Map20Regular,
   QuestionCircle20Regular,
-  TaskListLtr20Filled,
-  TaskListLtr20Regular,
   Open20Regular,
 } from '@fluentui/react-icons';
 import { useEffect, useMemo, useRef, useState } from 'react';
@@ -185,7 +183,8 @@ function StudyShell() {
       match: [LIST_PATH, '/studie/sak'],
     });
   }
-  nav.push({ key: 'steg', label: s('stepperTitle'), to: '/studie/steg', icon: <TaskListLtr20Regular />, iconActive: <TaskListLtr20Filled />, match: ['/studie/steg'] });
+  // The study map left the rail in 3.8 (Jishnu, 24 November): the rail holds the system's own pages; the map opens
+  // from the part pills in the header, as a panel over the page you are on.
 
   const help: HelpItem[] = [];
   if (st.tour.done) help.push({ key: 'tour', label: s('helpTourAgain'), icon: <Map20Regular />, onSelect: () => navigate('/studie/omvisning?igjen') });
@@ -263,7 +262,7 @@ function StudyShell() {
               <RoleLabel />
             </>
           }
-          headerCenter={<StudyProgress />}
+          headerCenter={<StudyProgress here={here} />}
           headerEnd={
             <>
               <HelpMenu items={help} />

@@ -86,3 +86,33 @@ test('3.8: Om deg marks «Lagre og åpne skjemaet» once the question is answere
   await sendForm(page);
   await expect(page.locator('[data-next-mark]').getByRole('button', { name: 'Til oversikten' })).toBeVisible();
 });
+
+test('3.8: the study map opens from the header as a panel; «Fortsett» goes back to the case, and the rail has no study item', async ({ page }) => {
+  await mockNettskjema(page);
+  await startStudy(page, 'Fastlege', 'Nei');
+  await sendForm(page);
+  await toHome(page);
+  await doTour(page);
+  await openCurrentCase(page);
+  await page.getByRole('button', { name: 'Start saken' }).click();
+  const url = page.url();
+  // The rail holds the system's own pages only (Jishnu, 24 November).
+  await expect(page.getByRole('link', { name: 'Studien' })).toHaveCount(0);
+  const open = page.getByRole('button', { name: /^Hvor du er i studien: Del 2 av 3/ });
+  await expect(open).toHaveAttribute('aria-expanded', 'false');
+  await open.click();
+  const map = page.getByRole('dialog', { name: 'Studien' });
+  await expect(map).toBeVisible();
+  await expect(map.locator('li[aria-current="step"]')).toContainText('Sak 1: Kari');
+  await map.getByRole('button', { name: 'Fortsett' }).click();
+  await expect(map).toHaveCount(0);
+  expect(page.url()).toBe(url);
+  await expect(open).toBeFocused();
+  // Escape closes it the same way, and «Åpne» on a finished step goes there.
+  await open.click();
+  await page.keyboard.press('Escape');
+  await expect(page.getByRole('dialog', { name: 'Studien' })).toHaveCount(0);
+  await open.click();
+  await page.getByRole('dialog', { name: 'Studien' }).locator('li', { hasText: 'Omvisning' }).getByRole('button', { name: 'Åpne' }).click();
+  await expect(page).toHaveURL(/#\/studie\/omvisning/);
+});

@@ -426,12 +426,25 @@ export function stepLabelKey(step: StepId) {
   return STEP_LABEL[step];
 }
 
-export function StepperPage() {
+/**
+ * The study map: the three parts, each step with its status, and the way back into a finished step or a skipped form.
+ * On its own page (/studie/steg) and, from 3.8, in the panel the header's part pills open (Jishnu, 24 November: the
+ * rail item replaced the page you were on and gave no way back). In the panel the current step's button says
+ * «Fortsett» and takes you back to where you were; every button closes the panel.
+ */
+export function StudyMap({ inPanel, here, onGo }: { inPanel?: boolean; here?: string; onGo?: () => void }) {
   const cls = useStyles();
   const { s } = useLang();
   const study = useStudy();
   const ctl = useStudyController();
   const furthest = study.state.furthest;
+  const go = (step: StepId) => {
+    onGo?.();
+    // Already on the step (in the case, on the form page): closing the panel is the way back, nothing else moves.
+    if (inPanel && here && here.startsWith(STEP_PATH[step])) return;
+    navigate(STEP_PATH[step]);
+  };
+  const pre = inPanel ? 'map' : 'step';
   const row = (step: StepId): ReactNode => {
     const idx = stepIndex(step);
     const now = step === furthest;
@@ -448,7 +461,7 @@ export function StepperPage() {
           {done || caseDone ? <CheckmarkCircle20Regular /> : now ? <RecordStop20Regular /> : <Circle20Regular />}
         </span>
         <span style={{ display: 'flex', flexDirection: 'column', minWidth: 0 }}>
-          <span className={cls.stepName} id={`step-name-${step}`}>
+          <span className={cls.stepName} id={`${pre}-name-${step}`}>
             {s(STEP_LABEL[step])}
           </span>
           <span className={cls.stepMeta}>{meta}</span>
@@ -456,8 +469,15 @@ export function StepperPage() {
         <span className={cls.stepActions}>
           {/* Each «Åpne» is described by its step's name, so a list of buttons still says which step (2.4.6). */}
           {reachable && (
-            <Button size="small" aria-describedby={`step-name-${step}`} onClick={() => navigate(STEP_PATH[step])}>
-              {s('stepOpen')}
+            <Button
+              size="small"
+              appearance={inPanel && now ? 'primary' : undefined}
+              icon={inPanel && now ? <ArrowRight20Regular /> : undefined}
+              iconPosition="after"
+              aria-describedby={`${pre}-name-${step}`}
+              onClick={() => go(step)}
+            >
+              {inPanel && now ? s('continue') : s('stepOpen')}
             </Button>
           )}
           {form && fstatus === 'skipped' && (step !== 'ekstra' || furthest === 'ekstra') && furthest !== 'takk' && (
@@ -466,6 +486,7 @@ export function StepperPage() {
               appearance="primary"
               onClick={() => {
                 ctl.answerAnyway(form);
+                onGo?.();
                 navigate(STEP_PATH[step]);
               }}
             >
@@ -482,19 +503,27 @@ export function StepperPage() {
     { n: 2, title: s(partTwoLabel(role)), steps: STEP_ORDER.filter((x) => partOf(x) === 2) },
     { n: 3, title: s('partEnd'), steps: STEP_ORDER.filter((x) => partOf(x) === 3) },
   ];
+  const H = inPanel ? 'h3' : 'h2';
+  return (
+    <div className={cls.stepParts} style={inPanel ? { gridTemplateColumns: '1fr' } : undefined}>
+      {parts.map((p) => (
+        <section key={p.n} className={cls.stepPart} aria-labelledby={`${pre}-part-${p.n}`}>
+          <H className={cls.partTitle} id={`${pre}-part-${p.n}`}>
+            {s('partCompact', { n: p.n, title: p.title })}
+          </H>
+          <ol className={cls.steps}>{p.steps.map(row)}</ol>
+        </section>
+      ))}
+    </div>
+  );
+}
+
+export function StepperPage() {
+  const { s } = useLang();
   return (
     <PageCard>
       <PageHeading title={s('stepperTitle')}>{s('stepperTitle')}</PageHeading>
-      <div className={cls.stepParts}>
-        {parts.map((p) => (
-          <section key={p.n} className={cls.stepPart} aria-labelledby={`step-part-${p.n}`}>
-            <h2 className={cls.partTitle} id={`step-part-${p.n}`}>
-              {s('partCompact', { n: p.n, title: p.title })}
-            </h2>
-            <ol className={cls.steps}>{p.steps.map(row)}</ol>
-          </section>
-        ))}
-      </div>
+      <StudyMap />
     </PageCard>
   );
 }

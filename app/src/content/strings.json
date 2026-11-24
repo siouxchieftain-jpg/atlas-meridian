@@ -4458,5 +4458,17 @@
   "taskPathDps": {
     "nb": "Gå gjennom delene én om gangen. Den siste er utfallet ditt.",
     "en": "Go through the parts one at a time. The last is your outcome."
+  },
+  "mapOpen": {
+    "nb": "Hvor du er i studien",
+    "en": "Where you are in the study"
+  },
+  "mapLead": {
+    "nb": "Lukk panelet, eller trykk «Fortsett», for å gå tilbake til der du var.",
+    "en": "Close the panel, or press «Continue», to go back to where you were."
+  },
+  "mapClose": {
+    "nb": "Lukk oversikten over studien",
+    "en": "Close the study overview"
   }
 }
