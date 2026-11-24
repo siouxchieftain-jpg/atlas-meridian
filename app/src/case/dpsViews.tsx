@@ -5,7 +5,8 @@ import { cases, vocab } from '../content';
 import { formatDate, useLang } from '../i18n/i18n';
 import { navigate } from '../router/router';
 import { useWork } from '../state/work';
-import { DesignNote, Panel, ProvenanceChip, RoleAvatar, StatusChip } from '../patterns/basics';
+import { DesignNote, NextMark, Panel, ProvenanceChip, RoleAvatar, StatusChip } from '../patterns/basics';
+import { positionKey } from '../engine/placement';
 import { InfoGuide, PlainLetter } from '../patterns/clinical';
 import { Actions } from '../patterns/layout';
 import { Responsibility } from './AtlasPanelGp';
@@ -237,6 +238,24 @@ export function DpsAssessment({ caseId }: { caseId: CaseId }) {
     work.ownDecision(caseId);
     navigate(work.casePath(caseId, 'sendt'));
   };
+  // 3.8: in the study, the ATLAS parts sit in the boxes under «Oppgaven din»; no side panel (Jishnu, 24 November).
+  const inTask = work.mode === 'study' && !without && caseId !== 'astrid';
+  const modules = inTask
+    ? {
+        // What the GP was unsure about comes with ATLAS, so it is ATLAS's first part, in the card (review R5).
+        1: <GpUnsureBlock received={received} inCard />,
+        ...(d.systemReading ? { 2: <AtlasPanelDps caseId={caseId} received={received} onSent={onSent} withOutcome only="band" /> } : {}),
+        3: <AtlasPanelDps caseId={caseId} received={received} onSent={onSent} withOutcome only="guide" />,
+        4: <AtlasPanelDps caseId={caseId} received={received} onSent={onSent} withOutcome only="vurdering" />,
+      }
+    : undefined;
+  const summaries = inTask
+    ? {
+        2: dps.placement !== undefined ? s(positionKey(dps.placement)) : undefined,
+        3: s('guideCount', { n: received.mentioned.length }),
+        4: dps.sent && dps.outcome ? t(vocab.outcomes[dps.outcome].label) : undefined,
+      }
+    : undefined;
   let side;
   if (without) side = work.mode === 'review' ? <AtlasPlaceholder caseId={caseId} /> : undefined;
   else if (caseId === 'astrid')
@@ -249,7 +268,7 @@ export function DpsAssessment({ caseId }: { caseId: CaseId }) {
         </section>
       </>
     );
-  else side = <AtlasPanelDps caseId={caseId} received={received} onSent={onSent} withOutcome />;
+  else if (!inTask) side = <AtlasPanelDps caseId={caseId} received={received} onSent={onSent} withOutcome />;
   const compact = !without && d.systemReading ? (
     <CompactBand own={dps.placement} other={received.placement !== undefined ? { role: 'gp', value: received.placement } : undefined} reading={d.systemReading} />
   ) : undefined;
@@ -264,7 +283,7 @@ export function DpsAssessment({ caseId }: { caseId: CaseId }) {
       />
       {/* Notices sit under the title (G-16). */}
       <CaseModeBar caseId={caseId} />
-      <AtlasTaskBar caseId={caseId} />
+      <AtlasTaskBar caseId={caseId} modules={modules} summaries={summaries} />
       {caseId === 'astrid' ? (
         <AstridDps without={without} />
       ) : (
@@ -275,20 +294,22 @@ export function DpsAssessment({ caseId }: { caseId: CaseId }) {
               {t(d.ownRecordLine)}
             </p>
           )}
-          <div ref={pairRef} className={mergeClasses(cls.twoUp, !without && pairWidth >= 1200 && cls.twoUpWide)} data-two-up={!without && pairWidth >= 1200 ? '' : undefined}>
+          <div ref={pairRef} className={mergeClasses(cls.twoUp, !without && !inTask && pairWidth >= 1200 && cls.twoUpWide)} data-two-up={!without && !inTask && pairWidth >= 1200 ? '' : undefined}>
             <Panel aria-label={s('referralAsSent')}>
               <div className={cls.stack}>
                 <h2 className={cls.h2}>{without ? s('referralLetter') : s('referralAsSent')}</h2>
                 <ReferralLetter caseId={caseId} received={received} letterFrame={without} />
               </div>
             </Panel>
-            {!without && <GpUnsureBlock received={received} />}
+            {!without && !inTask && <GpUnsureBlock received={received} />}
           </div>
           {dps.sent && !work.held(caseId) && (
             <Actions>
-              <Button appearance="primary" icon={<ArrowRight16Regular />} iconPosition="after" onClick={() => navigate(work.casePath(caseId, status.next === 'vurdering' ? 'dialog' : status.next))}>
-                {s('continue')}
-              </Button>
+              <NextMark on={work.mode === 'study'}>
+                <Button appearance="primary" size="large" icon={<ArrowRight16Regular />} iconPosition="after" onClick={() => navigate(work.casePath(caseId, status.next === 'vurdering' ? 'dialog' : status.next))}>
+                  {s('continue')}
+                </Button>
+              </NextMark>
             </Actions>
           )}
         </>
@@ -315,6 +336,12 @@ export function DpsDialog({ caseId }: { caseId: CaseId }) {
       <OtherSideButton caseId={caseId} view="dialog" />
       <Panel aria-label={s('dialogWithGp')}>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
+          {/* What to do here, before the thread (3.8, F82). */}
+          {status.thread.awaiting === 'dpsFinal' && (
+            <p style={{ margin: 0 }} data-dialog-lead="">
+              {s('dialogFinalLead')}
+            </p>
+          )}
           {/* The GP's «Ikke svar nå» or «Ikke spør nå» is a divider in the thread, where it happened (r6F-04, r7F-02, r7A-08). */}
           <ThreadView thread={status.thread} />
           {status.thread.awaiting === 'dpsFinal' && <FinalChoiceSection caseId={caseId} thread={status.thread} />}

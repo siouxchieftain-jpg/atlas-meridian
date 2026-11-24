@@ -1,3 +1,4 @@
+import { getConfig } from '../engine/forms';
 import { Button, makeStyles, mergeClasses, tokens, typographyStyles } from '@fluentui/react-components';
 import { ArrowRight20Regular, CheckmarkCircle20Regular, Circle20Regular, Delete20Regular, Form20Regular, RecordStop20Regular } from '@fluentui/react-icons';
 import { useRef, useState, type ReactNode } from 'react';
@@ -10,7 +11,7 @@ import { BrowseInvite } from './browse';
 import { navigate } from '../router/router';
 import { stepIndex, useStudy } from '../state/study';
 import { STEP_ORDER, type FormStep, type StepId } from '../state/types';
-import { Panel } from '../patterns/basics';
+import { NextMark, Panel } from '../patterns/basics';
 import { focusAfterOverlay } from '../patterns/announce';
 import { Actions, Body, Card, IntroPage, Lead, Muted, PageCard } from '../patterns/layout';
 import { FOCUS_HEADING_ON_LOAD, PageHeading } from '../shell/PageHeading';
@@ -108,38 +109,23 @@ export function HelhetPage() {
         }}
       />
       {ctl.stepDone('S2') ? (
-        <Actions>
-          <Button appearance="primary" icon={<ArrowRight20Regular />} iconPosition="after" onClick={() => ctl.goToStep('avslutning')}>
-            {s('helhetGoOn')}
-          </Button>
-        </Actions>
+        // 3.8, part C (F92): this is the one closing form, so the study ends here. Finishing is the expected path and
+        // the primary action; the extras are optional (Meridian: primary first). The next press is named (F59).
+        <>
+          <p style={{ margin: 0 }} data-press-now="">
+            <strong>{s('avslutningPressFinish', { finish: s('finish') })}</strong>
+          </p>
+          <Actions>
+            <NextMark on>
+              <Button appearance="primary" onClick={() => ctl.goToStep('takk')}>
+                {s('finish')}
+              </Button>
+            </NextMark>
+            <Button onClick={() => ctl.goToStep('ekstra')}>{s('toExtra')}</Button>
+          </Actions>
+        </>
       ) : (
         <FormWaiting step="S2" />
-      )}
-    </PageCard>
-  );
-}
-
-/* ---------- 8 Avslutning ---------- */
-
-export function AvslutningPage() {
-  const { s } = useLang();
-  const ctl = useStudyController();
-  return (
-    <PageCard narrow>
-      <PageHeading title={s('avslutningTitle')}>{s('avslutningTitle')}</PageHeading>
-      <Body>{s('avslutningIntro')}</Body>
-      <FormStepCard step="S6" autoOpen />
-      {ctl.stepDone('S6') ? (
-        // Finishing is the expected path and the primary action; the extras are optional (Meridian: primary first).
-        <Actions>
-          <Button appearance="primary" onClick={() => ctl.goToStep('takk')}>
-            {s('finish')}
-          </Button>
-          <Button onClick={() => ctl.goToStep('ekstra')}>{s('toExtra')}</Button>
-        </Actions>
-      ) : (
-        <FormWaiting step="S6" />
       )}
     </PageCard>
   );
@@ -282,12 +268,55 @@ export function TakkPage() {
       <PageHeading title={s('stepTakk')} guide>
         {s('takkTitle')}
       </PageHeading>
-      <Lead>{browse ? s('takkBodyBrowse') : previewFlag() ? s('takkBodyPreview') : s('takkBody')}</Lead>
+      {/* One thank-you per role (3.8, F59, F94). */}
+      <Lead>{browse ? s('takkBodyBrowse') : previewFlag() ? s('takkBodyPreview') : s(role === 'gp' ? 'takkBodyGp' : 'takkBodyDps')}</Lead>
       {/* The full name only now, after the last form: it names what the forms ask about. */}
       <Body>{s('takkAtlasName')}</Body>
       {/* The browse tab clears itself when it closes; the button would reach the study's own data. */}
       {!browse && <ClearBrowserData />}
+      {/* For supervisors trying both roles in the pilot round only; study participants take one role (review S7, R5). */}
+      {!browse && !previewFlag() && getConfig().round === 'pilot' && <OtherRole role={role} />}
     </IntroPage>
+  );
+}
+
+/**
+ * The other role, step by step (3.8, F60): a private window keeps the two runs apart in one browser, each with its own
+ * study name. Optional, and said so.
+ */
+function OtherRole({ role }: { role: 'gp' | 'dps' }) {
+  const cls = useStyles();
+  const { s } = useLang();
+  const [copied, setCopied] = useState(false);
+  const link = `${window.location.origin}${window.location.pathname}`;
+  const button = role === 'gp' ? s('velkommenRoleDpsStart') : s('velkommenRoleGpStart');
+  return (
+    <div className={cls.section} data-other-role="">
+      <h2 className={cls.h2}>{s('takkOtherRoleTitle')}</h2>
+      <Body>{s('takkOtherRoleIntro')}</Body>
+      <ol style={{ margin: 0, paddingInlineStart: 20, display: 'flex', flexDirection: 'column', gap: 4 }}>
+        <li>{s('takkOtherRoleStep1')}</li>
+        <li>
+          {s('takkOtherRoleStep2', { link })}{' '}
+          <Button
+            size="small"
+            appearance="transparent"
+            onClick={() => {
+              void navigator.clipboard?.writeText(link).then(
+                () => setCopied(true),
+                () => undefined,
+              );
+            }}
+          >
+            {s('takkOtherRoleCopy')}
+          </Button>
+          <span role="status" style={{ marginInlineStart: 4 }}>
+            {copied ? s('takkOtherRoleCopied') : ''}
+          </span>
+        </li>
+        <li>{s('takkOtherRoleStep3', { button })}</li>
+      </ol>
+    </div>
   );
 }
 
@@ -365,7 +394,6 @@ const STEP_LABEL: Record<StepId, Parameters<ReturnType<typeof useLang>['s']>[0]>
   kari: 'stepKari',
   erlend: 'stepErlend',
   astrid: 'stepAstrid',
-  avslutning: 'stepAvslutning',
   ekstra: 'stepEkstra',
   takk: 'stepTakk',
 };
@@ -374,12 +402,25 @@ export function stepLabelKey(step: StepId) {
   return STEP_LABEL[step];
 }
 
-export function StepperPage() {
+/**
+ * The study map: the three parts, each step with its status, and the way back into a finished step or a skipped form.
+ * On its own page (/studie/steg) and, from 3.8, in the panel the header's part pills open (Jishnu, 24 November: the
+ * rail item replaced the page you were on and gave no way back). In the panel the current step's button says
+ * «Fortsett» and takes you back to where you were; every button closes the panel.
+ */
+export function StudyMap({ inPanel, here, onGo }: { inPanel?: boolean; here?: string; onGo?: () => void }) {
   const cls = useStyles();
   const { s } = useLang();
   const study = useStudy();
   const ctl = useStudyController();
   const furthest = study.state.furthest;
+  const go = (step: StepId) => {
+    onGo?.();
+    // Already on the step (in the case, on the form page): closing the panel is the way back, nothing else moves.
+    if (inPanel && here && here.startsWith(STEP_PATH[step])) return;
+    navigate(STEP_PATH[step]);
+  };
+  const pre = inPanel ? 'map' : 'step';
   const row = (step: StepId): ReactNode => {
     const idx = stepIndex(step);
     const now = step === furthest;
@@ -396,7 +437,7 @@ export function StepperPage() {
           {done || caseDone ? <CheckmarkCircle20Regular /> : now ? <RecordStop20Regular /> : <Circle20Regular />}
         </span>
         <span style={{ display: 'flex', flexDirection: 'column', minWidth: 0 }}>
-          <span className={cls.stepName} id={`step-name-${step}`}>
+          <span className={cls.stepName} id={`${pre}-name-${step}`}>
             {s(STEP_LABEL[step])}
           </span>
           <span className={cls.stepMeta}>{meta}</span>
@@ -404,8 +445,15 @@ export function StepperPage() {
         <span className={cls.stepActions}>
           {/* Each «Åpne» is described by its step's name, so a list of buttons still says which step (2.4.6). */}
           {reachable && (
-            <Button size="small" aria-describedby={`step-name-${step}`} onClick={() => navigate(STEP_PATH[step])}>
-              {s('stepOpen')}
+            <Button
+              size="small"
+              appearance={inPanel && now ? 'primary' : undefined}
+              icon={inPanel && now ? <ArrowRight20Regular /> : undefined}
+              iconPosition="after"
+              aria-describedby={`${pre}-name-${step}`}
+              onClick={() => go(step)}
+            >
+              {inPanel && now ? s('continue') : s('stepOpen')}
             </Button>
           )}
           {form && fstatus === 'skipped' && (step !== 'ekstra' || furthest === 'ekstra') && furthest !== 'takk' && (
@@ -414,6 +462,7 @@ export function StepperPage() {
               appearance="primary"
               onClick={() => {
                 ctl.answerAnyway(form);
+                onGo?.();
                 navigate(STEP_PATH[step]);
               }}
             >
@@ -430,19 +479,27 @@ export function StepperPage() {
     { n: 2, title: s(partTwoLabel(role)), steps: STEP_ORDER.filter((x) => partOf(x) === 2) },
     { n: 3, title: s('partEnd'), steps: STEP_ORDER.filter((x) => partOf(x) === 3) },
   ];
+  const H = inPanel ? 'h3' : 'h2';
+  return (
+    <div className={cls.stepParts} style={inPanel ? { gridTemplateColumns: '1fr' } : undefined}>
+      {parts.map((p) => (
+        <section key={p.n} className={cls.stepPart} aria-labelledby={`${pre}-part-${p.n}`}>
+          <H className={cls.partTitle} id={`${pre}-part-${p.n}`}>
+            {s('partCompact', { n: p.n, title: p.title })}
+          </H>
+          <ol className={cls.steps}>{p.steps.map(row)}</ol>
+        </section>
+      ))}
+    </div>
+  );
+}
+
+export function StepperPage() {
+  const { s } = useLang();
   return (
     <PageCard>
       <PageHeading title={s('stepperTitle')}>{s('stepperTitle')}</PageHeading>
-      <div className={cls.stepParts}>
-        {parts.map((p) => (
-          <section key={p.n} className={cls.stepPart} aria-labelledby={`step-part-${p.n}`}>
-            <h2 className={cls.partTitle} id={`step-part-${p.n}`}>
-              {s('partCompact', { n: p.n, title: p.title })}
-            </h2>
-            <ol className={cls.steps}>{p.steps.map(row)}</ol>
-          </section>
-        ))}
-      </div>
+      <StudyMap />
     </PageCard>
   );
 }

@@ -646,14 +646,24 @@
     "source": "prototype",
     "where": "app-data.md line 39, EN dictionary key 50 (table line 96)",
     "original": "Tre plasseringer av samme sak",
-    "substitutions": []
+    "substitutions": [
+      [
+        "Tre plasseringer av samme sak",
+        "Tre plasseringer av samme sak: ATLAS, fastlegen og deg"
+      ]
+    ]
   },
   {
     "path": "cases/kari.json#debrief.dps.title.en",
     "source": "prototype",
     "where": "app-data.md line 39, EN dictionary entry 50 (table line 96)",
     "original": "Three placements of the same case",
-    "substitutions": []
+    "substitutions": [
+      [
+        "Three placements of the same case",
+        "Three placements of the same case: ATLAS, the GP and you"
+      ]
+    ]
   },
   {
     "path": "cases/kari.json#patient.fnr",
@@ -988,7 +998,12 @@
     "source": "prototype",
     "where": "app-data.md line 358, CASES.erlend.note",
     "original": "Ny henvisning. Erlend har hatt angst med panikkanfall flere ganger i uken i åtte måneder. GAD-7 i dag: 17, PHQ-9: 11.\n\nKognitiv terapi hos Rask psykisk helsehjelp, ti timer, begrenset effekt. Escitalopram 10 mg siden desember, delvis effekt på panikkanfallene.\n\nSelvmordstanker avkreftet. Ingen rusmiddelbruk.",
-    "substitutions": []
+    "substitutions": [
+      [
+        "Ny henvisning.",
+        "Ny konsultasjon etter avslag."
+      ]
+    ]
   },
   {
     "path": "cases/erlend.json#gp.meds.rows.0.name.nb",
@@ -1370,7 +1385,12 @@
     "source": "prototype",
     "where": "app-data.md line 358, CASES.erlend.note",
     "original": "Ny henvisning. Erlend har hatt angst med panikkanfall flere ganger i uken i åtte måneder. GAD-7 i dag: 17, PHQ-9: 11.\n\nKognitiv terapi hos Rask psykisk helsehjelp, ti timer, begrenset effekt. Escitalopram 10 mg siden desember, delvis effekt på panikkanfallene.\n\nSelvmordstanker avkreftet. Ingen rusmiddelbruk.",
-    "substitutions": []
+    "substitutions": [
+      [
+        "Ny henvisning.",
+        "Ny konsultasjon etter avslag."
+      ]
+    ]
   },
   {
     "path": "cases/erlend.json#dps.gpUncertainty.description.nb",
@@ -1450,14 +1470,24 @@
     "source": "prototype",
     "where": "app-data.md line 39, EN dictionary key 50 (table line 96)",
     "original": "Tre plasseringer av samme sak",
-    "substitutions": []
+    "substitutions": [
+      [
+        "Tre plasseringer av samme sak",
+        "Tre plasseringer av samme sak: ATLAS, fastlegen og deg"
+      ]
+    ]
   },
   {
     "path": "cases/erlend.json#debrief.dps.title.en",
     "source": "prototype",
     "where": "app-data.md line 39, EN dictionary entry 50 (table line 96)",
     "original": "Three placements of the same case",
-    "substitutions": []
+    "substitutions": [
+      [
+        "Three placements of the same case",
+        "Three placements of the same case: ATLAS, the GP and you"
+      ]
+    ]
   },
   {
     "path": "cases/erlend.json#draftFlag.nb",

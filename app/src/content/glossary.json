@@ -72,8 +72,8 @@
       "en": "Grey zone (gråsone)"
     },
     "text": {
-      "nb": "Saker der det er uklart om plagene når terskelen for spesialisthelsetjenesten. På båndet i Usikkerhetsvisning ligger gråsonen i midten, mellom «Klart utenfor» og «Klart innenfor».",
-      "en": "Cases where it is unclear whether the problems reach the threshold for specialist services. On the band in the uncertainty display the grey zone lies in the middle, between ‘Clearly outside’ and ‘Clearly within’."
+      "nb": "Saker der det er uklart om plagene oppfyller kriteriene for spesialisthelsetjenesten. På usikkerhetsskalaen ligger gråsonen i midten, mellom «Klart utenfor» og «Klart innenfor».",
+      "en": "Cases where it is unclear whether the problems meet the criteria for specialist services. On the uncertainty scale the grey zone lies in the middle, between ‘Clearly outside’ and ‘Clearly within’."
     }
   },
   {
@@ -101,23 +101,23 @@
   {
     "group": "atlas",
     "term": {
-      "nb": "Usikkerhetsvisning",
-      "en": "Uncertainty display"
+      "nb": "Usikkerhetsskala",
+      "en": "Uncertainty scale"
     },
     "text": {
-      "nb": "Panelet i ATLAS med et bånd fra klart utenfor til klart innenfor DPS-kriteriene, der klinikeren plasserer saken selv. Båndet viser ingen tall. Etter egen plassering viser det systemets lesning, og for DPS også fastlegens markør.",
-      "en": "The ATLAS panel with a band from clearly outside to clearly within the DPS criteria, where clinicians place the case themselves. The band shows no number. After one’s own placement it shows the system’s reading, and for DPS also the GP’s marker."
+      "nb": "Delen av ATLAS med en skala fra klart utenfor til klart innenfor kriteriene i prioriteringsveilederen. Klinikeren plasserer saken selv, og skalaen viser ingen tall. Etter egen plassering viser den systemets vurdering, og for DPS også fastlegens plassering.",
+      "en": "The part of ATLAS with a scale from clearly outside to clearly within the criteria in the priority-setting guideline. The clinician places the case, and the scale shows no number. After one’s own placement it shows the system’s assessment, and for DPS also the GP’s placement."
     }
   },
   {
     "group": "atlas",
     "term": {
-      "nb": "Systemets lesning",
-      "en": "The system’s reading"
+      "nb": "Systemets vurdering",
+      "en": "The system’s assessment"
     },
     "text": {
-      "nb": "En lilla markør på båndet og én setning om hvor saken ligger, med et resonnement som sier hvilke kilder den bygger på. I prototypen er lesningen skrevet for hver sak, ikke beregnet. Den vises etter klinikerens egen plassering.",
-      "en": "A lavender marker on the band and one sentence about where the case lies, with a reasoning that names the sources it draws on. In the prototype the reading is written for each case, not calculated. It appears after the clinician’s own placement."
+      "nb": "En lilla markør på skalaen og én setning om hvor saken ligger, med et resonnement som sier hvilke kilder den bygger på. I prototypen er vurderingen skrevet for hver sak, ikke beregnet. Den vises etter klinikerens egen plassering.",
+      "en": "A lavender marker on the scale and one sentence about where the case lies, with a reasoning that names the sources it draws on. In the prototype the assessment is written for each case, not calculated. It appears after the clinician’s own placement."
     }
   },
   {

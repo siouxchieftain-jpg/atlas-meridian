@@ -292,7 +292,7 @@ test('r7A-12: at 390 × 844 a cancelled switch gives focus to the form’s headi
   await expect(panel(page)).toBeVisible();
   await tab.focus();
   await page.keyboard.press('Enter');
-  await page.getByRole('dialog').getByRole('button', { name: 'Systemets lesning' }).click();
+  await page.getByRole('dialog').getByRole('button', { name: 'Systemets vurdering' }).click();
   const ask = page.getByRole('dialog', { name: 'Bytte skjema?' });
   await ask.getByRole('button', { name: 'Avbryt' }).click();
   await expect(panel(page).getByRole('heading', { level: 2, name: /^Skjema:/ })).toBeFocused();

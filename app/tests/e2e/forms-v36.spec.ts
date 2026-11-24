@@ -1,7 +1,7 @@
 import AxeBuilder from '@axe-core/playwright';
 import { expect, test, type Locator, type Page } from '@playwright/test';
 import { configWithoutForms } from './mock';
-import { HOME_HEADING, openCurrentCase, panel, place } from './helpers';
+import { HOME_HEADING, openCurrentCase, panel, place, confirmPage1, showAllParts } from './helpers';
 
 // ATLAS 3.6, the form pass, in the app's own preview forms (built from the same instrument as the Nettskjema forms): the
 // decision without ATLAS comes before B1 and again with ATLAS before B2, in each role's and case's words, with «Ikke
@@ -26,7 +26,7 @@ const DECISION: Record<Role, Record<Case, { q: RegExp; options: string[] }>> = {
   'dps-kliniker': {
     kari: { q: /^Hvordan ville du vurdert henvisningen\?/, options: ['Be om mer informasjon', 'Rett til helsehjelp', 'Retur med råd', 'Ikke bestemt'] },
     erlend: { q: /^Hvordan ville du vurdert henvisningen\?/, options: ['Be om mer informasjon', 'Rett til helsehjelp', 'Retur med råd', 'Ikke bestemt'] },
-    astrid: { q: /^Hva ville du svart fastlegen\?/, options: ['Stå ved returen slik den er', 'Be om en ny henvisning', 'Vurdere henvisningen på nytt', 'Ikke svare nå', 'Ikke bestemt'] },
+    astrid: { q: /^Hva ville du svart fastlegen\?/, options: ['Stå ved returen slik den er', 'Stå ved returen og forklare mer', 'Be om en ny henvisning', 'Vurdere henvisningen på nytt', 'Ikke svare nå', 'Ikke bestemt'] },
   },
 };
 
@@ -118,7 +118,8 @@ for (const role of ['fastlege', 'dps-kliniker'] as const) {
       await expect(form.getByRole('heading', { level: 2 })).toContainText('Side 1 av 3');
       await form.getByRole('radiogroup').nth(1).getByRole('radio', { name: '4', exact: true }).check({ force: true });
       await form.getByRole('button', { name: 'Neste', exact: true }).click();
-      await expect(form.getByRole('heading', { level: 2 })).toContainText('Side 2 av 3');
+      // 3.8: the practice form is watched like Nettskjema: page 2 is the stop page, covered by the card with one action.
+      await expect(panel(page).locator('[data-next-step="show-atlas"]')).toBeVisible();
       const axe = await new AxeBuilder({ page }).include('[data-form-panel]').withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa']).analyze();
       expect(axe.violations.map((v) => `${v.id} ${v.nodes.map((n) => n.target.join(' ')).join(', ')}`)).toEqual([]);
     });
@@ -172,15 +173,15 @@ for (const role of ['fastlege', 'dps-kliniker'] as const) {
       await answerDecision(form, role, c, 0);
       await form.getByRole('radiogroup').nth(1).getByRole('radio', { name: '3', exact: true }).check({ force: true });
       await form.getByRole('button', { name: 'Neste', exact: true }).click();
-      await expect(form.getByRole('heading', { level: 2 })).toContainText('Side 2 av 3');
-      await panel(page).getByRole('button', { name: 'Jeg har svart på side 1' }).click();
+      await confirmPage1(page);
       await panel(page).getByRole('button', { name: 'Vis ATLAS' }).click();
+      await showAllParts(page);
       await WORK[role][c](page);
-      await expect(panel(page).getByText('Gå videre i skjemaet og svar på resten nå.')).toBeVisible();
+      await expect(panel(page).getByText('Nå skal du svare på resten av skjemaet. Trykk nå: «Neste side» nederst i skjemaet. Teksten «Stopp her» gjelder ikke lenger.')).toBeVisible();
       await form.getByRole('button', { name: 'Neste', exact: true }).click();
       await expect(form.getByRole('heading', { level: 2 })).toContainText('Side 3 av 3');
       const names = await questionNames(form);
-      expect(names[0]).toMatch(/^Har du arbeidet med denne saken i ATLAS/);
+      expect(names[0]).toMatch(/^Har du nå sett saken med ATLAS\?/);
       expect(names[1]).toMatch(DECISION[role][c].q);
       expect(names[2]).toMatch(/^Hvor sikker er du på .+ med ATLAS\?/);
       const again = form.getByRole('radiogroup').nth(1);
@@ -192,40 +193,55 @@ for (const role of ['fastlege', 'dps-kliniker'] as const) {
 }
 
 for (const role of ['fastlege', 'dps-kliniker'] as const) {
-  test(`${role}: Helhetsinntrykk asks C1-06 before C1's reason, offers «Vet ikke» on C3-01 and requires C4-02 and C-CUCF-02`, async ({ page }) => {
+  test(`${role}: Avslutning asks C1-06 before C1's reason, offers «Vet ikke» on C3-01 and requires C4-02 and C-CUCF-02`, async ({ page }) => {
     await page.setViewportSize({ width: 1366, height: 768 });
     await seed(page, role, 'end');
     await page.goto('/#/studie/hjem');
     await page.locator('[data-start-hero]').getByRole('button', { name: 'Gå til avslutningen' }).click();
-    await expect(page.getByRole('heading', { level: 1, name: 'Helhetsinntrykk' })).toBeVisible();
+    await expect(page.getByRole('heading', { level: 1, name: 'Avslutning' })).toBeVisible();
     const form = page.locator('[data-form-panel] form');
     const names = await questionNames(form);
     const at = (re: RegExp) => names.findIndex((n) => re.test(n));
     const c106 = at(/^Det var tydelig for meg når jeg kunne støtte meg på det ATLAS viste/);
     expect(c106).toBeGreaterThan(0);
-    expect(names[c106 - 1]).toMatch(role === 'fastlege' ? /^Oversikten over mine tidligere henvisningsmønstre/ : /^Oversikten over henvisningsmønstrene i opptaksområdet/);
+    expect(names[c106 - 1]).toMatch(role === 'fastlege' ? /^Oversikten «Mitt henvisningsmønster»/ : /^Oversikten «Kalibrering»/);
     expect(names[c106 + 1]).toMatch(/^Forklar vurderingen din \(1-3 setninger\)\. Hva fungerer\?/);
     expect(names[c106]).toContain('(valgfritt)');
     // Every written reason is required now.
-    const reasons = names.filter((n) => /^(Forklar vurderingen din|Hvordan vurderer du evnen|Ser du noen risiko|Hva ville denne)/.test(n));
+    const reasons = names.filter((n) => /^(Forklar vurdering(en din|ene dine)|Hvordan vurderer du evnen|Ser du noen risiko|Hva ville denne)/.test(n));
     expect(reasons).toHaveLength(6);
     for (const r of reasons) expect(r).not.toContain('(valgfritt)');
     expect(names[at(/^Hvordan vurderer du evnen ATLAS/)]).toContain('skriv «Vet ikke».');
     // C3-01: the seven points, then «Vet ikke».
-    const c301 = form.getByRole('radiogroup', { name: /^ATLAS ivaretar behovene til både fastleger og spesialister/ });
+    const c301 = form.getByRole('radiogroup', { name: /^ATLAS ivaretar behovene både på fastlegesiden og på DPS-siden/ });
     await expect(c301.getByRole('radio')).toHaveCount(8);
     await expect(c301.getByRole('radio').last()).toHaveAccessibleName('Vet ikke');
     await c301.getByRole('radio', { name: 'Vet ikke' }).check({ force: true });
     await expect(c301.getByRole('radio', { name: 'Vet ikke' })).toBeChecked();
     if (role === 'dps-kliniker') {
-      expect(names[at(/^ATLAS gir meg informasjon/)]).toMatch(/vurderinger av henvisninger over tid/);
+      expect(names[at(/^Samlet sett ville ATLAS over tid/)]).toMatch(/bedre til å vurdere henvisninger/);
       expect(names[at(/^Svarene og spørsmålene fra fastlegene/)]).toContain('etter mine vurderinger');
       expect(names[at(/^Hva ville denne/)]).toMatch(/^Hva ville denne tilbakemeldingen bety for hvordan du vurderer henvisninger over tid\?/);
     }
     const axe = await new AxeBuilder({ page }).include('[data-form-panel]').withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa']).analyze();
     expect(axe.violations.map((v) => `${v.id} ${v.nodes.map((n) => n.target.join(' ')).join(', ')}`)).toEqual([]);
-    // In English, «Vet ikke» reads "Don't know".
+    // The forms are in Norwegian only (3.8, F17): in English the form stays Norwegian, and a line says so.
     await page.getByRole('button', { name: 'English' }).click();
-    await expect(form.getByRole('radiogroup', { name: /^ATLAS serves the needs of both GPs and specialists/ }).getByRole('radio').last()).toHaveAccessibleName("Don't know");
+    await expect(page.locator('[data-forms-norwegian]').first()).toHaveText('The forms are in Norwegian, as in Nettskjema.');
+    await expect(form.getByRole('radiogroup', { name: /^ATLAS ivaretar behovene både på fastlegesiden og på DPS-siden/ }).getByRole('radio').last()).toHaveAccessibleName('Vet ikke');
   });
 }
+
+test('3.8: the practice form marks «Neste» only once page 1 is answered; the panel names it and offers no second button', async ({ page }) => {
+  await toCasePage1(page, 'fastlege', 'kari');
+  const form = previewForm(page);
+  await expect(form.locator('[data-next-mark]')).toHaveCount(0);
+  await expect(panel(page).getByText('Trykk nå: «Neste» nederst i skjemaet, når du har svart på side 1.')).toBeVisible();
+  await expect(panel(page).getByRole('button', { name: 'Vis ATLAS' })).toHaveCount(0);
+  await answerDecision(form, 'fastlege', 'kari', 0);
+  // One of two required questions answered: still no mark.
+  await expect(form.locator('[data-next-mark]')).toHaveCount(0);
+  await form.getByRole('radiogroup').nth(1).getByRole('radio', { name: '4', exact: true }).check({ force: true });
+  await expect(form.locator('[data-next-mark]').getByRole('button', { name: 'Neste', exact: true })).toBeVisible();
+  await expect(form.locator('[data-next-mark]')).toContainText('Trykk her');
+});

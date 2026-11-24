@@ -37,12 +37,10 @@ const useStyles = makeStyles({
     width: `${size.atlasPanel}px`,
     // A big screen gives the ATLAS panel more room (3.4.1); the form panel's sums keep the laptop's 320 px.
     '@media only screen and (min-width: 1920px)': { width: '380px' },
-    position: 'sticky',
-    top: 'calc(var(--atlas-header-h, 48px) + 8px)',
-    maxHeight: 'calc(100dvh - var(--atlas-header-h, 48px) - 16px)',
-    overflowY: 'auto',
+    // One scroll area (3.8, F43, F101): the ATLAS panel is part of the page and scrolls with it; it has no scroll bar
+    // of its own.
     '@media only screen and (min-width: 1024px)': { display: 'block' },
-    '@media print': { display: 'block', position: 'static', maxHeight: 'none', width: 'auto', marginBlockStart: `${size.panelInset}px`, breakInside: 'avoid-page' },
+    '@media print': { display: 'block', width: 'auto', marginBlockStart: `${size.panelInset}px`, breakInside: 'avoid-page' },
   },
   sideCard: {
     backgroundColor: tokens.colorNeutralBackground1,
@@ -140,8 +138,8 @@ export function CaseLayout({
         {compactSummary && <div className={cls.compactBand}>{compactSummary}</div>}
         {children}
       </div>
-      {/* The sticky panel scrolls on its own: whatever takes focus in it is brought into view, read-only
-          text boxes included, which the browser does not scroll to by itself (2.4.11, R2A-05). */}
+      {/* Whatever takes focus in the panel is brought into view, read-only text boxes included, which the browser does
+          not scroll to by itself (2.4.11, R2A-05). */}
       <aside className={cls.side} aria-label={label} onFocus={(e) => (e.target as HTMLElement).scrollIntoView?.({ block: 'nearest' })}>
         <div className={cls.sideCard}>{side}</div>
       </aside>

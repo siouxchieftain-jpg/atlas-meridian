@@ -24,6 +24,8 @@ export interface BandProps {
   onTrackClick?: (fraction: number) => void;
   /** Smaller vertical spacing. */
   compact?: boolean;
+  /** Leave out «Viser usikkerhet, anbefaler ikke» when the surrounding card already says it (3.8). */
+  noCaption?: boolean;
   className?: string;
 }
 
@@ -75,22 +77,22 @@ const useStyles = makeStyles({
   },
   legendItem: { display: 'inline-flex', alignItems: 'center', gap: tokens.spacingHorizontalXS },
   swatchOwn: {
-    width: '3px',
-    height: '12px',
+    width: '5px',
+    height: '16px',
     backgroundColor: band.ownMarker.colour,
     '@media (forced-colors: active)': { forcedColorAdjust: 'none', backgroundColor: 'CanvasText' },
   },
   swatchOther: {
-    width: '6px',
-    height: '12px',
+    width: '9px',
+    height: '16px',
     boxSizing: 'border-box',
     backgroundColor: band.otherMarker.fill,
     border: `1px solid ${band.otherMarker.outline}`,
     '@media (forced-colors: active)': { forcedColorAdjust: 'none', backgroundColor: 'Canvas', border: '1px solid CanvasText' },
   },
   swatchSystem: {
-    width: '4px',
-    height: '12px',
+    width: '7px',
+    height: '16px',
     backgroundColor: band.systemMarker.colour,
     '@media (forced-colors: active)': { forcedColorAdjust: 'none', backgroundColor: 'Highlight' },
   },
@@ -105,26 +107,26 @@ function Marker({ value, kind, cls }: { value: number; kind: 'own' | 'other' | '
   if (kind === 'own') {
     return (
       <svg x={x} y={3} overflow="visible">
-        <rect className={cls.ownKey} x={-2.5} y={-1} width={5} height={h + 2} />
-        <rect className={cls.own} x={-1.5} y={0} width={band.ownMarker.width} height={h} rx={1} />
+        <rect className={cls.ownKey} x={-band.ownMarker.width / 2 - 1} y={-1} width={band.ownMarker.width + 2} height={h + 2} rx={2} />
+        <rect className={cls.own} x={-band.ownMarker.width / 2} y={0} width={band.ownMarker.width} height={h} rx={2} />
       </svg>
     );
   }
   if (kind === 'other') {
     return (
       <svg x={x} y={3} overflow="visible">
-        <rect className={cls.other} x={-3} y={0.5} width={band.otherMarker.width} height={h - 1} rx={1} />
+        <rect className={cls.other} x={-band.otherMarker.width / 2} y={0.5} width={band.otherMarker.width} height={h - 1} rx={2} />
       </svg>
     );
   }
   return (
     <svg x={x} y={3} overflow="visible">
-      <rect className={cls.system} x={-2} y={0} width={band.systemMarker.width} height={h} rx={2} />
+      <rect className={cls.system} x={-band.systemMarker.width / 2} y={0} width={band.systemMarker.width} height={h} rx={3} />
     </svg>
   );
 }
 
-export function UncertaintyBand({ own, other, system, sentence, legend, onTrackClick, compact, className }: BandProps) {
+export function UncertaintyBand({ own, other, system, sentence, legend, onTrackClick, compact, className, noCaption }: BandProps) {
   const cls = useStyles();
   const { t } = useLang();
   const descId = useId();
@@ -202,7 +204,7 @@ export function UncertaintyBand({ own, other, system, sentence, legend, onTrackC
           {sentence}
         </div>
       )}
-      <div className={cls.caption}>{t(vocab.band.caption)}</div>
+      {!noCaption && <div className={cls.caption}>{t(vocab.band.caption)}</div>}
     </div>
   );
 }

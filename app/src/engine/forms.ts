@@ -7,7 +7,7 @@ import { rolleValue } from '../state/study';
 export type Round = 'pilot' | 'study';
 
 /** The study's own forms. R1 and R2 (review mode) are the same in both rounds. */
-export const STUDY_FORM_KEYS: FormKey[] = ['S1', 'S2.fastlege', 'S2.dps', 'S3.fastlege', 'S3.dps', 'S4.fastlege', 'S4.dps', 'S5.fastlege', 'S5.dps', 'S6', 'S7.fastlege', 'S8', 'S9'];
+export const STUDY_FORM_KEYS: FormKey[] = ['S1', 'S2.fastlege', 'S2.dps', 'S3.fastlege', 'S3.dps', 'S4.fastlege', 'S4.dps', 'S5.fastlege', 'S5.dps', 'S7.fastlege', 'S8', 'S9'];
 
 /** Runtime configuration, edited by the owner in public/atlas-config.json. */
 export interface AtlasConfig {
@@ -119,8 +119,6 @@ export function formKeyFor(step: FormStep, role: Role): FormKey {
       return `S4.${r}` as FormKey;
     case 'S5':
       return `S5.${r}` as FormKey;
-    case 'S6':
-      return 'S6';
     case 'S7':
       return 'S7.fastlege';
     case 'S8':

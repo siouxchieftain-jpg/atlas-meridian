@@ -42,6 +42,8 @@ const useStyles = makeStyles({
   readingText: { ...typographyStyles.body1, margin: 0 },
   illustration: { ...typographyStyles.caption1, color: tokens.colorNeutralForeground3, margin: 0 },
   toggle: { alignSelf: 'flex-start', paddingInline: 0, minWidth: 0 },
+  toggleBtn: { alignSelf: 'flex-start' },
+  reasoningText: { ...typographyStyles.body1, margin: 0, padding: '8px 12px', borderRadius: tokens.borderRadiusMedium, backgroundColor: tokens.colorNeutralBackground2 },
   waits: { ...typographyStyles.caption1, color: tokens.colorNeutralForeground3, margin: 0 },
   sentences: { display: 'flex', flexDirection: 'column', gap: '2px' },
 });
@@ -56,21 +58,21 @@ export function ReadingBlock({ reading, notes }: { reading: SystemReading; notes
     <div className={cls.reading} data-reading="">
       <div className={cls.readingHead}>
         <h4 className={cls.readingTitle}>{s('readingTitle')}</h4>
-        <ProvenanceChip source="system" label={s('illustrationChip')} />
       </div>
       <p className={cls.readingText}>{t(reading.summary)}</p>
+      {/* 3.8: an outlined button, not a quiet link, so the reasoning is not missed. */}
       <Button
-        appearance="transparent"
-        size="small"
-        className={cls.toggle}
+        appearance="outline"
+        size="medium"
+        className={cls.toggleBtn}
         icon={open ? <ChevronDown16Regular /> : <ChevronRight16Regular />}
         aria-expanded={open}
         aria-controls={id}
         onClick={() => setOpen(!open)}
       >
-        {t(vocab.band.reasoningLabel)}
+        {open ? s('readingHide') : s('readingShow')}
       </Button>
-      <p className={cls.readingText} id={id} hidden={!open}>
+      <p className={cls.reasoningText} id={id} hidden={!open}>
         {t(reading.reasoning)}
       </p>
       <p className={cls.illustration}>{t(vocab.band.illustration)}</p>
@@ -92,6 +94,7 @@ export function BandSection({
   readOnly,
   notes,
   headingLevel = 3,
+  inCard,
 }: {
   viewer: Role;
   own?: number;
@@ -102,6 +105,8 @@ export function BandSection({
   readOnly?: boolean;
   notes?: boolean;
   headingLevel?: 2 | 3;
+  /** In the ATLAS card (3.8): the card carries the caption, and the rule line says the rest; no field hint. */
+  inCard?: boolean;
 }) {
   const cls = useStyles();
   const { s } = useLang();
@@ -133,22 +138,26 @@ export function BandSection({
     </div>
   );
   return (
-    <section ref={rootRef} className={cls.root} aria-label={s('bandTitle')} data-section="band">
+    <section ref={rootRef} className={cls.root} aria-label={s('bandTitle')} data-section="band" data-section-done={placed ? '' : undefined}>
       <div className={cls.head}>
         <H className={cls.title}>{s('bandTitle')}</H>
         {placed && <ProvenanceChip source="own" />}
       </div>
+      {/* Who places what, in one line (3.8, F21, F96). */}
+      <p className={cls.waits} data-band-who="">
+        {s(viewer === 'gp' ? 'bandWhoGp' : 'bandWhoDps')}
+      </p>
       <UncertaintyBand
         own={own}
         other={showOther ? other : undefined}
         system={showSystem ? reading!.placement : undefined}
         legend
+        noCaption={inCard}
         sentence={sentence}
         onTrackClick={!readOnly && onPlace ? (f) => onPlace(snapFraction(f)) : undefined}
       />
-      {!readOnly && onPlace && <PlacementControl value={own} onChange={onPlace} hint={placed ? undefined : s('bandPlaceHint')} />}
+      {!readOnly && onPlace && <PlacementControl value={own} onChange={onPlace} hint={placed || inCard ? undefined : s('bandPlaceHint')} />}
       <DesignNote id={viewer === 'gp' ? 'band' : 'dps-band'} show={!!notes} />
-      {reading && !placed && <p className={cls.waits}>{s('readingWaits')}</p>}
       {showSystem && <ReadingBlock reading={reading!} notes={notes} />}
     </section>
   );

@@ -4,8 +4,8 @@
     "en": "Two GPs, one patient"
   },
   "intro": {
-    "nb": "Samme pasient som i saken med Kari Nordli, sett av to fastleger med ulik erfaring. Under vises hva hver av dem ser i sitt eget Mitt henvisningsmønster. Visningen er fra fastlegesiden: i ATLAS ser bare fastlegen sitt eget mønster. Spørsmålene kaller tallene her for «kalibreringsdata».",
-    "en": "The same patient as in Kari Nordli’s case, seen by two GPs with different experience. Below is what each of them sees on their own My referral pattern screen. The view is from the GP side: in ATLAS, only the GP sees their own pattern. The questions call the figures here ‘calibration data’."
+    "nb": "Samme pasient som i saken med Kari Nordli, sett av to fastleger med ulik erfaring. Under vises hva hver av dem ser i sitt eget Mitt henvisningsmønster. Visningen er fra fastlegesiden: i ATLAS ser bare fastlegen sitt eget mønster.",
+    "en": "The same patient as in Kari Nordli’s case, seen by two GPs with different experience. Below is what each of them sees on their own My referral pattern screen. The view is from the GP side: in ATLAS, only the GP sees their own pattern."
   },
   "patientLine": {
     "nb": "Kari Nordli, 34 år. Nedstemt i fire måneder, PHQ-9 14. Gjennomgår skilsmisse og har nylig flyttet.",

@@ -76,8 +76,8 @@
       }
     },
     "atlasTask": {
-      "nb": "Plasser saken på båndet før du ser systemets lesning. Bestem deretter om du vil henvise.",
-      "en": "Place the case on the band before you see the system’s reading. Then decide whether to refer."
+      "nb": "Plasser saken på skalaen før du ser systemets vurdering. Bestem deretter om du vil henvise.",
+      "en": "Place the case on the scale before you see the system’s assessment. Then decide whether to refer."
     },
     "profile": [
       {
@@ -351,8 +351,8 @@
       }
     },
     "atlasTask": {
-      "nb": "Med ATLAS ser du også fastlegens beskrivelse av hva som er uklart, og fastlegens trygghet i ord. Plasser saken på båndet før du ser fastlegens plassering og systemets lesning. Velg deretter et utfall.",
-      "en": "With ATLAS you also see the GP’s description of what is unclear, and the GP’s confidence in words. Place the case on the band before you see the GP’s placement and the system’s reading. Then choose an outcome."
+      "nb": "Med ATLAS ser du også fastlegens beskrivelse av hva som er uklart, og hvor sikker fastlegen er, i ord. Plasser saken på skalaen før du ser fastlegens plassering og systemets vurdering. Velg deretter et utfall.",
+      "en": "With ATLAS you also see the GP’s description of what is unclear, and how sure the GP is, in words. Place the case on the scale before you see the GP’s placement and the system’s assessment. Then choose an outcome."
     },
     "referral": {
       "sent": "2026-03-17",

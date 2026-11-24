@@ -24,7 +24,7 @@ test('a GP completes the whole study on the panel route, with the right locked v
   await caseOnlyThenAtlas(page);
   await expect(panel(page)).toBeHidden();
   await expect(page.getByText('Resten av skjemaet åpnes når du har gjort saken ferdig', { exact: false })).toBeVisible();
-  await expect(page.getByText('Systemets lesning', { exact: true })).toHaveCount(0);
+  await expect(page.getByText('Systemets vurdering', { exact: true })).toHaveCount(0);
   await place(page, 3);
   await expect(page.locator('[data-reading]')).toBeVisible();
   await page.getByLabel('Henvis', { exact: true }).check({ force: true });
@@ -32,9 +32,9 @@ test('a GP completes the whole study on the panel route, with the right locked v
   await page.getByRole('button', { name: 'Skriv henvisningen' }).click();
   await page.getByRole('button', { name: 'Send henvisning' }).click();
   await expect(panel(page)).toBeVisible();
-  await expect(panel(page).getByText('Gå videre i skjemaet og svar på resten nå.')).toBeVisible();
+  await expect(panel(page).getByText('Nå skal du svare på resten av skjemaet. Trykk nå: «Neste side» nederst i skjemaet. Teksten «Stopp her» gjelder ikke lenger.')).toBeVisible();
   // The reply from DPS is held until the last page is sent.
-  await expect(page.getByText('Svaret fra den andre siden vises når du har sendt resten av skjemaet.')).toBeVisible();
+  await expect(page.getByText('Svaret fra DPS vises når du har sendt resten av skjemaet.')).toBeVisible();
   await expect(frame(page).locator('#page')).toHaveText('Side 2 av 3');
   // No question about the screens inside the measurement: the summary has not been reached.
   await expect(page.locator('[data-case-prompt]')).toHaveCount(0);
@@ -84,24 +84,22 @@ test('a GP completes the whole study on the panel route, with the right locked v
   await finishCaseHome(page);
   await expect(page.locator('[data-start-hero]').getByRole('heading', { level: 1, name: 'De tre sakene er ferdige' })).toBeVisible();
 
-  // S2 now comes after the three cases (decision 3), then S6, then Takk: the reasons open only there.
+  // S2 comes after the three cases (decision 3), the one closing form since 3.8 (F92), then Takk: the reasons open only there.
   await page.locator('[data-start-hero]').getByRole('button', { name: 'Gå til avslutningen' }).click();
-  await expect(page.getByRole('heading', { level: 1, name: 'Helhetsinntrykk' })).toBeVisible();
-  await sendForm(page);
-  await page.getByRole('button', { name: 'Gå videre til avslutningen' }).click();
+  await expect(page.getByRole('heading', { level: 1, name: 'Avslutning' })).toBeVisible();
   await sendForm(page);
   await page.getByRole('button', { name: 'Avslutt', exact: true }).click();
   await expect(page.getByRole('heading', { name: 'Hvorfor ATLAS ser slik ut' })).toBeVisible();
 
   const sent = await submissions(page);
   const steg = Object.fromEntries(sent.map((s) => [s.key, s.fields.steg]));
-  expect(steg).toEqual({ S1: 'S1', 'S3.fastlege': 'S3', 'S4.fastlege': 'S4', 'S5.fastlege': 'S5', 'S2.fastlege': 'S2', S6: 'S6' });
+  expect(steg).toEqual({ S1: 'S1', 'S3.fastlege': 'S3', 'S4.fastlege': 'S4', 'S5.fastlege': 'S5', 'S2.fastlege': 'S2' });
   // The order of the forms is the v3.1 order: the overall impression after the cases.
-  expect(sent.map((s) => s.key)).toEqual(['S1', 'S3.fastlege', 'S4.fastlege', 'S5.fastlege', 'S2.fastlege', 'S6']);
+  expect(sent.map((s) => s.key)).toEqual(['S1', 'S3.fastlege', 'S4.fastlege', 'S5.fastlege', 'S2.fastlege']);
   for (const s of sent) {
     expect(s.fields.rolle).toBe('Fastlege');
     expect(s.fields.intervju).toBe('Nei');
-    expect(s.fields.versjon).toMatch(/^3\.7\.1-/);
+    expect(s.fields.versjon).toMatch(/^3\.8\.0-/);
     expect(s.fields.versjon).not.toMatch(/-pilot$/);
   }
   expect(sent.find((s) => s.key === 'S3.fastlege')?.fields.vignett).toBe('V1');

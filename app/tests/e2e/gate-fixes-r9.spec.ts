@@ -169,7 +169,7 @@ test('r8A-02: at 320 × 256 the switch dialog shows the focused «Cancel» whole
   await panel(page).getByRole('textbox').first().fill('Halvferdig svar.');
   await tab.focus();
   await page.keyboard.press('Enter');
-  await page.getByRole('dialog').getByRole('button', { name: /The system’s reading/ }).click();
+  await page.getByRole('dialog').getByRole('button', { name: /The system’s assessment/ }).click();
   const cancel = page.getByRole('dialog', { name: 'Switch form?' }).getByRole('button', { name: 'Cancel' });
   await expect(cancel).toBeFocused();
   await expect

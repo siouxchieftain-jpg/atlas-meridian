@@ -17,7 +17,8 @@ const item = (key: string, id: string): InstrumentItem => {
   if (!it) throw new Error(`${key} has no ${id}`);
   return it;
 };
-const questions = (items: InstrumentItem[]) => items.filter((it) => it.type !== 'locked');
+// Questions only: the locked fields, a plain line (3.8, F37) and a part's heading are no questions.
+const questions = (items: InstrumentItem[]) => items.filter((it) => !['locked', 'note', 'heading'].includes(it.type));
 const nb = (it: InstrumentItem) => (it.options ?? []).map((o) => o.nb);
 
 const CASES = [
@@ -43,7 +44,8 @@ describe('Kari has one form per role (I-1)', () => {
     const strip = (f: InstrumentForm) => ({
       ...f,
       key: '',
-      pages: f.pages.map((p) => ({ ...p, items: p.items.filter((it) => !/^D-V1-D[12]$/.test(it.id)) })),
+      // 3.8 (F36): the item on what was unclear names each role's own part of ATLAS, so it differs by role too.
+      pages: f.pages.map((p) => ({ ...p, items: p.items.filter((it) => !/^D-V1-(D[12]|05)$/.test(it.id)) })),
     });
     expect(strip(form('S3.dps'))).toEqual(strip(form('S3.fastlege')));
     // B1, the locked fields, the stop page, the check item and B2 are all still there.
@@ -100,12 +102,12 @@ describe('the decision without and with ATLAS (I-1)', () => {
     }
   });
 
-  it('asks DPS in Astrid\'s case what they would answer the GP, with choices that do not overlap, ruled as built (3.7)', () => {
+  it('asks DPS in Astrid\'s case what they would answer the GP; 3.8 adds standing by the return and explaining more (F83)', () => {
     const d = item('S5.dps', 'D-V4-D1');
     expect(d.text.nb).toBe('Hva ville du svart fastlegen?');
-    expect(nb(d)).toEqual(['Stå ved returen slik den er', 'Be om en ny henvisning', 'Vurdere henvisningen på nytt', 'Ikke svare nå', 'Ikke bestemt']);
-    expect(d.options?.map((o) => o.en)).toEqual(['Stand by the return as it is', 'Ask for a new referral', 'Reassess the referral', 'Not reply for now', 'Not decided']);
-    expect(d.options?.map((o) => o.code)).toEqual(['sta_ved_returen', 'ny_henvisning', 'vurdere_pa_nytt', 'ikke_svare', 'ikke_bestemt']);
+    expect(nb(d)).toEqual(['Stå ved returen slik den er', 'Stå ved returen og forklare mer', 'Be om en ny henvisning', 'Vurdere henvisningen på nytt', 'Ikke svare nå', 'Ikke bestemt']);
+    expect(d.options?.map((o) => o.en)).toEqual(['Stand by the return as it is', 'Stand by the return and explain more', 'Ask for a new referral', 'Reassess the referral', 'Not reply for now', 'Not decided']);
+    expect(d.options?.map((o) => o.code)).toEqual(['sta_ved_returen', 'sta_ved_forklare', 'ny_henvisning', 'vurdere_pa_nytt', 'ikke_svare', 'ikke_bestemt']);
     expect(d.draft).toBeUndefined();
   });
 
@@ -121,7 +123,7 @@ describe('the decision without and with ATLAS (I-1)', () => {
   });
 });
 
-describe('Helhetsinntrykk (S2), both roles', () => {
+describe('Avslutning (S2, with S6 merged into it in 3.8), both roles', () => {
   for (const key of ['S2.fastlege', 'S2.dps']) {
     it(`${key}: the calibration item sits in C1's block, before C1's written reason (I-14)`, () => {
       const ids = questions(form(key).pages[0].items).map((it) => it.id);
@@ -142,11 +144,13 @@ describe('Helhetsinntrykk (S2), both roles', () => {
       expect(item(key, 'C4-02').required).toBe(true);
       expect(item(key, 'C-CUCF-02').required).toBe(true);
       const reasons = questions(form(key).pages[0].items).filter((it) => it.type === 'longtext');
+      // DPS adds who would follow the dialogue (3.8, F85, F88), optional, after the block's required reason.
       expect(reasons.map((it) => [it.id, it.required])).toEqual([
         ['C1-05', true],
         ['C2-03', true],
         ['C3-03', true],
         ['C4-02', true],
+        ...(key === 'S2.dps' ? [['C4-04', false]] : []),
         ['C5-03', true],
         ['C-CUCF-02', true],
       ]);
@@ -166,7 +170,7 @@ describe('Helhetsinntrykk (S2), both roles', () => {
     }
     expect(item('S2.fastlege', 'C1-01').draft).toBeUndefined();
     expect(item('S2.fastlege', 'C-CUCF-01').draft).toBeUndefined();
-    expect(item('S2.dps', 'C1-01').text.nb).toMatch(/vurderinger av henvisninger/);
+    expect(item('S2.dps', 'C1-01').text.nb).toMatch(/bedre til å vurdere henvisninger/);
     // DPS's feedback on its own assessments is the GPs' replies and questions; Kalibrering is C1-04's (review N4).
     expect(item('S2.dps', 'C-CUCF-01').text.nb).toMatch(/^Svarene og spørsmålene fra fastlegene etter mine vurderinger/);
     expect(item('S2.dps', 'C-CUCF-01').text.nb).not.toMatch(/opptaksområdet/);
@@ -175,9 +179,9 @@ describe('Helhetsinntrykk (S2), both roles', () => {
 });
 
 describe('Astrid for DPS asks about answering the GP, not about a refusal they did not write (O-G3)', () => {
-  it('rewords D-V4-01 for DPS, ruled as built (3.7)', () => {
+  it('rewords D-V4-01 for DPS, in the past tense since 3.8 (F35)', () => {
     const d = item('S5.dps', 'D-V4-01');
-    expect(d.text.nb).toBe('Endrer den strukturerte tilbakemeldingen hvordan du ville svart fastlegen? (1-3 setninger)');
+    expect(d.text.nb).toBe('Endret den strukturerte formen for returen i ATLAS (grunner og råd) hvordan du ville svart fastlegen? (1-3 setninger)');
     expect(d.text.nb).not.toMatch(/følelsesmessige/);
     expect(d.required).toBe(true);
     expect(d.draft).toBeUndefined();
@@ -199,10 +203,14 @@ describe('the Nettskjema elements (nettskjema.mjs)', () => {
       expect(c.isHorizontal).toBe(true);
       expect(c.isMandatory).toBe(false);
       expect(c.answerOptions?.map((o) => o.externalAnswerOptionId)).toEqual(['1', '2', '3', '4', '5', '6', '7', 'vet_ikke']);
-      expect(c.answerOptions?.at(-1)?.text).toBe("Vet ikke / Don't know");
-      expect(c.description).toContain('1: Helt uenig / Strongly disagree. 7: Helt enig / Strongly agree.');
-      // The other agreement items stay linear scales.
-      expect(m.formElements(form(key)).find((e) => e.externalElementId === 'c1_06')?.elementType).toBe('LINEAR_SCALE');
+      // Norwegian only since 3.8 (F17).
+      expect(c.answerOptions?.at(-1)?.text).toBe('Vet ikke');
+      expect(c.description).toContain('1 = Helt uenig, 7 = Helt enig');
+      // Since 3.8 every scale is a row like this one (F18, F86), without «Vet ikke».
+      const c106 = m.formElements(form(key)).find((e) => e.externalElementId === 'c1_06')!;
+      expect(c106.elementType).toBe('RADIO');
+      expect(c106.isHorizontal).toBe(true);
+      expect(c106.answerOptions?.map((o) => o.externalAnswerOptionId)).toEqual(['1', '2', '3', '4', '5', '6', '7']);
     }
   });
 
@@ -215,12 +223,16 @@ describe('the Nettskjema elements (nettskjema.mjs)', () => {
         const lv = v.toLowerCase();
         const page1 = ids.slice(0, ids.indexOf('|'));
         expect(page1.filter((x) => /^d_v/.test(x)), `${step}.${variant}`).toEqual([`d_${lv}_d1`, `d_${lv}_b1`]);
+        // The last page opens with the check item, then one plain line (3.8, F37; after the check, so it does not
+        // answer it), the decision and B2, then a line where the questions turn to ATLAS.
         const last = ids.slice(ids.lastIndexOf('|') + 1);
-        expect(last.slice(0, 3), `${step}.${variant}`).toEqual(['kontroll', `d_${lv}_d2`, `d_${lv}_b2`]);
+        expect(last.slice(0, 5), `${step}.${variant}`).toEqual(['kontroll', 'TEXT', `d_${lv}_d2`, `d_${lv}_b2`, 'TEXT']);
+        // Page 1 holds the two questions and nothing to fill in by ATLAS (F19).
+        expect(page1.filter((x) => !['TEXT', 'HEADING'].includes(x))).toEqual([`d_${lv}_d1`, `d_${lv}_b1`]);
         const d1 = els.find((e) => e.externalElementId === `d_${lv}_d1`)!;
         expect(d1.elementType).toBe('RADIO');
         expect(d1.isMandatory).toBe(true);
-        expect(d1.answerOptions?.at(-1)).toMatchObject({ text: 'Ikke bestemt / Not decided', externalAnswerOptionId: 'ikke_bestemt' });
+        expect(d1.answerOptions?.at(-1)).toMatchObject({ text: 'Ikke bestemt', externalAnswerOptionId: 'ikke_bestemt' });
         expect(d1.answerOptions?.map((o) => o.externalAnswerOptionId)).toEqual(item(`${step}.${variant}`, `D-${v}-D1`).options?.map((o) => o.code));
       }
     }
@@ -248,22 +260,22 @@ describe('the form script holds a form back until its items are ruled, and repai
     const { join } = await import('node:path');
     const { mkdtempSync, writeFileSync } = await import('node:fs');
     const { tmpdir } = await import('node:os');
-    // Vitest runs in app/. A copy of the instrument with one item in S6 marked as waiting, so the check does not depend on
-    // which of 3.6's items have been ruled.
+    // Vitest runs in app/. A copy of the instrument with one item in S7 marked as waiting, so the check does not depend on
+    // which items have been ruled (S6, used before, was merged into S2 in 3.8).
     const script = join(process.cwd(), 'scripts', 'nettskjema.mjs');
     const copy = JSON.parse(JSON.stringify(instrument)) as typeof instrument;
-    const s6 = copy.forms.find((f) => f.key === 'S6')!;
-    s6.pages[0].items.find((it) => it.id === 'E-01')!.draft = true;
-    for (const f of copy.forms) for (const p of f.pages) for (const it of p.items) if (f.key !== 'S6') delete it.draft;
+    const s7 = copy.forms.find((f) => f.key === 'S7.fastlege')!;
+    s7.pages[0].items.find((it) => it.id === 'D-V2-01')!.draft = true;
+    for (const f of copy.forms) for (const p of f.pages) for (const it of p.items) if (f.key !== 'S7.fastlege') delete it.draft;
     const file = join(mkdtempSync(join(tmpdir(), 'atlas-hold-')), 'instrument.json');
     writeFileSync(file, JSON.stringify(copy));
     // No credentials file exists at this path: a run that got past the hold would stop on it, saying so.
     const env = { ...process.env, ATLAS_INSTRUMENT: file, NETTSKJEMA_CREDENTIALS: '/nonexistent/atlas.json' };
     const run = (args: string[]) => spawnSync(process.execPath, [script, ...args], { encoding: 'utf8', env });
     for (const mode of ['create', 'update']) {
-      const held = run([mode, '--round', 'pilot', '--only', 'S8,S6']);
+      const held = run([mode, '--round', 'pilot', '--only', 'S8,S7.fastlege']);
       expect(held.status, mode).toBe(1);
-      expect(held.stdout, mode).toContain("S6           holds wording or choices waiting for the owner's ruling: E-01");
+      expect(held.stdout, mode).toContain("S7.fastlege  holds wording or choices waiting for the owner's ruling: D-V2-01");
       expect(held.stdout, mode).toContain('Nothing was changed.');
       // S8 has nothing waiting, yet it is not touched either: no credential was read for it.
       expect(held.stderr, mode).not.toContain('credentials');

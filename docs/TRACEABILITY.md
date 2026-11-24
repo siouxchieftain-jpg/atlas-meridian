@@ -8,9 +8,9 @@ Screens in the specification: 1A the GP's assessment view, 1B referral compositi
 
 | Row | Component | In ATLAS v3 | Source (app/src) |
 |---|---|---|---|
-| 1A-1 | Grey-zone indicator | «Usikkerhetsvisning»: the band, the caption «Viser usikkerhet, anbefaler ikke», own placement first, then «Systemets lesning» | `patterns/UncertaintyBand.tsx` (UncertaintyBand); `patterns/PlacementControl.tsx` (PlacementControl); `case/BandSection.tsx` (BandSection); `case/BandSection.tsx` (ReadingBlock) |
-| 1A-2 | Uncertainty type flags | «Hva er uklart»: Diagnostisk, Terskel, Epistemisk with definitions, and a description | `patterns/clinical.tsx` (UncertaintyTags) |
-| 1A-3 | Confidence self-report | «Din trygghet nå»: five verbal steps, empty until set | `patterns/clinical.tsx` (ConfidenceScale) |
+| 1A-1 | Grey-zone indicator | «Usikkerhetsskala»: the scale, the caption «Viser usikkerhet, anbefaler ikke», own placement first, then «Systemets vurdering» | `patterns/UncertaintyBand.tsx` (UncertaintyBand); `patterns/PlacementControl.tsx` (PlacementControl); `case/BandSection.tsx` (BandSection); `case/BandSection.tsx` (ReadingBlock) |
+| 1A-2 | Uncertainty type flags | «Hva er uklart i saken?»: Uklar diagnose, Uklart om kriteriene er oppfylt, Ikke nok informasjon, with definitions, and a description | `patterns/clinical.tsx` (UncertaintyTags) |
+| 1A-3 | Confidence self-report | «Hvor sikker er du nå?»: five levels in words, from Veldig usikker to Veldig sikker, empty until set | `patterns/clinical.tsx` (ConfidenceScale) |
 | 1A-4 | Pattern history summary | «Mitt henvisningsmønster», visible only to the GP, with a «no data yet» state | `overview/PatternView.tsx` (PatternView) |
 | 1A-5 | Quick-view criteria panel | «Hva DPS ser etter»: in Informasjonsguiden («Vis detaljer») and as the margin of the referral | `patterns/clinical.tsx` (InfoGuide); `case/ReferralEditor.tsx` (ReferralEditor) |
 | 1B-1 | Structured referral template | «Ny henvisning»: five sections, blocks from the note marked «Hentet fra notatet», «Spørsmål til DPS» empty | `case/ReferralEditor.tsx` (ReferralEditor) |

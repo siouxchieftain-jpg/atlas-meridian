@@ -39,7 +39,7 @@ test('Safari starts on the new-tab route; sendt.html marks the step as sent', as
 test('on the tab route «Jeg har sendt skjemaet» also marks the step', async ({ page, context }) => {
   await mockNettskjema(context);
   await page.goto('/');
-  await page.getByRole('button', { name: 'Start i DPS-inntaket' }).click();
+  await page.getByRole('button', { name: 'Start som ansatt i DPS' }).click();
   await page.getByLabel('Nei', { exact: true }).check({ force: true });
   await page.getByRole('button', { name: 'Lagre og åpne skjemaet' }).click();
   await panel(page).getByRole('button', { name: 'Jeg har sendt skjemaet' }).click();

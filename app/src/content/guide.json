@@ -10,49 +10,54 @@
       "tour": "gp-band",
       "seksjon": "band",
       "part": {
-        "nb": "Usikkerhetsvisning",
-        "en": "Uncertainty display"
+        "nb": "Usikkerhetsskala",
+        "en": "Uncertainty scale"
       },
       "where": {
         "nb": "ATLAS, øverst.",
         "en": "ATLAS, at the top."
       },
       "do": {
-        "nb": "Velg hvor saken ligger under «Plasser saken». Systemets lesning vises etter det.",
-        "en": "Choose where the case lies under ‘Place the case’. The system’s reading appears after that."
+        "nb": "Plasser saken på skalaen.",
+        "en": "Place the case on the scale."
       },
       "lookFor": {
-        "nb": "Din egen plassering og systemets lesning, på samme bånd fra «Klart utenfor» til «Klart innenfor».",
-        "en": "Your own placement and the system’s reading, on the same band from ‘Clearly outside’ to ‘Clearly within’."
+        "nb": "Din egen plassering og systemets vurdering, på samme skala fra «Klart utenfor» til «Klart innenfor».",
+        "en": "Your own placement and the system’s assessment, on the same scale from ‘Clearly outside’ to ‘Clearly within’."
       },
       "tellUs": {
         "nb": "Er noe her uklart eller i veien, si det under «Gi tilbakemelding», del 1. Det er frivillig.",
         "en": "If anything here is unclear or in the way, say so under ‘Give feedback’, part 1. It is optional."
+      },
+      "box": {
+        "nb": "Usikkerhets­skala",
+        "en": "Uncertainty scale"
       }
     },
     {
       "n": 2,
       "selector": "[data-section=\"tags\"]",
       "views": [
-        "konsultasjon"
+        "konsultasjon",
+        "henvisning"
       ],
       "tour": "gp-tags",
       "seksjon": "uklart",
       "part": {
-        "nb": "Hva er uklart",
-        "en": "What is unclear"
+        "nb": "Hva er uklart i saken",
+        "en": "What is unclear in the case"
       },
       "where": {
-        "nb": "Under båndet.",
-        "en": "Under the band."
+        "nb": "Under skalaen.",
+        "en": "Under the scale."
       },
       "do": {
         "nb": "Velg hva usikkerheten gjelder, og skriv en linje om du vil.",
         "en": "Choose what the uncertainty concerns, and write a line if you like."
       },
       "lookFor": {
-        "nb": "Tre merkelapper: Diagnostisk, Terskel og Epistemisk. (i) ved hver gir definisjonen.",
-        "en": "Three tags: Diagnostic, Threshold and Epistemic. The (i) beside each gives its definition."
+        "nb": "Tre merkelapper: «Uklar diagnose», «Uklart om kriteriene er oppfylt» og «Ikke nok informasjon». (i) ved hver forklarer den.",
+        "en": "Three tags: ‘Unclear diagnosis’, ‘Unclear whether the criteria are met’ and ‘Not enough information’. The (i) beside each explains it."
       },
       "tellUs": {
         "nb": "Uklart eller i veien? «Gi tilbakemelding», del 2.",
@@ -73,49 +78,58 @@
         "en": "Information completeness guide"
       },
       "where": {
-        "nb": "Under «Hva er uklart».",
-        "en": "Under ‘What is unclear’."
+        "nb": "Under «Hva er uklart i saken?».",
+        "en": "Under ‘What is unclear in the case?’."
       },
       "do": {
-        "nb": "Åpne «Vis detaljer» hvis du vil se kriteriene.",
-        "en": "Open ‘Show details’ if you want to see the criteria."
+        "nb": "Kun til informasjon: les hva guiden fant. Listen med kriteriene står åpen.",
+        "en": "For information only: read what the guide found. The list of criteria is open."
       },
       "lookFor": {
-        "nb": "Hvor mange av fem kriterier fra prioriteringsveilederen notatet omtaler.",
-        "en": "How many of five criteria from the priority-setting guideline the note mentions."
+        "nb": "Hvilke av de fem kriteriene i prioriteringsveilederen konsultasjonsnotatet omtaler.",
+        "en": "Which of the five criteria in the priority-setting guideline the consultation note mentions."
       },
       "tellUs": {
         "nb": "Uklart eller i veien? «Gi tilbakemelding», del 3.",
         "en": "Unclear or in the way? ‘Give feedback’, part 3."
+      },
+      "box": {
+        "nb": "Informasjons­guiden",
+        "en": "Information completeness guide"
       }
     },
     {
       "n": 4,
       "selector": "[data-section=\"confidence\"]",
       "views": [
-        "konsultasjon"
+        "konsultasjon",
+        "henvisning"
       ],
       "tour": "gp-trygghet",
       "seksjon": "trygghet",
       "part": {
-        "nb": "Din trygghet nå",
-        "en": "Your confidence now"
+        "nb": "Hvor sikker er du nå?",
+        "en": "How sure are you now?"
       },
       "where": {
-        "nb": "Under guiden.",
-        "en": "Under the guide."
+        "nb": "Under informasjonsguiden.",
+        "en": "Under the information guide."
       },
       "do": {
-        "nb": "Velg et trinn fra Lav til Høy.",
-        "en": "Choose a step from Low to High."
+        "nb": "Velg det som passer, fra «Veldig usikker» til «Veldig sikker».",
+        "en": "Choose what fits, from ‘Very unsure’ to ‘Very sure’."
       },
       "lookFor": {
-        "nb": "Linjen under trinnene sier hva DPS ser hvis du henviser.",
-        "en": "The line under the steps says what DPS sees if you refer."
+        "nb": "Linjen under valgene sier hva DPS ser hvis du henviser.",
+        "en": "The line under the choices says what DPS sees if you refer."
       },
       "tellUs": {
         "nb": "Uklart eller i veien? «Gi tilbakemelding», del 4.",
         "en": "Unclear or in the way? ‘Give feedback’, part 4."
+      },
+      "box": {
+        "nb": "Hvor sikker nå",
+        "en": "How sure now"
       }
     },
     {
@@ -185,16 +199,16 @@
       ],
       "seksjon": "fra-atlas",
       "part": {
-        "nb": "Fra ATLAS-panelet",
-        "en": "From the ATLAS panel"
+        "nb": "Fra ATLAS",
+        "en": "From ATLAS"
       },
       "where": {
         "nb": "Under henvisningen.",
         "en": "Under the referral."
       },
       "do": {
-        "nb": "Se hva som følger med henvisningen fra ATLAS, før du bestemmer deg.",
-        "en": "Check what goes with the referral from ATLAS, before you decide."
+        "nb": "Se hva som er kopiert fra det du valgte i ATLAS. Vil du endre noe, gjør du det i ATLAS.",
+        "en": "See what has been copied from what you chose in ATLAS. To change anything, change it in ATLAS."
       },
       "lookFor": {
         "nb": "Hvilke av dine egne valg i ATLAS som går til DPS.",
@@ -253,8 +267,8 @@
         "en": "Under the referral."
       },
       "do": {
-        "nb": "Les merkelappene, linjen og tryggheten til fastlegen.",
-        "en": "Read the GP’s tags, line and confidence."
+        "nb": "Les merkelappene, beskrivelsen og hvor sikker fastlegen er.",
+        "en": "Read the tags, the description and how sure the GP is."
       },
       "lookFor": {
         "nb": "Hva fastlegen merket som uklart i denne henvisningen. Navnet og historikken til fastlegen vises ikke.",
@@ -274,24 +288,28 @@
       "tour": "dps-band",
       "seksjon": "band",
       "part": {
-        "nb": "Usikkerhetsvisning",
-        "en": "Uncertainty display"
+        "nb": "Usikkerhetsskala",
+        "en": "Uncertainty scale"
       },
       "where": {
         "nb": "ATLAS, øverst.",
         "en": "ATLAS, at the top."
       },
       "do": {
-        "nb": "Velg hvor saken ligger under «Plasser saken». Fastlegens markør og systemets lesning vises etter det.",
-        "en": "Choose where the case lies under ‘Place the case’. The GP’s marker and the system’s reading appear after that."
+        "nb": "Plasser saken på skalaen.",
+        "en": "Place the case on the scale."
       },
       "lookFor": {
-        "nb": "Tre markører på ett bånd: din, fastlegens og systemets lesning.",
-        "en": "Three markers on one band: yours, the GP’s and the system’s reading."
+        "nb": "Tre markører på én skala: din, fastlegens og systemets vurdering.",
+        "en": "Three markers on one scale: yours, the GP’s and the system’s assessment."
       },
       "tellUs": {
         "nb": "Uklart eller i veien? «Gi tilbakemelding», del 2.",
         "en": "Unclear or in the way? ‘Give feedback’, part 2."
+      },
+      "box": {
+        "nb": "Usikkerhets­skala",
+        "en": "Uncertainty scale"
       }
     },
     {
@@ -307,20 +325,24 @@
         "en": "Information completeness guide"
       },
       "where": {
-        "nb": "Under båndet.",
-        "en": "Under the band."
+        "nb": "Under skalaen.",
+        "en": "Under the scale."
       },
       "do": {
-        "nb": "Åpne «Vis detaljer» hvis du vil se kriteriene.",
-        "en": "Open ‘Show details’ if you want to see the criteria."
+        "nb": "Kun til informasjon: les hva guiden fant i henvisningen.",
+        "en": "For information only: read what the guide found in the referral."
       },
       "lookFor": {
-        "nb": "Hvor mange av fem kriterier henvisningen omtaler, slik den ble sendt.",
-        "en": "How many of five criteria the referral mentions, as it was sent."
+        "nb": "Hvilke av de fem kriteriene i prioriteringsveilederen henvisningen omtaler, slik den ble sendt.",
+        "en": "Which of the five criteria in the priority-setting guideline the referral mentions, as it was sent."
       },
       "tellUs": {
         "nb": "Uklart eller i veien? «Gi tilbakemelding», del 3.",
         "en": "Unclear or in the way? ‘Give feedback’, part 3."
+      },
+      "box": {
+        "nb": "Informasjons­guiden",
+        "en": "Information completeness guide"
       }
     },
     {
@@ -350,6 +372,10 @@
       "tellUs": {
         "nb": "Uklart eller i veien? «Gi tilbakemelding», del 4.",
         "en": "Unclear or in the way? ‘Give feedback’, part 4."
+      },
+      "box": {
+        "nb": "Utfall",
+        "en": "Outcome"
       }
     }
   ],

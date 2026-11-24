@@ -119,14 +119,14 @@ test('review: R1 for one part of a screen and R2 at the end go through the form 
   // The popover is a named dialog (R2A-06), and focus is on its first part.
   await expect(page.getByRole('dialog', { name: 'Hvilken del gjelder tilbakemeldingen?' })).toBeVisible();
   await expect(page.getByRole('dialog').getByRole('button', { name: 'Hele skjermbildet' })).toBeFocused();
-  await page.getByRole('dialog').getByRole('button', { name: 'Usikkerhetsvisning' }).click();
+  await page.getByRole('dialog').getByRole('button', { name: 'Usikkerhetsskala' }).click();
 
   await expect(panel(page)).toBeVisible();
   expect(await frameFields(page)).toEqual({
     rolle: 'Veileder',
     side: 'fastlege/kari/konsultasjon',
     seksjon: 'band',
-    versjon: expect.stringMatching(/^3\.7\.1-/),
+    versjon: expect.stringMatching(/^3\.8\.0-/),
   });
   await sendForm(page);
   // Confirmed on the screen the feedback was about, in a MessageBar (no toast).
@@ -136,7 +136,7 @@ test('review: R1 for one part of a screen and R2 at the end go through the form 
   // The overview shows what has been given, with the case; the role is now locked.
   await page.getByRole('link', { name: 'Tilbakemeldinger' }).first().click();
   await expect(page).toHaveURL(/#\/gjennomgang\/tilbakemeldinger$/);
-  const row = page.getByRole('listitem').filter({ hasText: 'Fastlege · Kari Nordli · Konsultasjon · Usikkerhetsvisning' });
+  const row = page.getByRole('listitem').filter({ hasText: 'Fastlege · Kari Nordli · Konsultasjon · Usikkerhetsskala' });
   await expect(row.locator('code')).toHaveText('fastlege/kari/konsultasjon#band');
   await expect(row.getByText('Tilbakemelding gitt')).toBeVisible();
   // The screen list counts the part for Kari only, and links to the screen.
@@ -148,7 +148,7 @@ test('review: R1 for one part of a screen and R2 at the end go through the form 
   // R2: the overall impression.
   await page.getByRole('button', { name: 'Gi et samlet inntrykk' }).click();
   await expect(frame(page).locator('h1')).toHaveText('Mock Nettskjema R2');
-  expect(await frameFields(page)).toEqual({ rolle: 'Veileder', versjon: expect.stringMatching(/^3\.7\.1-/) });
+  expect(await frameFields(page)).toEqual({ rolle: 'Veileder', versjon: expect.stringMatching(/^3\.8\.0-/) });
   await sendForm(page);
   await expect(page.getByText('Det samlede inntrykket er sendt.')).toBeVisible();
 
@@ -167,7 +167,7 @@ test('review: the sections offered match the case (Astrid has no band on the GP 
   const pop = page.getByRole('dialog');
   await expect(pop.getByRole('button', { name: 'Hele skjermbildet' })).toBeVisible();
   await expect(pop.getByRole('button', { name: 'Retur med råd fra DPS' })).toBeVisible();
-  await expect(pop.getByRole('button', { name: 'Usikkerhetsvisning' })).toHaveCount(0);
+  await expect(pop.getByRole('button', { name: 'Usikkerhetsskala' })).toHaveCount(0);
 });
 
 test('review: R1 opens as a preview when the form address is not set', async ({ page }) => {
@@ -177,7 +177,9 @@ test('review: R1 opens as a preview when the form address is not set', async ({ 
   await go(page, '#/gjennomgang/dps/mottatte');
   await page.getByRole('button', { name: 'Gi tilbakemelding' }).click();
   await page.getByRole('dialog').getByRole('button', { name: 'Hele skjermbildet' }).click();
-  await expect(panel(page).getByText('Fylt ut automatisk av ATLAS')).toBeVisible();
+  await expect(panel(page).locator('form')).toBeVisible();
+  // 3.8: the locked context goes with the answers but is not shown (Jishnu, 24 November).
+  await expect(panel(page).getByText(/Fylt ut (automatisk )?av ATLAS/)).toHaveCount(0);
   await expect(page.locator('iframe[data-form-frame]')).toHaveCount(0);
 });
 

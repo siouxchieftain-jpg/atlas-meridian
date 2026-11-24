@@ -93,11 +93,21 @@
       "time": {
         "nb": "Omtrent 10 minutter",
         "en": "About 10 minutes"
+      },
+      "scenario": {
+        "kind": {
+          "nb": "ny henvisning etter avslag",
+          "en": "new referral after a rejection"
+        },
+        "task": {
+          "nb": "Du avgjør om du vil henvise Erlend på nytt.",
+          "en": "You decide whether to refer Erlend again."
+        }
       }
     },
     "atlasTask": {
-      "nb": "Utkastet til ny henvisning åpnes, med ATLAS-panelet ved siden av. Plasser saken på båndet før du ser systemets lesning. Skriv deretter henvisningen ferdig og velg Send henvisning eller Lagre utkast.",
-      "en": "The draft of the new referral opens, with the ATLAS panel beside it. Place the case on the band before you see the system’s reading. Then finish the referral, and choose whether to send it or save it as a draft."
+      "nb": "Saken åpner i utkastet til en ny henvisning, fordi spørsmålet er om Erlend skal henvises på nytt. Start med boks 1: plasser saken på skalaen. Skriv deretter henvisningen, og velg «Send henvisning» eller «Lagre utkast uten å sende».",
+      "en": "The case opens in the draft of a new referral, because the question is whether to refer Erlend again. Start with box 1: place the case on the scale. Then write the referral, and choose ‘Send referral’ or ‘Save the draft without sending’."
     },
     "profile": [
       {
@@ -137,8 +147,8 @@
     "note": {
       "date": "2026-03-17",
       "text": {
-        "nb": "Ny henvisning. Erlend har hatt angst med panikkanfall flere ganger i uken i åtte måneder. GAD-7 i dag: 17, PHQ-9: 11.\n\nKognitiv terapi hos Rask psykisk helsehjelp, ti timer, begrenset effekt. Escitalopram 10 mg siden desember, delvis effekt på panikkanfallene.\n\nSelvmordstanker avkreftet. Ingen rusmiddelbruk.",
-        "en": "New referral. Erlend has had anxiety with panic attacks several times a week for eight months. GAD-7 today: 17, PHQ-9: 11.\n\nCognitive therapy with Rask psykisk helsehjelp, ten sessions, limited effect. Escitalopram 10 mg since December, partial effect on the panic attacks.\n\nSuicidal thoughts denied. No substance use."
+        "nb": "Ny konsultasjon etter avslag. Erlend har hatt angst med panikkanfall flere ganger i uken i åtte måneder. GAD-7 i dag: 17, PHQ-9: 11.\n\nKognitiv terapi hos Rask psykisk helsehjelp, ti timer, begrenset effekt. Escitalopram 10 mg siden desember, delvis effekt på panikkanfallene.\n\nSelvmordstanker avkreftet. Ingen rusmiddelbruk.",
+        "en": "New consultation after a rejection. Erlend has had anxiety with panic attacks several times a week for eight months. GAD-7 today: 17, PHQ-9: 11.\n\nCognitive therapy with Rask psykisk helsehjelp, ten sessions, limited effect. Escitalopram 10 mg since December, partial effect on the panic attacks.\n\nSuicidal thoughts denied. No substance use."
       }
     },
     "selfReport": {
@@ -419,11 +429,21 @@
       "time": {
         "nb": "Omtrent 8 minutter",
         "en": "About 8 minutes"
+      },
+      "scenario": {
+        "kind": {
+          "nb": "ny henvisning etter avslag",
+          "en": "new referral after a rejection"
+        },
+        "task": {
+          "nb": "Du vurderer henvisningen og velger et utfall.",
+          "en": "You assess the referral and choose an outcome."
+        }
       }
     },
     "atlasTask": {
-      "nb": "Med ATLAS ser du også det forrige utfallet og fastlegens beskrivelse av hva som er uklart. Plasser saken på båndet før du ser fastlegens plassering og systemets lesning. Velg deretter et utfall.",
-      "en": "With ATLAS you also see the previous outcome and the GP’s description of what is unclear. Place the case on the band before you see the GP’s placement and the system’s reading. Then choose an outcome."
+      "nb": "Med ATLAS ser du også det forrige utfallet og fastlegens beskrivelse av hva som er uklart. Plasser saken på skalaen før du ser fastlegens plassering og systemets vurdering. Velg deretter et utfall.",
+      "en": "With ATLAS you also see the previous outcome and the GP’s description of what is unclear. Place the case on the scale before you see the GP’s placement and the system’s assessment. Then choose an outcome."
     },
     "referral": {
       "sent": "2026-03-17",
@@ -452,8 +472,8 @@
         }
       },
       "noteAttachment": {
-        "nb": "Ny henvisning. Erlend har hatt angst med panikkanfall flere ganger i uken i åtte måneder. GAD-7 i dag: 17, PHQ-9: 11.\n\nKognitiv terapi hos Rask psykisk helsehjelp, ti timer, begrenset effekt. Escitalopram 10 mg siden desember, delvis effekt på panikkanfallene.\n\nSelvmordstanker avkreftet. Ingen rusmiddelbruk.",
-        "en": "New referral. Erlend has had anxiety with panic attacks several times a week for eight months. GAD-7 today: 17, PHQ-9: 11.\n\nCognitive therapy with Rask psykisk helsehjelp, ten sessions, limited effect. Escitalopram 10 mg since December, partial effect on the panic attacks.\n\nSuicidal thoughts denied. No substance use."
+        "nb": "Ny konsultasjon etter avslag. Erlend har hatt angst med panikkanfall flere ganger i uken i åtte måneder. GAD-7 i dag: 17, PHQ-9: 11.\n\nKognitiv terapi hos Rask psykisk helsehjelp, ti timer, begrenset effekt. Escitalopram 10 mg siden desember, delvis effekt på panikkanfallene.\n\nSelvmordstanker avkreftet. Ingen rusmiddelbruk.",
+        "en": "New consultation after a rejection. Erlend has had anxiety with panic attacks several times a week for eight months. GAD-7 today: 17, PHQ-9: 11.\n\nCognitive therapy with Rask psykisk helsehjelp, ten sessions, limited effect. Escitalopram 10 mg since December, partial effect on the panic attacks.\n\nSuicidal thoughts denied. No substance use."
       }
     },
     "gpUncertainty": {
@@ -526,8 +546,8 @@
         "en": "Placements and outcome"
       },
       "whatHappened": {
-        "nb": "Fastlegen skrev en ny henvisning etter avslaget 12. november 2025. {{plassering}} Fastlegens beslutning: {{beslutning}}. Fastlegens trygghet: {{trygghet}}. Utfall: {{utfall}}.",
-        "en": "The GP wrote a new referral after the rejection of 12 November 2025. {{plassering}} The GP’s decision: {{beslutning}}. The GP’s confidence: {{trygghet}}. Outcome: {{utfall}}."
+        "nb": "Fastlegen skrev en ny henvisning etter avslaget 12. november 2025. {{plassering}} Fastlegens beslutning: {{beslutning}}. Hvor sikker fastlegen var: {{trygghet}}. Utfall: {{utfall}}.",
+        "en": "The GP wrote a new referral after the rejection of 12 November 2025. {{plassering}} The GP’s decision: {{beslutning}}. How sure the GP was: {{trygghet}}. Outcome: {{utfall}}."
       },
       "purpose": {
         "nb": "Saken er laget for å prøve om synlige kriterier og et synlig tidligere utfall endrer hvordan en fastlege dokumenterer etter et avslag uten forklaring: mer åpent, mer strategisk eller likt.",
@@ -536,8 +556,8 @@
     },
     "dps": {
       "title": {
-        "nb": "Tre plasseringer av samme sak",
-        "en": "Three placements of the same case"
+        "nb": "Tre plasseringer av samme sak: ATLAS, fastlegen og deg",
+        "en": "Three placements of the same case: ATLAS, the GP and you"
       },
       "whatHappened": {
         "nb": "{{plassering}} Den forrige henvisningen ble avslått 12. november 2025 med én setning. Utfall: {{utfall}}.",

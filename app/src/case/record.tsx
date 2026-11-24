@@ -119,12 +119,13 @@ export function SelfReport({ content, defaultOpen = false }: { content: CaseCont
           <span style={{ ...typographyStyles.caption1, color: tokens.colorNeutralForeground3 }}>{formatDate(sr.date, lang)}</span>
         </span>
         <Button
-          appearance="transparent"
+          appearance="outline"
           size="small"
           icon={open ? <ChevronDown16Regular /> : <ChevronRight16Regular />}
           aria-expanded={open}
           aria-controls={listId}
           onClick={() => setOpen(!open)}
+          data-try-target="self-report"
         >
           {open ? s('hideAnswers') : s('showAnswers')}
         </Button>
@@ -153,21 +154,22 @@ export function RecordTabs({ content, extraTop }: { content: CaseContent; extraT
   return (
     <Panel aria-label={s('consultation')}>
       <div className={cls.tabsWrap}>
-        <TabList className={cls.tabs} selectedValue={tab} onTabSelect={(_, d) => setTab(d.value as typeof tab)} size="medium">
+        {/* 3.8: tabs as large pills with what each holds, so «Legemidler» and «Historikk» are not missed. */}
+        <TabList className={cls.tabs} selectedValue={tab} onTabSelect={(_, d) => setTab(d.value as typeof tab)} size="large" appearance="filled-circular">
           <Tab value="note" icon={<Note16Regular />}>
             {s('tabNote')}
           </Tab>
           <Tab value="meds" icon={<Pill20Regular />}>
-            {s('tabMeds')}
+            {s('tabMeds')} ({g.meds.rows.length})
           </Tab>
           <Tab value="history" icon={<History20Regular />}>
-            {s('tabHistory')}
+            {s('tabHistory')} ({g.history.length})
           </Tab>
         </TabList>
         {extraTop}
         {tab === 'note' && (
           <div role="tabpanel" className={cls.tabsWrap}>
-            <SelfReport content={content} />
+            <SelfReport content={content} defaultOpen />
             <div className={cls.noteHead}>
               <h2 className={cls.noteTitle}>{s('noteTitle')}</h2>
               <span style={{ display: 'inline-flex', gap: 8, alignItems: 'center' }}>

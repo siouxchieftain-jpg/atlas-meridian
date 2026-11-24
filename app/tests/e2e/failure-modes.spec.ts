@@ -1,6 +1,6 @@
 import { expect, test, type Page } from '@playwright/test';
 import { mockNettskjema, recordSubmissions, submissions, configWithoutForms } from './mock';
-import { caseOnlyThenAtlas, frame, frameSteg, openCurrentCase, panel, place, sendForm, startStudy, toFirstCase, toStopPage } from './helpers';
+import { caseOnlyThenAtlas, frame, frameSteg, openCurrentCase, panel, place, sendForm, startStudy, toFirstCase, toStopPage, confirmPage1, showAllParts } from './helpers';
 
 // No check depends on the addresses the site holds: with none, review mode gives feedback in its preview forms.
 // A check that needs forms routes them to the stand-in (mockNettskjema), which takes precedence.
@@ -39,11 +39,13 @@ test('a reload in the case-only state reopens page 1 with S3 and asks for page 1
   await toKari(page);
   await page.getByRole('button', { name: 'Start saken' }).click();
   await toStopPage(page);
-  await panel(page).getByRole('button', { name: 'Jeg har svart på side 1' }).click();
+  await confirmPage1(page);
   await page.reload();
   await expect(page.locator('iframe[data-form-frame]')).toBeVisible();
   expect(await frameSteg(page)).toBe('S3');
-  await expect(panel(page).getByRole('button', { name: 'Vis ATLAS' })).toHaveAttribute('aria-disabled', 'true');
+  // Page 1 is asked for again: the form shows it, and the panel names the press in the form, with no «Vis ATLAS» (3.8).
+  await expect(panel(page).getByText('Trykk nå: «Neste side» nederst i skjemaet, når du har svart på side 1.')).toBeVisible();
+  await expect(panel(page).getByRole('button', { name: 'Vis ATLAS' })).toHaveCount(0);
 });
 
 test('a failed send offers a retry in the same form, and the retry counts', async ({ page }) => {
@@ -64,6 +66,7 @@ test('a skipped vignette form lets the case go on, and «Svar likevel» opens it
   await panel(page).getByRole('button', { name: 'Hopp over skjemaet' }).click();
   await expect(panel(page)).toHaveCount(0);
   await page.getByRole('button', { name: 'Vis ATLAS' }).first().click();
+  await showAllParts(page);
   await kariDecision(page);
   // No page-2 moment for a skipped form: the reply is not held.
   await page.getByRole('button', { name: 'Fortsett' }).click();
@@ -79,9 +82,13 @@ test('a vignette form sent whole before «Vis ATLAS» counts as sent, and is not
   await recordSubmissions(page);
   await toKari(page);
   await page.getByRole('button', { name: 'Start saken' }).click();
+  // 3.8: past page 1 the stop card covers the form; sending it whole means showing it again on purpose.
+  await toStopPage(page);
+  await panel(page).getByRole('button', { name: 'Endre svarene på side 1' }).click();
   await sendForm(page);
   await expect(page.locator('iframe[data-form-frame]')).toHaveCount(0);
   await page.getByRole('button', { name: 'Vis ATLAS' }).first().click();
+  await showAllParts(page);
   await kariDecision(page);
   await expect(page.locator('iframe[data-form-frame]')).toHaveCount(0);
   await page.getByRole('button', { name: 'Fortsett' }).click();
@@ -91,14 +98,17 @@ test('a vignette form sent whole before «Vis ATLAS» counts as sent, and is not
   expect(s3[0].fields.steg).toBe('S3');
 });
 
-test('going past the stop page before «Vis ATLAS» shows the hint, and the confirmation is still asked', async ({ page }) => {
+test('the stop card covers the form until «Vis ATLAS», and the form can still be shown on purpose', async ({ page }) => {
   await mockNettskjema(page);
   await toKari(page);
   await page.getByRole('button', { name: 'Start saken' }).click();
   await toStopPage(page);
-  await frame(page).locator('#next').click();
-  await expect(panel(page).getByText('Skjemaet har gått videre. Trykk på knappen når du har svart på side 1.')).toBeVisible();
-  await expect(panel(page).getByRole('button', { name: 'Vis ATLAS' })).toHaveAttribute('aria-disabled', 'true');
+  // 3.8: the stop card covers the form, so its «Neste» cannot be pressed past the stop page by mistake.
+  await expect(panel(page).locator('[data-next-step="show-atlas"]')).toBeVisible();
+  await expect(page.locator('iframe[data-form-frame]')).not.toBeInViewport();
+  // Going back to page 1 on purpose shows the form again, at the stop page.
+  await panel(page).getByRole('button', { name: 'Endre svarene på side 1' }).click();
+  await expect(frame(page).locator('#page')).toHaveText('Side 2 av 3');
 });
 
 test('resizing across the inline threshold keeps the open form where it was', async ({ page }) => {

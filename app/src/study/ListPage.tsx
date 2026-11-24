@@ -17,6 +17,7 @@ import { HOME_PATH } from './controller';
 import { Deadlines } from './homeParts';
 import { CORE, caseInProgress, currentCase } from './parts';
 import { StudyCard } from './StudyCard';
+import { CaseRemaining, ScenarioLine } from '../case/Scenario';
 import { TourStartDialog } from './TourStart';
 
 /**
@@ -106,8 +107,11 @@ const useStyles = makeStyles({
     borderTop: `1px solid ${tokens.colorNeutralStroke3}`,
     minHeight: '28px',
     display: 'flex',
+    flexWrap: 'wrap',
+    rowGap: '4px',
     alignItems: 'center',
   },
+  remain: { flexBasis: '100%' },
   open: { minWidth: 0, paddingInline: 0, height: '28px', ...typographyStyles.body1Strong },
   later: { display: 'inline-flex', alignItems: 'center', gap: '6px', ...typographyStyles.caption1, color: tokens.colorNeutralForeground3 },
   done: { display: 'inline-flex', alignItems: 'center', gap: '6px', ...typographyStyles.caption1, color: tokens.colorNeutralForeground2 },
@@ -214,6 +218,8 @@ function CaseFoot({ caseId, nameId }: { caseId: CoreCaseId; nameId: string }) {
     );
   if (caseId === currentCase(st))
     return (
+      <>
+      {caseInProgress(st, caseId) && <CaseRemaining className={cls.remain} caseId={caseId} role={role} phase={st.phase[caseId] ?? 'briefing'} />}
       <Button
         appearance="transparent"
         className={cls.open}
@@ -225,6 +231,7 @@ function CaseFoot({ caseId, nameId }: { caseId: CoreCaseId; nameId: string }) {
       >
         {caseInProgress(st, caseId) ? s('continueCase') : role === 'gp' ? s('listOpenCase') : s('listOpenReferral')}
       </Button>
+      </>
     );
   return (
     <span className={cls.later}>
@@ -270,6 +277,7 @@ function GpCards({ query }: { query: string }) {
                       <span className={cls.visit}>{t(x.gp.timeliste.visit)}</span>
                     </span>
                   </div>
+                  <ScenarioLine caseId={c} role="gp" />
                   <p className={cls.text}>{summary(t(x.gp.briefing.rows[0].value))}</p>
                   {x.gp.timeliste.chips.length > 0 && (
                     <div className={cls.chips}>
@@ -357,6 +365,7 @@ function DpsCards({ query }: { query: string }) {
               <span className={cls.visit}>{s('homeFromGp')}</span>
             </span>
           </div>
+          <ScenarioLine caseId={c} role="dps" />
           <p className={cls.text}>{answered ? s('listAnsweredText', { date: formatDayMonth(answered.date, lang) }) : t(x.dps!.briefing.rows[0].value)}</p>
           {!done && (
             <div className={cls.chips}>

@@ -15,13 +15,11 @@ import {
   ArrowCounterclockwise20Regular,
   Map20Regular,
   QuestionCircle20Regular,
-  TaskListLtr20Filled,
-  TaskListLtr20Regular,
   Open20Regular,
 } from '@fluentui/react-icons';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import type { CoreCaseId } from '../content/types';
-import { tourParts } from '../content';
+import { cases, tourParts } from '../content';
 import { useLang } from '../i18n/i18n';
 import { getConfig, previewFlag, setPreviewFlag, studyClosed } from '../engine/forms';
 import { Redirect, navigate, useRoute } from '../router/router';
@@ -44,7 +42,7 @@ import { FormHostProvider, useFormHost } from './formHost';
 import { FormPanel, formTitle, type FormPanelActions } from './FormPanel';
 import { HOME_PATH, LIST_PATH, STEP_PATH, StudyControllerProvider, stepReachable, useStudyController } from './controller';
 import { ListPage } from './ListPage';
-import { AvslutningPage, EkstraPage, HelhetPage, OmDegPage, StepperPage, TakkPage, V5Page, VelkommenPage } from './pages';
+import { EkstraPage, HelhetPage, OmDegPage, StepperPage, TakkPage, V5Page, VelkommenPage } from './pages';
 import { HomePage } from './HomePage';
 import { RoleLabel, StudyAccount, StudyProgress } from './StudyHeader';
 import { StudyFeedbackTab, feedbackOpened, useStudyFeedback } from './StudyFeedback';
@@ -185,7 +183,8 @@ function StudyShell() {
       match: [LIST_PATH, '/studie/sak'],
     });
   }
-  nav.push({ key: 'steg', label: s('stepperTitle'), to: '/studie/steg', icon: <TaskListLtr20Regular />, iconActive: <TaskListLtr20Filled />, match: ['/studie/steg'] });
+  // The study map left the rail in 3.8 (Jishnu, 24 November): the rail holds the system's own pages; the map opens
+  // from the part pills in the header, as a panel over the page you are on.
 
   const help: HelpItem[] = [];
   if (st.tour.done) help.push({ key: 'tour', label: s('helpTourAgain'), icon: <Map20Regular />, onSelect: () => navigate('/studie/omvisning?igjen') });
@@ -239,6 +238,7 @@ function StudyShell() {
     }
     return {
       title: `${s('formPanel')}: ${formTitle(form.formKey, form.step, t)}`,
+      caseName: form.caseId ? cases[form.caseId].patient.name.split(' ')[0] : undefined,
       onConfirmSent: () => ctl.confirmSent(form.step),
       onSkip: () => ctl.skipForm(form.step),
       onPage1: form.caseId ? () => ctl.confirmPage1(form.caseId!) : undefined,
@@ -262,7 +262,7 @@ function StudyShell() {
               <RoleLabel />
             </>
           }
-          headerCenter={<StudyProgress />}
+          headerCenter={<StudyProgress here={here} />}
           headerEnd={
             <>
               <HelpMenu items={help} />
@@ -476,7 +476,8 @@ function StudyRoutes({ path, igjen }: { path: string[]; igjen: boolean }) {
       );
     }
     case 'avslutning':
-      return guard('avslutning') ? <AvslutningPage /> : <Redirect to={current} />;
+      // The step left the path in 3.8 (part C, F92); an old link lands on the closing form.
+      return <Redirect to={guard('helhet') ? STEP_PATH.helhet : current} />;
     case 'ekstra':
       if (furthest !== 'ekstra') return <Redirect to={current} />;
       if (a === 'to-fastleger') return <V5Page />;

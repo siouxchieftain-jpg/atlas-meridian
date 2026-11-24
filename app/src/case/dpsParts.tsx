@@ -1,4 +1,4 @@
-import { Button, Checkbox, Divider, Field, makeStyles, tokens, typographyStyles } from '@fluentui/react-components';
+import { Button, Checkbox, Divider, Field, makeStyles, mergeClasses, tokens, typographyStyles } from '@fluentui/react-components';
 import { ArrowEnter20Regular, ArrowReply20Regular, ChevronDown16Regular, ChevronRight16Regular, QuestionCircle20Regular } from '@fluentui/react-icons';
 import { useId, useState, type ReactNode } from 'react';
 import type { CaseId, ConfLevel, CriterionId, Outcome, ReasonId, SectionId, TagId } from '../content/types';
@@ -44,6 +44,7 @@ const useStyles = makeStyles({
     borderRadius: tokens.borderRadiusMedium,
     backgroundColor: tokens.colorNeutralBackground2,
   },
+  unsureInCard: { paddingInline: 0, paddingBlock: 0, border: 'none' },
   unsure: {
     display: 'flex',
     flexDirection: 'column',
@@ -131,11 +132,14 @@ export function receivedReferral(caseId: CaseId, work: WorkApi, t: (x: { nb: str
   };
 }
 
-/** The consultation note sent with the referral: collapsed, the same block in the case-only state and the ATLAS view. */
+/**
+ * The consultation note sent with the referral: open, since it is part of the decision (3.8, F77), and it can be folded;
+ * the same block in the case-only state and the ATLAS view.
+ */
 export function NoteAttachment({ caseId }: { caseId: CaseId }) {
   const cls = useStyles();
   const { s, t } = useLang();
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(true);
   const attachId = useId();
   const d = cases[caseId].dps!;
   return (
@@ -197,14 +201,14 @@ export function ReferralLetter({ caseId, received, letterFrame }: { caseId: Case
 }
 
 /** «Hva fastlegen var usikker på»: tags, the GP's words, confidence in words. Never a history. */
-export function GpUnsureBlock({ received }: { received: Received }) {
+export function GpUnsureBlock({ received, inCard }: { received: Received; /** In the ATLAS card (3.8): no frame of its own, a level-3 heading. */ inCard?: boolean }) {
   const cls = useStyles();
   const { s, t } = useLang();
   const work = useWork();
   return (
-    <section className={cls.unsure} aria-label={s('gpUnsure')} data-section="gp-usikker">
+    <section className={mergeClasses(cls.unsure, inCard && cls.unsureInCard)} aria-label={s('gpUnsure')} data-section="gp-usikker">
       <div className={cls.unsureHead}>
-        <h2 className={cls.h3}>{s('gpUnsure')}</h2>
+        {inCard ? <h3 className={cls.h3}>{s('gpUnsure')}</h3> : <h2 className={cls.h3}>{s('gpUnsure')}</h2>}
         <ProvenanceChip source="gp" />
       </div>
       {received.tags.length ? <TagList tags={received.tags} /> : <p className={cls.caption}>{s('noTagsChosen')}</p>}
@@ -320,7 +324,7 @@ export function DpsOutcomeSection({ caseId, onSent }: { caseId: CaseId; onSent: 
   const problem = outcomeValid(dps.outcome, dps);
   const upd = (p: Partial<DpsWork>) => work.updateDps(caseId, p);
   return (
-    <section className={cls.section} aria-label={s('assessmentTitle')} data-section="vurdering">
+    <section className={cls.section} aria-label={s('assessmentTitle')} data-section="vurdering" data-section-done={sent ? '' : undefined}>
       {sent && dps.outcome ? (
         <>
           <div className={cls.unsureHead}>
@@ -455,7 +459,22 @@ export function FinalChoiceSection({ caseId, thread }: { caseId: CaseId; thread:
 }
 
 /** The DPS ATLAS panel: place first, then the GP's marker and the system's reading; Informasjonsguiden as received; Vurdering. */
-export function AtlasPanelDps({ caseId, received, onSent, withOutcome }: { caseId: CaseId; received: Received; onSent: () => void; withOutcome: boolean }) {
+export type DpsPart = 'band' | 'guide' | 'vurdering';
+
+export function AtlasPanelDps({
+  caseId,
+  received,
+  onSent,
+  withOutcome,
+  only,
+}: {
+  caseId: CaseId;
+  received: Received;
+  onSent: () => void;
+  withOutcome: boolean;
+  /** 3.8: one part on its own, for the boxes under «Oppgaven din». */
+  only?: DpsPart;
+}) {
   const cls = useStyles();
   const { s } = useLang();
   const work = useWork();
@@ -464,16 +483,17 @@ export function AtlasPanelDps({ caseId, received, onSent, withOutcome }: { caseI
   const dps = work.dps(caseId);
   // A form sent before «Vis ATLAS» leaves the ATLAS work open; the assessment itself locks once sent.
   const locked = dps.sent === true;
+  const show = (p: DpsPart) => !only || only === p;
   return (
     <>
-      <AtlasPanelHead />
-      {d.previousReferral && (
+      {!only && <AtlasPanelHead />}
+      {(!only || only === 'band') && d.previousReferral && (
         <>
           <PreviousReferralCard prev={d.previousReferral} source="dpsRecord" />
           <Divider />
         </>
       )}
-      {d.systemReading && (
+      {show('band') && d.systemReading && (
         <>
           <BandSection
             viewer="dps"
@@ -483,17 +503,20 @@ export function AtlasPanelDps({ caseId, received, onSent, withOutcome }: { caseI
             reading={d.systemReading}
             readOnly={locked}
             notes={work.notes}
+            inCard={!!only}
           />
-          <Divider />
+          {!only && <Divider />}
         </>
       )}
-      <section className={cls.section} aria-label={s('guideTitle')} data-section="guide">
-        <h3 className={cls.h3}>{s('guideTitle')}</h3>
-        <InfoGuide mentioned={received.mentioned} mode="received" />
-      </section>
-      {withOutcome && (
+      {show('guide') && (
+        <section className={cls.section} aria-label={s('guideTitle')} data-section="guide">
+          <h3 className={cls.h3}>{s('guideTitle')}</h3>
+          <InfoGuide mentioned={received.mentioned} mode="received" />
+        </section>
+      )}
+      {withOutcome && show('vurdering') && (
         <>
-          <Divider />
+          {!only && <Divider />}
           <DpsOutcomeSection caseId={caseId} onSent={onSent} />
         </>
       )}

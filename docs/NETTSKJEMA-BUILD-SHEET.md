@@ -7,20 +7,21 @@ Generated from `app/src/content/instrument.json` by `app/scripts/build-sheet.mjs
 - «Innsamling av personopplysninger»: **Nei**.
 - «Hvem kan svare på skjemaet»: **«Uten innlogging - alle med lenke»**, set before any answer arrives. Embedding and pre-filling need it.
 - The codebook is on, and every question gets the codebook name listed below.
-- Every question carries the Norwegian text first and the English text under it.
+- The forms are in Norwegian only (3.8, part C). The English below is for reading this sheet and never goes into a form.
+- Every scale is one row of single choices, its points coded by their values (1 to 7); the anchors stand in the description («1 = Helt uenig, 7 = Helt enig»). The progress line is hidden («shouldHideProgressBar»).
 - At the top of every form: «Ved å sende skjemaet samtykker du i at de anonyme svarene brukes i forskningsprosjektet.» / "By sending the form, you consent to the anonymous answers being used in the research project.", and «Ikke skriv opplysninger om pasienter eller andre personer.» / "Do not write any information about patients or other people.".
 - Above every long text question: «Ikke skriv opplysninger om pasienter eller andre personer.» / "Do not write any information about patients or other people.".
 - Long text answers take at most 3,800 characters.
 - The options of a single choice («Flervalg») are coded 1, 2, 3 and on, in the order listed, unless the sheet gives a code in brackets: the decision items name every choice (so «Ikke bestemt» is `ikke_bestemt` in every form), and «Vet ikke» after a scale is coded `vet_ikke`.
 - «Melding på kvitteringsside etter levert svar»: the form's receipt text below, then a button back to the site, written as Nettskjema documents it: `<div><a class="receipt-link-as-button" href="https://siouxchieftain-jpg.github.io/atlas-meridian/sendt.html?skjema=<step>" rel="noopener noreferrer">Tilbake til ATLAS</a></div>`, where `<step>` is the form's step (`S1` to `S9`; every version of a step names the step, so both versions of S2 to S5 name `S2` to `S5`). `sendt.html` marks the step it names as sent, when that step is the one waiting, and leads back to the study; S9's receipt marks no step and offers to close its tab. `node scripts/nettskjema.mjs verify` checks the link. Check in the pilot that Nettskjema keeps the button.
 - A closing date.
-- Locked fields: one «Tekstsvar» per field, under the heading «Fylt ut automatisk av ATLAS» / "Filled in automatically by ATLAS". ATLAS fills and locks each from the form's address (`CB<codebook>=<value>&LCK<codebook>=true`); in the panel the address also carries `embed=1`.
+- Locked fields, last on the form's last page (Nettskjema has no hidden field): one «Tekstsvar» per field, under the heading «Feltene under er fylt ut av ATLAS. Du trenger ikke gjøre noe her.» / "The fields below are filled in by ATLAS. You do not need to do anything here.". ATLAS fills and locks each from the form's address (`CB<codebook>=<value>&LCK<codebook>=true`); in the panel the address also carries `embed=1`.
 - When the form is open for answers, copy its address from «Innhent svar» (it looks like `https://nettskjema.no/a/123456`) into `app/public/atlas-config.json` under the key given for the form.
 - Before the first invitation, delete every test answer with «Slett alle svar».
 
 ## The pilot set
 
-The pilot answers into a copy of the thirteen study forms (S1 to S9, not R1 and R2), titled «(pilot)»: `node scripts/nettskjema.mjs create --round pilot` makes them and writes their addresses under `pilotForms` in `app/public/atlas-config.json`. While that file says `"round": "pilot"`, the app opens these forms, and every `versjon` ends in `-pilot`, so no pilot answer lands in a study form.
+The pilot answers into a copy of the twelve study forms (S1 to S9, not R1 and R2; S6 merged into S2 in 3.8), titled «(pilot)»: `node scripts/nettskjema.mjs create --round pilot` makes them and writes their addresses under `pilotForms` in `app/public/atlas-config.json`. While that file says `"round": "pilot"`, the app opens these forms, and every `versjon` ends in `-pilot`, so no pilot answer lands in a study form.
 
 ## Locked values
 
@@ -32,7 +33,7 @@ The values are Norwegian whatever language the app shows.
 | `intervju` | `Ja`, `Nei`, `Vil ikke svare` |
 | `steg` | `S1` to `S8`; `S3-etter`, `S4-etter` or `S5-etter` when a case form is opened again after «Vis ATLAS» |
 | `vignett` | `V1` (S3), `V3` (S4), `V4` (S5), `V2` (S7), `V5` (S8) |
-| `versjon` | The build: the package version and the commit (for example `3.7.1-66ca8de`); in the pilot round it ends in `-pilot` |
+| `versjon` | The build: the package version and the commit (for example `3.8.0-66ca8de`); in the pilot round it ends in `-pilot` |
 | `side`, `seksjon` | R1 and S9: the screen (for example `fastlege/kari/konsultasjon`, or `fastlege/kari/saken` for a case as a whole) and the part of it |
 
 ## The case forms (S3, S4, S5)
@@ -52,93 +53,123 @@ Each case form has three pages, and each case has one form per role, so each rol
 
 | ID | Codebook | Type | Required | Text (nb / en) | Scale or options |
 |---|---|---|---|---|---|
+| SAMTYKKE | `samtykke` | Avkrysningsbokser, one box | Obligatorisk | Jeg har lest informasjonsskrivet og vil delta. / I have read the information letter and want to take part. | Ja / Yes |
+| VEILEDER | `veileder` | Flervalg (én) | No | Er du veileder i prosjektet og prøver ATLAS før studien? Da holdes svarene dine utenfor studiens data. / Are you a supervisor in the project, trying ATLAS before the study? Then your answers are kept out of the study's data. | Ja, jeg er veileder / Yes, I am a supervisor; Nei / No |
+| A-02 | `a_02` | Flervalg (én) | No | Hvor mange år har du arbeidet i denne rollen? / How many years have you worked in this role? | Under 5 år / Under 5 years; 5 til 14 år / 5 to 14 years; 15 år eller mer / 15 years or more |
+| A-03 | `a_03` | Flervalg (én) | No | Omtrent hvor mange henvisninger til DPS håndterer du per måned? (For DPS: henvisninger fra fastleger.) / Approximately how many referrals to DPS do you handle per month? (For DPS: referrals from GPs.) | 0 til 4 / 0 to 4; 5 til 9 / 5 to 9; 10 til 19 / 10 to 19; 20 til 49 / 20 to 49; 50 eller flere / 50 or more |
+| A-04 | `a_04` | Flervalg (én) | No | Har du tidligere brukt elektroniske beslutningsstøtteverktøy i klinisk praksis? / Have you previously used electronic decision support tools in clinical practice? | Ja / Yes; Nei / No; Usikker / Unsure |
+| A-05 | `a_05` | Tekstsvar (langt), at most 3,800 characters | Obligatorisk | Beskriv kort din vanlige arbeidsflyt når du vurderer en henvisning innen psykisk helse (1-3 setninger). / Briefly describe your usual workflow when assessing a referral in mental health (1-3 sentences). |  |
 | A-01 | `rolle` | Tekstsvar (kort), locked |  | Hva er din rolle? / What is your role? |  |
 | intervju | `intervju` | Tekstsvar (kort), locked |  | Deltok du i et intervju i dette forskningsprosjektet? / Did you take part in an interview in this research project? |  |
 | studienavn | `studienavn` | Tekstsvar (kort), locked |  | Studienavn / Study name |  |
 | steg | `steg` | Tekstsvar (kort), locked |  | Steg / Step |  |
 | versjon | `versjon` | Tekstsvar (kort), locked |  | Versjon / Version |  |
-| SAMTYKKE | `samtykke` | Avkrysningsbokser, one box | Obligatorisk | Jeg har lest informasjonsskrivet og vil delta. / I have read the information letter and want to take part. | Ja / Yes |
-| VEILEDER | `veileder` | Flervalg (én) | No | Er du veileder i prosjektet og prøver ATLAS før studien? Da holdes svarene dine utenfor studiens data. / Are you a supervisor in the project, trying ATLAS before the study? Then your answers are kept out of the study's data. | Ja, jeg er veileder / Yes, I am a supervisor; Nei / No |
-| A-02 | `a_02` | Flervalg (én) | No | Hvor mange år har du arbeidet i denne rollen? / How many years have you worked in this role? | Under 5 år / Under 5 years; 5 til 14 år / 5 to 14 years; 15 år eller mer / 15 years or more |
-| A-03 | `a_03` | Flervalg (én) | No | Omtrent hvor mange henvisninger til DPS (eller fra fastleger, for spesialister) håndterer du per måned? / Approximately how many referrals to DPS (or from GPs, for specialists) do you handle per month? | 0 til 4 / 0 to 4; 5 til 9 / 5 to 9; 10 til 19 / 10 to 19; 20 til 49 / 20 to 49; 50 eller flere / 50 or more |
-| A-04 | `a_04` | Flervalg (én) | No | Har du tidligere brukt elektroniske beslutningsstøtteverktøy i klinisk praksis? / Have you previously used electronic decision support tools in clinical practice? | Ja / Yes; Nei / No; Usikker / Unsure |
-| A-05 | `a_05` | Tekstsvar (langt), at most 3,800 characters | Obligatorisk | Beskriv kort din vanlige arbeidsflyt når du vurderer en psykisk helsehenvisning (1-3 setninger). / Briefly describe your usual workflow when assessing a mental health referral (1-3 sentences). |  |
 
 - **Receipt:** «Takk, svarene er sendt. Gå tilbake til ATLAS for å fortsette.» / "Thank you, the answers have been sent. Go back to ATLAS to continue."
 
-### S2.fastlege: «Helhetsinntrykk» / "Overall impression"
+### S2.fastlege: «Avslutning» / "Closing questions"
 
-- **Used by:** Step S2 (after the three cases), GPs.
+- **Used by:** Step S2, «Avslutning» (after the three cases; S6 merged into it in 3.8), GPs.
 - **Address goes in:** `forms["S2.fastlege"]` in `app/public/atlas-config.json`.
 - **Locked fields:** `rolle`, `intervju`, `studienavn`, `steg`, `versjon`.
-- **Intro:** «Dette skjemaet spør om helhetsinntrykket ditt av ATLAS etter de tre sakene. Kritikk er like nyttig som ros. Ved å sende skjemaet samtykker du i at de anonyme svarene brukes i forskningsprosjektet.» / "This form asks about your overall impression of ATLAS after the three cases. Criticism is as useful as praise. By sending the form, you consent to the anonymous answers being used in the research project."
+- **Intro:** «Dette skjemaet spør om hva du synes om ATLAS etter de tre sakene, og har noen spørsmål til slutt. Kritikk er like nyttig som ros. Ved å sende skjemaet samtykker du i at de anonyme svarene brukes i forskningsprosjektet.» / "This form asks what you think of ATLAS after the three cases, and has a few questions at the end. Criticism is as useful as praise. By sending the form, you consent to the anonymous answers being used in the research project."
 
-**Page**
+**Page 1**
 
 | ID | Codebook | Type | Required | Text (nb / en) | Scale or options |
 |---|---|---|---|---|---|
+| H-fastlege-1 | `overskrift_1` | Overskrift (no question) | No | ATLAS som helhet / ATLAS as a whole |  |
+| C1-01 | `c1_01` | Flervalg (én), in one row: 1 to 7 | No | Samlet sett ville ATLAS over tid gjøre meg bedre til å vurdere hvilke pasienter som bør henvises. / All in all, over time ATLAS would make me better at judging which patients should be referred. | 1 to 7: Helt uenig / Strongly disagree … Helt enig / Strongly agree |
+| C1-03 | `c1_03` | Flervalg (én), in one row: 1 to 7 | No | Å bli spurt om min egen usikkerhet i saken hjalp meg å ta stilling til den. / Being asked about my own uncertainty in the case helped me make up my mind about it. | 1 to 7: Helt uenig / Strongly disagree … Helt enig / Strongly agree |
+| C1-02 | `c1_02` | Flervalg (én), in one row: 1 to 7 | No | Det var tydelig hvordan jeg skulle registrere usikkerheten min (usikkerhetsskalaen og «Hva er uklart i saken?»). / It was clear how to record my uncertainty (the uncertainty scale and ‘What is unclear in the case?’). | 1 to 7: Helt uenig / Strongly disagree … Helt enig / Strongly agree |
+| C1-04 | `c1_04` | Flervalg (én), in one row: 1 to 7 | No | Oversikten «Mitt henvisningsmønster» ville være nyttig for meg. / The overview ‘My referral pattern’ would be useful to me. | 1 to 7: Helt uenig / Strongly disagree … Helt enig / Strongly agree |
+| C1-06 | `c1_06` | Flervalg (én), in one row: 1 to 7 | No | Det var tydelig for meg når jeg kunne støtte meg på det ATLAS viste, og når jeg burde holde meg til min egen vurdering. / It was clear to me when I could rely on what ATLAS showed, and when I should keep to my own judgement. | 1 to 7: Helt uenig / Strongly disagree … Helt enig / Strongly agree |
+| C1-05 | `c1_05` | Tekstsvar (langt), at most 3,800 characters | Obligatorisk | Forklar vurderingen din (1-3 setninger). Hva fungerer? Hva fungerer ikke? Hva mangler? / Please explain your rating (1-3 sentences). What works? What does not work? What is missing? |  |
+| C2-01 | `c2_01` | Flervalg (én), in one row: 1 to 7 | No | ATLAS gjør det tydeligere for meg hva DPS ser etter når de vurderer en henvisning. / ATLAS makes it clearer to me what DPS looks for when they assess a referral. | 1 to 7: Helt uenig / Strongly disagree … Helt enig / Strongly agree |
+| C2-02 | `c2_02` | Flervalg (én), in one row: 1 to 7 | No | Med «Informasjonsguiden» ville fastleger i mindre grad trenge å tilpasse henvisninger bare for at de skal «komme gjennom». / With ‘Information guide’, GPs would less often need to adapt referrals just so they ‘get through’. | 1 to 7: Helt uenig / Strongly disagree … Helt enig / Strongly agree |
+| C2-03 | `c2_03` | Tekstsvar (langt), at most 3,800 characters | Obligatorisk | Forklar vurderingen din (1-3 setninger). Ville du skrevet henvisninger annerledes hvis kriteriene i prioriteringsveilederen var synlige for deg? / Please explain your rating (1-3 sentences). Would you write referrals differently if the criteria in the priority-setting guideline were visible to you? |  |
+| C2-04 | `c2_04` | Flervalg (én), in one row: 1 to 7 | No | ATLAS ville gjøre det lettere å forklare pasienten hvorfor henvisningen ble sendt eller returnert. / ATLAS would make it easier to explain to the patient why the referral was sent or returned. | 1 to 7: Helt uenig / Strongly disagree … Helt enig / Strongly agree |
+| C3-01 | `c3_01` | Flervalg (én), in one row: 1 to 7, then «Vet ikke» | No | ATLAS ivaretar behovene både på fastlegesiden og på DPS-siden. / ATLAS serves the needs both on the GP side and on the DPS side. | 1 to 7: Helt uenig / Strongly disagree … Helt enig / Strongly agree; then Vet ikke / Don't know, coded `vet_ikke` |
+| C3-02 | `c3_02` | Flervalg (én), in one row: 1 to 7 | No | «Delt oversikt» (Kalibrering og Dialog) ville forbedre samhandlingen mellom fastleger og DPS. / ‘Shared overview’ (Calibration and Dialogue) would improve collaboration between GPs and DPS. | 1 to 7: Helt uenig / Strongly disagree … Helt enig / Strongly agree |
+| C3-03 | `c3_03` | Tekstsvar (langt), at most 3,800 characters | Obligatorisk | Hvordan vurderer du evnen ATLAS har til å ivareta behovene til DPS? Hva fungerer? Hva mangler? (1-3 setninger) Har du ikke grunnlag for å vurdere det, skriv «Vet ikke». / How do you assess ATLAS’s ability to serve the needs of DPS? What works? What is missing? (1-3 sentences) If you have no basis for judging it, write ‘Don’t know’. |  |
+| C4-01 | `c4_01` | Flervalg (én), in one row: 1 to 7 | No | Jeg kunne brukt ATLAS innenfor mine vanlige arbeidsrutiner uten vesentlig ekstra tidsbruk. / I could use ATLAS within my usual work routines without significant additional time. | 1 to 7: Helt uenig / Strongly disagree … Helt enig / Strongly agree |
+| C4-02 | `c4_02` | Tekstsvar (langt), at most 3,800 characters | Obligatorisk | Forklar vurderingen din (1-3 setninger). Hva ville gjøre det lettere eller vanskeligere å bruke dette i din hverdag? / Please explain your rating (1-3 sentences). What would make it easier or harder to use this in your daily practice? |  |
+| C5-01 | `c5_01` | Flervalg (én), in one row: 1 to 7 | No | ATLAS gjør det tydelig at jeg fortsatt har det endelige kliniske ansvaret. / ATLAS makes it clear that I still have the final clinical responsibility. | 1 to 7: Helt uenig / Strongly disagree … Helt enig / Strongly agree |
+| C5-02 | `c5_02` | Flervalg (én), in one row: 1 to 7 | No | Jeg ville følt meg presset til å følge «Systemets vurdering» i ATLAS. / I would feel pressured to follow ‘The system’s assessment’ in ATLAS. | 1 to 7: Helt uenig / Strongly disagree … Helt enig / Strongly agree |
+| C5-03 | `c5_03` | Tekstsvar (langt), at most 3,800 characters | Obligatorisk | Ser du noen risiko for at dette verktøyet kan påvirke din vurdering på uønskede måter? (1-3 setninger) / Do you see any risk that this tool could influence your judgement in undesirable ways? (1-3 sentences) |  |
+| C-CUCF-01 | `c_cucf_01` | Flervalg (én), in one row: 1 to 7 | No | Tilbakemeldingene om hvordan henvisningene mine gikk (tatt imot eller returnert, med begrunnelse), ville hjelpe meg med fremtidige henvisninger. / The feedback on how my referrals turned out (accepted or returned, with reasons) would help me with future referrals. | 1 to 7: Helt uenig / Strongly disagree … Helt enig / Strongly agree |
+| C-CUCF-02 | `c_cucf_02` | Tekstsvar (langt), at most 3,800 characters | Obligatorisk | Hva ville denne tilbakemeldingen bety for din praksis over tid? (1-3 setninger) / What would this feedback mean for your practice over time? (1-3 sentences) |  |
+
+**Page 2: the last page**
+
+| ID | Codebook | Type | Required | Text (nb / en) | Scale or options |
+|---|---|---|---|---|---|
+| H-fastlege-2 | `overskrift_2` | Overskrift (no question) | No | Til slutt / To finish |  |
+| E-01 | `e_01` | Tekstsvar (langt), at most 3,800 characters | Obligatorisk | Hva er den mest verdifulle egenskapen ved ATLAS? (1-3 setninger) / What is the single most valuable feature of ATLAS? (1-3 sentences) |  |
+| E-02 | `e_02` | Tekstsvar (langt), at most 3,800 characters | Obligatorisk | Hva er din største bekymring med ATLAS? (1-3 setninger) / What is your single biggest concern about ATLAS? (1-3 sentences) |  |
+| E-03 | `e_03` | Tekstsvar (langt), at most 3,800 characters | Obligatorisk | Ville du brukt ATLAS i din nåværende praksis? Hvorfor / hvorfor ikke? (1-3 setninger) / Would you use ATLAS in your current practice? Why / why not? (1-3 sentences) |  |
+| E-04 | `e_04` | Tekstsvar (langt), at most 3,800 characters | No | Hva måtte endres for at du skulle ta i bruk ATLAS? (1-3 setninger) / What would need to change for you to adopt ATLAS? (1-3 sentences) |  |
+| E-05 | `e_05` | Flervalg (én), in one row: 1 to 7 | No | Hvor sannsynlig er det at du ville anbefalt ATLAS til en kollega? / How likely is it that you would recommend ATLAS to a colleague? | 1 to 7: Svært lite sannsynlig / Very unlikely … Svært sannsynlig / Very likely |
+| E-06 | `e_06` | Tekstsvar (langt), at most 3,800 characters | No | Er det noe annet du ønsker å legge til? / Is there anything else you would like to add? |  |
 | rolle | `rolle` | Tekstsvar (kort), locked |  | Rolle / Role |  |
 | intervju | `intervju` | Tekstsvar (kort), locked |  | Deltok du i et intervju i dette forskningsprosjektet? / Did you take part in an interview in this research project? |  |
 | studienavn | `studienavn` | Tekstsvar (kort), locked |  | Studienavn / Study name |  |
 | steg | `steg` | Tekstsvar (kort), locked |  | Steg / Step |  |
 | versjon | `versjon` | Tekstsvar (kort), locked |  | Versjon / Version |  |
-| C1-01 | `c1_01` | Lineær skala 1 to 7 | No | ATLAS gir meg informasjon som kan hjelpe meg å ta mer kalibrerte henvisningsbeslutninger over tid. / ATLAS provides information that could help me make more calibrated referral decisions over time. | 1 to 7: Helt uenig / Strongly disagree … Helt enig / Strongly agree |
-| C1-02 | `c1_02` | Lineær skala 1 to 7 | No | Usikkerheten i en klinisk situasjon er tydelig kommunisert i ATLAS. / The uncertainty in a clinical situation is clearly communicated in ATLAS. | 1 to 7: Helt uenig / Strongly disagree … Helt enig / Strongly agree |
-| C1-03 | `c1_03` | Lineær skala 1 to 7 | No | Informasjonen om usikkerhet hjelper meg å ta bedre beslutninger. / The uncertainty information helps me make better decisions. | 1 to 7: Helt uenig / Strongly disagree … Helt enig / Strongly agree |
-| C1-04 | `c1_04` | Lineær skala 1 to 7 | No | Oversikten over mine tidligere henvisningsmønstre er nyttig. / The overview of my previous referral patterns is useful. | 1 to 7: Helt uenig / Strongly disagree … Helt enig / Strongly agree |
-| C1-06 | `c1_06` | Lineær skala 1 to 7 | No | Det var tydelig for meg når jeg kunne støtte meg på det ATLAS viste, og når jeg burde holde meg til min egen vurdering. / It was clear to me when I could rely on what ATLAS showed, and when I should keep to my own judgement. | 1 to 7: Helt uenig / Strongly disagree … Helt enig / Strongly agree |
-| C1-05 | `c1_05` | Tekstsvar (langt), at most 3,800 characters | Obligatorisk | Forklar vurderingen din (1-3 setninger). Hva fungerer? Hva fungerer ikke? Hva mangler? / Please explain your rating (1-3 sentences). What works? What does not work? What is missing? |  |
-| C2-01 | `c2_01` | Lineær skala 1 to 7 | No | ATLAS gjør det tydeligere for meg hva spesialisten (eller fastlegen) vurderer når de håndterer en henvisning. / ATLAS makes it clearer to me what the specialist (or GP) considers when handling a referral. | 1 to 7: Helt uenig / Strongly disagree … Helt enig / Strongly agree |
-| C2-02 | `c2_02` | Lineær skala 1 to 7 | No | Informasjonsguiden ville redusere behovet for strategisk dokumentasjon. / The information completeness guide would reduce the need for strategic documentation. | 1 to 7: Helt uenig / Strongly disagree … Helt enig / Strongly agree |
-| C2-03 | `c2_03` | Tekstsvar (langt), at most 3,800 characters | Obligatorisk | Forklar vurderingen din (1-3 setninger). Ville synlige kriterier endre hvordan du skriver eller vurderer henvisninger? / Please explain your rating (1-3 sentences). Would visible criteria change how you write or assess referrals? |  |
-| C3-01 | `c3_01` | Flervalg (én), in one row: 1 to 7, then «Vet ikke» | No | ATLAS ivaretar behovene til både fastleger og spesialister. / ATLAS serves the needs of both GPs and specialists. | 1 to 7: Helt uenig / Strongly disagree … Helt enig / Strongly agree; then Vet ikke / Don't know, coded `vet_ikke` |
-| C3-02 | `c3_02` | Lineær skala 1 to 7 | No | Den delte oversikten (kalibrering, dialog) ville forbedre samhandlingen mellom fastleger og DPS. / The shared overview (calibration, dialogue) would improve the interaction between GPs and DPS. | 1 to 7: Helt uenig / Strongly disagree … Helt enig / Strongly agree |
-| C3-03 | `c3_03` | Tekstsvar (langt), at most 3,800 characters | Obligatorisk | Hvordan vurderer du evnen ATLAS har til å ivareta behovene til den andre siden (fastleger eller spesialister)? Hva fungerer? Hva mangler? (1-3 setninger) Har du ikke grunnlag for å vurdere det, skriv «Vet ikke». / How do you assess ATLAS's ability to serve the needs of the other side (GPs or specialists)? What works? What is missing? (1-3 sentences) If you have no basis for judging it, write ‘Don't know’. |  |
-| C4-01 | `c4_01` | Lineær skala 1 to 7 | No | Jeg kunne brukt ATLAS innenfor mine vanlige arbeidsrutiner uten vesentlig ekstra tidsbruk. / I could use ATLAS within my usual work routines without significant additional time. | 1 to 7: Helt uenig / Strongly disagree … Helt enig / Strongly agree |
-| C4-02 | `c4_02` | Tekstsvar (langt), at most 3,800 characters | Obligatorisk | Forklar vurderingen din (1-3 setninger). Hva ville gjøre det lettere eller vanskeligere å bruke dette i din hverdag? / Please explain your rating (1-3 sentences). What would make it easier or harder to use this in your daily practice? |  |
-| C5-01 | `c5_01` | Lineær skala 1 to 7 | No | ATLAS gjør det tydelig at jeg fortsatt har det endelige kliniske ansvaret. / ATLAS makes it clear that I still have the final clinical responsibility. | 1 to 7: Helt uenig / Strongly disagree … Helt enig / Strongly agree |
-| C5-02 | `c5_02` | Lineær skala 1 to 7 | No | Jeg ville følt meg presset til å følge indikasjonen fra ATLAS. / I would feel pressured to follow the indication from ATLAS. | 1 to 7: Helt uenig / Strongly disagree … Helt enig / Strongly agree |
-| C5-03 | `c5_03` | Tekstsvar (langt), at most 3,800 characters | Obligatorisk | Ser du noen risiko for at dette verktøyet kan påvirke din vurdering på uønskede måter? (1-3 setninger) / Do you see any risk that this tool could influence your judgement in undesirable ways? (1-3 sentences) |  |
-| C-CUCF-01 | `c_cucf_01` | Lineær skala 1 to 7 | No | Tilbakemeldingene om henvisningsutfall ville hjelpe meg å kalibrere mine fremtidige beslutninger. / The feedback on referral outcomes would help me calibrate my future decisions. | 1 to 7: Helt uenig / Strongly disagree … Helt enig / Strongly agree |
-| C-CUCF-02 | `c_cucf_02` | Tekstsvar (langt), at most 3,800 characters | Obligatorisk | Hva ville denne tilbakemeldingen bety for din praksis over tid? (1-3 setninger) / What would this feedback mean for your practice over time? (1-3 sentences) |  |
 
 - **Receipt:** «Takk, svarene er sendt. Gå tilbake til ATLAS for å fortsette.» / "Thank you, the answers have been sent. Go back to ATLAS to continue."
 
-### S2.dps: «Helhetsinntrykk» / "Overall impression"
+### S2.dps: «Avslutning» / "Closing questions"
 
-- **Used by:** Step S2 (after the three cases), DPS participants.
+- **Used by:** Step S2, «Avslutning» (after the three cases; S6 merged into it in 3.8), DPS participants.
 - **Address goes in:** `forms["S2.dps"]` in `app/public/atlas-config.json`.
 - **Locked fields:** `rolle`, `intervju`, `studienavn`, `steg`, `versjon`.
-- **Intro:** «Dette skjemaet spør om helhetsinntrykket ditt av ATLAS etter de tre sakene. Kritikk er like nyttig som ros. Ved å sende skjemaet samtykker du i at de anonyme svarene brukes i forskningsprosjektet.» / "This form asks about your overall impression of ATLAS after the three cases. Criticism is as useful as praise. By sending the form, you consent to the anonymous answers being used in the research project."
+- **Intro:** «Dette skjemaet spør om hva du synes om ATLAS etter de tre sakene, og har noen spørsmål til slutt. Kritikk er like nyttig som ros. Ved å sende skjemaet samtykker du i at de anonyme svarene brukes i forskningsprosjektet.» / "This form asks what you think of ATLAS after the three cases, and has a few questions at the end. Criticism is as useful as praise. By sending the form, you consent to the anonymous answers being used in the research project."
 
-**Page**
+**Page 1**
 
 | ID | Codebook | Type | Required | Text (nb / en) | Scale or options |
 |---|---|---|---|---|---|
+| H-dps-1 | `overskrift_1` | Overskrift (no question) | No | ATLAS som helhet / ATLAS as a whole |  |
+| C1-01 | `c1_01` | Flervalg (én), in one row: 1 to 7 | No | Samlet sett ville ATLAS over tid gjøre meg bedre til å vurdere henvisninger. / All in all, over time ATLAS would make me better at assessing referrals. | 1 to 7: Helt uenig / Strongly disagree … Helt enig / Strongly agree |
+| C1-02 | `c1_02` | Flervalg (én), in one row: 1 to 7 | No | Fastlegens usikkerhet kommer tydelig fram i ATLAS. / The GP’s uncertainty comes across clearly in ATLAS. | 1 to 7: Helt uenig / Strongly disagree … Helt enig / Strongly agree |
+| C1-03 | `c1_03` | Flervalg (én), in one row: 1 to 7 | No | Informasjonen om fastlegens usikkerhet hjelper meg å vurdere henvisningen. / The information about the GP’s uncertainty helps me assess the referral. | 1 to 7: Helt uenig / Strongly disagree … Helt enig / Strongly agree |
+| C1-04 | `c1_04` | Flervalg (én), in one row: 1 to 7 | No | Oversikten «Kalibrering» (henvisninger og utfall fra fastlegene i området) ville være nyttig for meg. / The overview ‘Calibration’ (referrals and outcomes from the GPs in the area) would be useful to me. | 1 to 7: Helt uenig / Strongly disagree … Helt enig / Strongly agree |
+| C1-06 | `c1_06` | Flervalg (én), in one row: 1 to 7 | No | Det var tydelig for meg når jeg kunne støtte meg på det ATLAS viste, og når jeg burde holde meg til min egen vurdering. / It was clear to me when I could rely on what ATLAS showed, and when I should keep to my own judgement. | 1 to 7: Helt uenig / Strongly disagree … Helt enig / Strongly agree |
+| C1-05 | `c1_05` | Tekstsvar (langt), at most 3,800 characters | Obligatorisk | Forklar vurderingen din (1-3 setninger). Hva fungerer? Hva fungerer ikke? Hva mangler? / Please explain your rating (1-3 sentences). What works? What does not work? What is missing? |  |
+| C2-01 | `c2_01` | Flervalg (én), in one row: 1 to 7 | No | ATLAS gjør det tydeligere for meg hva fastlegen har vurdert før henvisningen. / ATLAS makes it clearer to me what the GP has considered before the referral. | 1 to 7: Helt uenig / Strongly disagree … Helt enig / Strongly agree |
+| C2-02 | `c2_02` | Flervalg (én), in one row: 1 to 7 | No | Hvis fastlegene kunne se kriteriene i prioriteringsveilederen i «Informasjonsguiden», ville færre henvisninger være skrevet bare for å «komme gjennom». / If GPs could see the criteria in the priority-setting guideline in ‘Information guide’, fewer referrals would be written just to ‘get through’. | 1 to 7: Helt uenig / Strongly disagree … Helt enig / Strongly agree |
+| C2-03 | `c2_03` | Tekstsvar (langt), at most 3,800 characters | Obligatorisk | Forklar vurderingen din (1-3 setninger). Ville du lest henvisninger annerledes hvis fastlegene kunne se kriteriene i prioriteringsveilederen? / Please explain your rating (1-3 sentences). Would you read referrals differently if GPs could see the criteria in the priority-setting guideline? |  |
+| C2-04 | `c2_04` | Flervalg (én), in one row: 1 to 7 | No | ATLAS ville gjøre det lettere å forklare pasienten hvorfor henvisningen ble sendt eller returnert. / ATLAS would make it easier to explain to the patient why the referral was sent or returned. | 1 to 7: Helt uenig / Strongly disagree … Helt enig / Strongly agree |
+| C3-01 | `c3_01` | Flervalg (én), in one row: 1 to 7, then «Vet ikke» | No | ATLAS ivaretar behovene både på fastlegesiden og på DPS-siden. / ATLAS serves the needs both on the GP side and on the DPS side. | 1 to 7: Helt uenig / Strongly disagree … Helt enig / Strongly agree; then Vet ikke / Don't know, coded `vet_ikke` |
+| C3-02 | `c3_02` | Flervalg (én), in one row: 1 to 7 | No | «Delt oversikt» (Kalibrering og Dialog) ville forbedre samhandlingen mellom fastleger og DPS. / ‘Shared overview’ (Calibration and Dialogue) would improve collaboration between GPs and DPS. | 1 to 7: Helt uenig / Strongly disagree … Helt enig / Strongly agree |
+| C3-03 | `c3_03` | Tekstsvar (langt), at most 3,800 characters | Obligatorisk | Hvordan vurderer du evnen ATLAS har til å ivareta behovene til fastlegene? Hva fungerer? Hva mangler? (1-3 setninger) Har du ikke grunnlag for å vurdere det, skriv «Vet ikke». / How do you assess ATLAS’s ability to serve the needs of GPs? What works? What is missing? (1-3 sentences) If you have no basis for judging it, write ‘Don’t know’. |  |
+| C4-01 | `c4_01` | Flervalg (én), in one row: 1 to 7 | No | Jeg kunne brukt ATLAS innenfor mine vanlige arbeidsrutiner uten vesentlig ekstra tidsbruk. / I could use ATLAS within my usual work routines without significant additional time. | 1 to 7: Helt uenig / Strongly disagree … Helt enig / Strongly agree |
+| C4-03 | `c4_03` | Flervalg (én), in one row: 1 to 7 | No | Dialogen med fastlegene ville gi oss i inntaksteamet ekstra arbeid. / The dialogue with GPs would give us in the intake team extra work. | 1 to 7: Helt uenig / Strongly disagree … Helt enig / Strongly agree |
+| C4-02 | `c4_02` | Tekstsvar (langt), at most 3,800 characters | Obligatorisk | Forklar vurderingene dine (1-3 setninger). Hva ville gjøre det lettere eller vanskeligere å bruke dette i hverdagen i inntaksteamet? / Please explain your ratings (1-3 sentences). What would make it easier or harder to use this in the intake team’s daily work? |  |
+| C4-04 | `c4_04` | Tekstsvar (langt), at most 3,800 characters | No | Hvem ville fulgt med på dialogen og svart, og når: underveis eller på inntaksmøtet? (1-3 setninger) / Who would follow the dialogue and answer, and when: in between or at the intake meeting? (1-3 sentences) |  |
+| C5-01 | `c5_01` | Flervalg (én), in one row: 1 to 7 | No | ATLAS gjør det tydelig at inntaksteamet fortsatt har det endelige kliniske ansvaret. / ATLAS makes it clear that the intake team still has the final clinical responsibility. | 1 to 7: Helt uenig / Strongly disagree … Helt enig / Strongly agree |
+| C5-02 | `c5_02` | Flervalg (én), in one row: 1 to 7 | No | Jeg ville følt meg presset til å følge «Systemets vurdering» i ATLAS. / I would feel pressured to follow ‘The system’s assessment’ in ATLAS. | 1 to 7: Helt uenig / Strongly disagree … Helt enig / Strongly agree |
+| C5-03 | `c5_03` | Tekstsvar (langt), at most 3,800 characters | Obligatorisk | Ser du noen risiko for at dette verktøyet kan påvirke din vurdering på uønskede måter? (1-3 setninger) / Do you see any risk that this tool could influence your judgement in undesirable ways? (1-3 sentences) |  |
+| C-CUCF-01 | `c_cucf_01` | Flervalg (én), in one row: 1 to 7 | No | Svarene og spørsmålene fra fastlegene etter mine vurderinger ville hjelpe meg å kalibrere mine fremtidige vurderinger. / The GPs' replies and questions after my assessments would help me calibrate my future assessments. | 1 to 7: Helt uenig / Strongly disagree … Helt enig / Strongly agree |
+| C-CUCF-02 | `c_cucf_02` | Tekstsvar (langt), at most 3,800 characters | Obligatorisk | Hva ville denne tilbakemeldingen bety for hvordan du vurderer henvisninger over tid? (1-3 setninger) / What would this feedback mean for how you assess referrals over time? (1-3 sentences) |  |
+
+**Page 2: the last page**
+
+| ID | Codebook | Type | Required | Text (nb / en) | Scale or options |
+|---|---|---|---|---|---|
+| H-dps-2 | `overskrift_2` | Overskrift (no question) | No | Til slutt / To finish |  |
+| E-01 | `e_01` | Tekstsvar (langt), at most 3,800 characters | Obligatorisk | Hva er den mest verdifulle egenskapen ved ATLAS? (1-3 setninger) / What is the single most valuable feature of ATLAS? (1-3 sentences) |  |
+| E-02 | `e_02` | Tekstsvar (langt), at most 3,800 characters | Obligatorisk | Hva er din største bekymring med ATLAS? (1-3 setninger) / What is your single biggest concern about ATLAS? (1-3 sentences) |  |
+| E-03 | `e_03` | Tekstsvar (langt), at most 3,800 characters | Obligatorisk | Ville du brukt ATLAS i din nåværende praksis? Hvorfor / hvorfor ikke? (1-3 setninger) / Would you use ATLAS in your current practice? Why / why not? (1-3 sentences) |  |
+| E-04 | `e_04` | Tekstsvar (langt), at most 3,800 characters | No | Hva måtte endres for at du skulle ta i bruk ATLAS? (1-3 setninger) / What would need to change for you to adopt ATLAS? (1-3 sentences) |  |
+| E-05 | `e_05` | Flervalg (én), in one row: 1 to 7 | No | Hvor sannsynlig er det at du ville anbefalt ATLAS til en kollega? / How likely is it that you would recommend ATLAS to a colleague? | 1 to 7: Svært lite sannsynlig / Very unlikely … Svært sannsynlig / Very likely |
+| E-06 | `e_06` | Tekstsvar (langt), at most 3,800 characters | No | Er det noe annet du ønsker å legge til? / Is there anything else you would like to add? |  |
 | rolle | `rolle` | Tekstsvar (kort), locked |  | Rolle / Role |  |
 | intervju | `intervju` | Tekstsvar (kort), locked |  | Deltok du i et intervju i dette forskningsprosjektet? / Did you take part in an interview in this research project? |  |
 | studienavn | `studienavn` | Tekstsvar (kort), locked |  | Studienavn / Study name |  |
 | steg | `steg` | Tekstsvar (kort), locked |  | Steg / Step |  |
 | versjon | `versjon` | Tekstsvar (kort), locked |  | Versjon / Version |  |
-| C1-01 | `c1_01` | Lineær skala 1 to 7 | No | ATLAS gir meg informasjon som kan hjelpe meg å gjøre mer kalibrerte vurderinger av henvisninger over tid. / ATLAS provides information that could help me make more calibrated assessments of referrals over time. | 1 to 7: Helt uenig / Strongly disagree … Helt enig / Strongly agree |
-| C1-02 | `c1_02` | Lineær skala 1 to 7 | No | Usikkerheten i en klinisk situasjon er tydelig kommunisert i ATLAS. / The uncertainty in a clinical situation is clearly communicated in ATLAS. | 1 to 7: Helt uenig / Strongly disagree … Helt enig / Strongly agree |
-| C1-03 | `c1_03` | Lineær skala 1 to 7 | No | Informasjonen om usikkerhet hjelper meg å ta bedre beslutninger. / The uncertainty information helps me make better decisions. | 1 to 7: Helt uenig / Strongly disagree … Helt enig / Strongly agree |
-| C1-04 | `c1_04` | Lineær skala 1 to 7 | No | Oversikten over henvisningsmønstrene i opptaksområdet (kalibrering) er nyttig. / The overview of the referral patterns in the catchment area (calibration) is useful. | 1 to 7: Helt uenig / Strongly disagree … Helt enig / Strongly agree |
-| C1-06 | `c1_06` | Lineær skala 1 to 7 | No | Det var tydelig for meg når jeg kunne støtte meg på det ATLAS viste, og når jeg burde holde meg til min egen vurdering. / It was clear to me when I could rely on what ATLAS showed, and when I should keep to my own judgement. | 1 to 7: Helt uenig / Strongly disagree … Helt enig / Strongly agree |
-| C1-05 | `c1_05` | Tekstsvar (langt), at most 3,800 characters | Obligatorisk | Forklar vurderingen din (1-3 setninger). Hva fungerer? Hva fungerer ikke? Hva mangler? / Please explain your rating (1-3 sentences). What works? What does not work? What is missing? |  |
-| C2-01 | `c2_01` | Lineær skala 1 to 7 | No | ATLAS gjør det tydeligere for meg hva spesialisten (eller fastlegen) vurderer når de håndterer en henvisning. / ATLAS makes it clearer to me what the specialist (or GP) considers when handling a referral. | 1 to 7: Helt uenig / Strongly disagree … Helt enig / Strongly agree |
-| C2-02 | `c2_02` | Lineær skala 1 to 7 | No | Informasjonsguiden ville redusere behovet for strategisk dokumentasjon. / The information completeness guide would reduce the need for strategic documentation. | 1 to 7: Helt uenig / Strongly disagree … Helt enig / Strongly agree |
-| C2-03 | `c2_03` | Tekstsvar (langt), at most 3,800 characters | Obligatorisk | Forklar vurderingen din (1-3 setninger). Ville synlige kriterier endre hvordan du skriver eller vurderer henvisninger? / Please explain your rating (1-3 sentences). Would visible criteria change how you write or assess referrals? |  |
-| C3-01 | `c3_01` | Flervalg (én), in one row: 1 to 7, then «Vet ikke» | No | ATLAS ivaretar behovene til både fastleger og spesialister. / ATLAS serves the needs of both GPs and specialists. | 1 to 7: Helt uenig / Strongly disagree … Helt enig / Strongly agree; then Vet ikke / Don't know, coded `vet_ikke` |
-| C3-02 | `c3_02` | Lineær skala 1 to 7 | No | Den delte oversikten (kalibrering, dialog) ville forbedre samhandlingen mellom fastleger og DPS. / The shared overview (calibration, dialogue) would improve the interaction between GPs and DPS. | 1 to 7: Helt uenig / Strongly disagree … Helt enig / Strongly agree |
-| C3-03 | `c3_03` | Tekstsvar (langt), at most 3,800 characters | Obligatorisk | Hvordan vurderer du evnen ATLAS har til å ivareta behovene til den andre siden (fastleger eller spesialister)? Hva fungerer? Hva mangler? (1-3 setninger) Har du ikke grunnlag for å vurdere det, skriv «Vet ikke». / How do you assess ATLAS's ability to serve the needs of the other side (GPs or specialists)? What works? What is missing? (1-3 sentences) If you have no basis for judging it, write ‘Don't know’. |  |
-| C4-01 | `c4_01` | Lineær skala 1 to 7 | No | Jeg kunne brukt ATLAS innenfor mine vanlige arbeidsrutiner uten vesentlig ekstra tidsbruk. / I could use ATLAS within my usual work routines without significant additional time. | 1 to 7: Helt uenig / Strongly disagree … Helt enig / Strongly agree |
-| C4-02 | `c4_02` | Tekstsvar (langt), at most 3,800 characters | Obligatorisk | Forklar vurderingen din (1-3 setninger). Hva ville gjøre det lettere eller vanskeligere å bruke dette i din hverdag? / Please explain your rating (1-3 sentences). What would make it easier or harder to use this in your daily practice? |  |
-| C5-01 | `c5_01` | Lineær skala 1 to 7 | No | ATLAS gjør det tydelig at jeg fortsatt har det endelige kliniske ansvaret. / ATLAS makes it clear that I still have the final clinical responsibility. | 1 to 7: Helt uenig / Strongly disagree … Helt enig / Strongly agree |
-| C5-02 | `c5_02` | Lineær skala 1 to 7 | No | Jeg ville følt meg presset til å følge indikasjonen fra ATLAS. / I would feel pressured to follow the indication from ATLAS. | 1 to 7: Helt uenig / Strongly disagree … Helt enig / Strongly agree |
-| C5-03 | `c5_03` | Tekstsvar (langt), at most 3,800 characters | Obligatorisk | Ser du noen risiko for at dette verktøyet kan påvirke din vurdering på uønskede måter? (1-3 setninger) / Do you see any risk that this tool could influence your judgement in undesirable ways? (1-3 sentences) |  |
-| C-CUCF-01 | `c_cucf_01` | Lineær skala 1 to 7 | No | Svarene og spørsmålene fra fastlegene etter mine vurderinger ville hjelpe meg å kalibrere mine fremtidige vurderinger. / The GPs' replies and questions after my assessments would help me calibrate my future assessments. | 1 to 7: Helt uenig / Strongly disagree … Helt enig / Strongly agree |
-| C-CUCF-02 | `c_cucf_02` | Tekstsvar (langt), at most 3,800 characters | Obligatorisk | Hva ville denne tilbakemeldingen bety for hvordan du vurderer henvisninger over tid? (1-3 setninger) / What would this feedback mean for how you assess referrals over time? (1-3 sentences) |  |
 
 - **Receipt:** «Takk, svarene er sendt. Gå tilbake til ATLAS for å fortsette.» / "Thank you, the answers have been sent. Go back to ATLAS to continue."
 
@@ -147,39 +178,42 @@ Each case form has three pages, and each case has one form per role, so each rol
 - **Used by:** Step S3 (V1 Kari), GPs.
 - **Address goes in:** `forms["S3.fastlege"]` in `app/public/atlas-config.json`.
 - **Locked fields:** `rolle`, `intervju`, `studienavn`, `steg`, `vignett`, `versjon`.
-- **Intro:** «Dette skjemaet handler om saken til Kari: første side besvares med bare saken på skjermen, resten når ATLAS ber deg om det. Kritikk er like nyttig som ros. Ved å sende skjemaet samtykker du i at de anonyme svarene brukes i forskningsprosjektet.» / "This form is about Kari's case: the first page is answered with only the case on screen, the rest when ATLAS asks you to. Criticism is as useful as praise. By sending the form, you consent to the anonymous answers being used in the research project."
+- **Intro:** «Dette skjemaet handler om saken til Kari. Svar på første side med bare saken på skjermen. Resten svarer du på når du har sett saken med ATLAS. Kritikk er like nyttig som ros. Ved å sende skjemaet samtykker du i at de anonyme svarene brukes i forskningsprosjektet.» / "This form is about Kari’s case. Answer the first page with only the case on the screen. You answer the rest when you have seen the case with ATLAS. Criticism is as useful as praise. By sending the form, you consent to the anonymous answers being used in the research project."
 
 **Page 1**
 
 | ID | Codebook | Type | Required | Text (nb / en) | Scale or options |
 |---|---|---|---|---|---|
 | D-V1-D1 | `d_v1_d1` | Flervalg (én) | Obligatorisk | Hva ville du gjort nå? / What would you do now? | Beholde pasienten i allmennpraksis / Keep the patient in general practice (`beholde`); Henvise til DPS / Refer to DPS (`henvise`); Ikke bestemt / Not decided (`ikke_bestemt`) |
-| D-V1-B1 | `d_v1_b1` | Lineær skala 1 to 7 | Obligatorisk | Hvor sikker er du på din beslutning uten ATLAS? / How confident are you in your decision without ATLAS? | 1 to 7: Svært usikker / Very uncertain … Svært sikker / Very confident |
+| D-V1-B1 | `d_v1_b1` | Flervalg (én), in one row: 1 to 7 | Obligatorisk | Hvor sikker er du på vurderingen din nå, uten ATLAS? / How sure are you of your assessment now, without ATLAS? | 1 to 7: Veldig usikker / Very unsure … Veldig sikker / Very sure |
+
+**Page 2: the stop page**
+
+| ID | Codebook | Type | Required | Text (nb / en) | Scale or options |
+|---|---|---|---|---|---|
+| STOPP-V1 | `stopp` | Tekst (no question) |  | Første gang du kommer hit: gå tilbake til ATLAS og trykk «Vis ATLAS». Når du er ferdig med saken i ATLAS og kommer tilbake hit, trykker du «Neste side». Ikke endre svarene på side 1. / The first time you get here: go back to ATLAS and press ‘Show ATLAS’. When you have finished the case in ATLAS and come back here, press ‘Next page’. Do not change the answers on page 1. |  |
+
+**Page 3: the last page**
+
+| ID | Codebook | Type | Required | Text (nb / en) | Scale or options |
+|---|---|---|---|---|---|
+| E11-V1 | `kontroll` | Flervalg (én) | Obligatorisk | Har du nå sett saken med ATLAS? / Have you now seen the case with ATLAS? | Ja / Yes; Nei / No |
+| NOTE-V1 | `tekst` | Tekst (no question) | No | Spørsmålene under handler om saken etter at du har sett den med ATLAS. Svar på nytt, uansett hva du svarte på side 1. / The questions below are about the case after you have seen it with ATLAS. Answer again, whatever you answered on page 1. |  |
+| D-V1-D2 | `d_v1_d2` | Flervalg (én) | Obligatorisk | Hva ville du gjort nå? / What would you do now? | Beholde pasienten i allmennpraksis / Keep the patient in general practice (`beholde`); Henvise til DPS / Refer to DPS (`henvise`); Ikke bestemt / Not decided (`ikke_bestemt`) |
+| D-V1-B2 | `d_v1_b2` | Flervalg (én), in one row: 1 to 7 | Obligatorisk | Hvor sikker er du på vurderingen din nå, med ATLAS? / How sure are you of your assessment now, with ATLAS? | 1 to 7: Veldig usikker / Very unsure … Veldig sikker / Very sure |
+| NOTE2-V1 | `tekst_2` | Tekst (no question) | No | Nå følger noen spørsmål om hvordan du opplevde ATLAS i saken til Kari. / Now follow a few questions about how you experienced ATLAS in Kari’s case. |  |
+| D-V1-DS | `d_v1_ds` | Tekstsvar (langt), at most 3,800 characters | No | Var det tydelig hva som var dine egne vurderinger, og hva systemet viste? / Was it clear what were your own assessments, and what the system showed? |  |
+| D-V1-01 | `d_v1_01` | Tekstsvar (langt), at most 3,800 characters | Obligatorisk | Endret ATLAS beslutningen din, hvor sikker du var, eller hva du trengte av informasjon, sammenlignet med hvordan du vanligvis jobber? (1-3 setninger) / Did ATLAS change your decision, how sure you were, or what information you needed, compared with how you usually work? (1-3 sentences) |  |
+| D-V1-02 | `d_v1_02` | Tekstsvar (langt), at most 3,800 characters | Obligatorisk | Hva ved ATLAS var nyttig, og hva fungerte ikke? Hva mangler? (1-3 setninger) / What about ATLAS was useful, and what did not work? What is missing? (1-3 sentences) |  |
+| D-V1-03 | `d_v1_03` | Tekstsvar (langt), at most 3,800 characters | No | Endret usikkerhetsskalaen hvordan du så på saken? / Did the uncertainty scale change how you saw the case? |  |
+| D-V1-05 | `d_v1_05` | Tekstsvar (langt), at most 3,800 characters | No | Hjalp det å ta stilling til hva som var uklart i saken («Hva er uklart i saken?»)? Hvordan? / Did it help to decide what was unclear in the case (‘What is unclear in the case?’)? How? |  |
+| D-V1-04 | `d_v1_04` | Flervalg (én), in one row: 1 to 7 | No | Hvor nyttig var ATLAS i denne saken? / How useful was ATLAS in this case? | 1 to 7: Ikke nyttig / Not helpful … Svært nyttig / Very helpful |
 | rolle | `rolle` | Tekstsvar (kort), locked |  | Rolle / Role |  |
 | intervju | `intervju` | Tekstsvar (kort), locked |  | Deltok du i et intervju i dette forskningsprosjektet? / Did you take part in an interview in this research project? |  |
 | studienavn | `studienavn` | Tekstsvar (kort), locked |  | Studienavn / Study name |  |
 | steg | `steg` | Tekstsvar (kort), locked |  | Steg / Step |  |
 | vignett | `vignett` | Tekstsvar (kort), locked |  | Vignett / Vignette |  |
 | versjon | `versjon` | Tekstsvar (kort), locked |  | Versjon / Version |  |
-
-**Page 2: the stop page**
-
-| ID | Codebook | Type | Required | Text (nb / en) | Scale or options |
-|---|---|---|---|---|---|
-| STOPP-V1 | `stopp` | Tekst (no question) |  | Stopp her. Gå tilbake til ATLAS og trykk på Vis ATLAS. Gå videre først når ATLAS ber deg om det. Ikke gå tilbake og endre side 1. / Stop here. Go back to ATLAS and press Show ATLAS. Continue only when ATLAS asks you to. Do not go back and change page 1. |  |
-
-**Page 3: the last page**
-
-| ID | Codebook | Type | Required | Text (nb / en) | Scale or options |
-|---|---|---|---|---|---|
-| E11-V1 | `kontroll` | Flervalg (én) | Obligatorisk | Har du arbeidet med denne saken i ATLAS før du svarer på denne siden? / Have you worked on this case in ATLAS before answering this page? | Ja / Yes; Nei / No |
-| D-V1-D2 | `d_v1_d2` | Flervalg (én) | Obligatorisk | Hva ville du gjort nå? / What would you do now? | Beholde pasienten i allmennpraksis / Keep the patient in general practice (`beholde`); Henvise til DPS / Refer to DPS (`henvise`); Ikke bestemt / Not decided (`ikke_bestemt`) |
-| D-V1-B2 | `d_v1_b2` | Lineær skala 1 to 7 | Obligatorisk | Hvor sikker er du på din beslutning med ATLAS? / How confident are you in your decision with ATLAS? | 1 to 7: Svært usikker / Very uncertain … Svært sikker / Very confident |
-| D-V1-DS | `d_v1_ds` | Tekstsvar (langt), at most 3,800 characters | No | Var det tydelig for deg hva som er dine egne vurderinger versus hva systemet viser? / Was it clear to you what are your own assessments versus what the system displays? |  |
-| D-V1-01 | `d_v1_01` | Tekstsvar (langt), at most 3,800 characters | Obligatorisk | Ville ATLAS endre din beslutning, din sikkerhet, eller dine informasjonsbehov sammenlignet med dagens praksis? (1-3 setninger) / Would ATLAS change your decision, confidence, or information needs compared to current practice? (1-3 sentences) |  |
-| D-V1-02 | `d_v1_02` | Tekstsvar (langt), at most 3,800 characters | Obligatorisk | Hva konkret ved ATLAS utgjorde forskjellen (eller mislyktes)? Hva mangler? (1-3 setninger) / What specifically about ATLAS made the difference (or failed)? What is missing? (1-3 sentences) |  |
-| D-V1-03 | `d_v1_03` | Tekstsvar (langt), at most 3,800 characters | No | Ville usikkerhetsvisningen endre hvordan du håndterer denne pasienten? / Would the uncertainty display change how you handle this patient? |  |
-| D-V1-04 | `d_v1_04` | Lineær skala 1 to 7 | No | Samlet nytteverdi av ATLAS for dette scenariet. / Overall helpfulness of ATLAS for this scenario. | 1 to 7: Ikke nyttig / Not helpful … Svært nyttig / Very helpful |
 
 - **Receipt:** «Takk, svarene er sendt. Gå tilbake til ATLAS for å fortsette.» / "Thank you, the answers have been sent. Go back to ATLAS to continue."
 
@@ -188,39 +222,42 @@ Each case form has three pages, and each case has one form per role, so each rol
 - **Used by:** Step S3 (V1 Kari), DPS participants.
 - **Address goes in:** `forms["S3.dps"]` in `app/public/atlas-config.json`.
 - **Locked fields:** `rolle`, `intervju`, `studienavn`, `steg`, `vignett`, `versjon`.
-- **Intro:** «Dette skjemaet handler om saken til Kari: første side besvares med bare saken på skjermen, resten når ATLAS ber deg om det. Kritikk er like nyttig som ros. Ved å sende skjemaet samtykker du i at de anonyme svarene brukes i forskningsprosjektet.» / "This form is about Kari's case: the first page is answered with only the case on screen, the rest when ATLAS asks you to. Criticism is as useful as praise. By sending the form, you consent to the anonymous answers being used in the research project."
+- **Intro:** «Dette skjemaet handler om saken til Kari. Svar på første side med bare saken på skjermen. Resten svarer du på når du har sett saken med ATLAS. Kritikk er like nyttig som ros. Ved å sende skjemaet samtykker du i at de anonyme svarene brukes i forskningsprosjektet.» / "This form is about Kari’s case. Answer the first page with only the case on the screen. You answer the rest when you have seen the case with ATLAS. Criticism is as useful as praise. By sending the form, you consent to the anonymous answers being used in the research project."
 
 **Page 1**
 
 | ID | Codebook | Type | Required | Text (nb / en) | Scale or options |
 |---|---|---|---|---|---|
 | D-V1-D1 | `d_v1_d1` | Flervalg (én) | Obligatorisk | Hvordan ville du vurdert henvisningen? / How would you assess the referral? | Be om mer informasjon / Request more information (`info`); Rett til helsehjelp / Right to health care (`rett`); Retur med råd / Return with advice (`retur`); Ikke bestemt / Not decided (`ikke_bestemt`) |
-| D-V1-B1 | `d_v1_b1` | Lineær skala 1 to 7 | Obligatorisk | Hvor sikker er du på din beslutning uten ATLAS? / How confident are you in your decision without ATLAS? | 1 to 7: Svært usikker / Very uncertain … Svært sikker / Very confident |
+| D-V1-B1 | `d_v1_b1` | Flervalg (én), in one row: 1 to 7 | Obligatorisk | Hvor sikker er du på vurderingen din nå, uten ATLAS? / How sure are you of your assessment now, without ATLAS? | 1 to 7: Veldig usikker / Very unsure … Veldig sikker / Very sure |
+
+**Page 2: the stop page**
+
+| ID | Codebook | Type | Required | Text (nb / en) | Scale or options |
+|---|---|---|---|---|---|
+| STOPP-V1 | `stopp` | Tekst (no question) |  | Første gang du kommer hit: gå tilbake til ATLAS og trykk «Vis ATLAS». Når du er ferdig med saken i ATLAS og kommer tilbake hit, trykker du «Neste side». Ikke endre svarene på side 1. / The first time you get here: go back to ATLAS and press ‘Show ATLAS’. When you have finished the case in ATLAS and come back here, press ‘Next page’. Do not change the answers on page 1. |  |
+
+**Page 3: the last page**
+
+| ID | Codebook | Type | Required | Text (nb / en) | Scale or options |
+|---|---|---|---|---|---|
+| E11-V1 | `kontroll` | Flervalg (én) | Obligatorisk | Har du nå sett saken med ATLAS? / Have you now seen the case with ATLAS? | Ja / Yes; Nei / No |
+| NOTE-V1 | `tekst` | Tekst (no question) | No | Spørsmålene under handler om saken etter at du har sett den med ATLAS. Svar på nytt, uansett hva du svarte på side 1. / The questions below are about the case after you have seen it with ATLAS. Answer again, whatever you answered on page 1. |  |
+| D-V1-D2 | `d_v1_d2` | Flervalg (én) | Obligatorisk | Hvordan ville du vurdert henvisningen? / How would you assess the referral? | Be om mer informasjon / Request more information (`info`); Rett til helsehjelp / Right to health care (`rett`); Retur med råd / Return with advice (`retur`); Ikke bestemt / Not decided (`ikke_bestemt`) |
+| D-V1-B2 | `d_v1_b2` | Flervalg (én), in one row: 1 to 7 | Obligatorisk | Hvor sikker er du på vurderingen din nå, med ATLAS? / How sure are you of your assessment now, with ATLAS? | 1 to 7: Veldig usikker / Very unsure … Veldig sikker / Very sure |
+| NOTE2-V1 | `tekst_2` | Tekst (no question) | No | Nå følger noen spørsmål om hvordan du opplevde ATLAS i saken til Kari. / Now follow a few questions about how you experienced ATLAS in Kari’s case. |  |
+| D-V1-DS | `d_v1_ds` | Tekstsvar (langt), at most 3,800 characters | No | Var det tydelig hva som var dine egne vurderinger, og hva systemet viste? / Was it clear what were your own assessments, and what the system showed? |  |
+| D-V1-01 | `d_v1_01` | Tekstsvar (langt), at most 3,800 characters | Obligatorisk | Endret ATLAS beslutningen din, hvor sikker du var, eller hva du trengte av informasjon, sammenlignet med hvordan du vanligvis jobber? (1-3 setninger) / Did ATLAS change your decision, how sure you were, or what information you needed, compared with how you usually work? (1-3 sentences) |  |
+| D-V1-02 | `d_v1_02` | Tekstsvar (langt), at most 3,800 characters | Obligatorisk | Hva ved ATLAS var nyttig, og hva fungerte ikke? Hva mangler? (1-3 setninger) / What about ATLAS was useful, and what did not work? What is missing? (1-3 sentences) |  |
+| D-V1-03 | `d_v1_03` | Tekstsvar (langt), at most 3,800 characters | No | Endret usikkerhetsskalaen hvordan du så på saken? / Did the uncertainty scale change how you saw the case? |  |
+| D-V1-05 | `d_v1_05` | Tekstsvar (langt), at most 3,800 characters | No | Hjalp det å se feltet «Hva fastlegen var usikker på»? Hvordan? / Did it help to see the field ‘What the GP was unsure about’? How? |  |
+| D-V1-04 | `d_v1_04` | Flervalg (én), in one row: 1 to 7 | No | Hvor nyttig var ATLAS i denne saken? / How useful was ATLAS in this case? | 1 to 7: Ikke nyttig / Not helpful … Svært nyttig / Very helpful |
 | rolle | `rolle` | Tekstsvar (kort), locked |  | Rolle / Role |  |
 | intervju | `intervju` | Tekstsvar (kort), locked |  | Deltok du i et intervju i dette forskningsprosjektet? / Did you take part in an interview in this research project? |  |
 | studienavn | `studienavn` | Tekstsvar (kort), locked |  | Studienavn / Study name |  |
 | steg | `steg` | Tekstsvar (kort), locked |  | Steg / Step |  |
 | vignett | `vignett` | Tekstsvar (kort), locked |  | Vignett / Vignette |  |
 | versjon | `versjon` | Tekstsvar (kort), locked |  | Versjon / Version |  |
-
-**Page 2: the stop page**
-
-| ID | Codebook | Type | Required | Text (nb / en) | Scale or options |
-|---|---|---|---|---|---|
-| STOPP-V1 | `stopp` | Tekst (no question) |  | Stopp her. Gå tilbake til ATLAS og trykk på Vis ATLAS. Gå videre først når ATLAS ber deg om det. Ikke gå tilbake og endre side 1. / Stop here. Go back to ATLAS and press Show ATLAS. Continue only when ATLAS asks you to. Do not go back and change page 1. |  |
-
-**Page 3: the last page**
-
-| ID | Codebook | Type | Required | Text (nb / en) | Scale or options |
-|---|---|---|---|---|---|
-| E11-V1 | `kontroll` | Flervalg (én) | Obligatorisk | Har du arbeidet med denne saken i ATLAS før du svarer på denne siden? / Have you worked on this case in ATLAS before answering this page? | Ja / Yes; Nei / No |
-| D-V1-D2 | `d_v1_d2` | Flervalg (én) | Obligatorisk | Hvordan ville du vurdert henvisningen? / How would you assess the referral? | Be om mer informasjon / Request more information (`info`); Rett til helsehjelp / Right to health care (`rett`); Retur med råd / Return with advice (`retur`); Ikke bestemt / Not decided (`ikke_bestemt`) |
-| D-V1-B2 | `d_v1_b2` | Lineær skala 1 to 7 | Obligatorisk | Hvor sikker er du på din beslutning med ATLAS? / How confident are you in your decision with ATLAS? | 1 to 7: Svært usikker / Very uncertain … Svært sikker / Very confident |
-| D-V1-DS | `d_v1_ds` | Tekstsvar (langt), at most 3,800 characters | No | Var det tydelig for deg hva som er dine egne vurderinger versus hva systemet viser? / Was it clear to you what are your own assessments versus what the system displays? |  |
-| D-V1-01 | `d_v1_01` | Tekstsvar (langt), at most 3,800 characters | Obligatorisk | Ville ATLAS endre din beslutning, din sikkerhet, eller dine informasjonsbehov sammenlignet med dagens praksis? (1-3 setninger) / Would ATLAS change your decision, confidence, or information needs compared to current practice? (1-3 sentences) |  |
-| D-V1-02 | `d_v1_02` | Tekstsvar (langt), at most 3,800 characters | Obligatorisk | Hva konkret ved ATLAS utgjorde forskjellen (eller mislyktes)? Hva mangler? (1-3 setninger) / What specifically about ATLAS made the difference (or failed)? What is missing? (1-3 sentences) |  |
-| D-V1-03 | `d_v1_03` | Tekstsvar (langt), at most 3,800 characters | No | Ville usikkerhetsvisningen endre hvordan du håndterer denne pasienten? / Would the uncertainty display change how you handle this patient? |  |
-| D-V1-04 | `d_v1_04` | Lineær skala 1 to 7 | No | Samlet nytteverdi av ATLAS for dette scenariet. / Overall helpfulness of ATLAS for this scenario. | 1 to 7: Ikke nyttig / Not helpful … Svært nyttig / Very helpful |
 
 - **Receipt:** «Takk, svarene er sendt. Gå tilbake til ATLAS for å fortsette.» / "Thank you, the answers have been sent. Go back to ATLAS to continue."
 
@@ -229,37 +266,39 @@ Each case form has three pages, and each case has one form per role, so each rol
 - **Used by:** Step S4 (V3 Erlend), GPs.
 - **Address goes in:** `forms["S4.fastlege"]` in `app/public/atlas-config.json`.
 - **Locked fields:** `rolle`, `intervju`, `studienavn`, `steg`, `vignett`, `versjon`.
-- **Intro:** «Dette skjemaet handler om saken til Erlend: første side besvares med bare saken på skjermen, resten når ATLAS ber deg om det. Kritikk er like nyttig som ros. Ved å sende skjemaet samtykker du i at de anonyme svarene brukes i forskningsprosjektet.» / "This form is about Erlend's case: the first page is answered with only the case on screen, the rest when ATLAS asks you to. Criticism is as useful as praise. By sending the form, you consent to the anonymous answers being used in the research project."
+- **Intro:** «Dette skjemaet handler om saken til Erlend. Svar på første side med bare saken på skjermen. Resten svarer du på når du har sett saken med ATLAS. Kritikk er like nyttig som ros. Ved å sende skjemaet samtykker du i at de anonyme svarene brukes i forskningsprosjektet.» / "This form is about Erlend’s case. Answer the first page with only the case on the screen. You answer the rest when you have seen the case with ATLAS. Criticism is as useful as praise. By sending the form, you consent to the anonymous answers being used in the research project."
 
 **Page 1**
 
 | ID | Codebook | Type | Required | Text (nb / en) | Scale or options |
 |---|---|---|---|---|---|
 | D-V3-D1 | `d_v3_d1` | Flervalg (én) | Obligatorisk | Hva ville du gjort nå? / What would you do now? | Beholde pasienten i allmennpraksis / Keep the patient in general practice (`beholde`); Henvise til DPS / Refer to DPS (`henvise`); Ikke bestemt / Not decided (`ikke_bestemt`) |
-| D-V3-B1 | `d_v3_b1` | Lineær skala 1 to 7 | Obligatorisk | Hvor sikker er du på din beslutning uten ATLAS? / How confident are you in your decision without ATLAS? | 1 to 7: Svært usikker / Very uncertain … Svært sikker / Very confident |
+| D-V3-B1 | `d_v3_b1` | Flervalg (én), in one row: 1 to 7 | Obligatorisk | Hvor sikker er du på vurderingen din nå, uten ATLAS? / How sure are you of your assessment now, without ATLAS? | 1 to 7: Veldig usikker / Very unsure … Veldig sikker / Very sure |
+
+**Page 2: the stop page**
+
+| ID | Codebook | Type | Required | Text (nb / en) | Scale or options |
+|---|---|---|---|---|---|
+| STOPP-V3 | `stopp` | Tekst (no question) |  | Første gang du kommer hit: gå tilbake til ATLAS og trykk «Vis ATLAS». Når du er ferdig med saken i ATLAS og kommer tilbake hit, trykker du «Neste side». Ikke endre svarene på side 1. / The first time you get here: go back to ATLAS and press ‘Show ATLAS’. When you have finished the case in ATLAS and come back here, press ‘Next page’. Do not change the answers on page 1. |  |
+
+**Page 3: the last page**
+
+| ID | Codebook | Type | Required | Text (nb / en) | Scale or options |
+|---|---|---|---|---|---|
+| E11-V3 | `kontroll` | Flervalg (én) | Obligatorisk | Har du nå sett saken med ATLAS? / Have you now seen the case with ATLAS? | Ja / Yes; Nei / No |
+| NOTE-V3 | `tekst` | Tekst (no question) | No | Spørsmålene under handler om saken etter at du har sett den med ATLAS. Svar på nytt, uansett hva du svarte på side 1. / The questions below are about the case after you have seen it with ATLAS. Answer again, whatever you answered on page 1. |  |
+| D-V3-D2 | `d_v3_d2` | Flervalg (én) | Obligatorisk | Hva ville du gjort nå? / What would you do now? | Beholde pasienten i allmennpraksis / Keep the patient in general practice (`beholde`); Henvise til DPS / Refer to DPS (`henvise`); Ikke bestemt / Not decided (`ikke_bestemt`) |
+| D-V3-B2 | `d_v3_b2` | Flervalg (én), in one row: 1 to 7 | Obligatorisk | Hvor sikker er du på vurderingen din nå, med ATLAS? / How sure are you of your assessment now, with ATLAS? | 1 to 7: Veldig usikker / Very unsure … Veldig sikker / Very sure |
+| NOTE2-V3 | `tekst_2` | Tekst (no question) | No | Nå følger noen spørsmål om hvordan du opplevde ATLAS i saken til Erlend. / Now follow a few questions about how you experienced ATLAS in Erlend’s case. |  |
+| D-V3-01 | `d_v3_01` | Tekstsvar (langt), at most 3,800 characters | Obligatorisk | Endret det å se kriteriene i prioriteringsveilederen hvordan du skrev henvisningen? Skrev du den mer slik du faktisk vurderer pasienten, mer for at den skulle «komme gjennom», eller ble det ingen forskjell? (1-3 setninger) / Did seeing the criteria in the priority-setting guideline change how you wrote the referral? Did you write it more as you actually assess the patient, more so that it would ‘get through’, or did it make no difference? (1-3 sentences) |  |
+| D-V3-02 | `d_v3_02` | Tekstsvar (langt), at most 3,800 characters | Obligatorisk | Hva ved ATLAS var nyttig, og hva fungerte ikke? Hvis du fortsatt ville tilpasset henvisningen, hvorfor? (1-3 setninger) / What about ATLAS was useful, and what did not work? If you would still adapt the referral, why? (1-3 sentences) |  |
+| D-V3-03 | `d_v3_03` | Flervalg (én), in one row: 1 to 7 | No | Hvor nyttig var ATLAS i denne saken? / How useful was ATLAS in this case? | 1 to 7: Ikke nyttig / Not helpful … Svært nyttig / Very helpful |
 | rolle | `rolle` | Tekstsvar (kort), locked |  | Rolle / Role |  |
 | intervju | `intervju` | Tekstsvar (kort), locked |  | Deltok du i et intervju i dette forskningsprosjektet? / Did you take part in an interview in this research project? |  |
 | studienavn | `studienavn` | Tekstsvar (kort), locked |  | Studienavn / Study name |  |
 | steg | `steg` | Tekstsvar (kort), locked |  | Steg / Step |  |
 | vignett | `vignett` | Tekstsvar (kort), locked |  | Vignett / Vignette |  |
 | versjon | `versjon` | Tekstsvar (kort), locked |  | Versjon / Version |  |
-
-**Page 2: the stop page**
-
-| ID | Codebook | Type | Required | Text (nb / en) | Scale or options |
-|---|---|---|---|---|---|
-| STOPP-V3 | `stopp` | Tekst (no question) |  | Stopp her. Gå tilbake til ATLAS og trykk på Vis ATLAS. Gå videre først når ATLAS ber deg om det. Ikke gå tilbake og endre side 1. / Stop here. Go back to ATLAS and press Show ATLAS. Continue only when ATLAS asks you to. Do not go back and change page 1. |  |
-
-**Page 3: the last page**
-
-| ID | Codebook | Type | Required | Text (nb / en) | Scale or options |
-|---|---|---|---|---|---|
-| E11-V3 | `kontroll` | Flervalg (én) | Obligatorisk | Har du arbeidet med denne saken i ATLAS før du svarer på denne siden? / Have you worked on this case in ATLAS before answering this page? | Ja / Yes; Nei / No |
-| D-V3-D2 | `d_v3_d2` | Flervalg (én) | Obligatorisk | Hva ville du gjort nå? / What would you do now? | Beholde pasienten i allmennpraksis / Keep the patient in general practice (`beholde`); Henvise til DPS / Refer to DPS (`henvise`); Ikke bestemt / Not decided (`ikke_bestemt`) |
-| D-V3-B2 | `d_v3_b2` | Lineær skala 1 to 7 | Obligatorisk | Hvor sikker er du på din beslutning med ATLAS? / How confident are you in your decision with ATLAS? | 1 to 7: Svært usikker / Very uncertain … Svært sikker / Very confident |
-| D-V3-01 | `d_v3_01` | Tekstsvar (langt), at most 3,800 characters | Obligatorisk | Endrer kriteriesynligheten din dokumentasjonsstrategi? Gjør den deg mer ærlig, mer strategisk, eller ingen forskjell? (1-3 setninger) / Does the criteria visibility change your documentation strategy? More honest, more strategic, or no difference? (1-3 sentences) |  |
-| D-V3-02 | `d_v3_02` | Tekstsvar (langt), at most 3,800 characters | Obligatorisk | Hva konkret ved ATLAS utgjorde forskjellen (eller mislyktes)? Hvis du fortsatt ville tilpasset dokumentasjonen, hvorfor? (1-3 setninger) / What specifically about ATLAS made the difference (or failed)? If you would still adjust the documentation, why? (1-3 sentences) |  |
-| D-V3-03 | `d_v3_03` | Lineær skala 1 to 7 | No | Samlet nytteverdi av ATLAS for dette scenariet. / Overall helpfulness of ATLAS for this scenario. | 1 to 7: Ikke nyttig / Not helpful … Svært nyttig / Very helpful |
 
 - **Receipt:** «Takk, svarene er sendt. Gå tilbake til ATLAS for å fortsette.» / "Thank you, the answers have been sent. Go back to ATLAS to continue."
 
@@ -268,37 +307,39 @@ Each case form has three pages, and each case has one form per role, so each rol
 - **Used by:** Step S4 (V3 Erlend), DPS participants.
 - **Address goes in:** `forms["S4.dps"]` in `app/public/atlas-config.json`.
 - **Locked fields:** `rolle`, `intervju`, `studienavn`, `steg`, `vignett`, `versjon`.
-- **Intro:** «Dette skjemaet handler om saken til Erlend: første side besvares med bare saken på skjermen, resten når ATLAS ber deg om det. Kritikk er like nyttig som ros. Ved å sende skjemaet samtykker du i at de anonyme svarene brukes i forskningsprosjektet.» / "This form is about Erlend's case: the first page is answered with only the case on screen, the rest when ATLAS asks you to. Criticism is as useful as praise. By sending the form, you consent to the anonymous answers being used in the research project."
+- **Intro:** «Dette skjemaet handler om saken til Erlend. Svar på første side med bare saken på skjermen. Resten svarer du på når du har sett saken med ATLAS. Kritikk er like nyttig som ros. Ved å sende skjemaet samtykker du i at de anonyme svarene brukes i forskningsprosjektet.» / "This form is about Erlend’s case. Answer the first page with only the case on the screen. You answer the rest when you have seen the case with ATLAS. Criticism is as useful as praise. By sending the form, you consent to the anonymous answers being used in the research project."
 
 **Page 1**
 
 | ID | Codebook | Type | Required | Text (nb / en) | Scale or options |
 |---|---|---|---|---|---|
 | D-V3-D1 | `d_v3_d1` | Flervalg (én) | Obligatorisk | Hvordan ville du vurdert henvisningen? / How would you assess the referral? | Be om mer informasjon / Request more information (`info`); Rett til helsehjelp / Right to health care (`rett`); Retur med råd / Return with advice (`retur`); Ikke bestemt / Not decided (`ikke_bestemt`) |
-| D-V3-B1 | `d_v3_b1` | Lineær skala 1 to 7 | Obligatorisk | Hvor sikker er du på din beslutning uten ATLAS? / How confident are you in your decision without ATLAS? | 1 to 7: Svært usikker / Very uncertain … Svært sikker / Very confident |
+| D-V3-B1 | `d_v3_b1` | Flervalg (én), in one row: 1 to 7 | Obligatorisk | Hvor sikker er du på vurderingen din nå, uten ATLAS? / How sure are you of your assessment now, without ATLAS? | 1 to 7: Veldig usikker / Very unsure … Veldig sikker / Very sure |
+
+**Page 2: the stop page**
+
+| ID | Codebook | Type | Required | Text (nb / en) | Scale or options |
+|---|---|---|---|---|---|
+| STOPP-V3 | `stopp` | Tekst (no question) |  | Første gang du kommer hit: gå tilbake til ATLAS og trykk «Vis ATLAS». Når du er ferdig med saken i ATLAS og kommer tilbake hit, trykker du «Neste side». Ikke endre svarene på side 1. / The first time you get here: go back to ATLAS and press ‘Show ATLAS’. When you have finished the case in ATLAS and come back here, press ‘Next page’. Do not change the answers on page 1. |  |
+
+**Page 3: the last page**
+
+| ID | Codebook | Type | Required | Text (nb / en) | Scale or options |
+|---|---|---|---|---|---|
+| E11-V3 | `kontroll` | Flervalg (én) | Obligatorisk | Har du nå sett saken med ATLAS? / Have you now seen the case with ATLAS? | Ja / Yes; Nei / No |
+| NOTE-V3 | `tekst` | Tekst (no question) | No | Spørsmålene under handler om saken etter at du har sett den med ATLAS. Svar på nytt, uansett hva du svarte på side 1. / The questions below are about the case after you have seen it with ATLAS. Answer again, whatever you answered on page 1. |  |
+| D-V3-D2 | `d_v3_d2` | Flervalg (én) | Obligatorisk | Hvordan ville du vurdert henvisningen? / How would you assess the referral? | Be om mer informasjon / Request more information (`info`); Rett til helsehjelp / Right to health care (`rett`); Retur med råd / Return with advice (`retur`); Ikke bestemt / Not decided (`ikke_bestemt`) |
+| D-V3-B2 | `d_v3_b2` | Flervalg (én), in one row: 1 to 7 | Obligatorisk | Hvor sikker er du på vurderingen din nå, med ATLAS? / How sure are you of your assessment now, with ATLAS? | 1 to 7: Veldig usikker / Very unsure … Veldig sikker / Very sure |
+| NOTE2-V3 | `tekst_2` | Tekst (no question) | No | Nå følger noen spørsmål om hvordan du opplevde ATLAS i saken til Erlend. / Now follow a few questions about how you experienced ATLAS in Erlend’s case. |  |
+| D-V3-01 | `d_v3_01` | Tekstsvar (langt), at most 3,800 characters | Obligatorisk | Endret det at fastlegen kunne se kriteriene i prioriteringsveilederen, hvordan du leste henvisningen? Virket den mer som fastlegens egen vurdering, mer skrevet for å «komme gjennom», eller var det ingen forskjell? (1-3 setninger) / Did it change how you read the referral that the GP could see the criteria in the priority-setting guideline? Did it seem more like the GP’s own assessment, more written to ‘get through’, or was there no difference? (1-3 sentences) |  |
+| D-V3-02 | `d_v3_02` | Tekstsvar (langt), at most 3,800 characters | Obligatorisk | Hva ved ATLAS var nyttig, og hva fungerte ikke? Hvis du fortsatt ville lest henvisningen med forbehold, hvorfor? (1-3 setninger) / What about ATLAS was useful, and what did not work? If you would still read the referral with reservations, why? (1-3 sentences) |  |
+| D-V3-03 | `d_v3_03` | Flervalg (én), in one row: 1 to 7 | No | Hvor nyttig var ATLAS i denne saken? / How useful was ATLAS in this case? | 1 to 7: Ikke nyttig / Not helpful … Svært nyttig / Very helpful |
 | rolle | `rolle` | Tekstsvar (kort), locked |  | Rolle / Role |  |
 | intervju | `intervju` | Tekstsvar (kort), locked |  | Deltok du i et intervju i dette forskningsprosjektet? / Did you take part in an interview in this research project? |  |
 | studienavn | `studienavn` | Tekstsvar (kort), locked |  | Studienavn / Study name |  |
 | steg | `steg` | Tekstsvar (kort), locked |  | Steg / Step |  |
 | vignett | `vignett` | Tekstsvar (kort), locked |  | Vignett / Vignette |  |
 | versjon | `versjon` | Tekstsvar (kort), locked |  | Versjon / Version |  |
-
-**Page 2: the stop page**
-
-| ID | Codebook | Type | Required | Text (nb / en) | Scale or options |
-|---|---|---|---|---|---|
-| STOPP-V3 | `stopp` | Tekst (no question) |  | Stopp her. Gå tilbake til ATLAS og trykk på Vis ATLAS. Gå videre først når ATLAS ber deg om det. Ikke gå tilbake og endre side 1. / Stop here. Go back to ATLAS and press Show ATLAS. Continue only when ATLAS asks you to. Do not go back and change page 1. |  |
-
-**Page 3: the last page**
-
-| ID | Codebook | Type | Required | Text (nb / en) | Scale or options |
-|---|---|---|---|---|---|
-| E11-V3 | `kontroll` | Flervalg (én) | Obligatorisk | Har du arbeidet med denne saken i ATLAS før du svarer på denne siden? / Have you worked on this case in ATLAS before answering this page? | Ja / Yes; Nei / No |
-| D-V3-D2 | `d_v3_d2` | Flervalg (én) | Obligatorisk | Hvordan ville du vurdert henvisningen? / How would you assess the referral? | Be om mer informasjon / Request more information (`info`); Rett til helsehjelp / Right to health care (`rett`); Retur med råd / Return with advice (`retur`); Ikke bestemt / Not decided (`ikke_bestemt`) |
-| D-V3-B2 | `d_v3_b2` | Lineær skala 1 to 7 | Obligatorisk | Hvor sikker er du på din beslutning med ATLAS? / How confident are you in your decision with ATLAS? | 1 to 7: Svært usikker / Very uncertain … Svært sikker / Very confident |
-| D-V3-01 | `d_v3_01` | Tekstsvar (langt), at most 3,800 characters | Obligatorisk | Endrer kriteriesynligheten hvordan du leser fastlegens dokumentasjon? Leser du henvisningen som mer ærlig, mer strategisk, eller ingen forskjell? (1-3 setninger) / Does the criteria visibility change how you read the GP's documentation? Do you read the referral as more honest, more strategic, or no difference? (1-3 sentences) |  |
-| D-V3-02 | `d_v3_02` | Tekstsvar (langt), at most 3,800 characters | Obligatorisk | Hva konkret ved ATLAS utgjorde forskjellen (eller mislyktes)? Hvis du fortsatt ville lest henvisningen med forbehold, hvorfor? (1-3 setninger) / What specifically about ATLAS made the difference (or failed)? If you would still read the referral with reservations, why? (1-3 sentences) |  |
-| D-V3-03 | `d_v3_03` | Lineær skala 1 to 7 | No | Samlet nytteverdi av ATLAS for dette scenariet. / Overall helpfulness of ATLAS for this scenario. | 1 to 7: Ikke nyttig / Not helpful … Svært nyttig / Very helpful |
 
 - **Receipt:** «Takk, svarene er sendt. Gå tilbake til ATLAS for å fortsette.» / "Thank you, the answers have been sent. Go back to ATLAS to continue."
 
@@ -307,38 +348,40 @@ Each case form has three pages, and each case has one form per role, so each rol
 - **Used by:** Step S5 (V4 Astrid), GPs.
 - **Address goes in:** `forms["S5.fastlege"]` in `app/public/atlas-config.json`.
 - **Locked fields:** `rolle`, `intervju`, `studienavn`, `steg`, `vignett`, `versjon`.
-- **Intro:** «Dette skjemaet handler om saken til Astrid: første side besvares med bare saken på skjermen, resten når ATLAS ber deg om det. Kritikk er like nyttig som ros. Ved å sende skjemaet samtykker du i at de anonyme svarene brukes i forskningsprosjektet.» / "This form is about Astrid's case: the first page is answered with only the case on screen, the rest when ATLAS asks you to. Criticism is as useful as praise. By sending the form, you consent to the anonymous answers being used in the research project."
+- **Intro:** «Dette skjemaet handler om saken til Astrid. Svar på første side med bare saken på skjermen. Resten svarer du på når du har sett saken med ATLAS. Kritikk er like nyttig som ros. Ved å sende skjemaet samtykker du i at de anonyme svarene brukes i forskningsprosjektet.» / "This form is about Astrid’s case. Answer the first page with only the case on the screen. You answer the rest when you have seen the case with ATLAS. Criticism is as useful as praise. By sending the form, you consent to the anonymous answers being used in the research project."
 
 **Page 1**
 
 | ID | Codebook | Type | Required | Text (nb / en) | Scale or options |
 |---|---|---|---|---|---|
 | D-V4-D1 | `d_v4_d1` | Flervalg (én) | Obligatorisk | Hva er planen videre? / What is the plan from here? | Følge opp i allmennpraksis / Follow up in general practice (`folge_opp`); Henvise på nytt / Refer again (`henvise_pa_nytt`); Ikke bestemt / Not decided (`ikke_bestemt`) |
-| D-V4-B1 | `d_v4_b1` | Lineær skala 1 to 7 | Obligatorisk | Hvor sikker er du på hva du ville gjort videre uten ATLAS? / How confident are you about what you would do next without ATLAS? | 1 to 7: Svært usikker / Very uncertain … Svært sikker / Very confident |
+| D-V4-B1 | `d_v4_b1` | Flervalg (én), in one row: 1 to 7 | Obligatorisk | Hvor sikker er du på vurderingen din nå, uten ATLAS? / How sure are you of your assessment now, without ATLAS? | 1 to 7: Veldig usikker / Very unsure … Veldig sikker / Very sure |
+
+**Page 2: the stop page**
+
+| ID | Codebook | Type | Required | Text (nb / en) | Scale or options |
+|---|---|---|---|---|---|
+| STOPP-V4 | `stopp` | Tekst (no question) |  | Første gang du kommer hit: gå tilbake til ATLAS og trykk «Vis ATLAS». Når du er ferdig med saken i ATLAS og kommer tilbake hit, trykker du «Neste side». Ikke endre svarene på side 1. / The first time you get here: go back to ATLAS and press ‘Show ATLAS’. When you have finished the case in ATLAS and come back here, press ‘Next page’. Do not change the answers on page 1. |  |
+
+**Page 3: the last page**
+
+| ID | Codebook | Type | Required | Text (nb / en) | Scale or options |
+|---|---|---|---|---|---|
+| E11-V4 | `kontroll` | Flervalg (én) | Obligatorisk | Har du nå sett saken med ATLAS? / Have you now seen the case with ATLAS? | Ja / Yes; Nei / No |
+| NOTE-V4 | `tekst` | Tekst (no question) | No | Spørsmålene under handler om saken etter at du har sett den med ATLAS. Svar på nytt, uansett hva du svarte på side 1. / The questions below are about the case after you have seen it with ATLAS. Answer again, whatever you answered on page 1. |  |
+| D-V4-D2 | `d_v4_d2` | Flervalg (én) | Obligatorisk | Hva er planen videre? / What is the plan from here? | Følge opp i allmennpraksis / Follow up in general practice (`folge_opp`); Henvise på nytt / Refer again (`henvise_pa_nytt`); Ikke bestemt / Not decided (`ikke_bestemt`) |
+| D-V4-B2 | `d_v4_b2` | Flervalg (én), in one row: 1 to 7 | Obligatorisk | Hvor sikker er du på vurderingen din nå, med ATLAS? / How sure are you of your assessment now, with ATLAS? | 1 to 7: Veldig usikker / Very unsure … Veldig sikker / Very sure |
+| NOTE2-V4 | `tekst_2` | Tekst (no question) | No | Nå følger noen spørsmål om hvordan du opplevde ATLAS i saken til Astrid. / Now follow a few questions about how you experienced ATLAS in Astrid’s case. |  |
+| D-V4-01 | `d_v4_01` | Tekstsvar (langt), at most 3,800 characters | Obligatorisk | Endret den strukturerte tilbakemeldingen (grunner og råd) hvordan du opplevde returen? Endret den hva du ville gjøre videre for pasienten? (1-3 setninger) / Did the structured feedback (reasons and advice) change how you experienced the return? Did it change what you would do next for the patient? (1-3 sentences) |  |
+| D-V4-02 | `d_v4_02` | Tekstsvar (langt), at most 3,800 characters | No | Ville en strukturert tilbakemelding på returen endre hvordan du skriver neste henvisning? / Would structured feedback on the return change how you write the next referral? |  |
+| D-V4-03 | `d_v4_03` | Tekstsvar (langt), at most 3,800 characters | Obligatorisk | Hva ved ATLAS var nyttig, og hva fungerte ikke? Hva mangler? (1-3 setninger) / What about ATLAS was useful, and what did not work? What is missing? (1-3 sentences) |  |
+| D-V4-04 | `d_v4_04` | Flervalg (én), in one row: 1 to 7 | No | Hvor nyttig var ATLAS i denne saken? / How useful was ATLAS in this case? | 1 to 7: Ikke nyttig / Not helpful … Svært nyttig / Very helpful |
 | rolle | `rolle` | Tekstsvar (kort), locked |  | Rolle / Role |  |
 | intervju | `intervju` | Tekstsvar (kort), locked |  | Deltok du i et intervju i dette forskningsprosjektet? / Did you take part in an interview in this research project? |  |
 | studienavn | `studienavn` | Tekstsvar (kort), locked |  | Studienavn / Study name |  |
 | steg | `steg` | Tekstsvar (kort), locked |  | Steg / Step |  |
 | vignett | `vignett` | Tekstsvar (kort), locked |  | Vignett / Vignette |  |
 | versjon | `versjon` | Tekstsvar (kort), locked |  | Versjon / Version |  |
-
-**Page 2: the stop page**
-
-| ID | Codebook | Type | Required | Text (nb / en) | Scale or options |
-|---|---|---|---|---|---|
-| STOPP-V4 | `stopp` | Tekst (no question) |  | Stopp her. Gå tilbake til ATLAS og trykk på Vis ATLAS. Gå videre først når ATLAS ber deg om det. Ikke gå tilbake og endre side 1. / Stop here. Go back to ATLAS and press Show ATLAS. Continue only when ATLAS asks you to. Do not go back and change page 1. |  |
-
-**Page 3: the last page**
-
-| ID | Codebook | Type | Required | Text (nb / en) | Scale or options |
-|---|---|---|---|---|---|
-| E11-V4 | `kontroll` | Flervalg (én) | Obligatorisk | Har du arbeidet med denne saken i ATLAS før du svarer på denne siden? / Have you worked on this case in ATLAS before answering this page? | Ja / Yes; Nei / No |
-| D-V4-D2 | `d_v4_d2` | Flervalg (én) | Obligatorisk | Hva er planen videre? / What is the plan from here? | Følge opp i allmennpraksis / Follow up in general practice (`folge_opp`); Henvise på nytt / Refer again (`henvise_pa_nytt`); Ikke bestemt / Not decided (`ikke_bestemt`) |
-| D-V4-B2 | `d_v4_b2` | Lineær skala 1 to 7 | Obligatorisk | Hvor sikker er du på hva du ville gjort videre med ATLAS? / How confident are you about what you would do next with ATLAS? | 1 to 7: Svært usikker / Very uncertain … Svært sikker / Very confident |
-| D-V4-01 | `d_v4_01` | Tekstsvar (langt), at most 3,800 characters | Obligatorisk | Endrer den strukturerte tilbakemeldingen din følelsesmessige respons på avslaget? Endrer den hva du gjør videre for pasienten? (1-3 setninger) / Does the structured feedback change your emotional response to the rejection? Does it change what you do next for the patient? (1-3 sentences) |  |
-| D-V4-02 | `d_v4_02` | Tekstsvar (langt), at most 3,800 characters | No | Ville strukturert tilbakemelding på avslag endre hvordan du skriver neste henvisning? / Would structured feedback on rejections change how you write your next referral? |  |
-| D-V4-03 | `d_v4_03` | Tekstsvar (langt), at most 3,800 characters | Obligatorisk | Hva konkret ved ATLAS utgjorde forskjellen (eller mislyktes)? Hva mangler? (1-3 setninger) / What specifically about ATLAS made the difference (or failed)? What is missing? (1-3 sentences) |  |
-| D-V4-04 | `d_v4_04` | Lineær skala 1 to 7 | No | Samlet nytteverdi av ATLAS for dette scenariet. / Overall helpfulness of ATLAS for this scenario. | 1 to 7: Ikke nyttig / Not helpful … Svært nyttig / Very helpful |
 
 - **Receipt:** «Takk, svarene er sendt. Gå tilbake til ATLAS for å fortsette.» / "Thank you, the answers have been sent. Go back to ATLAS to continue."
 
@@ -347,63 +390,40 @@ Each case form has three pages, and each case has one form per role, so each rol
 - **Used by:** Step S5 (V4 Astrid), DPS participants.
 - **Address goes in:** `forms["S5.dps"]` in `app/public/atlas-config.json`.
 - **Locked fields:** `rolle`, `intervju`, `studienavn`, `steg`, `vignett`, `versjon`.
-- **Intro:** «Dette skjemaet handler om saken til Astrid: første side besvares med bare saken på skjermen, resten når ATLAS ber deg om det. Kritikk er like nyttig som ros. Ved å sende skjemaet samtykker du i at de anonyme svarene brukes i forskningsprosjektet.» / "This form is about Astrid's case: the first page is answered with only the case on screen, the rest when ATLAS asks you to. Criticism is as useful as praise. By sending the form, you consent to the anonymous answers being used in the research project."
+- **Intro:** «Dette skjemaet handler om saken til Astrid. Svar på første side med bare saken på skjermen. Resten svarer du på når du har sett saken med ATLAS. Kritikk er like nyttig som ros. Ved å sende skjemaet samtykker du i at de anonyme svarene brukes i forskningsprosjektet.» / "This form is about Astrid’s case. Answer the first page with only the case on the screen. You answer the rest when you have seen the case with ATLAS. Criticism is as useful as praise. By sending the form, you consent to the anonymous answers being used in the research project."
 
 **Page 1**
 
 | ID | Codebook | Type | Required | Text (nb / en) | Scale or options |
 |---|---|---|---|---|---|
-| D-V4-D1 | `d_v4_d1` | Flervalg (én) | Obligatorisk | Hva ville du svart fastlegen? / What would you answer the GP? | Stå ved returen slik den er / Stand by the return as it is (`sta_ved_returen`); Be om en ny henvisning / Ask for a new referral (`ny_henvisning`); Vurdere henvisningen på nytt / Reassess the referral (`vurdere_pa_nytt`); Ikke svare nå / Not reply for now (`ikke_svare`); Ikke bestemt / Not decided (`ikke_bestemt`) |
-| D-V4-B1 | `d_v4_b1` | Lineær skala 1 to 7 | Obligatorisk | Hvor sikker er du på hva du ville gjort videre uten ATLAS? / How confident are you about what you would do next without ATLAS? | 1 to 7: Svært usikker / Very uncertain … Svært sikker / Very confident |
+| D-V4-D1 | `d_v4_d1` | Flervalg (én) | Obligatorisk | Hva ville du svart fastlegen? / What would you answer the GP? | Stå ved returen slik den er / Stand by the return as it is (`sta_ved_returen`); Stå ved returen og forklare mer / Stand by the return and explain more (`sta_ved_forklare`); Be om en ny henvisning / Ask for a new referral (`ny_henvisning`); Vurdere henvisningen på nytt / Reassess the referral (`vurdere_pa_nytt`); Ikke svare nå / Not reply for now (`ikke_svare`); Ikke bestemt / Not decided (`ikke_bestemt`) |
+| D-V4-B1 | `d_v4_b1` | Flervalg (én), in one row: 1 to 7 | Obligatorisk | Hvor sikker er du på vurderingen din nå, uten ATLAS? / How sure are you of your assessment now, without ATLAS? | 1 to 7: Veldig usikker / Very unsure … Veldig sikker / Very sure |
+
+**Page 2: the stop page**
+
+| ID | Codebook | Type | Required | Text (nb / en) | Scale or options |
+|---|---|---|---|---|---|
+| STOPP-V4 | `stopp` | Tekst (no question) |  | Første gang du kommer hit: gå tilbake til ATLAS og trykk «Vis ATLAS». Når du er ferdig med saken i ATLAS og kommer tilbake hit, trykker du «Neste side». Ikke endre svarene på side 1. / The first time you get here: go back to ATLAS and press ‘Show ATLAS’. When you have finished the case in ATLAS and come back here, press ‘Next page’. Do not change the answers on page 1. |  |
+
+**Page 3: the last page**
+
+| ID | Codebook | Type | Required | Text (nb / en) | Scale or options |
+|---|---|---|---|---|---|
+| E11-V4 | `kontroll` | Flervalg (én) | Obligatorisk | Har du nå sett saken med ATLAS? / Have you now seen the case with ATLAS? | Ja / Yes; Nei / No |
+| NOTE-V4 | `tekst` | Tekst (no question) | No | Spørsmålene under handler om saken etter at du har sett den med ATLAS. Svar på nytt, uansett hva du svarte på side 1. / The questions below are about the case after you have seen it with ATLAS. Answer again, whatever you answered on page 1. |  |
+| D-V4-D2 | `d_v4_d2` | Flervalg (én) | Obligatorisk | Hva ville du svart fastlegen? / What would you answer the GP? | Stå ved returen slik den er / Stand by the return as it is (`sta_ved_returen`); Stå ved returen og forklare mer / Stand by the return and explain more (`sta_ved_forklare`); Be om en ny henvisning / Ask for a new referral (`ny_henvisning`); Vurdere henvisningen på nytt / Reassess the referral (`vurdere_pa_nytt`); Ikke svare nå / Not reply for now (`ikke_svare`); Ikke bestemt / Not decided (`ikke_bestemt`) |
+| D-V4-B2 | `d_v4_b2` | Flervalg (én), in one row: 1 to 7 | Obligatorisk | Hvor sikker er du på vurderingen din nå, med ATLAS? / How sure are you of your assessment now, with ATLAS? | 1 to 7: Veldig usikker / Very unsure … Veldig sikker / Very sure |
+| NOTE2-V4 | `tekst_2` | Tekst (no question) | No | Nå følger noen spørsmål om hvordan du opplevde ATLAS i saken til Astrid. / Now follow a few questions about how you experienced ATLAS in Astrid’s case. |  |
+| D-V4-01 | `d_v4_01` | Tekstsvar (langt), at most 3,800 characters | Obligatorisk | Endret den strukturerte formen for returen i ATLAS (grunner og råd) hvordan du ville svart fastlegen? (1-3 setninger) / Did the structured form of the return in ATLAS (reasons and advice) change how you would answer the GP? (1-3 sentences) |  |
+| D-V4-02 | `d_v4_02` | Tekstsvar (langt), at most 3,800 characters | No | Ville den strukturerte formen i ATLAS (grunner og råd) endre hvordan du skriver neste retur? / Would the structured form in ATLAS (reasons and advice) change how you write the next return? |  |
+| D-V4-03 | `d_v4_03` | Tekstsvar (langt), at most 3,800 characters | Obligatorisk | Hva ved ATLAS var nyttig, og hva fungerte ikke? Hva mangler? (1-3 setninger) / What about ATLAS was useful, and what did not work? What is missing? (1-3 sentences) |  |
+| D-V4-04 | `d_v4_04` | Flervalg (én), in one row: 1 to 7 | No | Hvor nyttig var ATLAS i denne saken? / How useful was ATLAS in this case? | 1 to 7: Ikke nyttig / Not helpful … Svært nyttig / Very helpful |
 | rolle | `rolle` | Tekstsvar (kort), locked |  | Rolle / Role |  |
 | intervju | `intervju` | Tekstsvar (kort), locked |  | Deltok du i et intervju i dette forskningsprosjektet? / Did you take part in an interview in this research project? |  |
 | studienavn | `studienavn` | Tekstsvar (kort), locked |  | Studienavn / Study name |  |
 | steg | `steg` | Tekstsvar (kort), locked |  | Steg / Step |  |
 | vignett | `vignett` | Tekstsvar (kort), locked |  | Vignett / Vignette |  |
 | versjon | `versjon` | Tekstsvar (kort), locked |  | Versjon / Version |  |
-
-**Page 2: the stop page**
-
-| ID | Codebook | Type | Required | Text (nb / en) | Scale or options |
-|---|---|---|---|---|---|
-| STOPP-V4 | `stopp` | Tekst (no question) |  | Stopp her. Gå tilbake til ATLAS og trykk på Vis ATLAS. Gå videre først når ATLAS ber deg om det. Ikke gå tilbake og endre side 1. / Stop here. Go back to ATLAS and press Show ATLAS. Continue only when ATLAS asks you to. Do not go back and change page 1. |  |
-
-**Page 3: the last page**
-
-| ID | Codebook | Type | Required | Text (nb / en) | Scale or options |
-|---|---|---|---|---|---|
-| E11-V4 | `kontroll` | Flervalg (én) | Obligatorisk | Har du arbeidet med denne saken i ATLAS før du svarer på denne siden? / Have you worked on this case in ATLAS before answering this page? | Ja / Yes; Nei / No |
-| D-V4-D2 | `d_v4_d2` | Flervalg (én) | Obligatorisk | Hva ville du svart fastlegen? / What would you answer the GP? | Stå ved returen slik den er / Stand by the return as it is (`sta_ved_returen`); Be om en ny henvisning / Ask for a new referral (`ny_henvisning`); Vurdere henvisningen på nytt / Reassess the referral (`vurdere_pa_nytt`); Ikke svare nå / Not reply for now (`ikke_svare`); Ikke bestemt / Not decided (`ikke_bestemt`) |
-| D-V4-B2 | `d_v4_b2` | Lineær skala 1 to 7 | Obligatorisk | Hvor sikker er du på hva du ville gjort videre med ATLAS? / How confident are you about what you would do next with ATLAS? | 1 to 7: Svært usikker / Very uncertain … Svært sikker / Very confident |
-| D-V4-01 | `d_v4_01` | Tekstsvar (langt), at most 3,800 characters | Obligatorisk | Endrer den strukturerte tilbakemeldingen hvordan du ville svart fastlegen? (1-3 setninger) / Does the structured feedback change how you would answer the GP? (1-3 sentences) |  |
-| D-V4-02 | `d_v4_02` | Tekstsvar (langt), at most 3,800 characters | No | Ville strukturert tilbakemelding på avslag endre hvordan du skriver neste avslag? / Would structured feedback on rejections change how you write your next rejection? |  |
-| D-V4-03 | `d_v4_03` | Tekstsvar (langt), at most 3,800 characters | Obligatorisk | Hva konkret ved ATLAS utgjorde forskjellen (eller mislyktes)? Hva mangler? (1-3 setninger) / What specifically about ATLAS made the difference (or failed)? What is missing? (1-3 sentences) |  |
-| D-V4-04 | `d_v4_04` | Lineær skala 1 to 7 | No | Samlet nytteverdi av ATLAS for dette scenariet. / Overall helpfulness of ATLAS for this scenario. | 1 to 7: Ikke nyttig / Not helpful … Svært nyttig / Very helpful |
-
-- **Receipt:** «Takk, svarene er sendt. Gå tilbake til ATLAS for å fortsette.» / "Thank you, the answers have been sent. Go back to ATLAS to continue."
-
-### S6: «Avslutning» / "Closing"
-
-- **Used by:** Step S6, both roles.
-- **Address goes in:** `forms["S6"]` in `app/public/atlas-config.json`.
-- **Locked fields:** `rolle`, `intervju`, `studienavn`, `steg`, `versjon`.
-- **Intro:** «Dette skjemaet spør om helhetsvurderingen din av ATLAS etter de tre sakene. Kritikk er like nyttig som ros. Ved å sende skjemaet samtykker du i at de anonyme svarene brukes i forskningsprosjektet.» / "This form asks for your overall assessment of ATLAS after the three cases. Criticism is as useful as praise. By sending the form, you consent to the anonymous answers being used in the research project."
-
-**Page**
-
-| ID | Codebook | Type | Required | Text (nb / en) | Scale or options |
-|---|---|---|---|---|---|
-| rolle | `rolle` | Tekstsvar (kort), locked |  | Rolle / Role |  |
-| intervju | `intervju` | Tekstsvar (kort), locked |  | Deltok du i et intervju i dette forskningsprosjektet? / Did you take part in an interview in this research project? |  |
-| studienavn | `studienavn` | Tekstsvar (kort), locked |  | Studienavn / Study name |  |
-| steg | `steg` | Tekstsvar (kort), locked |  | Steg / Step |  |
-| versjon | `versjon` | Tekstsvar (kort), locked |  | Versjon / Version |  |
-| E-01 | `e_01` | Tekstsvar (langt), at most 3,800 characters | Obligatorisk | Hva er den mest verdifulle egenskapen ved ATLAS? (1-3 setninger) / What is the single most valuable feature of ATLAS? (1-3 sentences) |  |
-| E-02 | `e_02` | Tekstsvar (langt), at most 3,800 characters | Obligatorisk | Hva er din største bekymring med ATLAS? (1-3 setninger) / What is your single biggest concern about ATLAS? (1-3 sentences) |  |
-| E-03 | `e_03` | Tekstsvar (langt), at most 3,800 characters | Obligatorisk | Ville du brukt ATLAS i din nåværende praksis? Hvorfor / hvorfor ikke? (1-3 setninger) / Would you use ATLAS in your current practice? Why / why not? (1-3 sentences) |  |
-| E-04 | `e_04` | Tekstsvar (langt), at most 3,800 characters | Obligatorisk | Hva måtte endres for at du skulle ta i bruk ATLAS? (1-3 setninger) / What would need to change for you to adopt ATLAS? (1-3 sentences) |  |
-| E-05 | `e_05` | Lineær skala 0 to 10 | No | På en skala fra 0 til 10, hvor sannsynlig er det at du ville anbefalt ATLAS til en kollega? / On a scale from 0 to 10, how likely are you to recommend ATLAS to a colleague? | 0 to 10: Svært lite sannsynlig / Very unlikely … Svært sannsynlig / Very likely |
-| E-06 | `e_06` | Tekstsvar (langt), at most 3,800 characters | No | Er det noe annet du ønsker å legge til? / Is there anything else you would like to add? |  |
 
 - **Receipt:** «Takk, svarene er sendt. Gå tilbake til ATLAS for å fortsette.» / "Thank you, the answers have been sent. Go back to ATLAS to continue."
 
@@ -418,15 +438,15 @@ Each case form has three pages, and each case has one form per role, so each rol
 
 | ID | Codebook | Type | Required | Text (nb / en) | Scale or options |
 |---|---|---|---|---|---|
+| D-V2-01 | `d_v2_01` | Tekstsvar (langt), at most 3,800 characters | No | Er ATLAS raskere, tregere eller like raskt som slik du jobber i dag med denne typen henvisning? / Is ATLAS faster, slower or as fast as the way you work today with this kind of referral? |  |
+| D-V2-02 | `d_v2_02` | Tekstsvar (langt), at most 3,800 characters | No | Er ATLAS nyttig i klare saker, eller først og fremst i gråsonesaker? Er det greit? / Is ATLAS useful in clear cases, or mainly in grey-zone cases? Is that acceptable? |  |
+| D-V2-03 | `d_v2_03` | Flervalg (én), in one row: 1 to 7 | No | Hvor nyttig var ATLAS i denne saken? / How useful was ATLAS in this case? | 1 to 7: Ikke nyttig / Not helpful … Svært nyttig / Very helpful |
 | rolle | `rolle` | Tekstsvar (kort), locked |  | Rolle / Role |  |
 | intervju | `intervju` | Tekstsvar (kort), locked |  | Deltok du i et intervju i dette forskningsprosjektet? / Did you take part in an interview in this research project? |  |
 | studienavn | `studienavn` | Tekstsvar (kort), locked |  | Studienavn / Study name |  |
 | steg | `steg` | Tekstsvar (kort), locked |  | Steg / Step |  |
 | vignett | `vignett` | Tekstsvar (kort), locked |  | Vignett / Vignette |  |
 | versjon | `versjon` | Tekstsvar (kort), locked |  | Versjon / Version |  |
-| D-V2-01 | `d_v2_01` | Tekstsvar (langt), at most 3,800 characters | No | Er ATLAS raskere, tregere, eller likt med dagens praksis for denne typen henvisning? / Is ATLAS faster, slower, or the same as current practice for this type of referral? |  |
-| D-V2-02 | `d_v2_02` | Tekstsvar (langt), at most 3,800 characters | No | Tilfører ATLAS nytteverdi for klare saker, eller er det primært designet for gråsonesituasjoner? Er det akseptabelt? / Does ATLAS add value for clear-cut cases, or is it primarily designed for grey-zone situations? Is that acceptable? |  |
-| D-V2-03 | `d_v2_03` | Lineær skala 1 to 7 | No | Samlet nytteverdi av ATLAS for dette scenariet. / Overall helpfulness of ATLAS for this scenario. | 1 to 7: Ikke nyttig / Not helpful … Svært nyttig / Very helpful |
 
 - **Receipt:** «Takk, svarene er sendt. Gå tilbake til ATLAS for å fortsette.» / "Thank you, the answers have been sent. Go back to ATLAS to continue."
 
@@ -441,14 +461,14 @@ Each case form has three pages, and each case has one form per role, so each rol
 
 | ID | Codebook | Type | Required | Text (nb / en) | Scale or options |
 |---|---|---|---|---|---|
+| D-V5-01 | `d_v5_01` | Tekstsvar (langt), at most 3,800 characters | No | Ville en erfaren fastlege og en ny fastlege bruke ATLAS forskjellig? Hvordan? / Would an experienced GP and a new GP use ATLAS differently? How? |  |
+| D-V5-02 | `d_v5_02` | Tekstsvar (langt), at most 3,800 characters | No | Er det en risiko for at tallene i «Mitt henvisningsmønster» kan virke demotiverende for erfarne fastleger som henviser stadig færre? / Is there a risk that the figures in ‘My referral pattern’ could be demotivating for experienced GPs who refer fewer and fewer? |  |
 | rolle | `rolle` | Tekstsvar (kort), locked |  | Rolle / Role |  |
 | intervju | `intervju` | Tekstsvar (kort), locked |  | Deltok du i et intervju i dette forskningsprosjektet? / Did you take part in an interview in this research project? |  |
 | studienavn | `studienavn` | Tekstsvar (kort), locked |  | Studienavn / Study name |  |
 | steg | `steg` | Tekstsvar (kort), locked |  | Steg / Step |  |
 | vignett | `vignett` | Tekstsvar (kort), locked |  | Vignett / Vignette |  |
 | versjon | `versjon` | Tekstsvar (kort), locked |  | Versjon / Version |  |
-| D-V5-01 | `d_v5_01` | Tekstsvar (langt), at most 3,800 characters | No | Ville en erfaren fastlege og en ny fastlege bruke ATLAS forskjellig? Hvordan? / Would an experienced GP and a new GP use ATLAS differently? How? |  |
-| D-V5-02 | `d_v5_02` | Tekstsvar (langt), at most 3,800 characters | No | Er det en risiko for at kalibreringsdata kan virke demotiverende for erfarne fastleger med synkende henvisningsrate? / Is there a risk that calibration data could be discouraging for experienced GPs with declining referral rates? |  |
 
 - **Receipt:** «Takk, svarene er sendt. Gå tilbake til ATLAS for å fortsette.» / "Thank you, the answers have been sent. Go back to ATLAS to continue."
 
@@ -463,16 +483,16 @@ Each case form has three pages, and each case has one form per role, so each rol
 
 | ID | Codebook | Type | Required | Text (nb / en) | Scale or options |
 |---|---|---|---|---|---|
+| S9-01 | `s9_01` | Tekstsvar (langt), at most 3,800 characters | No | Hva la du merke til her? Noe som var uklart, nyttig eller i veien? / What did you notice here? Anything unclear, useful or in the way? |  |
+| S9-02 | `s9_02` | Flervalg (én), in one row: 1 to 5 | No | Hvor tydelig var denne delen? / How clear was this part? | 1 to 5: Svært utydelig / Very unclear … Svært tydelig / Very clear |
+| S9-03 | `s9_03` | Tekstsvar (langt), at most 3,800 characters | No | Hva ville du endret? / What would you change? |  |
+| S9-04 | `s9_04` | Flervalg (én) | No | Leste du noe her som et råd om hva du skulle gjøre? / Did you read anything here as advice on what to do? | Ja / Yes; Nei / No; Usikker / Unsure |
+| S9-05 | `s9_05` | Tekstsvar (langt), at most 3,800 characters | No | Hva? / What? |  |
 | rolle | `rolle` | Tekstsvar (kort), locked |  | Rolle / Role |  |
 | studienavn | `studienavn` | Tekstsvar (kort), locked |  | Studienavn / Study name |  |
 | side | `side` | Tekstsvar (kort), locked |  | Side i ATLAS / Page in ATLAS |  |
 | seksjon | `seksjon` | Tekstsvar (kort), locked |  | Seksjon / Section |  |
 | versjon | `versjon` | Tekstsvar (kort), locked |  | Versjon / Version |  |
-| S9-01 | `s9_01` | Tekstsvar (langt), at most 3,800 characters | No | Hva la du merke til her? Noe som var uklart, nyttig eller i veien? / What did you notice here? Anything unclear, useful or in the way? |  |
-| S9-02 | `s9_02` | Lineær skala 1 to 5 | No | Hvor tydelig var denne delen? / How clear was this part? | 1 to 5: Svært utydelig / Very unclear … Svært tydelig / Very clear |
-| S9-03 | `s9_03` | Tekstsvar (langt), at most 3,800 characters | No | Hva ville du endret? / What would you change? |  |
-| S9-04 | `s9_04` | Flervalg (én) | No | Leste du noe her som et råd om hva du skulle gjøre? / Did you read anything here as advice on what to do? | Ja / Yes; Nei / No; Usikker / Unsure |
-| S9-05 | `s9_05` | Tekstsvar (langt), at most 3,800 characters | No | Hva? / What? |  |
 
 - **Receipt:** «Takk, tilbakemeldingen er sendt. Gå tilbake til ATLAS for å fortsette.» / "Thank you, the feedback has been sent. Go back to ATLAS to continue."
 
@@ -487,16 +507,16 @@ Each case form has three pages, and each case has one form per role, so each rol
 
 | ID | Codebook | Type | Required | Text (nb / en) | Scale or options |
 |---|---|---|---|---|---|
-| rolle | `rolle` | Tekstsvar (kort), locked |  | Rolle / Role |  |
-| side | `side` | Tekstsvar (kort), locked |  | Side i ATLAS / Page in ATLAS |  |
-| seksjon | `seksjon` | Tekstsvar (kort), locked |  | Seksjon / Section |  |
-| versjon | `versjon` | Tekstsvar (kort), locked |  | Versjon / Version |  |
-| R1-01 | `r1_01` | Lineær skala 1 to 5 | No | Hvor tydelig er denne delen? / How clear is this part? | 1 to 5: Svært utydelig / Very unclear … Svært tydelig / Very clear |
+| R1-01 | `r1_01` | Flervalg (én), in one row: 1 to 5 | No | Hvor tydelig er denne delen? / How clear is this part? | 1 to 5: Svært utydelig / Very unclear … Svært tydelig / Very clear |
 | R1-02 | `r1_02` | Tekstsvar (langt), at most 3,800 characters | No | Hva fungerer her? / What works here? |  |
 | R1-03 | `r1_03` | Tekstsvar (langt), at most 3,800 characters | No | Hva vil du endre her? / What would you change here? |  |
 | R1-04 | `r1_04` | Flervalg (én) | No | Hvor viktig er endringen? / How important is the change? | Lite / Low; Middels / Medium; Svært viktig / Very important |
 | R1-05 | `r1_05` | Flervalg (én) | No | Leste du noe her som et råd om hva klinikeren skal gjøre? / Did you read anything here as advice on what the clinician should do? | Ja / Yes; Nei / No; Usikker / Unsure |
 | R1-06 | `r1_06` | Tekstsvar (langt), at most 3,800 characters | No | Hva? / What? |  |
+| rolle | `rolle` | Tekstsvar (kort), locked |  | Rolle / Role |  |
+| side | `side` | Tekstsvar (kort), locked |  | Side i ATLAS / Page in ATLAS |  |
+| seksjon | `seksjon` | Tekstsvar (kort), locked |  | Seksjon / Section |  |
+| versjon | `versjon` | Tekstsvar (kort), locked |  | Versjon / Version |  |
 
 - **Receipt:** «Takk, svarene er sendt. Gå tilbake til ATLAS for å fortsette.» / "Thank you, the answers have been sent. Go back to ATLAS to continue."
 
@@ -511,11 +531,11 @@ Each case form has three pages, and each case has one form per role, so each rol
 
 | ID | Codebook | Type | Required | Text (nb / en) | Scale or options |
 |---|---|---|---|---|---|
-| rolle | `rolle` | Tekstsvar (kort), locked |  | Rolle / Role |  |
-| versjon | `versjon` | Tekstsvar (kort), locked |  | Versjon / Version |  |
-| R2-01 | `r2_01` | Lineær skala 1 to 5 | No | Hvor tydelig er ATLAS som helhet? / How clear is ATLAS as a whole? | 1 to 5: Svært utydelig / Very unclear … Svært tydelig / Very clear |
+| R2-01 | `r2_01` | Flervalg (én), in one row: 1 to 5 | No | Hvor tydelig er ATLAS som helhet? / How clear is ATLAS as a whole? | 1 to 5: Svært utydelig / Very unclear … Svært tydelig / Very clear |
 | R2-02 | `r2_02` | Tekstsvar (langt), at most 3,800 characters | No | Hva fungerer best? / What works best? |  |
 | R2-03 | `r2_03` | Tekstsvar (langt), at most 3,800 characters | No | Hva er viktigst å endre før evalueringen starter? / What is most important to change before the evaluation starts? |  |
 | R2-04 | `r2_04` | Tekstsvar (langt), at most 3,800 characters | No | Er det noe annet du vil legge til? / Is there anything else you would like to add? |  |
+| rolle | `rolle` | Tekstsvar (kort), locked |  | Rolle / Role |  |
+| versjon | `versjon` | Tekstsvar (kort), locked |  | Versjon / Version |  |
 
 - **Receipt:** «Takk, svarene er sendt. Gå tilbake til ATLAS for å fortsette.» / "Thank you, the answers have been sent. Go back to ATLAS to continue."

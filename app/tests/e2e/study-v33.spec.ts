@@ -34,25 +34,37 @@ test('Velkommen reaches the footer at a laptop and a desktop size, and each role
     // The panel's wrap ends one inset above the footer, whether the content is shorter than the window or not.
     expect(await gapToFooter(page, hero), `${width} × ${height}`).toBeLessThanOrEqual(16);
   }
-  for (const name of ['Start som fastlege', 'Start i DPS-inntaket']) expect(await hasSheen(page.getByRole('button', { name })), name).toBe(true);
+  for (const name of ['Start som fastlege', 'Start som ansatt i DPS']) expect(await hasSheen(page.getByRole('button', { name })), name).toBe(true);
   // The tour's step carries the guide's solid coral mark (board 10b).
   const marks = page.locator('[data-welcome="first"] ol li span[aria-hidden="true"]');
   expect(await marks.nth(2).evaluate((el) => getComputedStyle(el).backgroundColor)).toBe('rgb(245, 158, 133)');
 });
 
-test('Om deg: the study name as a profile card with its mark, both panels down to the footer, and the mark in the header', async ({ page }) => {
+test('Om deg (3.8): one card, the study name as its profile over the cover, Om deg below, and the mark in the header', async ({ page }) => {
   await page.setViewportSize({ width: 1536, height: 713 });
   await mockNettskjema(page);
   await page.goto('/');
   await page.getByRole('button', { name: 'Start som fastlege' }).click();
   await expect(page.getByRole('heading', { level: 1, name: 'Om deg' })).toBeVisible();
-  const card = page.locator('aside[data-studienavn]');
+  // 3.8: no card of its own beside the page (a supervisor read the two boxes as unrelated): one card holds the name and
+  // the question.
+  await expect(page.locator('aside[data-studienavn]')).toHaveCount(0);
+  const card = page.locator('section[data-studienavn]');
+  await expect(card.getByRole('heading', { level: 1, name: 'Om deg' })).toBeVisible();
   const name = (await card.locator('[data-studienavn-value]').textContent())!.trim();
-  // 3.4: the mark shows the name's animal, a picture with no text of its own; the cover wears the GP's wave.
-  await expect(card.locator('[data-name-mark]')).toHaveAttribute('data-animal', name.split(' ')[1]);
+  expect(name).toMatch(/^\S+ \S+ \d+$/);
+  // 3.4: the mark shows the name's animal, a picture with no text of its own; the cover wears the GP's wave, once.
+  const mark = card.locator('[data-name-mark]');
+  await expect(mark).toHaveAttribute('data-animal', name.split(' ')[1]);
   await expect(card.locator('[data-name-mark] img')).toHaveAttribute('alt', '');
+  await expect(card.locator('[data-guide-image]')).toHaveCount(1);
   await expect(card.locator('[data-guide-image="cover"]')).toHaveAttribute('data-guide-art', 'gp');
-  expect(await gapToFooter(page, card)).toBeLessThanOrEqual(16);
+  // The mark is large and sits level with the name: their bottoms within a few pixels of each other's line.
+  const m = (await mark.boundingBox())!;
+  expect(m.width).toBeGreaterThanOrEqual(160);
+  const nameBox = (await card.locator('[data-studienavn-value]').boundingBox())!;
+  expect(nameBox.x).toBeGreaterThan(m.x + m.width);
+  expect(nameBox.y + nameBox.height).toBeLessThan(m.y + m.height);
   // The header's account: the mark opens a card with the name and the role.
   const account = page.locator('[data-study-account]');
   await expect(account).toHaveAccessibleName(`Studienavnet ditt: ${name}`);
@@ -181,7 +193,7 @@ test('a case page reaches the footer too, and the briefing starts the case with 
   expect(await gapToFooter(page, last)).toBeLessThanOrEqual(16);
 });
 
-test('the end of a case: both ways on sit in the warm bar, the feedback first with the sheen (board 9b)', async ({ page }) => {
+test('the end of a case: both ways on sit in the warm bar, the way on first with the sheen (3.8, F33)', async ({ page }) => {
   await mockNettskjema(page);
   await startStudy(page, 'Fastlege');
   await sendForm(page);
@@ -200,14 +212,30 @@ test('the end of a case: both ways on sit in the warm bar, the feedback first wi
   await page.getByRole('button', { name: 'Gå til oppsummeringen' }).click();
   const bar = page.locator('[data-case-prompt="kari"]');
   await expect(bar).toBeVisible();
-  expect(await hasSheen(bar.locator('[data-prompt-feedback]'))).toBe(true);
+  // 3.8 (F33): the way on is the one main action, with the sheen; the feedback beside it is a plain button.
+  expect(await hasSheen(bar.locator('[data-prompt-feedback]'))).toBe(false);
   // 3.4: after case 1 the way on is the list.
   const home = bar.getByRole('button', { name: 'Til timelisten' });
   await expect(home).toBeVisible();
-  expect(await hasSheen(home)).toBe(false);
+  expect(await hasSheen(home)).toBe(true);
   // Nothing on the summary's white card outside the bar carries the sheen.
   const sheens = await page.locator('main button').evaluateAll((els) => els.filter((el) => getComputedStyle(el).backgroundImage.includes('linear-gradient')).length);
   expect(sheens).toBe(1);
   await home.click();
   await expect(page.getByRole('heading', { level: 1, name: 'Timeliste i dag' })).toBeVisible();
+});
+
+test('Om deg (3.8): «Lagre og åpne skjemaet» is never greyed out; with no answer it says so in red and the question takes focus', async ({ page }) => {
+  await mockNettskjema(page);
+  await page.goto('/');
+  await page.getByRole('button', { name: 'Start som fastlege' }).click();
+  const save = page.getByRole('button', { name: 'Lagre og åpne skjemaet' });
+  await expect(save).toBeEnabled();
+  await save.click();
+  await expect(page.getByRole('alert')).toHaveText('Svar på spørsmålet for å gå videre.');
+  await expect(page.getByRole('radio', { name: 'Ja' })).toBeFocused();
+  await expect(page.locator('iframe[data-form-frame]')).toHaveCount(0);
+  await page.getByLabel('Nei', { exact: true }).check({ force: true });
+  await save.click();
+  await expect(page.locator('iframe[data-form-frame]')).toBeVisible();
 });

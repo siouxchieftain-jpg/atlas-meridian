@@ -69,8 +69,8 @@
       }
     },
     "atlasTask": {
-      "nb": "Plasser saken på båndet før du ser systemets lesning. Bestem deretter om du vil henvise.",
-      "en": "Place the case on the band before you see the system’s reading. Then decide whether to refer."
+      "nb": "Plasser saken på skalaen før du ser systemets vurdering. Bestem deretter om du vil henvise.",
+      "en": "Place the case on the scale before you see the system’s assessment. Then decide whether to refer."
     },
     "profile": [
       {
@@ -202,8 +202,8 @@
         "en": "Placements and outcome"
       },
       "whatHappened": {
-        "nb": "{{plassering}} Systemets lesning lå klart innenfor kriteriene. Fastlegens beslutning: {{beslutning}}. Fastlegens trygghet: {{trygghet}}.",
-        "en": "{{plassering}} The system’s reading was clearly within the criteria. The GP’s decision: {{beslutning}}. The GP’s confidence: {{trygghet}}."
+        "nb": "{{plassering}} Systemets vurdering lå klart innenfor kriteriene. Fastlegens beslutning: {{beslutning}}. Hvor sikker fastlegen var: {{trygghet}}.",
+        "en": "{{plassering}} The system’s assessment was clearly within the criteria. The GP’s decision: {{beslutning}}. How sure the GP was: {{trygghet}}."
       },
       "purpose": {
         "nb": "Saken er laget for å prøve om ATLAS blir en ekstra byrde i en klar sak der fastlegen ikke er i tvil, og om løsningen passer for klare saker eller først og fremst for gråsonesaker.",

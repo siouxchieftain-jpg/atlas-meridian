@@ -464,8 +464,8 @@ export function studyNameAnimal(name: string): { animal: string; url: string } |
 }
 
 /** 28 px is the smallest mark: below it the animals blur (an eagle or a badger at 24 px is a smudge). */
-type MarkSize = 28 | 32 | 40 | 48 | 56 | 64 | 104;
-const MARK_TEXT: Record<MarkSize, string> = { 28: '11px', 32: '12px', 40: '14px', 48: '17px', 56: '20px', 64: '22px', 104: '34px' };
+type MarkSize = 28 | 32 | 40 | 48 | 56 | 64 | 104 | 168;
+const MARK_TEXT: Record<MarkSize, string> = { 28: '11px', 32: '12px', 40: '14px', 48: '17px', 56: '20px', 64: '22px', 104: '34px', 168: '54px' };
 
 /**
  * The study name's mark: the name's animal on the guide's warm gradient (its initials when ATLAS has no picture of the
@@ -476,7 +476,7 @@ export function StudyNameMark({ name, size = 32, ring, className }: { name: stri
   const cls = useNameMark();
   const animal = studyNameAnimal(name);
   // The large mark (the study name's card) lets the animal fill more of the circle.
-  const inner = Math.round(size * (size >= 104 ? 0.68 : 0.6));
+  const inner = Math.round(size * (size >= 168 ? 0.62 : size >= 104 ? 0.68 : 0.6));
   return (
     <span
       aria-hidden="true"
@@ -649,4 +649,82 @@ export const srOnly = {
 export function SrOnly({ children, as = 'span' }: { children: ReactNode; as?: 'span' | 'h2' | 'p' }) {
   const Tag = as;
   return <Tag style={srOnly}>{children}</Tag>;
+}
+
+/* ---------- Next-step mark (3.8) ---------- */
+
+const useNextMark = makeStyles({
+  wrap: {
+    position: 'relative',
+    display: 'inline-flex',
+    alignSelf: 'flex-start',
+    width: 'fit-content',
+    // Room above for the tag, so it never covers the line before the control.
+    marginBlockStart: '30px',
+    borderRadius: tokens.borderRadiusMedium,
+    // The ring in the coral the tour uses for «Prøv»: participants have met it as "here". It pulses twice when it
+    // appears, then stays still; no motion under reduced motion.
+    '::after': {
+      content: '""',
+      position: 'absolute',
+      inset: '-5px',
+      borderRadius: '10px',
+      border: `2px solid ${guide.coral}`,
+      pointerEvents: 'none',
+      animationName: {
+        '0%': { boxShadow: `0 0 0 0 rgba(245,158,133,0.55)` },
+        '70%': { boxShadow: `0 0 0 10px rgba(245,158,133,0)` },
+        '100%': { boxShadow: `0 0 0 0 rgba(245,158,133,0)` },
+      },
+      animationDuration: '1.1s',
+      animationIterationCount: 2,
+      '@media (prefers-reduced-motion: reduce)': { animationName: 'none' },
+    },
+    '@media (forced-colors: active)': { '::after': { border: '2px solid Highlight' } },
+  },
+  tag: {
+    position: 'absolute',
+    bottom: 'calc(100% + 9px)',
+    left: '-5px',
+    zIndex: 1,
+    whiteSpace: 'nowrap',
+    paddingInline: '8px',
+    paddingBlock: '2px',
+    borderRadius: tokens.borderRadiusCircular,
+    backgroundColor: guide.coral,
+    color: '#3D1408',
+    ...typographyStyles.caption1Strong,
+    pointerEvents: 'none',
+    // A small point down to the control.
+    '::after': {
+      content: '""',
+      position: 'absolute',
+      top: '100%',
+      left: '14px',
+      borderLeft: '5px solid transparent',
+      borderRight: '5px solid transparent',
+      borderTop: `5px solid ${guide.coral}`,
+    },
+    '@media (forced-colors: active)': { backgroundColor: 'Highlight', color: 'HighlightText' },
+  },
+});
+
+/**
+ * The next step's mark (3.8): a coral ring and a small «Trykk her» on the one control that moves the study on. Only on
+ * navigation (never on an answer, a placement or anything ATLAS shows, so it cannot lead to a choice), at most one per
+ * screen, gone once the step moves on. The tag is decoration: the control has its own name, and a «Trykk nå» line says
+ * the same in words.
+ */
+export function NextMark({ on, children }: { on: boolean; children: ReactNode }) {
+  const cls = useNextMark();
+  const { s } = useLang();
+  if (!on) return <>{children}</>;
+  return (
+    <span className={cls.wrap} data-next-mark="">
+      {children}
+      <span className={cls.tag} aria-hidden="true">
+        {s('markHere')}
+      </span>
+    </span>
+  );
 }

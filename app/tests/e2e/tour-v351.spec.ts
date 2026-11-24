@@ -187,7 +187,8 @@ test('GP before case 1: the tour shows the pattern and Kalibrering as layouts, w
   const kal = await tourTo(page, 'Delt oversikt: Kalibrering');
   await expectKalibreringHeld(kal);
   await expect(page.getByText('Ingen enkeltklinikere vises, og tallene er fiktive.', { exact: false })).toBeVisible();
-  await expect(page.getByText('Spørsmålene kaller tallene i Kalibrering og i Mitt henvisningsmønster for «kalibreringsdata».')).toBeVisible();
+  // 3.8 (F8): the tour has no bridge lines to the forms' words.
+  await expect(page.getByText(/Spørsmålene kaller|The questions call/)).toHaveCount(0);
   await expect(page.getByRole('button', { name: 'Nullstill eksempelet' })).toHaveCount(0);
   await axe(page);
 });
@@ -197,7 +198,8 @@ test('DPS before case 1: the tour shows Kalibrering as a layout, with no figure 
   const kal = await tourTo(page, 'Delt oversikt: Kalibrering');
   await expectKalibreringHeld(kal);
   await expect(page.getByText('Ingen enkeltfastlege vises, og tallene er fiktive.', { exact: false })).toBeVisible();
-  await expect(page.getByText('Spørsmålene kaller tallene i Kalibrering for «kalibreringsdata»', { exact: false })).toBeVisible();
+  // 3.8 (F8): the tour has no bridge lines to the forms' words.
+  await expect(page.getByText(/Spørsmålene kaller|The questions call/)).toHaveCount(0);
   await axe(page);
 });
 
@@ -213,7 +215,8 @@ test('English: both held windows say the same as the Norwegian', async ({ page }
   await expect(kal.getByRole('region', { name: 'The catchment area' })).toContainText('Referrals received');
   await expect(kal.getByRole('region', { name: 'Common reasons for return' }).getByRole('listitem')).toHaveCount(0);
   expect(await kal.innerText()).not.toContain('%');
-  await expect(page.getByText('The questions call the figures in Calibration and in My referral pattern ‘calibration data’.')).toBeVisible();
+  // 3.8 (F8): the tour has no bridge lines to the forms' words.
+  await expect(page.getByText(/Spørsmålene kaller|The questions call/)).toHaveCount(0);
 });
 
 test('the held windows at 320 px and in forced colours: no sideways scroll, and the line keeps its dashed border', async ({ page }) => {

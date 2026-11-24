@@ -92,6 +92,12 @@ export interface Briefing {
   rows: Row[];
   /** For example «Omtrent 10 minutter». */
   time: T;
+  /**
+   * The three cases only (3.8, F51, F70, F76): what kind of case it is and what the participant is asked to do, in one
+   * short, neutral line («Sak 1: ny henvisning. Du avgjør om du vil henvise Kari til DPS.»). The same pattern for both
+   * roles; it names no outcome and no ATLAS element.
+   */
+  scenario?: { kind: T; task: T };
 }
 
 export interface SystemReading {
@@ -402,7 +408,6 @@ export type FormKey =
   | 'S4.dps'
   | 'S5.fastlege'
   | 'S5.dps'
-  | 'S6'
   | 'S7.fastlege'
   | 'S8'
   | 'S9'
@@ -414,6 +419,7 @@ export type ItemType =
   | 'agree7' // 1 Helt uenig to 7 Helt enig
   | 'confidence7' // 1 Svært usikker to 7 Svært sikker
   | 'helpful7' // 1 Ikke nyttig to 7 Svært nyttig (Appendix E item 4)
+  | 'likely7' // 1 Svært lite sannsynlig to 7 Svært sannsynlig (3.8: E-05, from 0 to 10, F92)
   | 'nps11' // 0 Svært lite sannsynlig to 10 Svært sannsynlig
   | 'clarity5' // R1: 1 to 5
   | 'importance3' // R1: Lite, Middels, Svært viktig
@@ -421,6 +427,8 @@ export type ItemType =
   | 'text' // short text
   | 'longtext' // 1 to 3 sentences, max 3,800 characters
   | 'stop' // the stop page text in a vignette form
+  | 'note' // a plain line of text, no question (3.8: where a case form turns to ATLAS, F37)
+  | 'heading' // a part's heading in a form, no question (3.8: the two parts of the closing form)
   | 'consent'; // S1: one required tick box (its one option, «Ja»), consent to take part
 
 export interface InstrumentItem {

@@ -288,16 +288,16 @@
     "en": "The task"
   },
   "bandTitle": {
-    "nb": "Usikkerhetsvisning",
-    "en": "Uncertainty display"
+    "nb": "Usikkerhetsskala: saken mot DPS-kriteriene",
+    "en": "Uncertainty scale: the case against the DPS criteria"
   },
   "bandPlace": {
     "nb": "Plasser saken",
     "en": "Place the case"
   },
   "bandPlaceHint": {
-    "nb": "Velg hvor saken ligger mellom klart utenfor og klart innenfor DPS-kriteriene. Systemets lesning vises etter at du har plassert saken.",
-    "en": "Choose where the case lies between clearly outside and clearly within the DPS criteria. The system’s reading appears after you have placed the case."
+    "nb": "Velg hvor saken ligger mellom klart utenfor og klart innenfor kriteriene i prioriteringsveilederen.",
+    "en": "Choose where the case lies between clearly outside and clearly within the criteria in the priority-setting guideline."
   },
   "bandNotPlaced": {
     "nb": "Ikke plassert ennå.",
@@ -316,8 +316,8 @@
     "en": "DPS intake placed the case: {{pos}}."
   },
   "bandSystemSentence": {
-    "nb": "Systemets lesning: {{pos}}.",
-    "en": "The system’s reading: {{pos}}."
+    "nb": "Systemets vurdering: {{pos}}.",
+    "en": "The system’s assessment: {{pos}}."
   },
   "bandChange": {
     "nb": "Endre plasseringen",
@@ -352,8 +352,8 @@
     "en": "clearly within the criteria"
   },
   "readingTitle": {
-    "nb": "Systemets lesning",
-    "en": "The system’s reading"
+    "nb": "Systemets vurdering av saken",
+    "en": "The system’s assessment of the case"
   },
   "illustrationChip": {
     "nb": "Illustrasjon",
@@ -368,8 +368,8 @@
     "en": "Markers"
   },
   "unclearTitle": {
-    "nb": "Hva er uklart",
-    "en": "What is unclear"
+    "nb": "Hva er uklart i saken?",
+    "en": "What is unclear in the case?"
   },
   "unclearDescribe": {
     "nb": "Beskriv kort hva som er uklart",
@@ -384,16 +384,16 @@
     "en": "What does {{tag}} mean?"
   },
   "confidenceTitle": {
-    "nb": "Din trygghet nå",
-    "en": "Your confidence now"
+    "nb": "Hvor sikker er du nå?",
+    "en": "How sure are you now?"
   },
   "confidenceHint": {
-    "nb": "Velg ett av fem trinn.",
-    "en": "Choose one of five steps."
+    "nb": "Velg det som passer best.",
+    "en": "Choose what fits best."
   },
   "confidenceNote": {
-    "nb": "DPS ser tryggheten for denne henvisningen i ord, aldri en historikk.",
-    "en": "DPS sees your confidence for this referral in words, never a history."
+    "nb": "Henviser du, ser DPS hvor sikker du er på denne henvisningen, i ord og aldri som en historikk.",
+    "en": "If you refer, DPS sees how sure you are about this referral, in words and never as a history."
   },
   "guideTitle": {
     "nb": "Informasjonsguiden",
@@ -404,20 +404,20 @@
     "en": "{{n}} of 5 criteria mentioned"
   },
   "guideReadsNote": {
-    "nb": "Leser notatet og ser etter vanlige ord for kriteriene i prioriteringsveilederen. Guiden kan overse det som er skrevet med andre ord, eller telle ord som står i en annen sammenheng, og den er ikke et krav.",
-    "en": "Reads the note and looks for common words for the criteria in the priority-setting guideline. The guide can miss what is written in other words, or count words used in another context, and it is not a requirement."
+    "nb": "Leser konsultasjonsnotatet ditt og viser hvilke av kriteriene i prioriteringsveilederen det omtaler. Guiden ser etter vanlige ord og kan overse det som er skrevet med andre ord, eller telle ord som står i en annen sammenheng. Den er ikke et krav.",
+    "en": "Reads your consultation note and shows which of the criteria in the priority-setting guideline it mentions. The guide looks for common words and can miss what is written in other words, or count words used in another context. It is not a requirement."
   },
   "guideReadsDraft": {
-    "nb": "Leser henvisningen del for del mens du skriver. «Omtalt» betyr at delen sier noe om kriteriet, ikke at det som står, er nok. Guiden kan ta feil begge veier, og den er ikke et krav.",
-    "en": "Reads the referral section by section as you write. ‘Mentioned’ means that the section says something about the criterion, not that what is written is enough. The guide can be wrong both ways, and it is not a requirement."
+    "nb": "Leser henvisningen din del for del mens du skriver, og viser hvilke av kriteriene i prioriteringsveilederen den omtaler. «Omtalt» betyr at delen sier noe om kriteriet, ikke at det som står, er nok. Guiden kan ta feil begge veier, og den er ikke et krav.",
+    "en": "Reads your referral section by section as you write, and shows which of the criteria in the priority-setting guideline it mentions. ‘Mentioned’ means the section says something about the criterion, not that what is written is enough. The guide can be wrong both ways, and it is not a requirement."
   },
   "guideAsReceived": {
-    "nb": "Slik guiden leste henvisningen da fastlegen sendte den. Guiden ser om hver del sier noe om kriteriet, ikke om det er nok, og den kan ta feil.",
-    "en": "How the guide read the referral when the GP sent it. The guide sees whether each section says something about the criterion, not whether it is enough, and it can be wrong."
+    "nb": "Leste henvisningen slik fastlegen sendte den, og viser hvilke av kriteriene i prioriteringsveilederen den omtaler. Guiden ser om hver del sier noe om kriteriet, ikke om det er nok, og den kan ta feil.",
+    "en": "Read the referral as the GP sent it, and shows which of the criteria in the priority-setting guideline it mentions. The guide sees whether each section says something about the criterion, not whether it is enough, and it can be wrong."
   },
   "guideAsSent": {
-    "nb": "Slik guiden leste henvisningen da du sendte den. Guiden ser om hver del sier noe om kriteriet, ikke om det er nok, og den kan ta feil.",
-    "en": "How the guide read the referral when you sent it. The guide sees whether each section says something about the criterion, not whether it is enough, and it can be wrong."
+    "nb": "Leste henvisningen slik du sendte den, og viser hvilke av kriteriene i prioriteringsveilederen den omtaler. Guiden ser om hver del sier noe om kriteriet, ikke om det er nok, og den kan ta feil.",
+    "en": "Read the referral as you sent it, and shows which of the criteria in the priority-setting guideline it mentions. The guide sees whether each section says something about the criterion, not whether it is enough, and it can be wrong."
   },
   "mentioned": {
     "nb": "Omtalt",
@@ -444,12 +444,12 @@
     "en": "Written by you"
   },
   "tourPlaceFirst": {
-    "nb": "Plasser saken på båndet først. Systemets lesning vises når saken er plassert.",
-    "en": "Place the case on the band first. The system’s reading appears once the case is placed."
+    "nb": "Plasser saken på skalaen først. Systemets vurdering vises når saken er plassert.",
+    "en": "Place the case on the scale first. The system’s assessment appears once the case is placed."
   },
   "tourPlaceFirstDps": {
-    "nb": "Plasser saken på båndet først. Fastlegens markør og systemets lesning vises når saken er plassert.",
-    "en": "Place the case on the band first. The GP’s marker and the system’s reading appear once the case is placed."
+    "nb": "Plasser saken på skalaen først. Fastlegens markør og systemets vurdering vises når saken er plassert.",
+    "en": "Place the case on the scale first. The GP’s marker and the system’s assessment appear once the case is placed."
   },
   "whatDpsLooksFor": {
     "nb": "Hva DPS ser etter",
@@ -540,12 +540,12 @@
     "en": "Self-report"
   },
   "showAnswers": {
-    "nb": "Vis svar",
-    "en": "Show answers"
+    "nb": "Vis selvrapporten",
+    "en": "Show the self-report"
   },
   "hideAnswers": {
-    "nb": "Skjul svar",
-    "en": "Hide answers"
+    "nb": "Skjul selvrapporten",
+    "en": "Hide the self-report"
   },
   "profile": {
     "nb": "Profil",
@@ -636,20 +636,20 @@
     "en": "Placements and outcome"
   },
   "draftMeansSecond": {
-    "nb": "«Lagre utkast» betyr at den nye henvisningen ikke sendes nå. Saken følges da opp i allmennpraksis.",
-    "en": "‘Save draft’ means the new referral is not sent now. The case is then followed up in general practice."
+    "nb": "Med «Lagre utkast uten å sende» sendes ikke den nye henvisningen nå, og saken følges opp i allmennpraksis.",
+    "en": "With ‘Save the draft without sending’ the new referral is not sent now, and the case is followed up in general practice."
   },
   "sentAtlasOne": {
-    "nb": "Fra ATLAS-panelet følger {{list}} med henvisningen.",
-    "en": "From the ATLAS panel, {{list}} goes with the referral."
+    "nb": "Fra ATLAS følger {{list}} med henvisningen.",
+    "en": "From ATLAS, {{list}} goes with the referral."
   },
   "sentAtlasMany": {
-    "nb": "Fra ATLAS-panelet følger {{list}} med henvisningen.",
-    "en": "From the ATLAS panel, {{list}} go with the referral."
+    "nb": "Fra ATLAS følger {{list}} med henvisningen.",
+    "en": "From ATLAS, {{list}} go with the referral."
   },
   "sentAtlasNone": {
-    "nb": "Ingenting fra ATLAS-panelet følger med henvisningen, fordi feltene der er tomme.",
-    "en": "Nothing from the ATLAS panel goes with the referral, because its fields are empty."
+    "nb": "Ingenting fra ATLAS følger med henvisningen, fordi feltene der er tomme.",
+    "en": "Nothing from ATLAS goes with the referral, because its fields are empty."
   },
   "sentPlacementLater": {
     "nb": "DPS ser plasseringen din først etter å ha plassert saken selv.",
@@ -660,8 +660,8 @@
     "en": "the description of what is unclear"
   },
   "sentPartConfidence": {
-    "nb": "tryggheten din",
-    "en": "your confidence"
+    "nb": "hvor sikker du er",
+    "en": "how sure you are"
   },
   "sentPartPlacement": {
     "nb": "plasseringen din",
@@ -704,8 +704,8 @@
     "en": "From the first referral"
   },
   "fromAtlasPanel": {
-    "nb": "Fra ATLAS-panelet",
-    "en": "From the ATLAS panel"
+    "nb": "Fra ATLAS",
+    "en": "From ATLAS"
   },
   "attachmentNote": {
     "nb": "Vedlegg: konsultasjonsnotat",
@@ -728,16 +728,16 @@
     "en": "Remove the assessment and send"
   },
   "saveDraft": {
-    "nb": "Lagre utkast",
-    "en": "Save draft"
+    "nb": "Lagre utkast uten å sende",
+    "en": "Save the draft without sending"
   },
   "draftMeans": {
-    "nb": "«Lagre utkast» betyr at henvisningen ikke sendes nå. Saken følges da opp i allmennpraksis.",
-    "en": "‘Save draft’ means the referral is not sent now. The case is then followed up in general practice."
+    "nb": "Med «Lagre utkast uten å sende» sendes ingen henvisning nå, og saken følges opp i allmennpraksis.",
+    "en": "With ‘Save the draft without sending’ no referral is sent now, and the case is followed up in general practice."
   },
   "draftMeansShort": {
-    "nb": "«Lagre utkast» betyr at henvisningen ikke sendes nå.",
-    "en": "‘Save draft’ means the referral is not sent now."
+    "nb": "Med «Lagre utkast uten å sende» sendes ingen henvisning nå.",
+    "en": "With ‘Save the draft without sending’ no referral is sent now."
   },
   "draftSaved": {
     "nb": "Utkastet er lagret. Ingen henvisning er sendt.",
@@ -760,8 +760,8 @@
     "en": "The referral has been sent to DPS Skjærgården"
   },
   "sentBodyGp": {
-    "nb": "Henvisningen, beskrivelsen av hva som er uklart, tryggheten din og plasseringen din følger med. DPS ser plasseringen din først etter å ha plassert saken selv.",
-    "en": "The referral, the description of what is unclear, your confidence and your placement go with it. DPS sees your placement only after placing the case themselves."
+    "nb": "Henvisningen, beskrivelsen av hva som er uklart, hvor sikker du er og plasseringen din følger med. DPS ser plasseringen din først etter å ha plassert saken selv.",
+    "en": "The referral, the description of what is unclear, how sure you are and your placement go with it. DPS sees your placement only after placing the case themselves."
   },
   "sentTitleDps": {
     "nb": "Vurderingen er sendt",
@@ -808,8 +808,8 @@
     "en": "The GP sees the reply in the referral thread."
   },
   "heldReply": {
-    "nb": "Svaret fra den andre siden vises når du har sendt resten av skjemaet.",
-    "en": "The reply from the other side is shown once you have sent the rest of the form."
+    "nb": "Svaret fra DPS vises når du har sendt resten av skjemaet.",
+    "en": "The reply from DPS is shown once you have sent the rest of the form."
   },
   "newMessageFrom": {
     "nb": "Ny melding i tråden fra {{who}}.",
@@ -904,8 +904,8 @@
     "en": "The first referral was sent on {{date}}."
   },
   "erlendDraftLine": {
-    "nb": "Utkastet til ny henvisning ligger klart, med ATLAS-panelet ved siden av.",
-    "en": "The draft of the new referral is ready, with the ATLAS panel beside it."
+    "nb": "Utkastet til ny henvisning ligger klart.",
+    "en": "The draft of the new referral is ready."
   },
   "openDraft": {
     "nb": "Åpne utkastet",
@@ -1000,8 +1000,8 @@
     "en": "The GP’s decision"
   },
   "gpConfidence": {
-    "nb": "Fastlegens trygghet",
-    "en": "The GP’s confidence"
+    "nb": "Hvor sikker fastlegen er",
+    "en": "How sure the GP is"
   },
   "dpsAssessment": {
     "nb": "DPS-vurdering",
@@ -1196,36 +1196,36 @@
     "en": "not chosen"
   },
   "dbPlacedFirst": {
-    "nb": "Fastlegen plasserte saken før systemets lesning ble vist.",
-    "en": "The GP placed the case before the system’s reading was shown."
+    "nb": "Fastlegen plasserte saken før systemets vurdering ble vist.",
+    "en": "The GP placed the case before the system’s assessment was shown."
   },
   "dbPlacedMoved": {
-    "nb": "Fastlegen plasserte saken før systemets lesning ble vist, og flyttet markøren etter at lesningen var vist.",
-    "en": "The GP placed the case before the system’s reading was shown, and moved the marker after the reading had been shown."
+    "nb": "Fastlegen plasserte saken før systemets vurdering ble vist, og flyttet markøren etter at vurderingen var vist.",
+    "en": "The GP placed the case before the system’s assessment was shown, and moved the marker after the assessment had been shown."
   },
   "dbNotPlaced": {
-    "nb": "Fastlegen plasserte ikke saken på båndet.",
-    "en": "The GP did not place the case on the band."
+    "nb": "Fastlegen plasserte ikke saken på skalaen.",
+    "en": "The GP did not place the case on the scale."
   },
   "dbDpsPlacedFirst": {
-    "nb": "Fastlegen og DPS plasserte saken hver for seg. Systemets lesning ble vist først etter at hver av dem hadde plassert saken.",
-    "en": "The GP and DPS placed the case separately. The system’s reading was shown only after each of them had placed the case."
+    "nb": "Fastlegen og DPS plasserte saken hver for seg. Systemets vurdering ble vist først etter at hver av dem hadde plassert saken.",
+    "en": "The GP and DPS placed the case separately. The system’s assessment was shown only after each of them had placed the case."
   },
   "dbDpsPlacedMoved": {
-    "nb": "Fastlegen og DPS plasserte saken hver for seg. Systemets lesning ble vist først etter at hver av dem hadde plassert saken. DPS flyttet markøren etter at fastlegens markør og systemets lesning var vist.",
-    "en": "The GP and DPS placed the case separately. The system’s reading was shown only after each of them had placed the case. DPS moved the marker after the GP’s marker and the system’s reading had been shown."
+    "nb": "Fastlegen og DPS plasserte saken hver for seg. Systemets vurdering ble vist først etter at hver av dem hadde plassert saken. DPS flyttet markøren etter at fastlegens markør og systemets vurdering var vist.",
+    "en": "The GP and DPS placed the case separately. The system’s assessment was shown only after each of them had placed the case. DPS moved the marker after the GP’s marker and the system’s assessment had been shown."
   },
   "dbDpsPlacedFirstNoGp": {
-    "nb": "Fastlegen plasserte ikke saken. DPS plasserte den før systemets lesning ble vist.",
-    "en": "The GP did not place the case. DPS placed it before the system’s reading was shown."
+    "nb": "Fastlegen plasserte ikke saken. DPS plasserte den før systemets vurdering ble vist.",
+    "en": "The GP did not place the case. DPS placed it before the system’s assessment was shown."
   },
   "dbDpsPlacedMovedNoGp": {
-    "nb": "Fastlegen plasserte ikke saken. DPS plasserte den før systemets lesning ble vist, og flyttet markøren etter at lesningen var vist.",
-    "en": "The GP did not place the case. DPS placed it before the system’s reading was shown, and moved the marker after the reading had been shown."
+    "nb": "Fastlegen plasserte ikke saken. DPS plasserte den før systemets vurdering ble vist, og flyttet markøren etter at vurderingen var vist.",
+    "en": "The GP did not place the case. DPS placed it before the system’s assessment was shown, and moved the marker after the assessment had been shown."
   },
   "dbDpsNotPlaced": {
-    "nb": "DPS plasserte ikke saken på båndet, så fastlegens markør og systemets lesning ble ikke vist.",
-    "en": "DPS did not place the case on the band, so the GP’s marker and the system’s reading were not shown."
+    "nb": "DPS plasserte ikke saken på skalaen, så fastlegens markør og systemets vurdering ble ikke vist.",
+    "en": "DPS did not place the case on the scale, so the GP’s marker and the system’s assessment were not shown."
   },
   "dbGpAsked": {
     "nb": "Fastlegen spurte om returen {{date}}.",
@@ -1528,8 +1528,8 @@
     "en": "What the GP was unsure about"
   },
   "gpConfidenceWords": {
-    "nb": "Fastlegens trygghet for denne henvisningen: {{v}}.",
-    "en": "The GP’s confidence for this referral: {{v}}."
+    "nb": "Hvor sikker fastlegen er på denne henvisningen: {{v}}.",
+    "en": "How sure the GP is about this referral: {{v}}."
   },
   "noGpHistory": {
     "nb": "Ingen historikk for den enkelte fastlege vises.",
@@ -1992,12 +1992,12 @@
     "en": "Steps in the tour"
   },
   "helhetTitle": {
-    "nb": "Helhetsinntrykk",
-    "en": "Overall impression"
+    "nb": "Avslutning",
+    "en": "Closing questions"
   },
   "helhetIntro": {
-    "nb": "Skjemaet «Helhetsinntrykk» åpnes i panelet. Nå som du har arbeidet med de tre sakene, spør det om ATLAS som helhet. Med «Se igjen» kan du åpne et steg fra omvisningen på nytt.",
-    "en": "The form ‘Overall impression’ opens in the panel. Now that you have worked through the three cases, it asks about ATLAS as a whole. With ‘See again’ you can open a step from the tour once more."
+    "nb": "Skjemaet «Avslutning» åpnes i panelet. Nå som du har arbeidet med de tre sakene, spør det om ATLAS som helhet, og har noen spørsmål til slutt. Med «Se igjen» kan du åpne et steg fra omvisningen på nytt.",
+    "en": "The form ‘Closing questions’ opens in the panel. Now that you have worked through the three cases, it asks about ATLAS as a whole, with a few questions at the end. With ‘See again’ you can open a step from the tour once more."
   },
   "helhetGoOn": {
     "nb": "Gå videre til avslutningen",
@@ -2136,8 +2136,8 @@
     "en": "Tour"
   },
   "stepHelhet": {
-    "nb": "Helhetsinntrykk",
-    "en": "Overall impression"
+    "nb": "Avslutning",
+    "en": "Closing questions"
   },
   "stepKari": {
     "nb": "Sak 1: Kari",
@@ -2212,12 +2212,12 @@
     "en": "ATLAS is a research prototype for referrals from GPs to DPS. All patients, clinicians and figures are fictional."
   },
   "helpAbout2": {
-    "nb": "Usikkerhetsvisningen viser først hvor du selv plasserer saken, og deretter systemets lesning. Lesningen er skrevet for hver sak og er ikke beregnet.",
-    "en": "The uncertainty display first shows where you place the case yourself, and then the system’s reading. The reading is written for each case and is not calculated."
+    "nb": "Usikkerhetsskalaen viser først hvor du selv plasserer saken, og deretter systemets vurdering. Vurderingen er skrevet for hver sak og er ikke beregnet.",
+    "en": "The uncertainty scale first shows where you place the case yourself, and then the system’s assessment. The assessment is written for each case and is not calculated."
   },
   "helpAbout3": {
-    "nb": "Hver blokk er merket med hvor opplysningene kommer fra: journalen, notatet, pasientens selvrapport, din egen vurdering, den andre klinikeren, systemets lesning eller fiktive tall.",
-    "en": "Each block is labelled with where its information comes from: the record, the note, the patient’s self-report, your own assessment, the other clinician, the system’s reading or fictional figures."
+    "nb": "Hver blokk er merket med hvor opplysningene kommer fra: journalen, notatet, pasientens selvrapport, din egen vurdering, den andre klinikeren, systemets vurdering eller fiktive tall.",
+    "en": "Each block is labelled with where its information comes from: the record, the note, the patient’s self-report, your own assessment, the other clinician, the system’s assessment or fictional figures."
   },
   "helpAbout4": {
     "nb": "Ingenting sendes til DPS eller til noen andre. Det eneste som forlater nettleseren, er skjemaene du sender til Nettskjema.",
@@ -2288,8 +2288,8 @@
     "en": "Where information comes from: is it clear what comes from the record, from the clinicians themselves, from the other side and from ATLAS?"
   },
   "reviewLook2": {
-    "nb": "Egen vurdering og systemets lesning: holdes de fra hverandre, og plasserer klinikeren saken før lesningen vises?",
-    "en": "Own judgement and the system’s reading: are they kept apart, and does the clinician place the case before the reading appears?"
+    "nb": "Egen vurdering og systemets vurdering: holdes de fra hverandre, og plasserer klinikeren saken før vurderingen vises?",
+    "en": "Own judgement and the system’s assessment: are they kept apart, and does the clinician place the case before the assessment appears?"
   },
   "reviewLook3": {
     "nb": "Forhåndspåvirkning: sier noe i orienteringen, omvisningen eller hjelpen hva svaret bør være før deltakeren har vurdert saken selv?",
@@ -2332,8 +2332,8 @@
     "en": "It fetches nothing from a record system. The patients, clinicians, cases and figures are written for the prototype."
   },
   "helpAboutNot2": {
-    "nb": "Den beregner ikke systemets lesning og lærer ikke av svarene. Lesningen er skrevet for hver sak.",
-    "en": "It does not calculate the system’s reading and does not learn from the answers. The reading is written for each case."
+    "nb": "Den beregner ikke systemets vurdering og lærer ikke av svarene. Vurderingen er skrevet for hver sak.",
+    "en": "It does not calculate the system’s assessment and does not learn from the answers. The assessment is written for each case."
   },
   "helpAboutNot3": {
     "nb": "Den anbefaler ikke et utfall og rangerer ikke henvisninger.",
@@ -2612,8 +2612,8 @@
     "en": "Three cases, and one short extra view if you like. Also for other roles in intake."
   },
   "velkommenRoleDpsStart": {
-    "nb": "Start i DPS-inntaket",
-    "en": "Start in DPS intake"
+    "nb": "Start som ansatt i DPS",
+    "en": "Start as DPS staff"
   },
   "velkommenRoleCaption": {
     "nb": "Rollen følger med skjemaene du sender.",
@@ -2864,16 +2864,16 @@
     "en": "You place the case first"
   },
   "helpAboutPlaceText": {
-    "nb": "Deretter vises systemets lesning. Den er skrevet for hver sak og er ikke beregnet.",
-    "en": "Then the system’s reading is shown. It is written for each case and is not calculated."
+    "nb": "Deretter vises systemets vurdering. Den er skrevet for hver sak og er ikke beregnet.",
+    "en": "Then the system’s assessment is shown. It is written for each case and is not calculated."
   },
   "helpAboutSourceTitle": {
     "nb": "Kilden står ved hver blokk",
     "en": "The source is on every block"
   },
   "helpAboutSourceText": {
-    "nb": "Journalen, notatet, pasientens selvrapport, din egen vurdering, den andre klinikeren, systemets lesning eller fiktive tall.",
-    "en": "The record, the note, the patient’s self-report, your own assessment, the other clinician, the system’s reading or fictional figures."
+    "nb": "Journalen, notatet, pasientens selvrapport, din egen vurdering, den andre klinikeren, systemets vurdering eller fiktive tall.",
+    "en": "The record, the note, the patient’s self-report, your own assessment, the other clinician, the system’s assessment or fictional figures."
   },
   "helpAboutLeavesTitle": {
     "nb": "Bare skjemaene forlater nettleseren",
@@ -2928,8 +2928,8 @@
     "en": "Good morning,"
   },
   "startToListGp": {
-    "nb": "Gå til timelisten",
-    "en": "Go to the appointment list"
+    "nb": "Åpne timelisten",
+    "en": "Open the appointment list"
   },
   "startToListDps": {
     "nb": "Gå til mottatte henvisninger",
@@ -2988,8 +2988,8 @@
     "en": "Other"
   },
   "dayNote": {
-    "nb": "Vanlige timer og resten av dagen er eksempler. Sakene åpner du fra timelisten.",
-    "en": "Ordinary appointments and the rest of the day are examples. You open the cases from the appointment list."
+    "nb": "Vanlige timer og resten av dagen viser en vanlig arbeidsdag og kan ikke åpnes. Sakene i studien åpner du fra timelisten.",
+    "en": "Ordinary appointments and the rest of the day show an ordinary working day and cannot be opened. You open the study's cases from the appointment list."
   },
   "examplesLabel": {
     "nb": "Eksempler på en vanlig dag, kan ikke åpnes i prototypen",
@@ -3344,12 +3344,12 @@
     "en": "Where everything is"
   },
   "tourStartWhereGp": {
-    "nb": "Oversikten, pasienten, ATLAS-panelet, skjemapanelet og knappen for tilbakemelding.",
-    "en": "The overview, the patient, the ATLAS panel, the form panel and the feedback button."
+    "nb": "Oversikten, pasienten, ATLAS, skjemapanelet og knappen for tilbakemelding.",
+    "en": "The overview, the patient, ATLAS, the form panel and the feedback button."
   },
   "tourStartWhereDps": {
-    "nb": "Oversikten, henvisningen, ATLAS-panelet, skjemapanelet og knappen for tilbakemelding.",
-    "en": "The overview, the referral, the ATLAS panel, the form panel and the feedback button."
+    "nb": "Oversikten, henvisningen, ATLAS, skjemapanelet og knappen for tilbakemelding.",
+    "en": "The overview, the referral, ATLAS, the form panel and the feedback button."
   },
   "tourStartCaseTitle": {
     "nb": "Hvordan en sak går",
@@ -3368,8 +3368,8 @@
     "en": "Does ATLAS decide for me?"
   },
   "faqDecideA": {
-    "nb": "Du plasserer saken selv først. Deretter viser ATLAS systemets lesning. ATLAS anbefaler ikke et utfall og rangerer ikke henvisninger.",
-    "en": "You place the case yourself first. Then ATLAS shows the system’s reading. ATLAS does not recommend an outcome or rank referrals."
+    "nb": "Du plasserer saken selv først. Deretter viser ATLAS systemets vurdering. ATLAS anbefaler ikke et utfall og rangerer ikke henvisninger.",
+    "en": "You place the case yourself first. Then ATLAS shows the system’s assessment. ATLAS does not recommend an outcome or rank referrals."
   },
   "faqPatternQ": {
     "nb": "Blir mønsteret mitt delt?",
@@ -3400,8 +3400,8 @@
     "en": "Where does what ATLAS shows come from?"
   },
   "faqSourceA": {
-    "nb": "Fra opplysningene i saken. Hver blokk er merket med kilden: journalen, notatet, selvrapporten, den andre klinikeren eller systemets lesning. Systemets lesning er skrevet for hver sak og er ikke beregnet.",
-    "en": "From the information in the case. Each block is labelled with its source: the record, the note, the self-report, the other clinician or the system’s reading. The system’s reading is written for each case and is not calculated."
+    "nb": "Fra opplysningene i saken. Hver blokk er merket med kilden: journalen, notatet, selvrapporten, den andre klinikeren eller systemets vurdering. Systemets vurdering er skrevet for hver sak og er ikke beregnet.",
+    "en": "From the information in the case. Each block is labelled with its source: the record, the note, the self-report, the other clinician or the system’s assessment. The system’s assessment is written for each case and is not calculated."
   },
   "tourStartRequired": {
     "nb": "Omvisningen kommer før sakene.",
@@ -3484,8 +3484,8 @@
     "en": "The consultation"
   },
   "secAtlasPanel": {
-    "nb": "ATLAS-panelet",
-    "en": "The ATLAS panel"
+    "nb": "ATLAS",
+    "en": "ATLAS"
   },
   "secReferralPart": {
     "nb": "Henvisningen",
@@ -4154,5 +4154,325 @@
   "notInEvaluation": {
     "nb": "Ikke en del av evalueringen",
     "en": "Not part of this evaluation"
+  },
+  "formGoOnNext": {
+    "nb": "Nå skal du svare på resten av skjemaet. Trykk nå: «Neste side» nederst i skjemaet. Teksten «Stopp her» gjelder ikke lenger.",
+    "en": "Now answer the rest of the form. Press now: ‘Next page’ at the bottom of the form. The text ‘Stop here’ no longer applies."
+  },
+  "formTurnToAtlas": {
+    "nb": "Nå følger noen spørsmål om hvordan ATLAS hjalp deg med {{name}}. Send skjemaet på siste side.",
+    "en": "Next come a few questions about how ATLAS helped you with {{name}}. Send the form on its last page."
+  },
+  "nextStepEyebrow": {
+    "nb": "Neste steg",
+    "en": "Next step"
+  },
+  "stopPage1Done": {
+    "nb": "Side 1 er besvart. Nå skal du se saken med ATLAS.",
+    "en": "Page 1 is answered. Now you will see the case with ATLAS."
+  },
+  "pressNow": {
+    "nb": "Trykk nå: {{what}}",
+    "en": "Press now: {{what}}"
+  },
+  "stopRestLater": {
+    "nb": "Resten av skjemaet kommer tilbake her når du har gjort saken ferdig.",
+    "en": "The rest of the form comes back here when you have finished the case."
+  },
+  "stopChangePage1": {
+    "nb": "Endre svarene på side 1",
+    "en": "Change the answers on page 1"
+  },
+  "pressNowInForm": {
+    "nb": "Trykk nå: {{what}} nederst i skjemaet, når du har svart på side 1.",
+    "en": "Press now: {{what}} at the bottom of the form, when you have answered page 1."
+  },
+  "formNextPage": {
+    "nb": "«Neste side»",
+    "en": "‘Next page’"
+  },
+  "formPage1Fallback": {
+    "nb": "Går ikke ATLAS videre etter side 1?",
+    "en": "Does ATLAS not go on after page 1?"
+  },
+  "formSentFallback": {
+    "nb": "Sendt, men ATLAS går ikke videre?",
+    "en": "Sent, but ATLAS does not go on?"
+  },
+  "scenarioLine": {
+    "nb": "Sak {{n}}: {{kind}}. {{task}}",
+    "en": "Case {{n}}: {{kind}}. {{task}}"
+  },
+  "scenarioKind": {
+    "nb": "Sak {{n}}: {{kind}}",
+    "en": "Case {{n}}: {{kind}}"
+  },
+  "caseDoneLine": {
+    "nb": "Sak {{n}} av 3 er ferdig. Trykk nå: «{{what}}».",
+    "en": "Case {{n}} of 3 is done. Press now: ‘{{what}}’."
+  },
+  "caseDoneLineLast": {
+    "nb": "Sak {{n}} av 3 er ferdig. Trykk nå: «{{what}}». Der starter avslutningen.",
+    "en": "Case {{n}} of 3 is done. Press now: ‘{{what}}’. The closing part starts there."
+  },
+  "remainLabel": {
+    "nb": "Gjenstår",
+    "en": "Still to do"
+  },
+  "remainStart": {
+    "nb": "start saken",
+    "en": "start the case"
+  },
+  "remainPage1": {
+    "nb": "svar på side 1 i skjemaet, og trykk «Vis ATLAS»",
+    "en": "answer page 1 of the form, and press ‘Show ATLAS’"
+  },
+  "remainRest": {
+    "nb": "svar på resten av skjemaet, og send det",
+    "en": "answer the rest of the form, and send it"
+  },
+  "remainAtlasGpKari": {
+    "nb": "velg «Behold» eller «Henvis» under «Din beslutning» og lagre. Henviser du, skriver og sender du henvisningen",
+    "en": "choose ‘Keep’ or ‘Refer’ under ‘Your decision’ and save. If you refer, write and send the referral"
+  },
+  "remainAtlasGpErlend": {
+    "nb": "skriv henvisningen, og send den eller lagre utkastet",
+    "en": "write the referral, and send it or save the draft"
+  },
+  "remainAtlasGpAstrid": {
+    "nb": "les svaret fra DPS, og velg om du vil sende et spørsmål om det",
+    "en": "read the reply from DPS, and choose whether to send a question about it"
+  },
+  "remainAtlasDps": {
+    "nb": "velg et utfall, og send vurderingen",
+    "en": "choose an outcome, and send the assessment"
+  },
+  "remainAtlasDpsAstrid": {
+    "nb": "svar fastlegen, og send svaret",
+    "en": "answer the GP, and send the answer"
+  },
+  "remainReplyGpKari": {
+    "nb": "se svaret fra DPS, og gå til oppsummeringen",
+    "en": "see the reply from DPS, and go to the summary"
+  },
+  "remainReplyGpPlan": {
+    "nb": "lagre planen din, og gå til oppsummeringen",
+    "en": "save your plan, and go to the summary"
+  },
+  "remainReplyDpsKari": {
+    "nb": "se dialogen, gjør den endelige vurderingen og send den",
+    "en": "see the dialogue, make the final assessment and send it"
+  },
+  "remainSummary": {
+    "nb": "gå til oppsummeringen",
+    "en": "go to the summary"
+  },
+  "dialogFinalLead": {
+    "nb": "Les dialogen med fastlegen. Gjør deretter den endelige vurderingen nederst på siden.",
+    "en": "Read the dialogue with the GP. Then make the final assessment at the bottom of the page."
+  },
+  "takkBodyGp": {
+    "nb": "Du er nå ferdig. Takk for at du tok deg tid fra en travel dag som fastlege. Skjemaene du har sendt, er lagret i Nettskjema, og du kan lukke fanen nå.",
+    "en": "You are now done. Thank you for taking time out of a busy day as a GP. The forms you sent are stored in Nettskjema, and you can close the tab now."
+  },
+  "takkBodyDps": {
+    "nb": "Du er nå ferdig. Takk for at du tok deg tid fra arbeidet i inntaket ved DPS. Skjemaene du har sendt, er lagret i Nettskjema, og du kan lukke fanen nå.",
+    "en": "You are now done. Thank you for taking time out of your work in DPS intake. The forms you sent are stored in Nettskjema, and you can close the tab now."
+  },
+  "takkOtherRoleTitle": {
+    "nb": "Skal du også gå gjennom den andre rollen?",
+    "en": "Are you also going through the other role?"
+  },
+  "takkOtherRoleIntro": {
+    "nb": "Dette gjelder bare deg som er bedt om å prøve begge rollene, for eksempel veiledere i prosjektet. Den andre rollen er en ny gjennomgang med et nytt studienavn. Det du har gjort her, blir som det er.",
+    "en": "This applies only if you have been asked to try both roles, for example as a supervisor in the project. The other role is a new run through the study with a new study name. What you have done here stays as it is."
+  },
+  "takkOtherRoleStep1": {
+    "nb": "Åpne et privat vindu i nettleseren: Ctrl+Shift+N i Edge og Chrome (Cmd+Shift+N på Mac), Ctrl+Shift+P i Firefox.",
+    "en": "Open a private window in your browser: Ctrl+Shift+N in Edge and Chrome (Cmd+Shift+N on a Mac), Ctrl+Shift+P in Firefox."
+  },
+  "takkOtherRoleStep2": {
+    "nb": "Lim inn studielenken i det nye vinduet: {{link}}",
+    "en": "Paste the study link into the new window: {{link}}"
+  },
+  "takkOtherRoleStep3": {
+    "nb": "Trykk på «{{button}}» på Velkommen.",
+    "en": "Press ‘{{button}}’ on Welcome."
+  },
+  "takkOtherRoleCopy": {
+    "nb": "Kopier lenken",
+    "en": "Copy the link"
+  },
+  "takkOtherRoleCopied": {
+    "nb": "Lenken er kopiert.",
+    "en": "The link has been copied."
+  },
+  "avslutningPressFinish": {
+    "nb": "Skjemaet er sendt. Trykk nå: «{{finish}}». De ekstra sakene er valgfrie.",
+    "en": "The form has been sent. Press now: ‘{{finish}}’. The extra cases are optional."
+  },
+  "fromAtlasConfidence": {
+    "nb": "Hvor sikker du er",
+    "en": "How sure you are"
+  },
+  "fromAtlasCopied": {
+    "nb": "Kopiert fra det du valgte i ATLAS. Vil du endre noe, gjør du det i ATLAS.",
+    "en": "Copied from what you chose in ATLAS. To change anything, change it in ATLAS."
+  },
+  "heldReplyDps": {
+    "nb": "Svaret fra fastlegen vises når du har sendt resten av skjemaet.",
+    "en": "The reply from the GP is shown once you have sent the rest of the form."
+  },
+  "bandWhoGp": {
+    "nb": "Du plasserer saken selv. Systemets vurdering vises etterpå.",
+    "en": "You place the case yourself. The system's assessment appears afterwards."
+  },
+  "bandWhoDps": {
+    "nb": "Du plasserer saken selv. Fastlegens plassering og systemets vurdering vises etterpå.",
+    "en": "You place the case yourself. The GP's placement and the system's assessment appear afterwards."
+  },
+  "guideInfoOnly": {
+    "nb": "Kun til informasjon",
+    "en": "For information only"
+  },
+  "behandlingsnytteNote": {
+    "nb": "Ikke ett av de fem kriteriene, og telles ikke. DPS vurderer behandlingsnytte selv.",
+    "en": "Not one of the five criteria, and not counted. DPS assesses the benefit of treatment itself."
+  },
+  "summaryNoAnswer": {
+    "nb": "Sakene bygger på virkelige erfaringer fra klinisk praksis. Det finnes ingen fasit: systemets vurdering er ett syn på saken, ikke svaret.",
+    "en": "The cases draw on real experiences from clinical practice. There is no right answer: the system's assessment is one view of the case, not the answer."
+  },
+  "remainReplyGpKariReferral": {
+    "nb": "se svaret fra DPS, svar hvis du vil, og gå til oppsummeringen",
+    "en": "see the reply from DPS, answer it if you like, and go to the summary"
+  },
+  "stopPeekLine": {
+    "nb": "Trykk «Forrige side» i skjemaet for å endre svarene på side 1. Trykk deretter «Neste side»: da kommer «Vis ATLAS» tilbake.",
+    "en": "Press ‘Previous page’ in the form to change the answers on page 1. Then press ‘Next page’: ‘Show ATLAS’ comes back."
+  },
+  "stopPeekLineAfter": {
+    "nb": "Har du endret svarene på side 1, trykker du «Neste side». Da kommer «Vis ATLAS» tilbake.",
+    "en": "If you have changed the answers on page 1, press ‘Next page’. Then ‘Show ATLAS’ comes back."
+  },
+  "markHere": {
+    "nb": "Trykk her",
+    "en": "Press here"
+  },
+  "guideProgress": {
+    "nb": "{{n}} av {{total}} gjort",
+    "en": "{{n}} of {{total}} done"
+  },
+  "formNextPreview": {
+    "nb": "«Neste»",
+    "en": "‘Next’"
+  },
+  "guideAllDone": {
+    "nb": "Alle delene er gjort.",
+    "en": "All parts are done."
+  },
+  "taskShowAll": {
+    "nb": "Vis alle delene",
+    "en": "Show all parts"
+  },
+  "taskShowOne": {
+    "nb": "Vis én del om gangen",
+    "en": "Show one part at a time"
+  },
+  "taskNextPart": {
+    "nb": "Neste: {{part}}",
+    "en": "Next: {{part}}"
+  },
+  "readingShow": {
+    "nb": "Les begrunnelsen",
+    "en": "Read the reasoning"
+  },
+  "readingHide": {
+    "nb": "Skjul begrunnelsen",
+    "en": "Hide the reasoning"
+  },
+  "summaryOwnWords": {
+    "nb": "Med egne ord",
+    "en": "In your own words"
+  },
+  "previewStopDone": {
+    "nb": "Du er ferdig med saken. Trykk «Neste» for resten av skjemaet.",
+    "en": "You have finished the case. Press ‘Next’ for the rest of the form."
+  },
+  "atlasOnNow": {
+    "nb": "ATLAS er nå på for denne saken.",
+    "en": "ATLAS is now on for this case."
+  },
+  "bandChoose": {
+    "nb": "Velg plassering",
+    "en": "Choose a position"
+  },
+  "taskNow": {
+    "nb": "Nå",
+    "en": "Now"
+  },
+  "taskNext": {
+    "nb": "Neste",
+    "en": "Next"
+  },
+  "taskNextWrite": {
+    "nb": "Neste: Skriv henvisningen",
+    "en": "Next: Write the referral"
+  },
+  "nextWriteReferral": {
+    "nb": "skriv og send henvisningen",
+    "en": "write and send the referral"
+  },
+  "lockedLead": {
+    "nb": "ATLAS åpner her når du har svart på side 1 og trykket «Vis ATLAS».",
+    "en": "ATLAS opens here once you have answered page 1 and pressed ‘Show ATLAS’."
+  },
+  "lockedThinkGp": {
+    "nb": "Tenk gjennom hva du ville gjort med saken ut fra det du ser her.",
+    "en": "Think through what you would do with the case from what you see here."
+  },
+  "lockedThinkDps": {
+    "nb": "Tenk gjennom hvilket utfall du ville valgt ut fra det du ser her.",
+    "en": "Think through which outcome you would choose from what you see here."
+  },
+  "lockedThinkDpsAstrid": {
+    "nb": "Tenk gjennom hvordan du ville svart fastlegen ut fra det du ser her.",
+    "en": "Think through how you would answer the GP from what you see here."
+  },
+  "boxDoneName": {
+    "nb": "{{n}}. {{part}}, gjort",
+    "en": "{{n}}. {{part}}, done"
+  },
+  "boxDoneNameWith": {
+    "nb": "{{n}}. {{part}}, gjort: {{summary}}",
+    "en": "{{n}}. {{part}}, done: {{summary}}"
+  },
+  "taskPathGp": {
+    "nb": "Gå gjennom delene én om gangen. Den siste er beslutningen din.",
+    "en": "Go through the parts one at a time. The last is your decision."
+  },
+  "taskPathGpReferral": {
+    "nb": "Gå gjennom delene én om gangen. Skriv deretter henvisningen, og send den eller lagre utkastet.",
+    "en": "Go through the parts one at a time. Then write the referral, and send it or save the draft."
+  },
+  "taskPathDps": {
+    "nb": "Gå gjennom delene én om gangen. Den siste er utfallet ditt.",
+    "en": "Go through the parts one at a time. The last is your outcome."
+  },
+  "mapOpen": {
+    "nb": "Hvor du er i studien",
+    "en": "Where you are in the study"
+  },
+  "mapLead": {
+    "nb": "Lukk panelet, eller trykk «Fortsett», for å gå tilbake til der du var.",
+    "en": "Close the panel, or press «Continue», to go back to where you were."
+  },
+  "mapClose": {
+    "nb": "Lukk oversikten over studien",
+    "en": "Close the study overview"
+  },
+  "formsInNorwegian": {
+    "nb": "Skjemaene er på norsk.",
+    "en": "The forms are in Norwegian, as in Nettskjema."
   }
 }

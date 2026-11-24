@@ -52,7 +52,8 @@ const useGuide = makeStyles({
 export function InfoGuide({
   mentioned,
   mode,
-  defaultOpen = false,
+  // Open from the start: «Vis detaljer» was not seen until shown (3.8, F106). It can still be folded.
+  defaultOpen = true,
   showLooksFor = true,
 }: {
   mentioned: CriterionId[];
@@ -95,6 +96,10 @@ export function InfoGuide({
           {open ? s('hideDetails') : s('showDetails')}
         </Button>
       </div>
+      {/* Read only: nothing to do here (3.8, F28). */}
+      <span className={cls.state} data-info-only="">
+        {s('guideInfoOnly')}
+      </span>
       <span className={cls.hint}>{hint}</span>
       <ul className={cls.list} id={listId} hidden={!open}>
         {CRITERIA_ORDER.map((c) => {
@@ -117,6 +122,8 @@ export function InfoGuide({
           </span>
           <span>{t(vocab.behandlingsnytte.label)}</span>
           <span className={cls.state}>{t(vocab.behandlingsnytte.text)}</span>
+          {/* Not a sixth criterion (3.8, F2). */}
+          <span className={cls.looksFor}>{s('behandlingsnytteNote')}</span>
         </li>
       </ul>
     </div>
@@ -143,7 +150,9 @@ export function ConfidenceScale({
       <ChoiceGroup<ConfLevel>
         legend={s('confidenceTitle')}
         chip={<ProvenanceChip source="own" />}
-        layout="scale"
+        // One level a line, top to bottom (3.8, F29): the longer plain words, «Veldig usikker» to «Veldig sikker», do not fit
+        // five to a row in the panel.
+        layout="column"
         value={value}
         onChange={onChange}
         disabled={disabled}

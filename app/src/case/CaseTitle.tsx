@@ -2,6 +2,7 @@ import { makeStyles, tokens, typographyStyles } from '@fluentui/react-components
 import type { ReactNode } from 'react';
 import type { CaseId } from '../content/types';
 import { cases } from '../content';
+import { CaseRemaining } from './Scenario';
 import { useLang } from '../i18n/i18n';
 import { Breadcrumbs, type Crumb } from '../patterns/layout';
 import { PageHeading } from '../shell/PageHeading';
@@ -88,6 +89,8 @@ export function CaseTitle({
         </div>
         {side && <div className={cls.side}>{side}</div>}
       </div>
+      {/* Where the case stands, while it is not done (3.8, F107): the study only, never on the briefing (its button says it). */}
+      {work.mode === 'study' && work.phase(caseId) !== 'briefing' && <CaseRemaining caseId={caseId} role={work.viewer} phase={work.phase(caseId)} />}
       {/* A note for reviewers that a case's clinical details still await a clinician's check; never in the study. */}
       {c.draftFlag && work.mode === 'review' && (
         <p className={cls.flag}>

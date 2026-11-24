@@ -46,7 +46,7 @@ test('keyboard only, GP: place, tag, confidence, decide, write and send the refe
   await page.keyboard.press('Enter');
   await expect(page.locator('[data-reading]')).toBeVisible();
 
-  const tag = page.getByRole('button', { name: 'Diagnostisk', exact: true });
+  const tag = page.getByRole('button', { name: 'Uklar diagnose', exact: true });
   await tabTo(page, tag);
   await page.keyboard.press('Space');
   await expect(tag).toHaveAttribute('aria-pressed', 'true');
@@ -55,7 +55,7 @@ test('keyboard only, GP: place, tag, confidence, decide, write and send the refe
   await page.keyboard.type('Usikker på varighet og funksjon.');
 
   // Native radios: Tab enters the group, the arrows choose.
-  await tabTo(page, page.getByRole('radio', { name: 'Lav', exact: true }));
+  await tabTo(page, page.getByRole('radio', { name: 'Veldig usikker', exact: true }));
   await page.keyboard.press('ArrowRight');
   await page.keyboard.press('ArrowRight');
   await expect(page.getByRole('radio', { name: 'Middels' })).toBeChecked();
@@ -125,8 +125,8 @@ test('keyboard only, study: the overview, the tour card, the form panel and «Vi
   await tabTo(page, page.getByRole('button', { name: 'Start saken' }));
   await page.keyboard.press('Enter');
   await toStopPage(page);
-  await tabTo(page, panel(page).getByRole('button', { name: 'Jeg har svart på side 1' }));
-  await page.keyboard.press('Enter');
+  // 3.8: the stop card takes page 1 as answered; its one action is «Vis ATLAS».
+  await expect(panel(page).locator('[data-next-step="show-atlas"]')).toBeVisible();
   await tabTo(page, panel(page).getByRole('button', { name: 'Vis ATLAS' }));
   await page.keyboard.press('Enter');
   await expect(panel(page)).toBeHidden();

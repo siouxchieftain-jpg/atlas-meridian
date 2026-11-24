@@ -96,7 +96,7 @@ const useStyles = makeStyles({
     ':hover': { color: tokens.colorBrandForegroundLinkHover },
     ':focus-visible': { outline: `2px solid ${tokens.colorStrokeFocus2}`, outlineOffset: '2px', borderRadius: tokens.borderRadiusSmall },
   },
-  actions: { display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: tokens.spacingHorizontalS },
+  actions: { display: 'flex', flexWrap: 'wrap', alignItems: 'flex-end', gap: tokens.spacingHorizontalS },
   lead: { ...typographyStyles.body2, margin: 0, color: tokens.colorNeutralForeground1, maxWidth: '68ch' },
   body: { ...typographyStyles.body1, margin: 0, color: tokens.colorNeutralForeground1, maxWidth: '72ch' },
   muted: { ...typographyStyles.caption1, margin: 0, color: tokens.colorNeutralForeground3 },

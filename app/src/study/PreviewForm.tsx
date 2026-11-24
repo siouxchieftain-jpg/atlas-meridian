@@ -14,9 +14,9 @@ import {
 import { useEffect, useId, useMemo, useRef, useState } from 'react';
 import type { InstrumentForm, InstrumentItem } from '../content/types';
 import { instrument } from '../content';
-import { useLang } from '../i18n/i18n';
+import { FixedLang, useLang } from '../i18n/i18n';
 import { readJSON, writeJSON } from '../state/persist';
-import { GrowingTextarea } from '../patterns/basics';
+import { GrowingTextarea, NextMark } from '../patterns/basics';
 import type { LockedFields } from '../engine/forms';
 
 /**
@@ -62,13 +62,21 @@ const useStyles = makeStyles({
     borderRadius: tokens.borderRadiusMedium,
     border: `1px solid ${tokens.colorNeutralStroke1}`,
   },
-  nav: { display: 'flex', gap: tokens.spacingHorizontalS, justifyContent: 'space-between', flexWrap: 'wrap' },
+  // Bottom-aligned: the «Trykk her» mark above «Neste» must not stretch «Tilbake» (3.8).
+  nav: { display: 'flex', gap: tokens.spacingHorizontalS, justifyContent: 'space-between', alignItems: 'flex-end', flexWrap: 'wrap' },
   privacy: { ...typographyStyles.caption1, color: tokens.colorNeutralForeground3, margin: 0 },
   scale: { display: 'flex', flexWrap: 'wrap', gap: '2px' },
   anchors: { display: 'flex', justifyContent: 'space-between', ...typographyStyles.caption1, color: tokens.colorNeutralForeground3 },
   // With «Vet ikke» (3.6, I-18): the anchors sit under the points, inside the group, and «Vet ikke» starts a line of its own.
   anchorsInGroup: { flexBasis: '100%', display: 'flex', justifyContent: 'space-between', ...typographyStyles.caption1, color: tokens.colorNeutralForeground3 },
   dontKnow: { flexBasis: '100%', marginTop: tokens.spacingVerticalXS },
+  // Each question stands out from its answers (3.8, Jishnu, 24 November): the question in semibold body text, the
+  // «(valgfritt)» mark in regular grey after it, and a hairline between questions so one ends before the next begins.
+  question: { ...typographyStyles.body1Strong, color: tokens.colorNeutralForeground1, paddingBottom: tokens.spacingVerticalXS },
+  optional: { ...typographyStyles.body1, color: tokens.colorNeutralForeground3 },
+  partHead: { ...typographyStyles.subtitle2, margin: 0, paddingTop: tokens.spacingVerticalM },
+  note: { ...typographyStyles.body1, margin: 0, padding: tokens.spacingHorizontalM, borderRadius: tokens.borderRadiusMedium, backgroundColor: tokens.colorNeutralBackground3 },
+  item: { paddingTop: tokens.spacingVerticalL, borderTopWidth: '1px', borderTopStyle: 'solid', borderTopColor: tokens.colorNeutralStroke2 },
 });
 
 function scaleRange(item: InstrumentItem): number[] {
@@ -76,6 +84,7 @@ function scaleRange(item: InstrumentItem): number[] {
     case 'agree7':
     case 'confidence7':
     case 'helpful7':
+    case 'likely7':
       return [1, 2, 3, 4, 5, 6, 7];
     case 'nps11':
       return [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
@@ -90,16 +99,22 @@ export function findForm(formKey: string): InstrumentForm | undefined {
   return instrument.forms.find((f) => f.key === formKey);
 }
 
-export function PreviewForm({
+function PreviewFormInner({
   formKey,
   locked,
   onPageChange,
   onSent,
+  markForward,
+  resumed,
 }: {
   formKey: string;
   locked: LockedFields;
   onPageChange: () => void;
   onSent: () => void;
+  /** The form's forward press is the study's next step: it carries the «Trykk her» mark (3.8). */
+  markForward?: boolean;
+  /** The case is done and the rest of the form is open: the stop page says so instead of «Stopp her» (3.8). */
+  resumed?: boolean;
 }) {
   const cls = useStyles();
   const { t, s } = useLang();
@@ -122,6 +137,10 @@ export function PreviewForm({
   const total = form.pages.length;
   const items = form.pages[page]?.items ?? [];
   const idFor = (codebook: string) => `${uid}-${codebook}`;
+
+  // The «Trykk her» mark comes only once the page's required questions are answered: the next step, not a shortcut
+  // past them (Jishnu, 24 November).
+  const pageComplete = items.every((it) => it.type === 'locked' || it.type === 'stop' || !it.required || !!(values[it.codebook] ?? '').trim());
 
   const validate = () => {
     for (const it of items) {
@@ -164,22 +183,8 @@ export function PreviewForm({
     );
   }
 
-  // The locked fields sit where the instrument puts them: first in S1 (A-01 is the role), after B1 in a vignette form.
-  const lockedItems = items.filter((it) => it.type === 'locked');
-  const lockedFirst = lockedItems.length > 0 && items[0]?.type === 'locked';
-  const lockedBox = lockedItems.length > 0 && Object.keys(locked).length > 0 && (
-    <div className={cls.locked}>
-      <span className={cls.lockedHead}>{t(instrument.lockedHeading)}</span>
-      {lockedItems.map((it) => (
-        <span key={it.codebook} className={cls.lockedRow}>
-          {/[?:]$/.test(t(it.text)) ? t(it.text) : `${t(it.text)}:`}{' '}
-          {/* Locked values are Norwegian in both languages (F-27). */}
-          <strong lang="nb">{locked[it.codebook] ?? ''}</strong>
-        </span>
-      ))}
-    </div>
-  );
-
+  // 3.8: the locked fields (role, interview answer, study name, step, version) go with the answers but are not shown:
+  // the participant does not need them (Jishnu, 24 November).
   return (
     <form
       className={cls.root}
@@ -198,25 +203,48 @@ export function PreviewForm({
       </h2>
       {page === 0 && <p className={cls.intro}>{t(form.intro)}</p>}
       {page === 0 && <p className={cls.privacy}>{t(instrument.privacyLine)}</p>}
-      {lockedFirst && lockedBox}
       {items
         .filter((it) => it.type !== 'locked')
         .map((it) => {
-          if (it.type === 'stop') {
+          // 3.8, part C: a part's heading (the closing form) and a plain line (where a case form turns to ATLAS).
+          if (it.type === 'heading') {
             return (
-              <p key={it.id} className={cls.stop}>
+              <h3 key={it.id} className={cls.partHead}>
+                {t(it.text)}
+              </h3>
+            );
+          }
+          if (it.type === 'note') {
+            return (
+              <p key={it.id} className={cls.note}>
                 {t(it.text)}
               </p>
             );
           }
+          if (it.type === 'stop') {
+            return (
+              <p key={it.id} className={cls.stop}>
+                {resumed ? s('previewStopDone') : t(it.text)}
+              </p>
+            );
+          }
           const range = scaleRange(it);
-          const label = it.required ? t(it.text) : `${t(it.text)} ${s('optionalMark')}`;
+          const label = {
+            className: cls.question,
+            children: it.required ? (
+              t(it.text)
+            ) : (
+              <>
+                {t(it.text)} <span className={cls.optional}>{s('optionalMark')}</span>
+              </>
+            ),
+          };
           const invalid = missing === it.codebook;
           const fieldState = invalid ? { validationState: 'error' as const, validationMessage: s('requiredMissing') } : {};
           if (range.length) {
             const anchorsId = `${idFor(it.codebook)}-anchors`;
             return (
-              <div key={it.id} id={idFor(it.codebook)}>
+              <div key={it.id} id={idFor(it.codebook)} className={cls.item}>
                 <Field label={label} required={it.required} {...fieldState}>
                   <RadioGroup
                     layout="horizontal"
@@ -252,7 +280,7 @@ export function PreviewForm({
           }
           if ((it.type === 'choice' || it.type === 'importance3') && it.options) {
             return (
-              <div key={it.id} id={idFor(it.codebook)}>
+              <div key={it.id} id={idFor(it.codebook)} className={cls.item}>
                 <Field label={label} required={it.required} {...fieldState}>
                   <RadioGroup
                     value={values[it.codebook] ?? ''}
@@ -273,7 +301,7 @@ export function PreviewForm({
             // One required tick box; ticked sends its option's Norwegian text, as Nettskjema sends the option.
             const yes = it.options[0];
             return (
-              <div key={it.id} id={idFor(it.codebook)}>
+              <div key={it.id} id={idFor(it.codebook)} className={cls.item}>
                 <Field label={label} required={it.required} {...fieldState}>
                   <Checkbox
                     label={t(yes)}
@@ -289,7 +317,7 @@ export function PreviewForm({
           }
           if (it.type === 'text') {
             return (
-              <div key={it.id} id={idFor(it.codebook)}>
+              <div key={it.id} id={idFor(it.codebook)} className={cls.item}>
                 <Field label={label} required={it.required} {...fieldState}>
                   <Input value={values[it.codebook] ?? ''} onChange={(_, d) => setValues({ ...values, [it.codebook]: d.value })} />
                 </Field>
@@ -297,7 +325,7 @@ export function PreviewForm({
             );
           }
           return (
-            <div key={it.id} id={idFor(it.codebook)}>
+            <div key={it.id} id={idFor(it.codebook)} className={cls.item}>
               {it.privacyLine && <p className={cls.privacy}>{t(instrument.privacyLine)}</p>}
               <Field label={label} required={it.required} {...fieldState}>
                 <GrowingTextarea
@@ -312,14 +340,15 @@ export function PreviewForm({
             </div>
           );
         })}
-      {!lockedFirst && lockedBox}
       <div className={cls.nav}>
         <Button type="button" disabledFocusable={page === 0} onClick={() => page > 0 && turn(page - 1)}>
           {s('back')}
         </Button>
-        <Button type="submit" appearance="primary">
-          {page < total - 1 ? s('next') : s('previewSend')}
-        </Button>
+        <NextMark on={!!markForward && pageComplete}>
+          <Button type="submit" appearance="primary">
+            {page < total - 1 ? s('next') : s('previewSend')}
+          </Button>
+        </NextMark>
       </div>
     </form>
   );
@@ -350,4 +379,22 @@ export function downloadPreviewCsv(name = 'atlas-forhandsvisning.csv') {
   a.click();
   a.remove();
   URL.revokeObjectURL(url);
+}
+
+/**
+ * The preview of a form, in Norwegian like the form in Nettskjema (3.8, part C, F17). In English, one line above it
+ * says so; the panel and the app around it keep the reader's language.
+ */
+export function PreviewForm(props: Parameters<typeof PreviewFormInner>[0]) {
+  const { lang, s } = useLang();
+  return (
+    <>
+      {lang === 'en' && <p style={{ margin: 0 }} data-forms-norwegian="">{s('formsInNorwegian')}</p>}
+      <FixedLang lang="nb">
+        <div lang="nb">
+          <PreviewFormInner {...props} />
+        </div>
+      </FixedLang>
+    </>
+  );
 }

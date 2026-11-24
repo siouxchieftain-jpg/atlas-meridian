@@ -9,10 +9,11 @@ import {
   tokens,
   typographyStyles,
 } from '@fluentui/react-components';
-import { Dismiss20Regular, Eye20Regular, Form20Regular, Open16Regular } from '@fluentui/react-icons';
+import { ArrowUp16Filled, Dismiss20Regular, Eye20Regular, Form20Regular, Open16Regular } from '@fluentui/react-icons';
 import { useEffect, useId, useLayoutEffect, useRef, useState } from 'react';
 import { useLang } from '../i18n/i18n';
-import { size } from '../theme/constants';
+import { guide, size } from '../theme/constants';
+import { NextMark } from '../patterns/basics';
 import { findForm, PreviewForm } from './PreviewForm';
 import { BrowseForm } from './browse';
 import { browseFlag } from '../state/persist';
@@ -40,6 +41,45 @@ const useStyles = makeStyles({
     '@media (max-height: 500px)': { display: 'block', overflowY: 'auto' },
   },
   overlay: { boxShadow: tokens.shadow28 },
+  // Beside the page (3.8, F43, F101): the panel is part of the page and scrolls with it, so the window is the one
+  // scroll area. Its heading and its foot stay in view as the page scrolls; the form takes the height it needs.
+  inlinePanel: {
+    position: 'absolute',
+    bottom: 'auto',
+    minHeight: 'calc(100dvh - var(--atlas-header-h, 48px))',
+    '@media (max-height: 500px)': { display: 'flex', overflowY: 'visible' },
+  },
+  inlineHead: {
+    position: 'sticky',
+    top: 'var(--atlas-header-h, 48px)',
+    zIndex: 1,
+    backgroundColor: tokens.colorNeutralBackground1,
+    '@media (max-height: 500px)': { position: 'static' },
+  },
+  inlineBody: { overflowY: 'visible' },
+  inlineFoot: {
+    position: 'sticky',
+    bottom: 0,
+    backgroundColor: tokens.colorNeutralBackground1,
+    '@media (max-height: 500px)': { position: 'static' },
+  },
+  // The form stays loaded under the next-step card, so nothing in it is lost (RI-2).
+  frameAway: { position: 'absolute', width: '1px', height: '1px', overflow: 'hidden', clip: 'rect(0 0 0 0)', clipPath: 'inset(50%)', visibility: 'hidden' },
+  next: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: tokens.spacingVerticalM,
+    padding: '16px',
+    marginBlock: tokens.spacingVerticalS,
+    borderRadius: tokens.borderRadiusXLarge,
+    border: `1px solid ${tokens.colorBrandStroke2}`,
+    backgroundColor: tokens.colorBrandBackground2,
+  },
+  nextEyebrow: { ...typographyStyles.caption1Strong, color: tokens.colorBrandForeground1, margin: 0 },
+  nextLine: { ...typographyStyles.subtitle2, margin: 0 },
+  nextQuiet: { ...typographyStyles.body1, margin: 0, color: tokens.colorNeutralForeground2 },
+  fallback: { ...typographyStyles.caption1, color: tokens.colorNeutralForeground3, display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: '0 4px' },
+  fallbackBtn: { ...typographyStyles.caption1, minWidth: 0, paddingInline: tokens.spacingHorizontalXS, fontWeight: tokens.fontWeightRegular },
   // Focus lands on the panel itself only when it comes back scrolled to a place (r5A-03).
   focusable: { ':focus': { outline: 'none' }, ':focus-visible': { outline: `2px solid ${tokens.colorStrokeFocus2}`, outlineOffset: '-2px' } },
   // The hidden state repeats inside the short-height query, or the query's display: block wins
@@ -74,6 +114,20 @@ const useStyles = makeStyles({
   },
   footRow: { display: 'flex', flexWrap: 'wrap', gap: tokens.spacingHorizontalS, alignItems: 'center' },
   info: { ...typographyStyles.body1, margin: 0 },
+  // 3.8: the next press is in Nettskjema's own form, below: a coral line that points up to it.
+  point: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '8px',
+    margin: 0,
+    paddingInline: '10px',
+    paddingBlock: '6px',
+    borderRadius: tokens.borderRadiusMedium,
+    borderLeft: `3px solid ${guide.coral}`,
+    backgroundColor: 'rgba(245,158,133,0.14)',
+    ...typographyStyles.body1Strong,
+    '& svg': { flexShrink: 0, color: guide.ink },
+  },
   quiet: { ...typographyStyles.caption1, color: tokens.colorNeutralForeground3 },
   skip: { alignSelf: 'flex-start', minWidth: 0, paddingInline: tokens.spacingHorizontalXS, marginInlineStart: `calc(-1 * ${tokens.spacingHorizontalXS})`, fontWeight: tokens.fontWeightRegular },
   toggle: {
@@ -122,6 +176,8 @@ export interface FormPanelActions {
   canShowAtlas?: boolean;
   /** The panel's title, for example «Skjema: Kari». */
   title: string;
+  /** The case's first name, for the lines that name it («hvordan ATLAS hjalp deg med Kari»). */
+  caseName?: string;
 }
 
 /** Decide inline or overlay from the measured shell width, never a fixed media query. */
@@ -161,7 +217,7 @@ function useInline(visible: boolean, atlasInline: boolean, caseForm: boolean): {
 export function FormPanel({ actions }: { actions: FormPanelActions | null }) {
   const cls = useStyles();
   const host = useFormHost();
-  const { s } = useLang();
+  const { s, lang } = useLang();
   const { form, visible } = host;
   const { inline } = useInline(!!form && visible, host.atlasInline, !!form?.caseId);
   const panelId = useId();
@@ -182,9 +238,9 @@ export function FormPanel({ actions }: { actions: FormPanelActions | null }) {
   const announce = useAtlasAnnounce();
   const notReady = form?.route === 'notready';
   // Read at the moment the panel opens; a language switch does not move focus or speak again.
-  const latest = useRef({ announce, s, notReady });
+  const latest = useRef({ announce, s, notReady, inline });
   useLayoutEffect(() => {
-    latest.current = { announce, s, notReady };
+    latest.current = { announce, s, notReady, inline };
   });
   // What «Skjul skjemaet» or Escape leaves: the scroll (which a hidden element loses) and the control in use (r5A-03).
   const leftAt = useRef<{ key: string; panel: number; body: number; active: HTMLElement | null } | null>(null);
@@ -211,6 +267,13 @@ export function FormPanel({ actions }: { actions: FormPanelActions | null }) {
         if (panelRef.current) panelRef.current.scrollTop = back?.panel ?? 0;
         if (bodyRef.current) bodyRef.current.scrollTop = back?.body ?? 0;
       }
+      // Beside the page the panel scrolls with the window: a new stage (the rest of the form, after the decision far down
+      // the page) brings the form's top into view, so its first words are seen (3.8).
+      if (!back && latest.current.inline && panelRef.current) {
+        const top = panelRef.current.getBoundingClientRect().top + window.scrollY;
+        const header = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--atlas-header-h')) || 0;
+        if (window.scrollY > top - header) window.scrollTo({ top: Math.max(0, top - header) });
+      }
       // Back to the control in use when it is in view; else the heading when it is in view; else the panel
       // itself at the kept place. A new form or stage starts at its heading.
       const before = back?.active;
@@ -220,6 +283,79 @@ export function FormPanel({ actions }: { actions: FormPanelActions | null }) {
     });
     return () => window.cancelAnimationFrame(id);
   }, [shownId, shownStage]);
+
+  // A new page in the form starts at its top (Nettskjema's "scrollToStart"). Beside the page, the panel scrolls with the
+  // window, so the window goes to the form's top; over the page, the panel's own area does (3.8, F43).
+  const pageChanges = form?.pageChanges ?? 0;
+  useEffect(() => {
+    if (shownId === null || pageChanges === 0) return;
+    if (inline) {
+      const top = panelRef.current ? panelRef.current.getBoundingClientRect().top + window.scrollY : 0;
+      const header = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--atlas-header-h')) || 0;
+      if (window.scrollY > top - header) window.scrollTo({ top: Math.max(0, top - header) });
+    } else {
+      if (bodyRef.current) bodyRef.current.scrollTop = 0;
+      if (panelRef.current) panelRef.current.scrollTop = 0;
+    }
+  }, [pageChanges]);
+
+  // The stop page (3.8, F20, F45, F74, F103): when page 1 has moved on in a form ATLAS can watch, ATLAS takes it as
+  // answered and covers the form's stop page with one action, named: «Trykk nå: Vis ATLAS».
+  // The practice form (preview) is watched the same way, so it too has one action at each moment.
+  const atStop =
+    !!form && !!form.caseId && form.stage === 'page1' && (form.route === 'panel' || form.route === 'preview') && form.pageChanges > 0 && !browseFlag();
+  // Where the form stood when the rest of it was asked for: until it moves on from there, ATLAS names the next press.
+  const restAt = useRef<{ id: number; at: number } | null>(null);
+  if (form && form.stage === 'rest' && restAt.current?.id !== form.id) restAt.current = { id: form.id, at: form.pageChanges };
+  const restStart = form && restAt.current?.id === form.id ? restAt.current.at : 0;
+  // «Endre svarene på side 1» shows the form again until it moves on once more; then the card is back (3.8 review S6).
+  const [peek, setPeek] = useState<{ id: number; at: number } | null>(null);
+  // From the stop page each move is one page: an even number of moves since then is the stop page again (back to page 1
+  // and on), an odd number is page 1 or page 3 (gone on past the stop page on purpose).
+  const peekMoves = form && peek?.id === form.id ? form.pageChanges - peek.at : -1;
+  const peeking = peekMoves >= 0 && !(peekMoves > 0 && peekMoves % 2 === 0);
+  const showCard = atStop && !peeking;
+  const page1Confirmed = !!actions?.page1Confirmed;
+  const onPage1 = actions?.onPage1;
+  useEffect(() => {
+    if (atStop && !page1Confirmed) onPage1?.();
+  }, [atStop, page1Confirmed, onPage1]);
+  // When the card appears, focus moves to its one action and the card is said once (3.8 review S5).
+  const cardBtn = useRef<HTMLButtonElement>(null);
+  useEffect(() => {
+    if (!showCard) return;
+    latest.current.announce(`${latest.current.s('stopPage1Done')} ${latest.current.s('pressNow', { what: latest.current.s('showAtlas') })}`);
+    const id = window.requestAnimationFrame(() => cardBtn.current?.focus());
+    return () => window.cancelAnimationFrame(id);
+  }, [showCard]);
+
+  // The panel's foot stays at the bottom of the window beside the page: the page keeps that much room at its bottom, so a
+  // control brought into view is never under the foot (WCAG 2.4.11).
+  const footRef = useRef<HTMLDivElement>(null);
+  const footShown = shownId !== null && inline;
+  useEffect(() => {
+    const root = document.documentElement;
+    const el = footRef.current;
+    if (!footShown || !el) {
+      root.style.scrollPaddingBottom = '';
+      return;
+    }
+    // The panel's heading sticks under the app's header too: the page keeps that room at its top as well.
+    const head = el.closest('[data-form-panel]')?.firstElementChild as HTMLElement | null;
+    const set = () => {
+      root.style.scrollPaddingBottom = `${Math.ceil(el.getBoundingClientRect().height) + 8}px`;
+      if (head) root.style.scrollPaddingTop = `calc(var(--atlas-header-h, 48px) + ${Math.ceil(head.getBoundingClientRect().height) + 8}px)`;
+    };
+    set();
+    const ro = new ResizeObserver(set);
+    ro.observe(el);
+    if (head) ro.observe(head);
+    return () => {
+      ro.disconnect();
+      root.style.scrollPaddingBottom = '';
+      root.style.scrollPaddingTop = '';
+    };
+  }, [footShown]);
 
   // An overlay panel covers part of the page: Escape hides it from anywhere, unless a dialog,
   // menu or popover is open and the key belongs to that (AX-01).
@@ -262,7 +398,7 @@ export function FormPanel({ actions }: { actions: FormPanelActions | null }) {
       <aside
         ref={panelRef}
         tabIndex={-1}
-        className={mergeClasses(cls.panel, cls.focusable, !inline && cls.overlay, (!visible || held) && cls.hidden)}
+        className={mergeClasses(cls.panel, cls.focusable, !inline && cls.overlay, inline && cls.inlinePanel, (!visible || held) && cls.hidden)}
         hidden={!visible || held}
         aria-label={actions.title}
         data-form-panel=""
@@ -275,7 +411,7 @@ export function FormPanel({ actions }: { actions: FormPanelActions | null }) {
           }
         }}
       >
-        <div className={cls.head}>
+        <div className={mergeClasses(cls.head, inline && cls.inlineHead)}>
           <Form20Regular aria-hidden="true" />
           <h2 className={cls.title} ref={headRef} tabIndex={-1} aria-describedby={caseForm && stage === 'rest' ? `${panelId}-rest` : undefined}>
             {actions.title}
@@ -284,7 +420,7 @@ export function FormPanel({ actions }: { actions: FormPanelActions | null }) {
             <Button appearance="subtle" icon={<Dismiss20Regular />} aria-label={s('formHide')} onClick={hidePanel} />
           )}
         </div>
-        <div className={cls.body} ref={bodyRef}>
+        <div className={mergeClasses(cls.body, inline && cls.inlineBody)} ref={bodyRef}>
           {caseForm && stage === 'rest' && (
             // Read with the panel heading, which takes focus as the panel opens: one utterance with the
             // saved choice, not a second announcement (G-32, R3A-04).
@@ -296,7 +432,9 @@ export function FormPanel({ actions }: { actions: FormPanelActions | null }) {
                     ? s('formReopened')
                     : findForm(form.formKey)?.pages.length === 1
                       ? s('formAnswerNow')
-                      : s('formGoOn')}
+                      : form.pageChanges <= restStart
+                        ? s('formGoOnNext')
+                        : s('formTurnToAtlas', { name: actions.caseName ?? '' })}
                 </MessageBarBody>
               </MessageBar>
             </Silent>
@@ -313,6 +451,33 @@ export function FormPanel({ actions }: { actions: FormPanelActions | null }) {
               )}
             </MessageBar>
           )}
+          {showCard && (
+            <section className={cls.next} aria-labelledby={`${panelId}-next`} data-next-step="show-atlas">
+              <p className={cls.nextEyebrow}>{s('nextStepEyebrow')}</p>
+              <p className={cls.nextQuiet}>{s('stopPage1Done')}</p>
+              <p className={cls.nextLine} id={`${panelId}-next`}>
+                {s('pressNow', { what: s('showAtlas') })}
+              </p>
+              <NextMark on>
+                <Button
+                  ref={cardBtn}
+                  appearance="primary"
+                  icon={<Eye20Regular />}
+                  disabledFocusable={!actions.canShowAtlas}
+                  onClick={() => actions.canShowAtlas && actions.onShowAtlas?.()}
+                  data-press-now=""
+                >
+                  {s('showAtlas')}
+                </Button>
+              </NextMark>
+              <p className={cls.nextQuiet}>{s('stopRestLater')}</p>
+              <div>
+                <Button appearance="transparent" size="small" className={cls.fallbackBtn} onClick={() => setPeek({ id: form.id, at: form.pageChanges })}>
+                  {s('stopChangePage1')}
+                </Button>
+              </div>
+            </section>
+          )}
           {form.route === 'panel' && form.url && (
             <>
               {!form.loaded && !form.timedOut && <Spinner size="small" label={s('formLoading')} delay={1000} />}
@@ -328,12 +493,16 @@ export function FormPanel({ actions }: { actions: FormPanelActions | null }) {
                   )}
                 </MessageBar>
               )}
+              {/* The forms are in Norwegian only (3.8, part C, F17): in English, say so once above the form. */}
+              {lang === 'en' && <p className={cls.notice} style={{ margin: 0 }} data-forms-norwegian="">{s('formsInNorwegian')}</p>}
               <iframe
                 key={form.id}
                 data-form-frame=""
-                className={cls.frame}
+                className={mergeClasses(cls.frame, showCard && cls.frameAway)}
                 src={form.url}
                 title={actions.title}
+                // The panel or the page scrolls, never the form inside it: Nettskjema reports its height (3.8, F43).
+                scrolling="no"
                 style={{ height: `${form.height}px` }}
               />
             </>
@@ -359,13 +528,17 @@ export function FormPanel({ actions }: { actions: FormPanelActions | null }) {
             />
           )}
           {form.route === 'preview' && !browseFlag() && (
-            <PreviewForm
-              key={form.id}
-              formKey={form.formKey}
-              locked={form.locked}
-              onPageChange={host.previewPageChanged}
-              onSent={host.previewSent}
-            />
+            <div className={mergeClasses(showCard && cls.frameAway)}>
+              <PreviewForm
+                key={form.id}
+                formKey={form.formKey}
+                locked={form.locked}
+                onPageChange={host.previewPageChanged}
+                onSent={host.previewSent}
+                markForward={!showCard}
+                resumed={caseForm && stage === 'rest'}
+              />
+            </div>
           )}
           {/* Said once when the form opens, as one sentence (the bar would read its button too, r4A-05). */}
           {form.route === 'notready' && (
@@ -375,64 +548,112 @@ export function FormPanel({ actions }: { actions: FormPanelActions | null }) {
           )}
         </div>
         {form.route !== 'notready' && (
-          <div className={cls.foot}>
-            {showPage1 && actions.onPage1 && (
+          <div className={mergeClasses(cls.foot, inline && cls.inlineFoot)} ref={footRef}>
+            {/* One main action at each moment (3.8, F33, F50): in a form ATLAS can watch, the next press is in the form
+                itself, or on the stop card; the panel's own buttons are quiet ways out for when ATLAS cannot see. */}
+            {peeking && atStop && (
+              <p className={cls.info} role="status">
+                {/* At the stop page the way back is «Forrige side»; after a move, only «Neste side» brings the card back (review R1). */}
+                {peekMoves === 0 ? s('stopPeekLine') : s('stopPeekLineAfter')}
+              </p>
+            )}
+            {showPage1 && actions.onPage1 && (form.route === 'panel' || form.route === 'preview') && !atStop && (
               <>
-                <div className={cls.footRow}>
+                {form.route === 'panel' ? (
+                  // The form's own buttons cannot be marked (they are Nettskjema's): this line, in the foot under the form, points up to them.
+                  <p className={cls.point} role="status">
+                    <ArrowUp16Filled aria-hidden="true" />
+                    {s('pressNowInForm', { what: s('formNextPage') })}
+                  </p>
+                ) : (
+                  <p className={cls.info} role="status">
+                    {s('pressNowInForm', { what: s('formNextPreview') })}
+                  </p>
+                )}
+                <span className={cls.fallback}>
+                  {askAgainFor === form.id && !actions.page1Confirmed ? s('formPage1NotMoved') : s('formPage1Fallback')}
                   <Button
-                    appearance={actions.page1Confirmed || (form.pageChanges === 0 && form.route !== 'tab') ? 'secondary' : 'primary'}
-                    disabledFocusable={actions.page1Confirmed}
+                    appearance="transparent"
+                    size="small"
+                    className={cls.fallbackBtn}
                     onClick={() => {
                       if (actions.page1Confirmed) return;
-                      // No page change seen in a form ATLAS can watch (panel or preview): ask once more, so ATLAS is
-                      // not opened over an unanswered page 1. A form in a new tab cannot be watched, so it asks once.
-                      const watched = form.route === 'panel' || form.route === 'preview';
-                      if (watched && form.pageChanges === 0 && askAgainFor !== form.id) {
+                      if (form.pageChanges === 0 && askAgainFor !== form.id) {
                         setAskAgainFor(form.id);
                         return;
                       }
                       actions.onPage1?.();
                       setAskAgainFor(null);
-                      window.requestAnimationFrame(() => showAtlasRef.current?.focus());
                     }}
                   >
-                    {askAgainFor === form.id && !actions.page1Confirmed && form.pageChanges === 0 ? s('formPage1ConfirmAgain') : s('formPage1Confirm')}
+                    {askAgainFor === form.id ? s('formPage1ConfirmAgain') : s('formPage1Confirm')}
                   </Button>
-                  {actions.onShowAtlas && (
+                </span>
+                {actions.page1Confirmed && actions.onShowAtlas && (
+                  <div className={cls.footRow}>
+                    <Button ref={showAtlasRef} appearance="primary" icon={<Eye20Regular />} onClick={() => actions.canShowAtlas && actions.onShowAtlas?.()}>
+                      {s('showAtlas')}
+                    </Button>
+                  </div>
+                )}
+              </>
+            )}
+            {showPage1 && actions.onPage1 && form.route === 'tab' && (
+              // A form in a new tab: ATLAS cannot see it move, so the two presses stay here, in order.
+              <>
+                <p className={cls.info} role="status">
+                  {actions.page1Confirmed ? s('pressNow', { what: s('showAtlas') }) : s('pressNow', { what: s('formPage1Confirm') })}
+                </p>
+                <div className={cls.footRow}>
+                  {!actions.page1Confirmed && (
                     <Button
-                      ref={showAtlasRef}
-                      appearance={actions.canShowAtlas ? 'primary' : 'secondary'}
-                      icon={<Eye20Regular />}
-                      disabledFocusable={!actions.canShowAtlas}
-                      aria-describedby={!actions.canShowAtlas ? `${panelId}-atlas-reason` : undefined}
-                      onClick={() => actions.canShowAtlas && actions.onShowAtlas?.()}
+                      appearance="primary"
+                      onClick={() => {
+                        const watched = form.route === 'preview';
+                        if (watched && form.pageChanges === 0 && askAgainFor !== form.id) {
+                          setAskAgainFor(form.id);
+                          return;
+                        }
+                        actions.onPage1?.();
+                        setAskAgainFor(null);
+                        window.requestAnimationFrame(() => showAtlasRef.current?.focus());
+                      }}
                     >
+                      {askAgainFor === form.id && form.pageChanges === 0 ? s('formPage1ConfirmAgain') : s('formPage1Confirm')}
+                    </Button>
+                  )}
+                  {actions.onShowAtlas && actions.page1Confirmed && (
+                    <Button ref={showAtlasRef} appearance="primary" icon={<Eye20Regular />} onClick={() => actions.canShowAtlas && actions.onShowAtlas?.()}>
                       {s('showAtlas')}
                     </Button>
                   )}
                 </div>
-                {/* «Se deg rundt» has no page 1 to answer: its card says what to press, so the study's own lines stay out. */}
-                {!browseFlag() && form.pageChanges > 0 && !actions.page1Confirmed && <span className={cls.quiet}>{s('formMovedOn')}</span>}
                 <span className={cls.quiet} role="status">
-                  {/* Once the form has moved on, the «kan ikke se» line gives way to «har gått videre» (R2GP-03). */}
                   {askAgainFor === form.id && !actions.page1Confirmed && form.pageChanges === 0 ? s('formPage1NotMoved') : ''}
                 </span>
-                {actions.onShowAtlas && !actions.canShowAtlas && !browseFlag() && (
-                  <span className={cls.quiet} id={`${panelId}-atlas-reason`}>
-                    {s('showAtlasReason')}
-                  </span>
-                )}
               </>
             )}
-            <div className={cls.footRow}>
-              {showSentConfirm && form.route !== 'preview' && <Button onClick={actions.onConfirmSent}>{s('formSentConfirm')}</Button>}
-              {form.route === 'panel' && tabUrl && (
-                <Button appearance="subtle" icon={<Open16Regular />} onClick={openTab}>
-                  {s('formOpenTab')}
+            {showSentConfirm && form.route === 'tab' && (
+              <div className={cls.footRow}>
+                <Button appearance="primary" onClick={actions.onConfirmSent}>
+                  {s('formSentConfirm')}
                 </Button>
-              )}
-            </div>
-            {actions.onSkip && !browseFlag() && (
+              </div>
+            )}
+            {showSentConfirm && form.route === 'panel' && (
+              <span className={cls.fallback}>
+                {s('formSentFallback')}
+                <Button appearance="transparent" size="small" className={cls.fallbackBtn} onClick={actions.onConfirmSent}>
+                  {s('formSentConfirm')}
+                </Button>
+                {tabUrl && (
+                  <Button appearance="transparent" size="small" className={cls.fallbackBtn} icon={<Open16Regular />} onClick={openTab}>
+                    {s('formOpenTab')}
+                  </Button>
+                )}
+              </span>
+            )}
+            {actions.onSkip && !browseFlag() && !showCard && (
               // A quiet way past the form, at least 24 px tall (G-02).
               <Button appearance="transparent" size="small" className={cls.skip} onClick={actions.onSkip}>
                 {actions.skipLabel ?? s('formSkip')}

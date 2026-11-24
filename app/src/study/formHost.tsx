@@ -30,6 +30,8 @@ export interface OpenForm {
   reopened?: boolean;
   loaded: boolean;
   failed: boolean;
+  /** The panel's form was sent (seen from the receipt), so no failure is shown after it. */
+  sent?: boolean;
   timedOut: boolean;
   pageChanges: number;
   height: number;
@@ -164,7 +166,32 @@ export function FormHostProvider({ children }: { children: ReactNode }) {
 
   // Messages from the embedded Nettskjema form: accepted only from nettskjema.no
   // and only from this panel's own iframe.
+  //
+  // Nettskjema's embed posts "submitFailed" after every send that succeeds (3.8, F38): it posts "submitFinished" only
+  // when the answer's response carries `status: "success"`, which the submission response does not. A send that
+  // succeeds is told apart by the receipt: on success alone Nettskjema moves to its receipt page and posts
+  // "scrollToStart" with it. A real failure (a network error) posts "submitFailed" with no page change and shows
+  // Nettskjema's own retry dialog. So "submitFailed" waits a moment for its "scrollToStart"; only without one is it a
+  // failure.
+  const pendingFail = useRef<{ id: number; timer: number } | null>(null);
+  const lastPageChange = useRef<{ id: number; at: number } | null>(null);
   useEffect(() => {
+    // Nettskjema posts the receipt's "scrollToStart" and "submitFailed" for one send in the same moment, in either order.
+    // A page change the participant made comes long before a send (a page has to be answered), and a real failure
+    // comes after a request that failed, so a short window before and a longer one after tell them apart.
+    const SEND_WINDOW = 2500;
+    const RECEIPT_BEFORE = 200;
+    const sent = (cur: OpenForm) => {
+      if (pendingFail.current) window.clearTimeout(pendingFail.current.timer);
+      pendingFail.current = null;
+      setForm((f) => (f && f.id === cur.id ? { ...f, failed: false, sent: true } : f));
+      emitSent(cur, 'panel');
+    };
+    const askHeight = () => {
+      const frame = document.querySelector<HTMLIFrameElement>('iframe[data-form-frame]');
+      // Nettskjema answers "resize" with the page's height at once, instead of within its one-second beat.
+      frame?.contentWindow?.postMessage('resize', NETTSKJEMA_ORIGIN);
+    };
     const onMessage = (e: MessageEvent) => {
       if (e.origin !== NETTSKJEMA_ORIGIN) return;
       const frame = document.querySelector<HTMLIFrameElement>('iframe[data-form-frame]');
@@ -173,18 +200,35 @@ export function FormHostProvider({ children }: { children: ReactNode }) {
       if (!cur || cur.route !== 'panel') return;
       const data = e.data;
       if (typeof data === 'number' && Number.isFinite(data)) {
-        setForm((f) => (f && f.id === cur.id ? { ...f, loaded: true, timedOut: false, height: Math.max(360, Math.min(4000, data)) } : f));
+        setForm((f) => (f && f.id === cur.id ? { ...f, loaded: true, timedOut: false, height: Math.max(360, Math.min(6000, data)) } : f));
       } else if (data === 'scrollToStart') {
+        lastPageChange.current = { id: cur.id, at: Date.now() };
         setForm((f) => (f && f.id === cur.id ? { ...f, pageChanges: f.pageChanges + 1 } : f));
+        window.setTimeout(askHeight, 50);
+        // The receipt's page change after a "submitFailed": the send went through.
+        if (pendingFail.current?.id === cur.id) sent(cur);
       } else if (data === 'submitFinished') {
-        setForm((f) => (f && f.id === cur.id ? { ...f, failed: false } : f));
-        emitSent(cur, 'panel');
+        sent(cur);
       } else if (data === 'submitFailed') {
-        setForm((f) => (f && f.id === cur.id ? { ...f, failed: true } : f));
+        const recent = lastPageChange.current;
+        // The receipt's page change came first: the send went through.
+        if (recent && recent.id === cur.id && Date.now() - recent.at < RECEIPT_BEFORE) {
+          sent(cur);
+          return;
+        }
+        if (pendingFail.current) window.clearTimeout(pendingFail.current.timer);
+        const timer = window.setTimeout(() => {
+          pendingFail.current = null;
+          setForm((f) => (f && f.id === cur.id && !f.sent ? { ...f, failed: true } : f));
+        }, SEND_WINDOW);
+        pendingFail.current = { id: cur.id, timer };
       }
     };
     window.addEventListener('message', onMessage);
-    return () => window.removeEventListener('message', onMessage);
+    return () => {
+      window.removeEventListener('message', onMessage);
+      if (pendingFail.current) window.clearTimeout(pendingFail.current.timer);
+    };
   }, [emitSent]);
 
   // Watchdog: a panel form that sends no height message within 10 seconds did not load.

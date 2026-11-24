@@ -4,13 +4,14 @@ import { useState } from 'react';
 import type { CaseId } from '../content/types';
 import { cases, vocab } from '../content';
 import { formatDate, useLang } from '../i18n/i18n';
-import { referralCriteria } from '../engine/criteria';
+import { mentionedCriteria, referralCriteria } from '../engine/criteria';
+import { positionKey } from '../engine/placement';
 import { navigate } from '../router/router';
 import { useWork } from '../state/work';
 import { DesignNote, Panel, ProvenanceChip } from '../patterns/basics';
 import { InfoGuide, PlainLetter } from '../patterns/clinical';
 import { Actions, Body } from '../patterns/layout';
-import { AtlasPanelGp, Responsibility } from './AtlasPanelGp';
+import { AtlasPanelGp, AtlasPartGp, Responsibility } from './AtlasPanelGp';
 import { CompactBand } from './BandSection';
 import { AtlasPanelHead, CaseLayout } from './CaseLayout';
 import { AtlasPlaceholder, AtlasTaskBar, CaseModeBar, OtherSideButton } from './CaseChrome';
@@ -162,6 +163,33 @@ function SecondDraftSide({ caseId }: { caseId: CaseId }) {
   );
 }
 
+/** 3.8: the GP's ATLAS parts for the boxes under «Oppgaven din», and what each says once done. */
+function useGpTaskParts(caseId: CaseId, variant: 'consult' | 'referral', on: boolean) {
+  const { s, t } = useLang();
+  const work = useWork();
+  const c = cases[caseId];
+  const gp = work.gp(caseId);
+  if (!on) return { modules: undefined, summaries: undefined };
+  const withDecision = variant === 'consult' && caseId !== 'erlend';
+  const mentioned =
+    variant === 'referral' ? referralCriteria(draftSections(caseId, gp, (x) => t(x))) : mentionedCriteria(t(c.gp.note.text));
+  const modules = {
+    1: <AtlasPartGp caseId={caseId} part="band" variant={variant} />,
+    2: <AtlasPartGp caseId={caseId} part="tags" variant={variant} />,
+    3: <AtlasPartGp caseId={caseId} part="guide" variant={variant} />,
+    4: <AtlasPartGp caseId={caseId} part="confidence" variant={variant} />,
+    ...(withDecision ? { 5: <AtlasPartGp caseId={caseId} part="decision" /> } : {}),
+  };
+  const summaries = {
+    1: gp.placement !== undefined ? s(positionKey(gp.placement)) : undefined,
+    2: gp.tags.length ? gp.tags.map((x) => t(vocab.tags[x].label)).join(', ') : gp.description?.trim() ? s('summaryOwnWords') : undefined,
+    3: s('guideCount', { n: mentioned.length }),
+    4: gp.confidence ? t(vocab.confidence[gp.confidence]) : undefined,
+    5: gp.decisionSaved && gp.decision ? (gp.decision === 'behold' ? s('decisionHold') : s('decisionRefer')) : undefined,
+  };
+  return { modules, summaries };
+}
+
 /** Konsultasjon: the workspace, with the ATLAS panel or its placeholder. */
 export function GpConsultation({ caseId }: { caseId: CaseId }) {
   const { s, t } = useLang();
@@ -170,13 +198,18 @@ export function GpConsultation({ caseId }: { caseId: CaseId }) {
   const gp = work.gp(caseId);
   const without = work.withoutAtlas(caseId);
   // Study: the case-only bar carries the placeholder, so the form panel can sit inline beside the case.
+  // 3.8: in the study, the ATLAS parts sit in the boxes under «Oppgaven din»; no side panel (Jishnu, 24 November).
+  const inTask = work.mode === 'study' && !without && caseId !== 'astrid';
   const side = without
     ? work.mode === 'review'
       ? <AtlasPlaceholder caseId={caseId} />
       : undefined
     : caseId === 'astrid'
       ? <AstridSide />
-      : <AtlasPanelGp caseId={caseId} variant="consult" />;
+      : inTask
+        ? undefined
+        : <AtlasPanelGp caseId={caseId} variant="consult" />;
+  const { modules, summaries } = useGpTaskParts(caseId, 'consult', inTask);
   const compact = !without && c.gp.systemReading ? <CompactBand own={gp.placement} reading={c.gp.systemReading} /> : undefined;
   return (
     <CaseLayout side={side} compactSummary={compact}>
@@ -188,7 +221,7 @@ export function GpConsultation({ caseId }: { caseId: CaseId }) {
       />
       {/* Notices sit under the title (G-16). */}
       <CaseModeBar caseId={caseId} />
-      <AtlasTaskBar caseId={caseId} />
+      <AtlasTaskBar caseId={caseId} modules={modules} summaries={summaries} />
       {caseId === 'erlend' && without && c.gp.caseOnlyLetter && (
         <Panel aria-label={s('previousRefusalLetter')}>
           <PlainLetter letter={c.gp.caseOnlyLetter} source="dps" />
@@ -225,8 +258,10 @@ export function GpReferral({ caseId }: { caseId: CaseId }) {
   const [tab, setTab] = useState<'draft' | 'record'>('draft');
   // The new referral after «Henvis på nytt»: Astrid's, or Kari's and Erlend's after a return the DPS side played (r9F-01).
   const second = caseId === 'astrid' || (gp.referral === 'sent' && gp.planSaved === true && gp.plan === 'henvisPaNytt');
+  const inTask = work.mode === 'study' && !second;
+  const { modules, summaries } = useGpTaskParts(caseId, 'referral', inTask);
   if (work.withoutAtlas(caseId)) return <GpConsultation caseId={caseId} />;
-  const side = second ? <SecondDraftSide caseId={caseId} /> : <AtlasPanelGp caseId={caseId} variant="referral" />;
+  const side = second ? <SecondDraftSide caseId={caseId} /> : inTask ? undefined : <AtlasPanelGp caseId={caseId} variant="referral" />;
   const compact = !second && c.gp.systemReading ? <CompactBand own={gp.placement} reading={c.gp.systemReading} /> : undefined;
   const ret = c.gp.dpsScript.return;
   const dps = work.dps(caseId);
@@ -246,7 +281,19 @@ export function GpReferral({ caseId }: { caseId: CaseId }) {
       />
       {/* Notices sit under the title (G-16). */}
       <CaseModeBar caseId={caseId} />
-      <AtlasTaskBar caseId={caseId} />
+      <AtlasTaskBar caseId={caseId} modules={modules} summaries={summaries}
+        finalStep={{
+          label: s('taskNextWrite'),
+          onClick: () => {
+            setTab('draft');
+            window.requestAnimationFrame(() => {
+              const field = document.querySelector<HTMLTextAreaElement>('[data-referral-draft] textarea');
+              field?.scrollIntoView({ block: 'center', behavior: 'smooth' });
+              field?.focus({ preventScroll: true });
+            });
+          },
+        }}
+      />
       {caseId === 'erlend' && (
         <TabList selectedValue={tab} onTabSelect={(_, d) => setTab(d.value as 'draft' | 'record')}>
           <Tab value="draft">{s('newReferral')}</Tab>
@@ -271,7 +318,9 @@ export function GpReferral({ caseId }: { caseId: CaseId }) {
         <Workspace caseId={caseId} />
       ) : (
         <Panel aria-label={s('newReferral')}>
-          <ReferralEditor caseId={caseId} second={second} />
+          <div data-referral-draft="">
+            <ReferralEditor caseId={caseId} second={second} />
+          </div>
         </Panel>
       )}
     </CaseLayout>

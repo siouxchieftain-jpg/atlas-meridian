@@ -130,7 +130,7 @@ export function FromAtlasPanel({ gp }: { gp: GpWork }) {
   const parts: string[] = [];
   if (gp.placement !== undefined) parts.push(`${t(vocab.band.own)}: ${s(positionKey(gp.placement))}`);
   if (gp.tags.length) parts.push(`${s('unclearTitle')}: ${gp.tags.map((x) => t(vocab.tags[x].label)).join(', ')}`);
-  if (gp.confidence) parts.push(`${s('confidenceTitle')}: ${t(vocab.confidence[gp.confidence]).toLowerCase()}`);
+  if (gp.confidence) parts.push(`${s('fromAtlasConfidence')}: ${t(vocab.confidence[gp.confidence]).toLowerCase()}`);
   const empty = parts.length === 0 && !gp.description.trim();
   return (
     <section className={cls.block} aria-label={s('fromAtlasPanel')} data-section="fra-atlas">
@@ -138,6 +138,10 @@ export function FromAtlasPanel({ gp }: { gp: GpWork }) {
         <h3 className={cls.blockTitle}>{s('fromAtlasPanel')}</h3>
         <ProvenanceChip source="own" />
       </div>
+      {/* Copied from the panel, and changed there (3.8, F31). */}
+      <p className={cls.caption} data-copied-from-panel="">
+        {s('fromAtlasCopied')}
+      </p>
       {empty ? (
         <p className={cls.empty}>{s('sentAtlasNone')}</p>
       ) : (
@@ -250,7 +254,21 @@ export function ReferralEditor({ caseId, second = false }: { caseId: CaseId; sec
                 </div>
               )}
             </div>
-            <div className={cls.margin} role="note" aria-label={`${s('whatDpsLooksFor')}: ${label}`} data-margin="">
+            {/* A click on the margin goes to its section's text, and the page moves only as far as it must to show it
+                (3.8, F49). By keyboard the field is the next stop anyway. */}
+            <div
+              className={cls.margin}
+              role="note"
+              aria-label={`${s('whatDpsLooksFor')}: ${label}`}
+              data-margin=""
+              onClick={(e) => {
+                if ((e.target as HTMLElement).closest('button, a, [data-guide-pin]')) return;
+                const field = (e.currentTarget.parentElement?.querySelector('textarea') ?? null) as HTMLTextAreaElement | null;
+                if (!field) return;
+                field.focus({ preventScroll: true });
+                field.scrollIntoView({ block: 'nearest' });
+              }}
+            >
               <span className={cls.marginTitle}>{s('whatDpsLooksFor')}</span>
               <span>{t(meta.guide)}</span>
               {status && (

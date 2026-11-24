@@ -122,13 +122,14 @@ export type StepId =
   | 'kari'
   | 'erlend'
   | 'astrid'
-  | 'avslutning'
   | 'ekstra'
   | 'takk';
 
 /**
  * v3.1: the participant comes home to the overview after «Om deg», starts the tour from there, works the three cases
  * from there, and answers «ATLAS som helhet» (S2) after the cases, when there is something to judge.
+ * 3.8, part C (F92): S2 is the one closing form, «Avslutning»; the step «avslutning» and its form S6 are gone, and a
+ * stored «avslutning» is read as «helhet».
  */
 export const STEP_ORDER: StepId[] = [
   'velkommen',
@@ -138,13 +139,12 @@ export const STEP_ORDER: StepId[] = [
   'erlend',
   'astrid',
   'helhet',
-  'avslutning',
   'ekstra',
   'takk',
 ];
 
 /** The study's form steps (`steg` values without the `-etter` suffix), and S9, the feedback form, which is no step. */
-export type FormStep = 'S1' | 'S2' | 'S3' | 'S4' | 'S5' | 'S6' | 'S7' | 'S8' | 'S9';
+export type FormStep = 'S1' | 'S2' | 'S3' | 'S4' | 'S5' | 'S7' | 'S8' | 'S9';
 
 /** The natural breaks where ATLAS asks once for feedback: the end of the tour and the end of each case. */
 export type PromptKey = 'tour' | CoreCaseId;

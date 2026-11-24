@@ -4,7 +4,7 @@ import type { CoreCaseId } from '../content/types';
 import { cases } from '../content';
 import { useLang } from '../i18n/i18n';
 import { useStudy } from '../state/study';
-import { SheenButton } from '../patterns/basics';
+import { NextMark, SheenButton } from '../patterns/basics';
 import { guide } from '../theme/constants';
 import { CORE, roleSeg } from './parts';
 import { FeedbackPartsPopover, feedbackOpened, type FeedbackResult } from './StudyFeedback';
@@ -16,7 +16,7 @@ const useStyles = makeStyles({
   bar: {
     display: 'flex',
     flexWrap: 'wrap',
-    alignItems: 'center',
+    alignItems: 'flex-end',
     justifyContent: 'space-between',
     columnGap: '16px',
     rowGap: '12px',
@@ -32,7 +32,8 @@ const useStyles = makeStyles({
   q: { ...typographyStyles.body1Strong, margin: 0 },
   why: { ...typographyStyles.body1, margin: 0, color: tokens.colorNeutralForeground2 },
   quiet: { ...typographyStyles.body1, margin: 0, color: tokens.colorNeutralForeground2 },
-  actions: { display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: tokens.spacingHorizontalS },
+  // Bottom-aligned, so the button with the «Trykk her» mark and the one beside it sit on one line (3.8).
+  actions: { display: 'flex', flexWrap: 'wrap', alignItems: 'flex-end', gap: tokens.spacingHorizontalS },
 });
 
 /**
@@ -55,6 +56,11 @@ export function CaseEndPrompt({ caseId, onContinue }: { caseId: CoreCaseId; onCo
     if (feedbackOpened(r)) study.setPrompt(caseId, 'sent');
     notice(r);
   };
+  const n = CORE.indexOf(caseId) + 1;
+  // Where the participant is and the next press, in one line (3.8, F107, F114).
+  const doneLine = next
+    ? s('caseDoneLine', { n, what: onLabel })
+    : s('caseDoneLineLast', { n, what: onLabel });
   const goOn = () => {
     if (!asked) study.setPrompt(caseId, 'later');
     onContinue();
@@ -66,35 +72,46 @@ export function CaseEndPrompt({ caseId, onContinue }: { caseId: CoreCaseId; onCo
           <PersonFeedback20Regular />
         </span>
         <div>
-          <p className={cls.q} id={`prompt-${caseId}`}>
-            {next ? s('casePromptQuestion', { name: cases[next].patient.name.split(' ')[0] }) : s('casePromptQuestionLast')}
+          <p className={cls.q} data-case-done-line="">
+            {doneLine}
           </p>
-          <p className={cls.why}>{s('casePromptWhy')}</p>
+          <p className={cls.why} id={`prompt-${caseId}`}>
+            {next ? s('casePromptQuestion', { name: cases[next].patient.name.split(' ')[0] }) : s('casePromptQuestionLast')} {s('casePromptWhy')}
+          </p>
         </div>
       </div>
-      {/* Board 9b: the feedback is the bar's main action, the way on beside it (Meridian: the main action first). */}
+      {/* One main action (3.8, F33): the way on. The feedback, which is optional, sits beside it as a plain button. */}
       <div className={cls.actions}>
+        <NextMark on>
+          <SheenButton icon={<ArrowRight20Regular />} iconPosition="after" onClick={goOn} data-case-go-on="">
+            {onLabel}
+          </SheenButton>
+        </NextMark>
         <FeedbackPartsPopover
           side={side}
           trigger={
-            <SheenButton icon={<CommentEdit20Regular />} data-prompt-feedback="">
+            <Button size="large" icon={<CommentEdit20Regular />} data-prompt-feedback="">
               {s('feedback')}
-            </SheenButton>
+            </Button>
           }
           back={() => document.querySelector<HTMLElement>('[data-prompt-feedback]')}
           onResult={onResult}
         />
-        <Button size="large" icon={<ArrowRight20Regular />} iconPosition="after" onClick={goOn} data-case-go-on="">
-          {onLabel}
-        </Button>
       </div>
     </section>
   ) : (
     <section className={cls.bar} aria-label={onLabel} data-case-prompt-done={caseId}>
-      <p className={cls.quiet}>{s('promptAlways')}</p>
-      <SheenButton icon={<ArrowRight20Regular />} iconPosition="after" onClick={goOn} data-case-go-on="">
-        {onLabel}
-      </SheenButton>
+      <div>
+        <p className={cls.q} data-case-done-line="">
+          {doneLine}
+        </p>
+        <p className={cls.quiet}>{s('promptAlways')}</p>
+      </div>
+      <NextMark on>
+        <SheenButton icon={<ArrowRight20Regular />} iconPosition="after" onClick={goOn} data-case-go-on="">
+          {onLabel}
+        </SheenButton>
+      </NextMark>
     </section>
   );
 }

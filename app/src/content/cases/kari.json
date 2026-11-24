@@ -73,11 +73,21 @@
       "time": {
         "nb": "Omtrent 10 minutter",
         "en": "About 10 minutes"
+      },
+      "scenario": {
+        "kind": {
+          "nb": "ny henvisning",
+          "en": "new referral"
+        },
+        "task": {
+          "nb": "Du avgjør om du vil henvise Kari til DPS.",
+          "en": "You decide whether to refer Kari to DPS."
+        }
       }
     },
     "atlasTask": {
-      "nb": "Plasser saken på båndet før du ser systemets lesning. Bestem deretter om du vil henvise.",
-      "en": "Place the case on the band before you see the system’s reading. Then decide whether to refer."
+      "nb": "Plasser saken på skalaen før du ser systemets vurdering. Bestem deretter om du vil henvise.",
+      "en": "Place the case on the scale before you see the system’s assessment. Then decide whether to refer."
     },
     "profile": [
       {
@@ -356,11 +366,21 @@
       "time": {
         "nb": "Omtrent 8 minutter",
         "en": "About 8 minutes"
+      },
+      "scenario": {
+        "kind": {
+          "nb": "ny henvisning",
+          "en": "new referral"
+        },
+        "task": {
+          "nb": "Du vurderer henvisningen og velger et utfall.",
+          "en": "You assess the referral and choose an outcome."
+        }
       }
     },
     "atlasTask": {
-      "nb": "Med ATLAS ser du også fastlegens beskrivelse av hva som er uklart, og fastlegens trygghet i ord. Plasser saken på båndet før du ser fastlegens plassering og systemets lesning. Velg deretter et utfall.",
-      "en": "With ATLAS you also see the GP’s description of what is unclear, and the GP’s confidence in words. Place the case on the band before you see the GP’s placement and the system’s reading. Then choose an outcome."
+      "nb": "Med ATLAS ser du også fastlegens beskrivelse av hva som er uklart, og hvor sikker fastlegen er, i ord. Plasser saken på skalaen før du ser fastlegens plassering og systemets vurdering. Velg deretter et utfall.",
+      "en": "With ATLAS you also see the GP’s description of what is unclear, and how sure the GP is, in words. Place the case on the scale before you see the GP’s placement and the system’s assessment. Then choose an outcome."
     },
     "referral": {
       "sent": "2026-03-17",
@@ -447,8 +467,8 @@
         "en": "Placements and outcome"
       },
       "whatHappened": {
-        "nb": "{{plassering}} Systemets lesning lå nær midten. Fastlegens beslutning: {{beslutning}}. Fastlegens trygghet: {{trygghet}}. Utfall: {{utfall}}.",
-        "en": "{{plassering}} The system’s reading was near the middle. The GP’s decision: {{beslutning}}. The GP’s confidence: {{trygghet}}. Outcome: {{utfall}}."
+        "nb": "{{plassering}} Systemets vurdering lå nær midten. Fastlegens beslutning: {{beslutning}}. Hvor sikker fastlegen var: {{trygghet}}. Utfall: {{utfall}}.",
+        "en": "{{plassering}} The system’s assessment was near the middle. The GP’s decision: {{beslutning}}. How sure the GP was: {{trygghet}}. Outcome: {{utfall}}."
       },
       "purpose": {
         "nb": "Saken er laget for å prøve om ATLAS kan vise usikkerheten i en gråsonesak uten å tvinge fram et ja eller nei, og om det er tydelig hva som er fastlegens egen vurdering og hva systemet viser.",
@@ -457,12 +477,12 @@
     },
     "dps": {
       "title": {
-        "nb": "Tre plasseringer av samme sak",
-        "en": "Three placements of the same case"
+        "nb": "Tre plasseringer av samme sak: ATLAS, fastlegen og deg",
+        "en": "Three placements of the same case: ATLAS, the GP and you"
       },
       "whatHappened": {
-        "nb": "{{plassering}} Fastlegens trygghet for henvisningen var {{trygghet}}. Utfall: {{utfall}}.",
-        "en": "{{plassering}} The GP’s confidence for the referral was {{trygghet}}. Outcome: {{utfall}}."
+        "nb": "{{plassering}} Hvor sikker fastlegen var på henvisningen: {{trygghet}}. Utfall: {{utfall}}.",
+        "en": "{{plassering}} How sure the GP was about the referral: {{trygghet}}. Outcome: {{utfall}}."
       },
       "purpose": {
         "nb": "Saken er laget for å prøve om fastlegens egen beskrivelse av hva som er uklart, sendt med henvisningen, endrer hvordan inntaksteamet leser en gråsonesak, og om det er tydelig hva som er egen vurdering og hva systemet viser.",

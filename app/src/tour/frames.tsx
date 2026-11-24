@@ -67,12 +67,15 @@ const useStyles = makeStyles({
 export interface Sandbox {
   work: WorkApi;
   reset: () => void;
+  /** Counts the resets: the frame is drawn anew on each, so a thread left open closes too (3.8, F11). */
+  generation: number;
 }
 
 /** One sandbox per tour run, so a placement made in one step is still there in the next. */
 export function useSandbox(role: Role, notes: boolean): Sandbox {
   const [gp, setGp] = useState<GpWork>(emptyGp());
   const [dps, setDps] = useState<DpsWork>(emptyDps());
+  const [generation, setGeneration] = useState(0);
   return useMemo(() => {
     const work: WorkApi = {
       mode: 'study',
@@ -102,12 +105,14 @@ export function useSandbox(role: Role, notes: boolean): Sandbox {
     };
     return {
       work,
+      generation,
       reset: () => {
         setGp(emptyGp());
         setDps(emptyDps());
+        setGeneration((g) => g + 1);
       },
     };
-  }, [gp, dps, role, notes]);
+  }, [gp, dps, role, notes, generation]);
 }
 
 function PlaceFirst() {
@@ -202,7 +207,7 @@ function FrameList({ role }: { role: Role }) {
   };
   const c = cases.sofie;
   const openButton = (
-    <Button size="small" aria-describedby={nameId} onClick={open}>
+    <Button size="small" aria-describedby={nameId} onClick={open} data-try-target="open">
       {s('stepOpen')}
     </Button>
   );
@@ -540,7 +545,7 @@ export function SandboxFrame({ sandbox, frame, role, hold }: { sandbox: Sandbox;
   const { s } = useLang();
   return (
     <SandboxWorkProvider value={sandbox.work}>
-      <TourFrame frame={frame} role={role} hold={hold} />
+      <TourFrame key={`${frame}:${sandbox.generation}`} frame={frame} role={role} hold={hold} />
       {/* A drawing of the study has nothing to reset. */}
       {!isStudyFrame(frame) && !NOTHING_TO_RESET.has(frame) && (
         <div style={{ marginTop: 16 }}>

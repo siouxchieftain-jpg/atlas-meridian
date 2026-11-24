@@ -74,6 +74,16 @@
       "time": {
         "nb": "Omtrent 8 minutter",
         "en": "About 8 minutes"
+      },
+      "scenario": {
+        "kind": {
+          "nb": "avslag fra DPS",
+          "en": "rejection from DPS"
+        },
+        "task": {
+          "nb": "Du leser svaret fra DPS og bestemmer hva du gjør videre.",
+          "en": "You read the reply from DPS and decide what to do next."
+        }
       }
     },
     "atlasTask": {
@@ -377,6 +387,16 @@
       "time": {
         "nb": "Omtrent 5 minutter",
         "en": "About 5 minutes"
+      },
+      "scenario": {
+        "kind": {
+          "nb": "avslag med spørsmål",
+          "en": "rejection with a question"
+        },
+        "task": {
+          "nb": "Fastlegen spør om avslaget, og du svarer.",
+          "en": "The GP asks about the rejection, and you answer."
+        }
       }
     },
     "atlasTask": {

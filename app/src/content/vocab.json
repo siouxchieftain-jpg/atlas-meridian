@@ -2,8 +2,8 @@
   "tags": {
     "diagnostisk": {
       "label": {
-        "nb": "Diagnostisk",
-        "en": "Diagnostic"
+        "nb": "Uklar diagnose",
+        "en": "Unclear diagnosis"
       },
       "definition": {
         "nb": "Det er uklart hvilken tilstand det er.",
@@ -12,18 +12,18 @@
     },
     "terskel": {
       "label": {
-        "nb": "Terskel",
-        "en": "Threshold"
+        "nb": "Uklart om kriteriene er oppfylt",
+        "en": "Unclear whether the criteria are met"
       },
       "definition": {
-        "nb": "Tilstanden er kjent, men det er uklart om den når terskelen.",
-        "en": "The condition is known, but it is unclear whether it reaches the threshold."
+        "nb": "Tilstanden er kjent, men det er uklart om den oppfyller kriteriene i prioriteringsveilederen.",
+        "en": "The condition is known, but it is unclear whether it meets the criteria in the priority-setting guideline."
       }
     },
     "epistemisk": {
       "label": {
-        "nb": "Epistemisk",
-        "en": "Epistemic"
+        "nb": "Ikke nok informasjon",
+        "en": "Not enough information"
       },
       "definition": {
         "nb": "Opplysningene er for tynne til å vurdere saken.",
@@ -33,24 +33,24 @@
   },
   "confidence": {
     "lav": {
-      "nb": "Lav",
-      "en": "Low"
+      "nb": "Veldig usikker",
+      "en": "Very unsure"
     },
     "nokssaLav": {
-      "nb": "Nokså lav",
-      "en": "Fairly low"
+      "nb": "Nokså usikker",
+      "en": "Fairly unsure"
     },
     "middels": {
       "nb": "Middels",
-      "en": "Medium"
+      "en": "In between"
     },
     "nokssaHoy": {
-      "nb": "Nokså høy",
-      "en": "Fairly high"
+      "nb": "Nokså sikker",
+      "en": "Fairly sure"
     },
     "hoy": {
-      "nb": "Høy",
-      "en": "High"
+      "nb": "Veldig sikker",
+      "en": "Very sure"
     }
   },
   "confidenceOrder": [
@@ -272,8 +272,8 @@
       "en": "From DPS’s own record"
     },
     "system": {
-      "nb": "Systemets lesning",
-      "en": "The system’s reading"
+      "nb": "Systemets vurdering",
+      "en": "The system’s assessment"
     },
     "fictional": {
       "nb": "Fiktive tall for prototypen",
@@ -330,12 +330,12 @@
       }
     },
     "system": {
-      "nb": "Systemets lesning",
-      "en": "The system’s reading"
+      "nb": "Systemets vurdering",
+      "en": "The system’s assessment"
     },
     "illustration": {
-      "nb": "Illustrasjon: lesningen er skrevet for saken, ikke beregnet",
-      "en": "Illustration: the reading is written for the case, not calculated"
+      "nb": "Vurderingen er skrevet for saken, ikke beregnet.",
+      "en": "The assessment is written for the case, not calculated."
     },
     "reasoningLabel": {
       "nb": "Resonnement",

@@ -17,7 +17,6 @@ import {
   ChevronDown16Regular,
   ChevronRight16Regular,
   Lightbulb20Regular,
-  Info16Regular,
   Map16Regular,
 } from '@fluentui/react-icons';
 import { useId, useLayoutEffect, useRef, useState, type ReactNode } from 'react';
@@ -30,7 +29,6 @@ import { PageHeading } from '../shell/PageHeading';
 import { atlasDawn, guide, size } from '../theme/constants';
 import type { Held } from '../overview/held';
 import { SandboxFrame, isStudyFrame, useSandbox, type Sandbox } from './frames';
-import { MarkerNumber, markerForTour } from '../guide/GuideLayer';
 
 const useStyles = makeStyles({
   // The guide layer's stage: the dawn and the image, the progress on top, the panel and the live window in the middle.
@@ -121,7 +119,8 @@ const useStyles = makeStyles({
     paddingBlock: '12px',
     borderRadius: tokens.borderRadiusLarge,
     backgroundColor: guide.cardTop,
-    border: `1px solid ${guide.peach}`,
+    // The same colour as the outline on the place to try it (3.8, F5).
+    border: `2px solid ${guide.coral}`,
     '@media (forced-colors: active)': { border: '1px solid CanvasText' },
   },
   tryIcon: { color: guide.ink, flexShrink: 0, marginTop: '1px' },
@@ -256,7 +255,7 @@ const useStyles = makeStyles({
 });
 
 /** The window that frames a live component in the tour (fluent.md 5.2). */
-export function FramedWindow({ title, children, coach }: { title: string; children: ReactNode; coach?: string }) {
+export function FramedWindow({ title, children, coach, tryId }: { title: string; children: ReactNode; coach?: string; tryId?: string }) {
   const cls = useStyles();
   const { s } = useLang();
   // The window is as tall as its content; only when something is wider than a narrow window does it scroll sideways,
@@ -273,7 +272,8 @@ export function FramedWindow({ title, children, coach }: { title: string; childr
     return () => ro.disconnect();
   }, [children]);
   return (
-    <section className={cls.window} aria-label={s('tourFrameLabel', { title })} data-tour-frame="">
+    <section className={cls.window} aria-label={s('tourFrameLabel', { title })} data-tour-frame="" data-try={tryId}>
+      {tryId && tryTargetCss(tryId) && <style>{tryTargetCss(tryId)}</style>}
       <div className={cls.windowInner}>
         <div className={cls.bar}>
           <span className={cls.barTitle}>ATLAS · {title}</span>
@@ -298,6 +298,37 @@ export function FramedWindow({ title, children, coach }: { title: string; childr
 }
 
 const COACH: Record<string, string> = { 'gp-lesning': 'reading', 'dps-markorer': 'reading', 'gp-margin': 'margin', 'dps-retur': 'return' };
+
+/**
+ * Where each «Prøv» is tried (3.8, F5, F64, F66): the target in the window carries an outline in the «Prøv» box's own
+ * colour, so the instruction and the place to try it are visibly one.
+ */
+const TRY_TARGET: Record<string, string> = {
+  'gp-timeliste': '[data-try-target="open"]',
+  'dps-ko': '[data-try-target="open"]',
+  'gp-profil': '[data-try-target="self-report"]',
+  'gp-band': '[data-section="band"] [role="combobox"]',
+  'dps-band': '[data-section="band"] [role="combobox"]',
+  'gp-lesning': '[data-section="band"] [role="combobox"]',
+  'dps-markorer': '[data-section="band"] [role="combobox"]',
+  'gp-tags': '[data-section="tags"] [role="group"], [data-section="tags"] fieldset',
+  'gp-trygghet': '[data-section="confidence"] [role="radiogroup"], [data-section="confidence"] fieldset',
+  'gp-beslutning': '[data-section="decision"] [role="radiogroup"], [data-section="decision"] fieldset',
+  'gp-margin': '[data-section="henvisning-risiko"] textarea',
+  'gp-retur': '[data-try-target="unmet"]',
+  'dps-vurdering': '[data-section="vurdering"] fieldset, [data-section="vurdering"] [role="radiogroup"]',
+  'gp-dialog': '[data-section="delt-dialog"] ul button',
+  'dps-dialog': '[data-section="delt-dialog"] ul button',
+};
+function tryTargetCss(stepId: string): string | null {
+  const sel = TRY_TARGET[stepId];
+  if (!sel) return null;
+  const scoped = sel
+    .split(',')
+    .map((x) => `[data-tour-frame][data-try="${stepId}"] ${x.trim()}`)
+    .join(', ');
+  return `${scoped} { outline: 2px solid ${guide.coral}; outline-offset: 3px; border-radius: 4px; }`;
+}
 
 /** The stage's top row: «Omvisning», where you are, and the progress by part. */
 function StageTop({ role, parts, flatIndex, done }: { role: Role; parts: TourPart[]; flatIndex: number; done?: boolean }) {
@@ -346,12 +377,7 @@ function StepText({ step, showReason, partLine }: { step: TourStep; showReason: 
       <PageHeading title={s('stepOmvisning')} guide>
         {t(step.title)}
       </PageHeading>
-      {markerForTour(step.id) != null && (
-        <p className={cls.markerLine}>
-          <MarkerNumber n={markerForTour(step.id)!} small />
-          {s('tourMarkerLine', { n: markerForTour(step.id)! })}
-        </p>
-      )}
+      {/* No marker numbers in the tour (3.8, F3, F7): «Del 3 av 5» is enough; the case pages keep their numbers. */}
       <Lead>{t(step.body)}</Lead>
       {step.tryIt && (
         <p className={cls.tryIt}>
@@ -359,12 +385,8 @@ function StepText({ step, showReason, partLine }: { step: TourStep; showReason: 
           {t(step.tryIt)}
         </p>
       )}
-      {step.bridge && (
-        <p className={cls.bridge}>
-          <Info16Regular aria-hidden="true" style={{ flexShrink: 0, marginTop: 2 }} />
-          {t(step.bridge)}
-        </p>
-      )}
+      {/* The bridge lines to the forms' words are gone (3.8, F8). The forms take ATLAS's own names with part C (the F90 list),
+          so 3.8 is released together with those forms. */}
       {showReason && (
         <div className={cls.why}>
           <Button
@@ -442,7 +464,6 @@ export function TourView({
             {all.map(({ st, pi, si }) => (
               <li key={st.id} className={cls.seenItem}>
                 <span className={cls.seenTitle}>
-                  {markerForTour(st.id) != null && <MarkerNumber n={markerForTour(st.id)!} small />}
                   {t(st.title)}
                 </span>
                 <Button size="small" appearance="subtle" onClick={() => onPos({ part: pi, step: si })}>
@@ -500,7 +521,7 @@ export function TourView({
         </div>
       </div>
       <div>
-        <FramedWindow title={t(step.title)} coach={COACH[step.id]}>
+        <FramedWindow title={t(step.title)} coach={COACH[step.id]} tryId={step.tryIt ? step.id : undefined}>
           <SandboxFrame sandbox={sandbox} frame={step.frame} role={role} hold={hold} />
         </FramedWindow>
         {/* The study's own frames are drawings of ATLAS, not the practice patient. */}
@@ -528,11 +549,6 @@ function StepDialogBody({
   return (
     <DialogBody>
       <DialogTitle>
-        {markerForTour(step.id) != null && (
-          <span style={{ marginInlineEnd: 8, verticalAlign: 'middle' }}>
-            <MarkerNumber n={markerForTour(step.id)!} small />
-          </span>
-        )}
         {t(step.title)}
       </DialogTitle>
       {/* A window with nothing to press (the pattern, Kalibrering) still scrolls by keyboard: the content is a named,
@@ -540,9 +556,8 @@ function StepDialogBody({
       <DialogContent tabIndex={0} role="region" aria-label={s('tourStepDialogContent', { title: t(step.title) })}>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
           <Body>{t(step.body)}</Body>
-          {step.bridge && <Body>{t(step.bridge)}</Body>}
           {showReason && <Body>{t(step.reason)}</Body>}
-          <FramedWindow title={t(step.title)} coach={COACH[step.id]}>
+          <FramedWindow title={t(step.title)} coach={COACH[step.id]} tryId={step.tryIt ? step.id : undefined}>
             <SandboxFrame sandbox={sandbox} frame={step.frame} role={role} hold={hold} />
           </FramedWindow>
         </div>
