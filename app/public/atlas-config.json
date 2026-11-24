@@ -18,18 +18,18 @@
     "R2": "https://nettskjema.no/a/661833"
   },
   "pilotForms": {
-    "S1": "",
-    "S2.fastlege": "",
-    "S2.dps": "",
-    "S3.fastlege": "",
-    "S3.dps": "",
-    "S4.fastlege": "",
-    "S4.dps": "",
-    "S5.fastlege": "",
-    "S5.dps": "",
-    "S7.fastlege": "",
-    "S8": "",
-    "S9": ""
+    "S1": "https://nettskjema.no/a/678477",
+    "S2.fastlege": "https://nettskjema.no/a/678478",
+    "S2.dps": "https://nettskjema.no/a/678479",
+    "S3.fastlege": "https://nettskjema.no/a/678480",
+    "S3.dps": "https://nettskjema.no/a/678481",
+    "S4.fastlege": "https://nettskjema.no/a/678482",
+    "S4.dps": "https://nettskjema.no/a/678483",
+    "S5.fastlege": "https://nettskjema.no/a/678484",
+    "S5.dps": "https://nettskjema.no/a/678485",
+    "S7.fastlege": "https://nettskjema.no/a/678486",
+    "S8": "https://nettskjema.no/a/678487",
+    "S9": "https://nettskjema.no/a/678488"
   },
   "studyPeriod": {
     "opens": "",
