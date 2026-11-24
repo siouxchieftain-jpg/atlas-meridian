@@ -623,13 +623,13 @@ test('r5A-02, r5A-03: at 320 × 256 focus is brought into view, and the form kee
   await page.getByRole('button', { name: 'Vis skjemaet' }).click();
   await expect(panel(page)).toBeVisible();
   await expect.poll(() => panel(page).evaluate((el) => el.scrollTop)).toBeGreaterThan(100);
-  // «Vis ATLAS»: the case page's heading takes focus, in view.
+  // «Vis ATLAS»: ATLAS arrives (3.8): its card's heading takes focus, in view.
   await toStopPage(page);
   await confirmPage1(page);
   await panel(page).getByRole('button', { name: 'Vis ATLAS' }).click();
-  const h1 = page.getByRole('heading', { level: 1 });
-  await expect(h1).toBeFocused();
-  await expect(h1).toBeInViewport();
+  const atlas = page.locator('[data-atlas-card="on"]').getByRole('heading', { level: 2, name: 'ATLAS' });
+  await expect(atlas).toBeFocused();
+  await expect(atlas).toBeInViewport();
 });
 
 test('r5F-04: after «Ikke svar nå» focus stays in the dialogue', async ({ page }) => {

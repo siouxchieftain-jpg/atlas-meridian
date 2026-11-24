@@ -70,6 +70,11 @@ const useStyles = makeStyles({
   // With «Vet ikke» (3.6, I-18): the anchors sit under the points, inside the group, and «Vet ikke» starts a line of its own.
   anchorsInGroup: { flexBasis: '100%', display: 'flex', justifyContent: 'space-between', ...typographyStyles.caption1, color: tokens.colorNeutralForeground3 },
   dontKnow: { flexBasis: '100%', marginTop: tokens.spacingVerticalXS },
+  // Each question stands out from its answers (3.8, Jishnu, 24 November): the question in semibold body text, the
+  // «(valgfritt)» mark in regular grey after it, and a hairline between questions so one ends before the next begins.
+  question: { ...typographyStyles.body1Strong, color: tokens.colorNeutralForeground1, paddingBottom: tokens.spacingVerticalXS },
+  optional: { ...typographyStyles.body1, color: tokens.colorNeutralForeground3 },
+  item: { paddingTop: tokens.spacingVerticalL, borderTopWidth: '1px', borderTopStyle: 'solid', borderTopColor: tokens.colorNeutralStroke2 },
 });
 
 function scaleRange(item: InstrumentItem): number[] {
@@ -206,13 +211,22 @@ export function PreviewForm({
             );
           }
           const range = scaleRange(it);
-          const label = it.required ? t(it.text) : `${t(it.text)} ${s('optionalMark')}`;
+          const label = {
+            className: cls.question,
+            children: it.required ? (
+              t(it.text)
+            ) : (
+              <>
+                {t(it.text)} <span className={cls.optional}>{s('optionalMark')}</span>
+              </>
+            ),
+          };
           const invalid = missing === it.codebook;
           const fieldState = invalid ? { validationState: 'error' as const, validationMessage: s('requiredMissing') } : {};
           if (range.length) {
             const anchorsId = `${idFor(it.codebook)}-anchors`;
             return (
-              <div key={it.id} id={idFor(it.codebook)}>
+              <div key={it.id} id={idFor(it.codebook)} className={cls.item}>
                 <Field label={label} required={it.required} {...fieldState}>
                   <RadioGroup
                     layout="horizontal"
@@ -248,7 +262,7 @@ export function PreviewForm({
           }
           if ((it.type === 'choice' || it.type === 'importance3') && it.options) {
             return (
-              <div key={it.id} id={idFor(it.codebook)}>
+              <div key={it.id} id={idFor(it.codebook)} className={cls.item}>
                 <Field label={label} required={it.required} {...fieldState}>
                   <RadioGroup
                     value={values[it.codebook] ?? ''}
@@ -269,7 +283,7 @@ export function PreviewForm({
             // One required tick box; ticked sends its option's Norwegian text, as Nettskjema sends the option.
             const yes = it.options[0];
             return (
-              <div key={it.id} id={idFor(it.codebook)}>
+              <div key={it.id} id={idFor(it.codebook)} className={cls.item}>
                 <Field label={label} required={it.required} {...fieldState}>
                   <Checkbox
                     label={t(yes)}
@@ -285,7 +299,7 @@ export function PreviewForm({
           }
           if (it.type === 'text') {
             return (
-              <div key={it.id} id={idFor(it.codebook)}>
+              <div key={it.id} id={idFor(it.codebook)} className={cls.item}>
                 <Field label={label} required={it.required} {...fieldState}>
                   <Input value={values[it.codebook] ?? ''} onChange={(_, d) => setValues({ ...values, [it.codebook]: d.value })} />
                 </Field>
@@ -293,7 +307,7 @@ export function PreviewForm({
             );
           }
           return (
-            <div key={it.id} id={idFor(it.codebook)}>
+            <div key={it.id} id={idFor(it.codebook)} className={cls.item}>
               {it.privacyLine && <p className={cls.privacy}>{t(instrument.privacyLine)}</p>}
               <Field label={label} required={it.required} {...fieldState}>
                 <GrowingTextarea

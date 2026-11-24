@@ -1,9 +1,5 @@
 import {
   Button,
-  MessageBar,
-  MessageBarActions,
-  MessageBarBody,
-  MessageBarTitle,
   ToggleButton,
   makeStyles,
   mergeClasses,
@@ -11,9 +7,9 @@ import {
   typographyStyles,
 } from '@fluentui/react-components';
 import { ArrowSwap20Regular, Eye20Regular, EyeOff20Regular } from '@fluentui/react-icons';
-import { useId, type ReactNode } from 'react';
+import { useEffect, useId, useRef, type ReactNode } from 'react';
 import type { CaseId, CoreCaseId } from '../content/types';
-import { cases, vocab } from '../content';
+import { cases } from '../content';
 import { useLang } from '../i18n/i18n';
 import { currentPath, navigate } from '../router/router';
 import { browseFlag } from '../state/persist';
@@ -22,9 +18,14 @@ import { useFormHostOptional } from '../study/formHost';
 import { DesignNote, useSelectedToggle } from '../patterns/basics';
 import { Silent } from '../patterns/announce';
 import { AtlasPanelHead } from './CaseLayout';
-import { GuideTaskStrip } from '../guide/GuideLayer';
+import { GuideTaskStrip, TaskParts } from '../guide/GuideLayer';
+import { remainingKey } from './Scenario';
+import { useCaseStatus } from './useCaseStatus';
+import { AtlasCard, clearArrival, hasArrival, markLockedSeen } from '../patterns/AtlasCard';
 
 const useStyles = makeStyles({
+  lockedLead: { ...typographyStyles.body1Strong, margin: 0, color: tokens.colorNeutralForeground2 },
+  lockedLine: { ...typographyStyles.body1, margin: 0, color: tokens.colorNeutralForeground2 },
   bar: {
     display: 'flex',
     flexWrap: 'wrap',
@@ -114,23 +115,25 @@ export function CaseModeBar({ caseId }: { caseId: CaseId }) {
     const can = work.canShowAtlas(caseId as CoreCaseId);
     // One «Vis ATLAS» at a time: the form panel's while the panel shows it, else this bar's (Meridian: one primary action).
     const panelShows = !!host?.form && host.visible && host.form.caseId === caseId;
+    // 3.8: the locked ATLAS card, in the place ATLAS will open (Jishnu, 24 November). It names what is hidden, never
+    // what ATLAS will show. Silent: part of the page, read with it; not news to announce (G-32).
     return (
-      // Silent: the bar is part of the page, read with it; it is not news to announce (G-32).
       <Silent>
-        <MessageBar intent="info" layout="multiline" data-case-only="">
-          <MessageBarBody>
-            <MessageBarTitle>{s('utenAtlas')}</MessageBarTitle> {s('placeholderHidden')}
-            <span className={cls.noticeLine}>
-              {work.viewer === 'gp' ? s('caseOnlyLine') : caseId === 'astrid' ? s('caseOnlyLineDpsAstrid') : s('caseOnlyLineDps')}
-            </span>
-            {!can && !panelShows && (
-              <span className={cls.noticeLine} id={reasonId}>
-                {s('showAtlasReason')}
-              </span>
-            )}
-          </MessageBarBody>
+        <LockedSeen caseId={caseId} />
+        <AtlasCard on={false} locked>
+          {/* The card says what is left; the title's «Gjenstår» would repeat it (review R21). */}
+          <style>{'[data-case-remaining]{display:none}'}</style>
+          <p className={cls.lockedLead}>{s('lockedLead')}</p>
+          <p className={cls.lockedLine}>
+            {work.viewer === 'gp' ? s('lockedThinkGp') : caseId === 'astrid' ? s('lockedThinkDpsAstrid') : s('lockedThinkDps')}
+          </p>
+          {!can && !panelShows && (
+            <p className={cls.lockedLine} id={reasonId}>
+              {s('showAtlasReason')}
+            </p>
+          )}
           {!panelShows && (
-            <MessageBarActions>
+            <div>
               <Button
                 appearance={can ? 'primary' : 'secondary'}
                 icon={<Eye20Regular />}
@@ -140,9 +143,9 @@ export function CaseModeBar({ caseId }: { caseId: CaseId }) {
               >
                 {s('showAtlas')}
               </Button>
-            </MessageBarActions>
+            </div>
           )}
-        </MessageBar>
+        </AtlasCard>
       </Silent>
     );
   }
@@ -171,15 +174,39 @@ export function CaseModeBar({ caseId }: { caseId: CaseId }) {
   );
 }
 
+/** Remembers that the locked card was seen, so ATLAS arrives when it opens on this case. */
+function LockedSeen({ caseId }: { caseId: CaseId }) {
+  useEffect(() => markLockedSeen(caseId), [caseId]);
+  return null;
+}
+
 /** The line that brings the ATLAS part of the task, shown once ATLAS is open (study). */
-export function AtlasTaskBar({ caseId, modules, summaries }: { caseId: CaseId; modules?: Partial<Record<number, ReactNode>>; summaries?: Partial<Record<number, string>> }) {
+export function AtlasTaskBar({
+  caseId,
+  modules,
+  summaries,
+  finalStep,
+}: {
+  caseId: CaseId;
+  modules?: Partial<Record<number, ReactNode>>;
+  summaries?: Partial<Record<number, string>>;
+  /** After the last part, where the work goes on (the referral page: «Neste: Skriv henvisningen»). */
+  finalStep?: { label: string; onClick: () => void };
+}) {
   const { s, t } = useLang();
   const work = useWork();
   const host = useFormHostOptional();
-  if (work.mode !== 'study') return null;
+  const status = useCaseStatus(caseId);
   // With the ATLAS parts in the boxes (3.8), the task card stays after the decision: ATLAS lives there now.
-  const phase = work.phase(caseId);
-  if (modules ? phase === 'briefing' || phase === 'uten' : phase !== 'atlas') return null;
+  const phase = work.mode === 'study' ? work.phase(caseId) : undefined;
+  const shown = work.mode === 'study' && (modules ? phase !== 'briefing' && phase !== 'uten' : phase === 'atlas');
+  // ATLAS arrives once: the first time it opens on a case whose locked card was on screen.
+  const arrive = useRef<boolean | null>(null);
+  if (shown && arrive.current === null) arrive.current = hasArrival(caseId);
+  useEffect(() => {
+    if (shown && arrive.current) clearArrival(caseId);
+  }, [shown, caseId]);
+  if (!shown || !phase) return null;
   const c = cases[caseId];
   const task = work.viewer === 'gp' ? c.gp.atlasTask : c.dps?.atlasTask;
   if (!task) return null;
@@ -187,22 +214,47 @@ export function AtlasTaskBar({ caseId, modules, summaries }: { caseId: CaseId; m
   const view = currentPath().split('/')[4];
   // «Se deg rundt» has no form to hold.
   const held = !browseFlag() && host?.form?.caseId === caseId && host.form.stage === 'held';
+  const note = held ? (
+    <p style={{ margin: 0 }} data-form-held="">
+      {s('formRestLater')}.
+    </p>
+  ) : undefined;
+  if (!modules)
+    return (
+      <Silent>
+        <GuideTaskStrip role={work.viewer} view={view} task={t(task)} note={note} />
+      </Silent>
+    );
+  // Once every part is done, the task line says what comes next on the page (review R8).
+  const gp = work.gp(caseId);
+  const key = remainingKey(caseId, work.viewer, phase, status);
+  const next =
+    work.viewer === 'gp' && phase === 'atlas' && view === 'konsultasjon' && gp.decisionSaved && gp.decision === 'henvis'
+      ? s('nextWriteReferral')
+      : key
+        ? s(key)
+        : undefined;
   return (
     <Silent>
-      <GuideTaskStrip
+      <TaskParts
+        caseId={caseId}
         role={work.viewer}
         view={view}
-        task={t(task)}
+        task={
+          work.viewer === 'dps'
+            ? s('taskPathDps')
+            : view === 'henvisning'
+              ? caseId === 'erlend'
+                ? t(task)
+                : s('taskPathGpReferral')
+              : s('taskPathGp')
+        }
         modules={modules}
         summaries={summaries}
-        atlasLabel={modules ? `${s('atlasPanel')} · ${t(vocab.band.caption)}` : undefined}
-        note={
-          held ? (
-            <p style={{ margin: 0 }} data-form-held="">
-              {s('formRestLater')}.
-            </p>
-          ) : undefined
-        }
+        arrive={!!arrive.current}
+        doneTask={next ? `${s('taskNext')}: ${next}.` : undefined}
+        finalStep={finalStep}
+        note={note}
       />
     </Silent>
   );

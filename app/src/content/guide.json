@@ -18,8 +18,8 @@
         "en": "ATLAS, at the top."
       },
       "do": {
-        "nb": "Velg hvor saken ligger under «Plasser saken». Systemets vurdering vises etter det.",
-        "en": "Choose where the case lies under ‘Place the case’. The system’s assessment appears after that."
+        "nb": "Plasser saken på skalaen.",
+        "en": "Place the case on the scale."
       },
       "lookFor": {
         "nb": "Din egen plassering og systemets vurdering, på samme skala fra «Klart utenfor» til «Klart innenfor».",
@@ -28,6 +28,10 @@
       "tellUs": {
         "nb": "Er noe her uklart eller i veien, si det under «Gi tilbakemelding», del 1. Det er frivillig.",
         "en": "If anything here is unclear or in the way, say so under ‘Give feedback’, part 1. It is optional."
+      },
+      "box": {
+        "nb": "Usikkerhets­skala",
+        "en": "Uncertainty scale"
       }
     },
     {
@@ -88,6 +92,10 @@
       "tellUs": {
         "nb": "Uklart eller i veien? «Gi tilbakemelding», del 3.",
         "en": "Unclear or in the way? ‘Give feedback’, part 3."
+      },
+      "box": {
+        "nb": "Informasjons­guiden",
+        "en": "Information completeness guide"
       }
     },
     {
@@ -118,6 +126,10 @@
       "tellUs": {
         "nb": "Uklart eller i veien? «Gi tilbakemelding», del 4.",
         "en": "Unclear or in the way? ‘Give feedback’, part 4."
+      },
+      "box": {
+        "nb": "Hvor sikker nå",
+        "en": "How sure now"
       }
     },
     {
@@ -284,8 +296,8 @@
         "en": "ATLAS, at the top."
       },
       "do": {
-        "nb": "Velg hvor saken ligger under «Plasser saken». Fastlegens markør og systemets vurdering vises etter det.",
-        "en": "Choose where the case lies under ‘Place the case’. The GP’s marker and the system’s assessment appear after that."
+        "nb": "Plasser saken på skalaen.",
+        "en": "Place the case on the scale."
       },
       "lookFor": {
         "nb": "Tre markører på én skala: din, fastlegens og systemets vurdering.",
@@ -294,6 +306,10 @@
       "tellUs": {
         "nb": "Uklart eller i veien? «Gi tilbakemelding», del 2.",
         "en": "Unclear or in the way? ‘Give feedback’, part 2."
+      },
+      "box": {
+        "nb": "Usikkerhets­skala",
+        "en": "Uncertainty scale"
       }
     },
     {
@@ -323,6 +339,10 @@
       "tellUs": {
         "nb": "Uklart eller i veien? «Gi tilbakemelding», del 3.",
         "en": "Unclear or in the way? ‘Give feedback’, part 3."
+      },
+      "box": {
+        "nb": "Informasjons­guiden",
+        "en": "Information completeness guide"
       }
     },
     {
@@ -352,6 +372,10 @@
       "tellUs": {
         "nb": "Uklart eller i veien? «Gi tilbakemelding», del 4.",
         "en": "Unclear or in the way? ‘Give feedback’, part 4."
+      },
+      "box": {
+        "nb": "Utfall",
+        "en": "Outcome"
       }
     }
   ],

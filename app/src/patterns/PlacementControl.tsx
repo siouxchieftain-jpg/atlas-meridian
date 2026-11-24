@@ -25,7 +25,7 @@ export function PlacementControl({
     <Field label={s('bandPlace')} hint={hint}>
       <Dropdown
         style={{ minWidth: 0, maxWidth: '100%' }}
-        placeholder={s('bandNotPlaced')}
+        placeholder={s('bandChoose')}
         value={label ? label.charAt(0).toUpperCase() + label.slice(1) : ''}
         selectedOptions={selected ? [selected.key] : []}
         disabled={disabled}

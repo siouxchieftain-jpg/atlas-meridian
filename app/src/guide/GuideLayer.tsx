@@ -1,12 +1,13 @@
 import { Button, Popover, PopoverSurface, PopoverTrigger, makeStyles, mergeClasses, shorthands, tokens, typographyStyles } from '@fluentui/react-components';
-import { ArrowRight20Regular, Checkmark16Filled, Checkmark16Regular, Dismiss16Regular } from '@fluentui/react-icons';
-import { useEffect, useState, useSyncExternalStore, type ReactNode } from 'react';
+import { ArrowMaximizeVertical20Regular, ArrowMinimizeVertical20Regular, ArrowRight20Regular, Checkmark16Filled, Checkmark16Regular, Dismiss16Regular } from '@fluentui/react-icons';
+import { useEffect, useRef, useState, useSyncExternalStore, type ReactNode } from 'react';
 import { createPortal } from 'react-dom';
 import guideData from '../content/guide.json';
 import { useLang } from '../i18n/i18n';
 import { currentPath } from '../router/router';
 import { readJSON, writeJSON } from '../state/persist';
 import { NextMark, SrOnly } from '../patterns/basics';
+import { AtlasCard } from '../patterns/AtlasCard';
 import { guide } from '../theme/constants';
 
 /**
@@ -30,6 +31,8 @@ export interface GuideMarker {
   do: Text;
   lookFor: Text;
   tellUs: Text;
+  /** A shorter label for its box under «Oppgaven din», where the part's name is long (3.8). */
+  box?: Text;
 }
 const DATA = guideData as { gp: GuideMarker[]; dps: GuideMarker[] };
 
@@ -347,7 +350,9 @@ export function GuideLayer({ role, view }: { role: 'gp' | 'dps'; view: string | 
       let auto = state.auto;
       for (const { m, el } of found) {
         if (el.matches(READ_PARTS)) {
-          watchRead(m.n, el);
+          // A part to read inside the ATLAS card, one at a time, ticks when the participant leaves it (TaskParts), not
+          // when it scrolls past (review R4).
+          if (!el.closest('[data-task-modules]:not([data-show-all])')) watchRead(m.n, el);
           continue;
         }
         const k = doneKey(m.n);
@@ -389,7 +394,7 @@ export function GuideLayer({ role, view }: { role: 'gp' | 'dps'; view: string | 
     scan();
     const main = document.querySelector('main');
     const obs = new MutationObserver(scan);
-    if (main) obs.observe(main, { childList: true, subtree: true, attributes: true, attributeFilter: ['data-section-done'] });
+    if (main) obs.observe(main, { childList: true, subtree: true, attributes: true, attributeFilter: ['data-section-done', 'data-show-all'] });
     return () => {
       obs.disconnect();
       io.disconnect();
@@ -412,50 +417,15 @@ export function GuideLayer({ role, view }: { role: 'gp' | 'dps'; view: string | 
 
 /** The task line on a case page, with the page's markers as numbered steps that tick off. */
 const SHOW_ALL_KEY = 'atlas.guide.showAll';
-const readShowAll = (): boolean => readJSON<boolean>(SHOW_ALL_KEY) === true;
 
 const TASKS: Record<string, Text> = (guideData as unknown as { tasks: Record<string, Text> }).tasks ?? {};
 
-export function GuideTaskStrip({
-  role,
-  view,
-  task,
-  note,
-  modules,
-  atlasLabel,
-  summaries,
-}: {
-  role: 'gp' | 'dps';
-  view: string | undefined;
-  task: string;
-  note?: ReactNode;
-  /** 3.8: the ATLAS part each box opens in place, keyed by marker number. */
-  modules?: Partial<Record<number, ReactNode>>;
-  atlasLabel?: ReactNode;
-  /** 3.8: what each part says once done, shown on its box, so the whole case reads at a glance. */
-  summaries?: Partial<Record<number, string>>;
-}) {
+export function GuideTaskStrip({ role, view, task, note }: { role: 'gp' | 'dps'; view: string | undefined; task: string; note?: ReactNode }) {
   const cls = useStyles();
   const { s, t } = useLang();
   const st = useGuideState();
-  const all = markersFor(role, view);
-  // With modules, the parts live in the boxes, so every box is listed even before its part is found.
-  const markers = modules ? all.filter((m) => modules[m.n] || st.present.includes(m.n)) : all.filter((m) => st.present.includes(m.n));
+  const markers = markersFor(role, view).filter((m) => st.present.includes(m.n));
   const doneCount = markers.filter((m) => isDone(st, m.n)).length;
-  const firstOpen = markers.find((m) => modules?.[m.n] && !isDone(st, m.n))?.n ?? null;
-  const [active, setActive] = useState<number | null>(firstOpen);
-  // The choice holds across pages and cases in this browser: one way of working, not one per page.
-  const [showAll, setShowAllState] = useState(readShowAll);
-  const setShowAll = (on: boolean) => {
-    setShowAllState(on);
-    writeJSON(SHOW_ALL_KEY, on);
-  };
-  // A done part does not close by itself: «Neste» under it, marked, opens the next (3.8, Jishnu 24 November).
-  const nextAfter = (n: number) => markers.find((x) => x.n > n && modules?.[x.n] && !isDone(st, x.n)) ?? markers.find((x) => modules?.[x.n] && !isDone(st, x.n));
-  const openPart = (n: number) => {
-    setActive(n);
-    window.requestAnimationFrame(() => document.getElementById(`task-part-${n}`)?.scrollIntoView({ block: 'nearest', behavior: 'smooth' }));
-  };
   return (
     <section className={cls.strip} aria-label={s('guideTask')}>
       <span className={cls.eyebrow}>{s('guideTask')}</span>
@@ -467,22 +437,14 @@ export function GuideTaskStrip({
           <ol className={cls.checklist} aria-label={s('guideStepsHere')}>
             {markers.map((m) => {
               const done = isDone(st, m.n);
-              const isOpen = !!modules && m.n === active;
               return (
                 <li key={m.n}>
                   <button
                     type="button"
-                    className={mergeClasses(cls.box, done && cls.boxDone, isOpen && cls.boxOpen)}
+                    className={mergeClasses(cls.box, done && cls.boxDone)}
                     data-guide-step={m.n}
                     data-done={done ? '' : undefined}
-                    aria-expanded={modules?.[m.n] && !showAll ? isOpen : undefined}
-                    aria-controls={modules?.[m.n] ? `task-part-${m.n}` : undefined}
                     onClick={() => {
-                      if (modules?.[m.n]) {
-                        if (showAll) document.getElementById(`task-part-${m.n}`)?.scrollIntoView({ block: 'start', behavior: 'smooth' });
-                        else setActive(isOpen ? null : m.n);
-                        return;
-                      }
                       document.querySelector<HTMLElement>(`[data-guide-pin="${m.n}"]`)?.scrollIntoView({ block: 'center', behavior: 'smooth' });
                       set({ open: m.n });
                     }}
@@ -490,63 +452,278 @@ export function GuideTaskStrip({
                     <span className={mergeClasses(cls.tick, done && cls.tickDone)} aria-hidden="true">
                       {done ? <Checkmark16Filled /> : m.n}
                     </span>
-                    <span className={cls.boxText}>
-                      {t(m.part)}
-                      {done && summaries?.[m.n] && <span className={cls.boxSummary}>{summaries[m.n]}</span>}
-                    </span>
+                    <span className={cls.boxText}>{t(m.part)}</span>
                     {done && <SrOnly>{s('guideDoneSuffix')}</SrOnly>}
                   </button>
                 </li>
               );
             })}
           </ol>
-          <div className={cls.progressRow}>
-            <span className={cls.progress} aria-live="polite">
-              {s('guideProgress', { n: doneCount, total: markers.length })}
-            </span>
-            {modules && (
-              <Button appearance="subtle" size="small" aria-pressed={showAll} onClick={() => setShowAll(!showAll)}>
-                {showAll ? s('taskShowOne') : s('taskShowAll')}
-              </Button>
-            )}
-          </div>
-          {modules && (
-            <div className={cls.modules} data-task-modules="">
-              {doneCount === markers.length && (
-                <p className={cls.allDone} role="status">
-                  <Checkmark16Filled /> {s('guideAllDone')}
-                </p>
-              )}
-              {/* Every part stays in the page, so each can tick itself; only the open one shows. */}
-              {markers.map((m) =>
-                modules[m.n] ? (
-                  <div key={m.n} id={`task-part-${m.n}`} className={cls.module} hidden={!showAll && m.n !== active} role="region" aria-label={t(m.part)}>
-                    <div className={cls.moduleHead}>
-                      <span className={cls.num} aria-hidden="true">
-                        {isDone(st, m.n) ? <Checkmark16Filled /> : m.n}
-                      </span>
-                      <div style={{ flex: 1, minWidth: 0 }}>
-                        {atlasLabel && <span className={cls.atlasTag}>{atlasLabel}</span>}
-                        <p className={cls.moduleDo}>{t(m.do)}</p>
-                      </div>
-                    </div>
-                    {modules[m.n]}
-                    {!showAll && isDone(st, m.n) && nextAfter(m.n) && (
-                      <div className={cls.moduleNext}>
-                        <NextMark on>
-                          <Button appearance="primary" size="large" icon={<ArrowRight20Regular />} iconPosition="after" onClick={() => openPart(nextAfter(m.n)!.n)}>
-                            {s('taskNextPart', { part: t(nextAfter(m.n)!.part) })}
-                          </Button>
-                        </NextMark>
-                      </div>
-                    )}
-                  </div>
-                ) : null,
-              )}
-            </div>
-          )}
+          <span className={cls.progress}>{s('guideProgress', { n: doneCount, total: markers.length })}</span>
         </>
       )}
     </section>
+  );
+}
+
+/**
+ * 3.8 (Jishnu, 24 November; design review R1 to R21): the ATLAS parts as boxes under «Oppgaven din», and ATLAS as its own
+ * card under the task. The coral task strip holds the study's guidance (the task, the boxes, the count, «Vis alle
+ * delene», «Nå: …»); the lavender ATLAS card holds only the parts. A box always opens its part; a part never moves on by
+ * itself: «Neste» under it, marked «Trykk her», opens the next, brings the boxes back into view and moves focus to the new
+ * part's heading. Only the parts in the card are boxes and counted.
+ */
+const useParts = makeStyles({
+  row: {
+    listStyle: 'none',
+    margin: 0,
+    padding: 0,
+    display: 'grid',
+    gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))',
+    gap: '8px',
+    scrollMarginTop: 'calc(var(--atlas-header-h, 48px) + 16px)',
+    // Below 640 px: one line of compact boxes; the open one carries its name (review R12).
+    '@media (max-width: 639px)': { display: 'flex', flexWrap: 'nowrap', overflowX: 'auto', paddingBottom: '4px' },
+  },
+  item: { minWidth: 0, '@media (max-width: 639px)': { flex: '0 0 auto' } },
+  box: {
+    width: '100%',
+    height: '100%',
+    display: 'flex',
+    alignItems: 'center',
+    gap: '10px',
+    minHeight: '52px',
+    padding: '8px 12px 8px 10px',
+    borderRadius: tokens.borderRadiusLarge,
+    border: `1px solid ${guide.track}`,
+    backgroundColor: tokens.colorNeutralBackground1,
+    color: tokens.colorNeutralForeground1,
+    textAlign: 'start',
+    ...typographyStyles.body1,
+    cursor: 'pointer',
+    transitionProperty: 'border-color, box-shadow',
+    transitionDuration: '0.15s',
+    ':hover': { ...shorthands.borderColor(guide.coral) },
+    ':focus-visible': { outline: `2px solid ${tokens.colorStrokeFocus2}`, outlineOffset: '2px' },
+    '@media (max-width: 639px)': { minHeight: '44px', padding: '6px 10px 6px 6px' },
+  },
+  boxOpen: { ...shorthands.borderColor(guide.coral), boxShadow: `inset 0 0 0 1px ${guide.coral}` },
+  badge: {
+    flexShrink: 0,
+    width: '26px',
+    height: '26px',
+    borderRadius: '50%',
+    backgroundImage: guide.mark,
+    color: guide.ink,
+    display: 'inline-flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    fontSize: tokens.fontSizeBase200,
+    fontWeight: tokens.fontWeightBold,
+  },
+  badgeDone: { backgroundImage: 'none', backgroundColor: tokens.colorPaletteGreenForeground1, color: '#FFFFFF' },
+  // Soft hyphens in the box labels break long words at the joint (review N1); no break inside a word.
+  label: { minWidth: 0, display: 'flex', flexDirection: 'column', hyphens: 'manual' },
+  tickWide: { display: 'inline-flex', '@media (max-width: 639px)': { display: 'none' } },
+  numNarrow: { display: 'none', '@media (max-width: 639px)': { display: 'inline' } },
+  labelNarrowHidden: { '@media (max-width: 639px)': { display: 'none' } },
+  summary: { ...typographyStyles.caption1, color: tokens.colorNeutralForeground2 },
+  meta: { display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: tokens.spacingHorizontalS, flexWrap: 'wrap' },
+  count: { ...typographyStyles.caption1, color: tokens.colorNeutralForeground2 },
+  now: { ...typographyStyles.body1, margin: 0, color: tokens.colorNeutralForeground1 },
+  nowLabel: { fontWeight: tokens.fontWeightSemibold, color: guide.ink },
+  parts: { display: 'flex', flexDirection: 'column', gap: tokens.spacingVerticalL },
+  part: { display: 'flex', flexDirection: 'column', gap: tokens.spacingVerticalM },
+  partAll: { paddingTop: tokens.spacingVerticalL, borderTop: `1px solid ${tokens.colorNeutralStroke2}`, ':first-child': { paddingTop: 0, borderTop: 'none' } },
+  foot: { display: 'flex', justifyContent: 'flex-end', paddingTop: tokens.spacingVerticalM, borderTop: `1px solid ${tokens.colorNeutralStroke2}` },
+  allDone: { ...typographyStyles.body1Strong, display: 'flex', alignItems: 'center', gap: '8px', margin: 0, color: tokens.colorNeutralForeground1 },
+  allDoneTick: { color: tokens.colorPaletteGreenForeground1, display: 'inline-flex' },
+});
+
+export function TaskParts({
+  caseId,
+  role,
+  view,
+  task,
+  note,
+  modules,
+  summaries,
+  arrive,
+  doneTask,
+  finalStep,
+}: {
+  caseId: string;
+  role: 'gp' | 'dps';
+  view: string | undefined;
+  task: string;
+  note?: ReactNode;
+  modules: Partial<Record<number, ReactNode>>;
+  summaries?: Partial<Record<number, string>>;
+  /** The first time ATLAS opens on this case. */
+  arrive?: boolean;
+  /** The task line once every part is done: what comes next on the page («Neste: …»). */
+  doneTask?: string;
+  /** After the last part, where the work goes on (Erlend: «Neste: Skriv henvisningen»). */
+  finalStep?: { label: string; onClick: () => void };
+}) {
+  const cls = useParts();
+  const base = useStyles();
+  const { s, t } = useLang();
+  const st = useGuideState();
+  const parts = markersFor(role, view).filter((m) => modules[m.n]);
+  const doneCount = parts.filter((m) => isDone(st, m.n)).length;
+  const allDone = parts.length > 0 && doneCount === parts.length;
+  // The last part (the decision, or the last before the draft) done: the page's next step is what is left.
+  const lastDone = parts.length > 0 && isDone(st, parts[parts.length - 1].n);
+  const [active, setActive] = useState<number>(() => parts.find((m) => !isDone(st, m.n))?.n ?? parts[parts.length - 1]?.n ?? 0);
+  const [started, setStarted] = useState(false);
+  // One choice per case, kept in this browser (review R13): a participant's other cases start one part at a time.
+  const key = `${SHOW_ALL_KEY}.${caseId}`;
+  const [showAll, setShowAllState] = useState(() => readJSON<boolean>(key) === true);
+  const setShowAll = (on: boolean) => {
+    setShowAllState(on);
+    writeJSON(key, on);
+  };
+  const rowRef = useRef<HTMLOListElement>(null);
+  // Parts to read (the guide, what the GP was unsure about) tick when left after at least 1.2 s open (review R4).
+  const isRead = (m: GuideMarker) => /guide"|gp-usikker|fra-atlas|retur/.test(m.selector);
+  const openedAt = useRef<{ n: number; at: number }>({ n: active, at: Date.now() });
+  useEffect(() => {
+    openedAt.current = { n: active, at: Date.now() };
+  }, [active]);
+  const leave = () => {
+    const m = parts.find((x) => x.n === openedAt.current.n);
+    if (m && isRead(m) && Date.now() - openedAt.current.at >= 1200 && !isDone(st, m.n)) set({ auto: { ...state.auto, [doneKey(m.n)]: true } });
+  };
+  const boxLabel = (m: GuideMarker) => t(m.box ?? m.part).replace(/\?$/, '');
+  const nextAfter = (n: number) => parts.find((x) => x.n > n && !isDone(st, x.n)) ?? parts.find((x) => x.n !== n && !isDone(st, x.n));
+  // Focus to the part's heading, the boxes back in view (review R2, R3).
+  const focusPart = (n: number, scrollRow: boolean) => {
+    window.requestAnimationFrame(() => {
+      const part = document.getElementById(`task-part-${n}`);
+      if (scrollRow) rowRef.current?.scrollIntoView({ block: 'start', behavior: 'smooth' });
+      // All parts shown: a box brings its part into view (review N3).
+      else if (showAll) part?.scrollIntoView({ block: 'start', behavior: 'smooth' });
+      const head = part?.querySelector<HTMLElement>('h2, h3, h4, legend') ?? part;
+      if (head) {
+        if (!head.hasAttribute('tabindex')) head.setAttribute('tabindex', '-1');
+        head.focus({ preventScroll: true });
+      }
+    });
+  };
+  const open = (n: number, scrollRow: boolean) => {
+    if (!showAll) leave();
+    setStarted(true);
+    if (!showAll) setActive(n);
+    focusPart(n, scrollRow);
+  };
+  const current = parts.find((m) => m.n === active);
+  const nextFor = (m: GuideMarker) => (isDone(st, m.n) || isRead(m) ? nextAfter(m.n) : undefined);
+  return (
+    <>
+      <section className={base.strip} aria-label={s('guideTask')} data-task-parts="">
+        {/* While the strip is on screen, it says what is left; the title's «Gjenstår» would repeat it (review R7, R8). */}
+        <style>{'[data-case-remaining]{display:none}'}</style>
+        <span className={base.eyebrow}>{s('guideTask')}</span>
+        <p style={{ margin: 0 }}>{(allDone || lastDone) && doneTask ? doneTask : TASKS[`${role}/${view}`] ? t(TASKS[`${role}/${view}`]) : task}</p>
+        {note}
+        <ol className={cls.row} aria-label={s('guideStepsHere')} ref={rowRef}>
+          {parts.map((m) => {
+            const done = isDone(st, m.n);
+            const isOpen = !showAll && m.n === active;
+            return (
+              <li key={m.n} className={cls.item}>
+                <button
+                  type="button"
+                  className={mergeClasses(cls.box, isOpen && cls.boxOpen)}
+                  data-guide-step={m.n}
+                  data-done={done ? '' : undefined}
+                  aria-current={isOpen ? 'step' : undefined}
+                  aria-controls={`task-part-${m.n}`}
+                  aria-label={
+                    done
+                      ? summaries?.[m.n]
+                        ? s('boxDoneNameWith', { n: m.n, part: boxLabel(m), summary: summaries[m.n]! })
+                        : s('boxDoneName', { n: m.n, part: boxLabel(m) })
+                      : `${m.n}. ${boxLabel(m)}`
+                  }
+                  onClick={() => open(m.n, false)}
+                >
+                  <span className={mergeClasses(cls.badge, done && cls.badgeDone)} aria-hidden="true">
+                    {done ? (
+                      <>
+                        <span className={cls.tickWide}>
+                          <Checkmark16Filled />
+                        </span>
+                        {/* Narrow, the done pills keep their numbers (review N6). */}
+                        <span className={cls.numNarrow}>{m.n}</span>
+                      </>
+                    ) : (
+                      m.n
+                    )}
+                  </span>
+                  <span className={mergeClasses(cls.label, !isOpen && cls.labelNarrowHidden)} aria-hidden="true">
+                    {boxLabel(m)}
+                    {done && summaries?.[m.n] && <span className={cls.summary}>{summaries[m.n]}</span>}
+                  </span>
+                </button>
+              </li>
+            );
+          })}
+        </ol>
+        <div className={cls.meta}>
+          <span className={cls.count}>{allDone ? s('guideAllDone') : s('guideProgress', { n: doneCount, total: parts.length })}</span>
+          <Button appearance="subtle" size="small" icon={showAll ? <ArrowMinimizeVertical20Regular /> : <ArrowMaximizeVertical20Regular />} aria-pressed={showAll} onClick={() => setShowAll(!showAll)}>
+            {showAll ? s('taskShowOne') : s('taskShowAll')}
+          </Button>
+        </div>
+        {!showAll && current && !isDone(st, current.n) && (
+          <p className={cls.now}>
+            <span className={cls.nowLabel}>{s('taskNow')}:</span> {t(current.do)}
+          </p>
+        )}
+      </section>
+      <AtlasCard on arrive={arrive} arriveLine={arrive && !started && doneCount === 0}>
+        <div className={cls.parts} data-task-modules="" data-show-all={showAll ? '' : undefined}>
+          {/* Every part stays in the page, so each can tick itself; one at a time shows, or all. */}
+          {parts.map((m) => {
+            const next = nextFor(m);
+            const last = !next && isDone(st, m.n) && finalStep && allDone;
+            return (
+              <div key={m.n} id={`task-part-${m.n}`} className={mergeClasses(cls.part, showAll && cls.partAll)} hidden={!showAll && m.n !== active}>
+                {modules[m.n]}
+                {!showAll && next && (
+                  <div className={cls.foot}>
+                    <NextMark on>
+                      <Button appearance="primary" size="large" icon={<ArrowRight20Regular />} iconPosition="after" onClick={() => open(next.n, true)}>
+                        {s('taskNextPart', { part: boxLabel(next) })}
+                      </Button>
+                    </NextMark>
+                  </div>
+                )}
+                {!showAll && last && (
+                  <div className={cls.foot}>
+                    <NextMark on>
+                      <Button appearance="primary" size="large" icon={<ArrowRight20Regular />} iconPosition="after" onClick={finalStep.onClick}>
+                        {finalStep.label}
+                      </Button>
+                    </NextMark>
+                  </div>
+                )}
+              </div>
+            );
+          })}
+          {showAll && allDone && finalStep && (
+            <div className={cls.foot}>
+              <NextMark on>
+                <Button appearance="primary" size="large" icon={<ArrowRight20Regular />} iconPosition="after" onClick={finalStep.onClick}>
+                  {finalStep.label}
+                </Button>
+              </NextMark>
+            </div>
+          )}
+        </div>
+      </AtlasCard>
+    </>
   );
 }
