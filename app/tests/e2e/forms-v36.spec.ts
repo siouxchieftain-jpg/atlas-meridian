@@ -229,3 +229,17 @@ for (const role of ['fastlege', 'dps-kliniker'] as const) {
     await expect(form.getByRole('radiogroup', { name: /^ATLAS serves the needs of both GPs and specialists/ }).getByRole('radio').last()).toHaveAccessibleName("Don't know");
   });
 }
+
+test('3.8: the practice form marks «Neste» only once page 1 is answered; the panel names it and offers no second button', async ({ page }) => {
+  await toCasePage1(page, 'fastlege', 'kari');
+  const form = previewForm(page);
+  await expect(form.locator('[data-next-mark]')).toHaveCount(0);
+  await expect(panel(page).getByText('Trykk nå: «Neste» nederst i skjemaet, når du har svart på side 1.')).toBeVisible();
+  await expect(panel(page).getByRole('button', { name: 'Vis ATLAS' })).toHaveCount(0);
+  await answerDecision(form, 'fastlege', 'kari', 0);
+  // One of two required questions answered: still no mark.
+  await expect(form.locator('[data-next-mark]')).toHaveCount(0);
+  await form.getByRole('radiogroup').nth(1).getByRole('radio', { name: '4', exact: true }).check({ force: true });
+  await expect(form.locator('[data-next-mark]').getByRole('button', { name: 'Neste', exact: true })).toBeVisible();
+  await expect(form.locator('[data-next-mark]')).toContainText('Trykk her');
+});

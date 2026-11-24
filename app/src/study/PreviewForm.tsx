@@ -126,6 +126,10 @@ export function PreviewForm({
   const items = form.pages[page]?.items ?? [];
   const idFor = (codebook: string) => `${uid}-${codebook}`;
 
+  // The «Trykk her» mark comes only once the page's required questions are answered: the next step, not a shortcut
+  // past them (Jishnu, 24 November).
+  const pageComplete = items.every((it) => it.type === 'locked' || it.type === 'stop' || !it.required || !!(values[it.codebook] ?? '').trim());
+
   const validate = () => {
     for (const it of items) {
       if (it.type === 'locked' || it.type === 'stop') continue;
@@ -304,7 +308,7 @@ export function PreviewForm({
         <Button type="button" disabledFocusable={page === 0} onClick={() => page > 0 && turn(page - 1)}>
           {s('back')}
         </Button>
-        <NextMark on={!!markForward}>
+        <NextMark on={!!markForward && pageComplete}>
           <Button type="submit" appearance="primary">
             {page < total - 1 ? s('next') : s('previewSend')}
           </Button>

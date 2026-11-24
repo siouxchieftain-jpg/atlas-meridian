@@ -4362,5 +4362,9 @@
   "guideProgress": {
     "nb": "{{n}} av {{total}} gjort",
     "en": "{{n}} of {{total}} done"
+  },
+  "formNextPreview": {
+    "nb": "«Neste»",
+    "en": "‘Next’"
   }
 }

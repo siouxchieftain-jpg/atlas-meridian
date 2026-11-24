@@ -557,7 +557,7 @@ export function FormPanel({ actions }: { actions: FormPanelActions | null }) {
                   </p>
                 ) : (
                   <p className={cls.info} role="status">
-                    {s('pressNow', { what: s('next') })}
+                    {s('pressNowInForm', { what: s('formNextPreview') })}
                   </p>
                 )}
                 <span className={cls.fallback}>
