@@ -67,8 +67,11 @@ describe('locked context', () => {
       const key = formKeyFor(step, role);
       const form = instrument.forms.find((f) => f.key === key);
       expect(form, key).toBeDefined();
-      const sent = Object.keys(studyLocked(step, role === 'gp' ? 'fastlege' : 'dps-kliniker', 'Ja', {}, 'Glad hval 63'));
+      // The address carries only the form's own fields (3.8, part C: «studienavn» alone, S1 also role and interview).
+      const url = buildFormUrl('https://nettskjema.no/a/1', studyLocked(step, role === 'gp' ? 'fastlege' : 'dps-kliniker', 'Ja', {}, 'Glad hval 63'), true, key);
+      const sent = [...url.matchAll(/CB([a-z_]+)=/g)].map((m) => m[1]);
       expect([...sent].sort(), key).toEqual([...form!.locked].sort());
+      expect(form!.locked, key).toEqual(step === 'S1' ? ['rolle', 'intervju', 'studienavn'] : ['studienavn']);
     }
   });
 });

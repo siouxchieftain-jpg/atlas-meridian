@@ -76,12 +76,11 @@ test('a DPS clinician completes the core study, with the GP marker shown only af
   await expect(page.getByRole('heading', { name: 'Hvorfor ATLAS ser slik ut' })).toBeVisible();
 
   const sent = await submissions(page);
-  expect(Object.fromEntries(sent.map((s) => [s.key, s.fields.steg]))).toEqual({ S1: 'S1', 'S2.dps': 'S2', 'S3.dps': 'S3', 'S4.dps': 'S4', 'S5.dps': 'S5' });
   expect(sent.map((s) => s.key)).toEqual(['S1', 'S3.dps', 'S4.dps', 'S5.dps', 'S2.dps']);
-  for (const s of sent) {
-    expect(s.fields.rolle).toBe('DPS-inntak');
-    expect(s.fields.intervju).toBe('Ja');
-  }
+  // 3.8, part C: the role and the interview answer in S1 only; the study name in every form joins them.
+  expect(sent[0].fields.rolle).toBe('DPS-inntak');
+  expect(sent[0].fields.intervju).toBe('Ja');
+  for (const s of sent.slice(1)) expect(s.fields, s.key).toEqual({ studienavn: sent[0].fields.studienavn });
 });
 
 test('the DPS card covers every role in intake, sends DPS-inntak and the study name shown on Om deg', async ({ page }) => {

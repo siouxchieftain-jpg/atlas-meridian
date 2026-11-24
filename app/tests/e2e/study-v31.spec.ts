@@ -109,11 +109,12 @@ test('S9 from the overview opens in the panel with the role, the study name, the
   await expect(panel(page)).toBeVisible();
   const q = await frameParams(page);
   expect(new URL((await page.locator('iframe[data-form-frame]').getAttribute('src'))!).pathname).toBe('/a/S9');
-  expect(q.get('CBrolle')).toBe('Fastlege');
+  // 3.8, part C: the study name and where the feedback points; no role and no build.
+  expect(q.get('CBrolle')).toBeNull();
   expect(q.get('CBstudienavn')).toBe(name);
   expect(q.get('CBside')).toBe('fastlege/hjem');
   expect(q.get('CBseksjon')).toBe('timeliste');
-  expect(q.get('CBversjon')).toMatch(/^3\.8\.0-/);
+  expect(q.get('CBversjon')).toBeNull();
   expect(q.get('LCKside')).toBe('true');
   expect(q.get('CBsteg')).toBeNull();
   expect(q.get('CBintervju')).toBeNull();
@@ -303,7 +304,8 @@ test('the pilot round: the «Pilot» chip, the pilot forms and -pilot on every a
   await expect(page.locator('header').getByText('Pilot', { exact: true })).toBeVisible();
   await startStudy(page, 'DPS-kliniker');
   expect(new URL((await page.locator('iframe[data-form-frame]').getAttribute('src'))!).pathname).toBe('/a/pilot-S1');
-  expect((await frameParams(page)).get('CBversjon')).toMatch(/^3\.8\.0-.*-pilot$/);
+  // The pilot is told apart by its own form set; since 3.8 (part C) no build number goes with the answers.
+  expect((await frameParams(page)).get('CBversjon')).toBeNull();
   await sendForm(page);
   await toHome(page);
   await page.locator('[data-feedback-tab]').click();
@@ -313,7 +315,7 @@ test('the pilot round: the «Pilot» chip, the pilot forms and -pilot on every a
   await expect(page.getByText('Takk. Tilbakemeldingen er registrert.')).toBeVisible();
   const sent = await submissions(page);
   expect(sent.map((s) => s.key)).toEqual(['pilot-S1', 'pilot-S9']);
-  for (const s of sent) expect(s.fields.versjon).toMatch(/-pilot$/);
+  for (const s of sent) expect(s.fields.versjon).toBeUndefined();
 });
 
 test('after the study’s last day: Velkommen says the study has ended, and nothing starts', async ({ page }) => {

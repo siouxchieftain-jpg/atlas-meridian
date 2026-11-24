@@ -640,13 +640,14 @@ const useOmDeg = makeStyles({
     paddingBlockEnd: '8px',
     '@media (forced-colors: active)': { border: '1px solid CanvasText' },
   },
+  // 3.8 (Jishnu, 24 November: the flipped wave looked odd): the organza, the right way up, where the role is settled
+  // and the study name is given; its fabric fills the upper right and fades out into the card.
   art: {
     bottom: 'auto',
-    height: '600px',
-    transform: 'scaleY(-1)',
+    height: '420px',
     opacity: 1,
-    maskImage: 'linear-gradient(180deg, transparent 0%, #000 55%)',
-    WebkitMaskImage: 'linear-gradient(180deg, transparent 0%, #000 55%)',
+    maskImage: 'linear-gradient(180deg, #000 40%, transparent 100%)',
+    WebkitMaskImage: 'linear-gradient(180deg, #000 40%, transparent 100%)',
   },
   veil: {
     position: 'absolute',
@@ -815,7 +816,7 @@ export function OmDegPage() {
     <div className={o.outer}>
       <section className={o.card} aria-labelledby={name ? nameId : undefined} data-studienavn={name ? '' : undefined}>
         {/* 3.8 (F-Om deg): the study name as a profile at the top of the one card, not a card of its own beside the page. */}
-        <GuideImage variant="cover" className={o.art} />
+        <GuideImage variant="cover" art="organza" className={o.art} />
         <div className={o.veil} aria-hidden="true" />
         <div className={o.top} />
         {name && (

@@ -58,7 +58,8 @@ test('Om deg (3.8): one card, the study name as its profile over the cover, Om d
   await expect(mark).toHaveAttribute('data-animal', name.split(' ')[1]);
   await expect(card.locator('[data-name-mark] img')).toHaveAttribute('alt', '');
   await expect(card.locator('[data-guide-image]')).toHaveCount(1);
-  await expect(card.locator('[data-guide-image="cover"]')).toHaveAttribute('data-guide-art', 'gp');
+  // 3.8: Om deg wears the organza, the right way up (Jishnu, 24 November), where the study name is given.
+  await expect(card.locator('[data-guide-image="cover"]')).toHaveAttribute('data-guide-art', 'organza');
   // The mark is large and sits level with the name: their bottoms within a few pixels of each other's line.
   const m = (await mark.boundingBox())!;
   expect(m.width).toBeGreaterThanOrEqual(160);

@@ -309,12 +309,12 @@ export function StudyControllerProvider({ children }: { children: ReactNode }) {
         if (!address) return;
         // S9 is no step: its tab is never the pending form that sendt.html marks.
         if (open.feedback) {
-          window.open(buildFormUrl(address, open.locked, false), '_blank', 'noopener');
+          window.open(buildFormUrl(address, open.locked, false, open.formKey), '_blank', 'noopener');
           return;
         }
         // Built at the click: a case form opened again after «Vis ATLAS» carries its -etter value.
         const locked = open.caseId ? studyLocked(open.step, st.roleChoice, st.intervju, st.visAtlas, st.studienavn) : open.locked;
-        window.open(buildFormUrl(address, locked, false), '_blank', 'noopener');
+        window.open(buildFormUrl(address, locked, false, open.formKey), '_blank', 'noopener');
         writeJSON(PENDING_KEY, { form: open.step, steg: locked.steg ?? '', at: new Date().toISOString() });
         study.setPendingTab({ form: open.step, steg: locked.steg ?? open.step, at: new Date().toISOString() });
       },
@@ -331,7 +331,7 @@ export function StudyControllerProvider({ children }: { children: ReactNode }) {
         const stepFormOpen = !!open && open.step !== 'S9' && !open.review && !st.ledger[open.step];
         if (stepFormOpen && !previewFlag()) {
           if (!address) return 'notready';
-          window.open(buildFormUrl(address, locked, false), '_blank', 'noopener');
+          window.open(buildFormUrl(address, locked, false, formKey), '_blank', 'noopener');
           return 'tab';
         }
         const route = routeFor('S9');

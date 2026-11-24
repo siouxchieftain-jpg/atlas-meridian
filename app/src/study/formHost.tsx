@@ -136,8 +136,8 @@ export function FormHostProvider({ children }: { children: ReactNode }) {
     let route = req.route;
     if ((route === 'panel' || route === 'tab') && !address) route = 'notready';
     let url: string | undefined;
-    if (address && route === 'panel') url = buildFormUrl(address, req.locked, true);
-    if (address && route === 'tab') url = buildFormUrl(address, req.locked, false);
+    if (address && route === 'panel') url = buildFormUrl(address, req.locked, true, req.formKey);
+    if (address && route === 'tab') url = buildFormUrl(address, req.locked, false, req.formKey);
     const opened: OpenForm = {
       id: nextId++,
       step: req.step,

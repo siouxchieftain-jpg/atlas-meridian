@@ -24,8 +24,9 @@ test('Safari starts on the new-tab route; sendt.html marks the step as sent', as
   await tab.waitForLoadState();
   const url = new URL(tab.url());
   expect(url.searchParams.get('embed')).toBeNull();
-  expect(url.searchParams.get('CBsteg')).toBe('S1');
-  expect(url.searchParams.get('LCKsteg')).toBe('true');
+  // 3.8, part C: S1 carries the role, the interview answer and the study name, locked; no step.
+  expect(url.searchParams.get('CBsteg')).toBeNull();
+  expect(url.searchParams.get('LCKstudienavn')).toBe('true');
   await tab.locator('#send').click();
   await tab.locator('#receipt-link').click();
   await expect(tab.getByText('Takk. Skjemaet er sendt.')).toBeVisible();

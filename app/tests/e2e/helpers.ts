@@ -3,11 +3,9 @@ import { expect, type Page } from '@playwright/test';
 export const frame = (page: Page) => page.frameLocator('iframe[data-form-frame]');
 export const panel = (page: Page) => page.locator('[data-form-panel]');
 
-/** The steg value in the open iframe's address. */
+/** The step ATLAS keeps for the open form (S3, S3-etter). Since 3.8 (part C) it is not in the form's address. */
 export async function frameSteg(page: Page): Promise<string | null> {
-  const src = await page.locator('iframe[data-form-frame]').getAttribute('src');
-  if (!src) return null;
-  return new URL(src).searchParams.get('CBsteg');
+  return page.locator('iframe[data-form-frame]').getAttribute('data-steg');
 }
 
 /** Send the open mock form: Neste until the last page, then Send. */
