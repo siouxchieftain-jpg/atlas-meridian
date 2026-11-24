@@ -498,6 +498,8 @@ export function FormPanel({ actions }: { actions: FormPanelActions | null }) {
               <iframe
                 key={form.id}
                 data-form-frame=""
+                // The step as ATLAS keeps it (S3, S3-etter): since 3.8 (part C) it no longer goes to the form.
+                data-steg={form.locked.steg}
                 className={mergeClasses(cls.frame, showCard && cls.frameAway)}
                 src={form.url}
                 title={actions.title}

@@ -216,7 +216,8 @@ test('the role chooses the artwork: the organza where the role is chosen, the co
   await page.goto('/');
   await expect(page.locator('[data-welcome="first"] [data-guide-image="hero"]')).toHaveAttribute('data-guide-art', 'organza');
   await startStudy(page, 'DPS-kliniker');
-  await expect(page.locator('[data-guide-image="cover"]')).toHaveAttribute('data-guide-art', 'dps');
+  // Om deg, where the study name is given, wears the organza (3.8).
+  await expect(page.locator('[data-guide-image="cover"]')).toHaveAttribute('data-guide-art', 'organza');
   await sendForm(page);
   await toHome(page);
   await expect(page.locator('[data-start-hero] [data-guide-image]')).toHaveAttribute('data-guide-art', 'dps');
