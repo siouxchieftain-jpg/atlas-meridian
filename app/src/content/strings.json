@@ -4398,5 +4398,9 @@
   "previewStopDone": {
     "nb": "Du er ferdig med saken. Trykk «Neste» for resten av skjemaet.",
     "en": "You have finished the case. Press ‘Next’ for the rest of the form."
+  },
+  "atlasOnNow": {
+    "nb": "ATLAS er på. Delene ligger i boksene nedenfor.",
+    "en": "ATLAS is on. Its parts are in the boxes below."
   }
 }

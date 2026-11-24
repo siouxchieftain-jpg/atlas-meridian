@@ -1,9 +1,5 @@
 import {
   Button,
-  MessageBar,
-  MessageBarActions,
-  MessageBarBody,
-  MessageBarTitle,
   ToggleButton,
   makeStyles,
   mergeClasses,
@@ -11,9 +7,9 @@ import {
   typographyStyles,
 } from '@fluentui/react-components';
 import { ArrowSwap20Regular, Eye20Regular, EyeOff20Regular } from '@fluentui/react-icons';
-import { useId, type ReactNode } from 'react';
+import { useEffect, useId, useRef, type ReactNode } from 'react';
 import type { CaseId, CoreCaseId } from '../content/types';
-import { cases, vocab } from '../content';
+import { cases } from '../content';
 import { useLang } from '../i18n/i18n';
 import { currentPath, navigate } from '../router/router';
 import { browseFlag } from '../state/persist';
@@ -23,8 +19,11 @@ import { DesignNote, useSelectedToggle } from '../patterns/basics';
 import { Silent } from '../patterns/announce';
 import { AtlasPanelHead } from './CaseLayout';
 import { GuideTaskStrip } from '../guide/GuideLayer';
+import { AtlasCard, clearArrival, hasArrival, markLockedSeen } from '../patterns/AtlasCard';
 
 const useStyles = makeStyles({
+  lockedLead: { ...typographyStyles.body1Strong, margin: 0, color: tokens.colorNeutralForeground2 },
+  lockedLine: { ...typographyStyles.body1, margin: 0, color: tokens.colorNeutralForeground2 },
   bar: {
     display: 'flex',
     flexWrap: 'wrap',
@@ -114,23 +113,23 @@ export function CaseModeBar({ caseId }: { caseId: CaseId }) {
     const can = work.canShowAtlas(caseId as CoreCaseId);
     // One «Vis ATLAS» at a time: the form panel's while the panel shows it, else this bar's (Meridian: one primary action).
     const panelShows = !!host?.form && host.visible && host.form.caseId === caseId;
+    // 3.8: the locked ATLAS card, in the place ATLAS will open (Jishnu, 24 November). It names what is hidden, never
+    // what ATLAS will show. Silent: part of the page, read with it; not news to announce (G-32).
     return (
-      // Silent: the bar is part of the page, read with it; it is not news to announce (G-32).
       <Silent>
-        <MessageBar intent="info" layout="multiline" data-case-only="">
-          <MessageBarBody>
-            <MessageBarTitle>{s('utenAtlas')}</MessageBarTitle> {s('placeholderHidden')}
-            <span className={cls.noticeLine}>
-              {work.viewer === 'gp' ? s('caseOnlyLine') : caseId === 'astrid' ? s('caseOnlyLineDpsAstrid') : s('caseOnlyLineDps')}
-            </span>
-            {!can && !panelShows && (
-              <span className={cls.noticeLine} id={reasonId}>
-                {s('showAtlasReason')}
-              </span>
-            )}
-          </MessageBarBody>
+        <LockedSeen caseId={caseId} />
+        <AtlasCard on={false} locked>
+          <p className={cls.lockedLead}>{s('placeholderHidden')}</p>
+          <p className={cls.lockedLine}>
+            {work.viewer === 'gp' ? s('caseOnlyLine') : caseId === 'astrid' ? s('caseOnlyLineDpsAstrid') : s('caseOnlyLineDps')}
+          </p>
+          {!can && !panelShows && (
+            <p className={cls.lockedLine} id={reasonId}>
+              {s('showAtlasReason')}
+            </p>
+          )}
           {!panelShows && (
-            <MessageBarActions>
+            <div>
               <Button
                 appearance={can ? 'primary' : 'secondary'}
                 icon={<Eye20Regular />}
@@ -140,9 +139,9 @@ export function CaseModeBar({ caseId }: { caseId: CaseId }) {
               >
                 {s('showAtlas')}
               </Button>
-            </MessageBarActions>
+            </div>
           )}
-        </MessageBar>
+        </AtlasCard>
       </Silent>
     );
   }
@@ -171,15 +170,27 @@ export function CaseModeBar({ caseId }: { caseId: CaseId }) {
   );
 }
 
+/** Remembers that the locked card was seen, so ATLAS arrives when it opens on this case. */
+function LockedSeen({ caseId }: { caseId: CaseId }) {
+  useEffect(() => markLockedSeen(caseId), [caseId]);
+  return null;
+}
+
 /** The line that brings the ATLAS part of the task, shown once ATLAS is open (study). */
 export function AtlasTaskBar({ caseId, modules, summaries }: { caseId: CaseId; modules?: Partial<Record<number, ReactNode>>; summaries?: Partial<Record<number, string>> }) {
   const { s, t } = useLang();
   const work = useWork();
   const host = useFormHostOptional();
-  if (work.mode !== 'study') return null;
   // With the ATLAS parts in the boxes (3.8), the task card stays after the decision: ATLAS lives there now.
-  const phase = work.phase(caseId);
-  if (modules ? phase === 'briefing' || phase === 'uten' : phase !== 'atlas') return null;
+  const phase = work.mode === 'study' ? work.phase(caseId) : undefined;
+  const shown = work.mode === 'study' && (modules ? phase !== 'briefing' && phase !== 'uten' : phase === 'atlas');
+  // ATLAS arrives once: the first time it opens on a case whose locked card was on screen.
+  const arrive = useRef<boolean | null>(null);
+  if (shown && arrive.current === null) arrive.current = hasArrival(caseId);
+  useEffect(() => {
+    if (shown && arrive.current) clearArrival(caseId);
+  }, [shown, caseId]);
+  if (!shown) return null;
   const c = cases[caseId];
   const task = work.viewer === 'gp' ? c.gp.atlasTask : c.dps?.atlasTask;
   if (!task) return null;
@@ -195,7 +206,7 @@ export function AtlasTaskBar({ caseId, modules, summaries }: { caseId: CaseId; m
         task={t(task)}
         modules={modules}
         summaries={summaries}
-        atlasLabel={modules ? `${s('atlasPanel')} · ${t(vocab.band.caption)}` : undefined}
+        arrive={!!arrive.current}
         note={
           held ? (
             <p style={{ margin: 0 }} data-form-held="">

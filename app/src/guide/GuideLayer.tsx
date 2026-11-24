@@ -7,6 +7,7 @@ import { useLang } from '../i18n/i18n';
 import { currentPath } from '../router/router';
 import { readJSON, writeJSON } from '../state/persist';
 import { NextMark, SrOnly } from '../patterns/basics';
+import { AtlasCard } from '../patterns/AtlasCard';
 import { guide } from '../theme/constants';
 
 /**
@@ -422,7 +423,7 @@ export function GuideTaskStrip({
   task,
   note,
   modules,
-  atlasLabel,
+  arrive,
   summaries,
 }: {
   role: 'gp' | 'dps';
@@ -431,7 +432,8 @@ export function GuideTaskStrip({
   note?: ReactNode;
   /** 3.8: the ATLAS part each box opens in place, keyed by marker number. */
   modules?: Partial<Record<number, ReactNode>>;
-  atlasLabel?: ReactNode;
+  /** The first time ATLAS opens on this case (3.8). */
+  arrive?: boolean;
   /** 3.8: what each part says once done, shown on its box, so the whole case reads at a glance. */
   summaries?: Partial<Record<number, string>>;
 }) {
@@ -456,12 +458,7 @@ export function GuideTaskStrip({
     setActive(n);
     window.requestAnimationFrame(() => document.getElementById(`task-part-${n}`)?.scrollIntoView({ block: 'nearest', behavior: 'smooth' }));
   };
-  return (
-    <section className={cls.strip} aria-label={s('guideTask')}>
-      <span className={cls.eyebrow}>{s('guideTask')}</span>
-      <p style={{ margin: 0 }}>{TASKS[`${role}/${view}`] ? t(TASKS[`${role}/${view}`]) : task}</p>
-      {note}
-      {markers.length > 0 && (
+  const body = markers.length > 0 && (
         <>
           {/* 3.8: the page's parts as a checklist under the task; each ticks itself as its work is done. */}
           <ol className={cls.checklist} aria-label={s('guideStepsHere')}>
@@ -526,7 +523,6 @@ export function GuideTaskStrip({
                         {isDone(st, m.n) ? <Checkmark16Filled /> : m.n}
                       </span>
                       <div style={{ flex: 1, minWidth: 0 }}>
-                        {atlasLabel && <span className={cls.atlasTag}>{atlasLabel}</span>}
                         <p className={cls.moduleDo}>{t(m.do)}</p>
                       </div>
                     </div>
@@ -546,7 +542,30 @@ export function GuideTaskStrip({
             </div>
           )}
         </>
-      )}
+        );
+  const taskLine = (
+    <>
+      <span className={cls.eyebrow}>{s('guideTask')}</span>
+      <p style={{ margin: 0 }}>{TASKS[`${role}/${view}`] ? t(TASKS[`${role}/${view}`]) : task}</p>
+      {note}
+    </>
+  );
+  // 3.8: with the ATLAS parts in the boxes, the task stays the coral guide line and ATLAS is its own card under it.
+  if (modules)
+    return (
+      <>
+        <section className={cls.strip} aria-label={s('guideTask')}>
+          {taskLine}
+        </section>
+        <AtlasCard on arrive={arrive}>
+          {body}
+        </AtlasCard>
+      </>
+    );
+  return (
+    <section className={cls.strip} aria-label={s('guideTask')}>
+      {taskLine}
+      {body}
     </section>
   );
 }

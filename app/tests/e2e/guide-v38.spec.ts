@@ -14,17 +14,24 @@ test('3.8: the stop card carries the «Trykk her» mark; the checklist under the
   // The briefing's one way on is marked.
   await expect(page.locator('[data-next-mark]')).toHaveCount(1);
   await page.getByRole('button', { name: 'Start saken' }).click();
+  // Before «Vis ATLAS», the locked ATLAS card stands where ATLAS will open.
+  await expect(page.locator('[data-atlas-card="locked"]')).toContainText('Her vises ATLAS etter at du har svart på side 1.');
   await toStopPage(page);
-  const card = panel(page).locator('[data-next-step="show-atlas"]');
-  await expect(card.locator('[data-next-mark]')).toContainText('Trykk her');
-  await expect(card.locator('[data-next-mark]').getByRole('button', { name: 'Vis ATLAS' })).toBeVisible();
-  await card.getByRole('button', { name: 'Vis ATLAS' }).click();
+  const stop = panel(page).locator('[data-next-step="show-atlas"]');
+  await expect(stop.locator('[data-next-mark]')).toContainText('Trykk her');
+  await expect(stop.locator('[data-next-mark]').getByRole('button', { name: 'Vis ATLAS' })).toBeVisible();
+  await stop.getByRole('button', { name: 'Vis ATLAS' }).click();
   const box = (n: number) => page.locator(`[data-guide-step="${n}"]`);
   const part = (n: number) => page.locator(`#task-part-${n}`);
   // 3.8: the ATLAS parts sit in the boxes under «Oppgaven din»; there is no side panel, and box 1 is open.
   await expect(page.locator('[data-atlas-side], aside[aria-label="ATLAS"]')).toHaveCount(0);
   await expect(part(1)).toBeVisible();
   await expect(part(2)).toBeHidden();
+  // ATLAS arrives as its own card: «Med ATLAS», «ATLAS er på», its heading focused.
+  const card = page.locator('[data-atlas-card="on"]');
+  await expect(card).toContainText('Med ATLAS');
+  await expect(card).toContainText('ATLAS er på');
+  await expect(card.getByRole('heading', { level: 2, name: 'ATLAS' })).toBeFocused();
   await expect(page.locator('[data-guide-step][data-done]')).toHaveCount(0);
   await place(page, 3);
   await expect(box(1)).toHaveAttribute('data-done', '');
