@@ -49,7 +49,7 @@ describe('Kari has one form per role (I-1)', () => {
     });
     expect(strip(form('S3.dps'))).toEqual(strip(form('S3.fastlege')));
     // B1, the locked fields, the stop page, the check item and B2 are all still there.
-    expect(form('S3.fastlege').pages.flatMap((p) => p.items).map((it) => it.id)).toEqual(expect.arrayContaining(['D-V1-B1', 'STOPP-V1', 'E11-V1', 'D-V1-B2', 'D-V1-DS', 'D-V1-04', 'versjon']));
+    expect(form('S3.fastlege').pages.flatMap((p) => p.items).map((it) => it.id)).toEqual(expect.arrayContaining(['D-V1-B1', 'STOPP-V1', 'E11-V1', 'D-V1-B2', 'D-V1-DS', 'D-V1-04', 'studienavn']));
   });
 });
 

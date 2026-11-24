@@ -378,7 +378,7 @@ export function FormPanel({ actions }: { actions: FormPanelActions | null }) {
   const held = caseForm && stage === 'held';
   const tabUrl =
     form.route === 'tab' || form.route === 'panel'
-      ? buildFormUrl(getConfig().forms[form.formKey] ?? '', form.locked, false)
+      ? buildFormUrl(getConfig().forms[form.formKey] ?? '', form.locked, false, form.formKey)
       : undefined;
   const openTab = () => {
     if (actions.onOpenTab) actions.onOpenTab();

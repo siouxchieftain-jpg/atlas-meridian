@@ -15,7 +15,7 @@ Generated from `app/src/content/instrument.json` by `app/scripts/build-sheet.mjs
 - The options of a single choice («Flervalg») are coded 1, 2, 3 and on, in the order listed, unless the sheet gives a code in brackets: the decision items name every choice (so «Ikke bestemt» is `ikke_bestemt` in every form), and «Vet ikke» after a scale is coded `vet_ikke`.
 - «Melding på kvitteringsside etter levert svar»: the form's receipt text below, then a button back to the site, written as Nettskjema documents it: `<div><a class="receipt-link-as-button" href="https://siouxchieftain-jpg.github.io/atlas-meridian/sendt.html?skjema=<step>" rel="noopener noreferrer">Tilbake til ATLAS</a></div>`, where `<step>` is the form's step (`S1` to `S9`; every version of a step names the step, so both versions of S2 to S5 name `S2` to `S5`). `sendt.html` marks the step it names as sent, when that step is the one waiting, and leads back to the study; S9's receipt marks no step and offers to close its tab. `node scripts/nettskjema.mjs verify` checks the link. Check in the pilot that Nettskjema keeps the button.
 - A closing date.
-- Locked fields, last on the form's last page (Nettskjema has no hidden field): one «Tekstsvar» per field, under the heading «Feltene under er fylt ut av ATLAS. Du trenger ikke gjøre noe her.» / "The fields below are filled in by ATLAS. You do not need to do anything here.". ATLAS fills and locks each from the form's address (`CB<codebook>=<value>&LCK<codebook>=true`); in the panel the address also carries `embed=1`.
+- Locked fields, last on the form's last page (Nettskjema has no hidden field): one «Tekstsvar» per field, under the heading «Fylt ut av ATLAS. Du trenger ikke gjøre noe her.» / "Filled in by ATLAS. You do not need to do anything here.". ATLAS fills and locks each from the form's address (`CB<codebook>=<value>&LCK<codebook>=true`); in the panel the address also carries `embed=1`.
 - When the form is open for answers, copy its address from «Innhent svar» (it looks like `https://nettskjema.no/a/123456`) into `app/public/atlas-config.json` under the key given for the form.
 - Before the first invitation, delete every test answer with «Slett alle svar».
 
@@ -46,7 +46,7 @@ Each case form has three pages, and each case has one form per role, so each rol
 
 - **Used by:** Step S1, both roles.
 - **Address goes in:** `forms["S1"]` in `app/public/atlas-config.json`.
-- **Locked fields:** `rolle`, `intervju`, `studienavn`, `steg`, `versjon`.
+- **Locked fields:** `rolle`, `intervju`, `studienavn`.
 - **Intro:** «Dette skjemaet spør om rollen din og arbeidet ditt før du ser ATLAS. Det finnes ingen riktige svar. Ved å sende skjemaet samtykker du i at de anonyme svarene brukes i forskningsprosjektet.» / "This form asks about your role and your work before you see ATLAS. There are no right answers. By sending the form, you consent to the anonymous answers being used in the research project."
 
 **Page**
@@ -61,9 +61,7 @@ Each case form has three pages, and each case has one form per role, so each rol
 | A-05 | `a_05` | Tekstsvar (langt), at most 3,800 characters | Obligatorisk | Beskriv kort din vanlige arbeidsflyt når du vurderer en henvisning innen psykisk helse (1-3 setninger). / Briefly describe your usual workflow when assessing a referral in mental health (1-3 sentences). |  |
 | A-01 | `rolle` | Tekstsvar (kort), locked |  | Hva er din rolle? / What is your role? |  |
 | intervju | `intervju` | Tekstsvar (kort), locked |  | Deltok du i et intervju i dette forskningsprosjektet? / Did you take part in an interview in this research project? |  |
-| studienavn | `studienavn` | Tekstsvar (kort), locked |  | Studienavn / Study name |  |
-| steg | `steg` | Tekstsvar (kort), locked |  | Steg / Step |  |
-| versjon | `versjon` | Tekstsvar (kort), locked |  | Versjon / Version |  |
+| studienavn | `studienavn` | Tekstsvar (kort), locked |  | Studienavnet ditt / Your study name |  |
 
 - **Receipt:** «Takk, svarene er sendt. Gå tilbake til ATLAS for å fortsette.» / "Thank you, the answers have been sent. Go back to ATLAS to continue."
 
@@ -71,7 +69,7 @@ Each case form has three pages, and each case has one form per role, so each rol
 
 - **Used by:** Step S2, «Avslutning» (after the three cases; S6 merged into it in 3.8), GPs.
 - **Address goes in:** `forms["S2.fastlege"]` in `app/public/atlas-config.json`.
-- **Locked fields:** `rolle`, `intervju`, `studienavn`, `steg`, `versjon`.
+- **Locked fields:** `studienavn`.
 - **Intro:** «Dette skjemaet spør om hva du synes om ATLAS etter de tre sakene, og har noen spørsmål til slutt. Kritikk er like nyttig som ros. Ved å sende skjemaet samtykker du i at de anonyme svarene brukes i forskningsprosjektet.» / "This form asks what you think of ATLAS after the three cases, and has a few questions at the end. Criticism is as useful as praise. By sending the form, you consent to the anonymous answers being used in the research project."
 
 **Page 1**
@@ -111,11 +109,7 @@ Each case form has three pages, and each case has one form per role, so each rol
 | E-04 | `e_04` | Tekstsvar (langt), at most 3,800 characters | No | Hva måtte endres for at du skulle ta i bruk ATLAS? (1-3 setninger) / What would need to change for you to adopt ATLAS? (1-3 sentences) |  |
 | E-05 | `e_05` | Flervalg (én), in one row: 1 to 7 | No | Hvor sannsynlig er det at du ville anbefalt ATLAS til en kollega? / How likely is it that you would recommend ATLAS to a colleague? | 1 to 7: Svært lite sannsynlig / Very unlikely … Svært sannsynlig / Very likely |
 | E-06 | `e_06` | Tekstsvar (langt), at most 3,800 characters | No | Er det noe annet du ønsker å legge til? / Is there anything else you would like to add? |  |
-| rolle | `rolle` | Tekstsvar (kort), locked |  | Rolle / Role |  |
-| intervju | `intervju` | Tekstsvar (kort), locked |  | Deltok du i et intervju i dette forskningsprosjektet? / Did you take part in an interview in this research project? |  |
-| studienavn | `studienavn` | Tekstsvar (kort), locked |  | Studienavn / Study name |  |
-| steg | `steg` | Tekstsvar (kort), locked |  | Steg / Step |  |
-| versjon | `versjon` | Tekstsvar (kort), locked |  | Versjon / Version |  |
+| studienavn | `studienavn` | Tekstsvar (kort), locked |  | Studienavnet ditt / Your study name |  |
 
 - **Receipt:** «Takk, svarene er sendt. Gå tilbake til ATLAS for å fortsette.» / "Thank you, the answers have been sent. Go back to ATLAS to continue."
 
@@ -123,7 +117,7 @@ Each case form has three pages, and each case has one form per role, so each rol
 
 - **Used by:** Step S2, «Avslutning» (after the three cases; S6 merged into it in 3.8), DPS participants.
 - **Address goes in:** `forms["S2.dps"]` in `app/public/atlas-config.json`.
-- **Locked fields:** `rolle`, `intervju`, `studienavn`, `steg`, `versjon`.
+- **Locked fields:** `studienavn`.
 - **Intro:** «Dette skjemaet spør om hva du synes om ATLAS etter de tre sakene, og har noen spørsmål til slutt. Kritikk er like nyttig som ros. Ved å sende skjemaet samtykker du i at de anonyme svarene brukes i forskningsprosjektet.» / "This form asks what you think of ATLAS after the three cases, and has a few questions at the end. Criticism is as useful as praise. By sending the form, you consent to the anonymous answers being used in the research project."
 
 **Page 1**
@@ -165,11 +159,7 @@ Each case form has three pages, and each case has one form per role, so each rol
 | E-04 | `e_04` | Tekstsvar (langt), at most 3,800 characters | No | Hva måtte endres for at du skulle ta i bruk ATLAS? (1-3 setninger) / What would need to change for you to adopt ATLAS? (1-3 sentences) |  |
 | E-05 | `e_05` | Flervalg (én), in one row: 1 to 7 | No | Hvor sannsynlig er det at du ville anbefalt ATLAS til en kollega? / How likely is it that you would recommend ATLAS to a colleague? | 1 to 7: Svært lite sannsynlig / Very unlikely … Svært sannsynlig / Very likely |
 | E-06 | `e_06` | Tekstsvar (langt), at most 3,800 characters | No | Er det noe annet du ønsker å legge til? / Is there anything else you would like to add? |  |
-| rolle | `rolle` | Tekstsvar (kort), locked |  | Rolle / Role |  |
-| intervju | `intervju` | Tekstsvar (kort), locked |  | Deltok du i et intervju i dette forskningsprosjektet? / Did you take part in an interview in this research project? |  |
-| studienavn | `studienavn` | Tekstsvar (kort), locked |  | Studienavn / Study name |  |
-| steg | `steg` | Tekstsvar (kort), locked |  | Steg / Step |  |
-| versjon | `versjon` | Tekstsvar (kort), locked |  | Versjon / Version |  |
+| studienavn | `studienavn` | Tekstsvar (kort), locked |  | Studienavnet ditt / Your study name |  |
 
 - **Receipt:** «Takk, svarene er sendt. Gå tilbake til ATLAS for å fortsette.» / "Thank you, the answers have been sent. Go back to ATLAS to continue."
 
@@ -177,7 +167,7 @@ Each case form has three pages, and each case has one form per role, so each rol
 
 - **Used by:** Step S3 (V1 Kari), GPs.
 - **Address goes in:** `forms["S3.fastlege"]` in `app/public/atlas-config.json`.
-- **Locked fields:** `rolle`, `intervju`, `studienavn`, `steg`, `vignett`, `versjon`.
+- **Locked fields:** `studienavn`.
 - **Intro:** «Dette skjemaet handler om saken til Kari. Svar på første side med bare saken på skjermen. Resten svarer du på når du har sett saken med ATLAS. Kritikk er like nyttig som ros. Ved å sende skjemaet samtykker du i at de anonyme svarene brukes i forskningsprosjektet.» / "This form is about Kari’s case. Answer the first page with only the case on the screen. You answer the rest when you have seen the case with ATLAS. Criticism is as useful as praise. By sending the form, you consent to the anonymous answers being used in the research project."
 
 **Page 1**
@@ -208,12 +198,7 @@ Each case form has three pages, and each case has one form per role, so each rol
 | D-V1-03 | `d_v1_03` | Tekstsvar (langt), at most 3,800 characters | No | Endret usikkerhetsskalaen hvordan du så på saken? / Did the uncertainty scale change how you saw the case? |  |
 | D-V1-05 | `d_v1_05` | Tekstsvar (langt), at most 3,800 characters | No | Hjalp det å ta stilling til hva som var uklart i saken («Hva er uklart i saken?»)? Hvordan? / Did it help to decide what was unclear in the case (‘What is unclear in the case?’)? How? |  |
 | D-V1-04 | `d_v1_04` | Flervalg (én), in one row: 1 to 7 | No | Hvor nyttig var ATLAS i denne saken? / How useful was ATLAS in this case? | 1 to 7: Ikke nyttig / Not helpful … Svært nyttig / Very helpful |
-| rolle | `rolle` | Tekstsvar (kort), locked |  | Rolle / Role |  |
-| intervju | `intervju` | Tekstsvar (kort), locked |  | Deltok du i et intervju i dette forskningsprosjektet? / Did you take part in an interview in this research project? |  |
-| studienavn | `studienavn` | Tekstsvar (kort), locked |  | Studienavn / Study name |  |
-| steg | `steg` | Tekstsvar (kort), locked |  | Steg / Step |  |
-| vignett | `vignett` | Tekstsvar (kort), locked |  | Vignett / Vignette |  |
-| versjon | `versjon` | Tekstsvar (kort), locked |  | Versjon / Version |  |
+| studienavn | `studienavn` | Tekstsvar (kort), locked |  | Studienavnet ditt / Your study name |  |
 
 - **Receipt:** «Takk, svarene er sendt. Gå tilbake til ATLAS for å fortsette.» / "Thank you, the answers have been sent. Go back to ATLAS to continue."
 
@@ -221,7 +206,7 @@ Each case form has three pages, and each case has one form per role, so each rol
 
 - **Used by:** Step S3 (V1 Kari), DPS participants.
 - **Address goes in:** `forms["S3.dps"]` in `app/public/atlas-config.json`.
-- **Locked fields:** `rolle`, `intervju`, `studienavn`, `steg`, `vignett`, `versjon`.
+- **Locked fields:** `studienavn`.
 - **Intro:** «Dette skjemaet handler om saken til Kari. Svar på første side med bare saken på skjermen. Resten svarer du på når du har sett saken med ATLAS. Kritikk er like nyttig som ros. Ved å sende skjemaet samtykker du i at de anonyme svarene brukes i forskningsprosjektet.» / "This form is about Kari’s case. Answer the first page with only the case on the screen. You answer the rest when you have seen the case with ATLAS. Criticism is as useful as praise. By sending the form, you consent to the anonymous answers being used in the research project."
 
 **Page 1**
@@ -252,12 +237,7 @@ Each case form has three pages, and each case has one form per role, so each rol
 | D-V1-03 | `d_v1_03` | Tekstsvar (langt), at most 3,800 characters | No | Endret usikkerhetsskalaen hvordan du så på saken? / Did the uncertainty scale change how you saw the case? |  |
 | D-V1-05 | `d_v1_05` | Tekstsvar (langt), at most 3,800 characters | No | Hjalp det å se feltet «Hva fastlegen var usikker på»? Hvordan? / Did it help to see the field ‘What the GP was unsure about’? How? |  |
 | D-V1-04 | `d_v1_04` | Flervalg (én), in one row: 1 to 7 | No | Hvor nyttig var ATLAS i denne saken? / How useful was ATLAS in this case? | 1 to 7: Ikke nyttig / Not helpful … Svært nyttig / Very helpful |
-| rolle | `rolle` | Tekstsvar (kort), locked |  | Rolle / Role |  |
-| intervju | `intervju` | Tekstsvar (kort), locked |  | Deltok du i et intervju i dette forskningsprosjektet? / Did you take part in an interview in this research project? |  |
-| studienavn | `studienavn` | Tekstsvar (kort), locked |  | Studienavn / Study name |  |
-| steg | `steg` | Tekstsvar (kort), locked |  | Steg / Step |  |
-| vignett | `vignett` | Tekstsvar (kort), locked |  | Vignett / Vignette |  |
-| versjon | `versjon` | Tekstsvar (kort), locked |  | Versjon / Version |  |
+| studienavn | `studienavn` | Tekstsvar (kort), locked |  | Studienavnet ditt / Your study name |  |
 
 - **Receipt:** «Takk, svarene er sendt. Gå tilbake til ATLAS for å fortsette.» / "Thank you, the answers have been sent. Go back to ATLAS to continue."
 
@@ -265,7 +245,7 @@ Each case form has three pages, and each case has one form per role, so each rol
 
 - **Used by:** Step S4 (V3 Erlend), GPs.
 - **Address goes in:** `forms["S4.fastlege"]` in `app/public/atlas-config.json`.
-- **Locked fields:** `rolle`, `intervju`, `studienavn`, `steg`, `vignett`, `versjon`.
+- **Locked fields:** `studienavn`.
 - **Intro:** «Dette skjemaet handler om saken til Erlend. Svar på første side med bare saken på skjermen. Resten svarer du på når du har sett saken med ATLAS. Kritikk er like nyttig som ros. Ved å sende skjemaet samtykker du i at de anonyme svarene brukes i forskningsprosjektet.» / "This form is about Erlend’s case. Answer the first page with only the case on the screen. You answer the rest when you have seen the case with ATLAS. Criticism is as useful as praise. By sending the form, you consent to the anonymous answers being used in the research project."
 
 **Page 1**
@@ -293,12 +273,7 @@ Each case form has three pages, and each case has one form per role, so each rol
 | D-V3-01 | `d_v3_01` | Tekstsvar (langt), at most 3,800 characters | Obligatorisk | Endret det å se kriteriene i prioriteringsveilederen hvordan du skrev henvisningen? Skrev du den mer slik du faktisk vurderer pasienten, mer for at den skulle «komme gjennom», eller ble det ingen forskjell? (1-3 setninger) / Did seeing the criteria in the priority-setting guideline change how you wrote the referral? Did you write it more as you actually assess the patient, more so that it would ‘get through’, or did it make no difference? (1-3 sentences) |  |
 | D-V3-02 | `d_v3_02` | Tekstsvar (langt), at most 3,800 characters | Obligatorisk | Hva ved ATLAS var nyttig, og hva fungerte ikke? Hvis du fortsatt ville tilpasset henvisningen, hvorfor? (1-3 setninger) / What about ATLAS was useful, and what did not work? If you would still adapt the referral, why? (1-3 sentences) |  |
 | D-V3-03 | `d_v3_03` | Flervalg (én), in one row: 1 to 7 | No | Hvor nyttig var ATLAS i denne saken? / How useful was ATLAS in this case? | 1 to 7: Ikke nyttig / Not helpful … Svært nyttig / Very helpful |
-| rolle | `rolle` | Tekstsvar (kort), locked |  | Rolle / Role |  |
-| intervju | `intervju` | Tekstsvar (kort), locked |  | Deltok du i et intervju i dette forskningsprosjektet? / Did you take part in an interview in this research project? |  |
-| studienavn | `studienavn` | Tekstsvar (kort), locked |  | Studienavn / Study name |  |
-| steg | `steg` | Tekstsvar (kort), locked |  | Steg / Step |  |
-| vignett | `vignett` | Tekstsvar (kort), locked |  | Vignett / Vignette |  |
-| versjon | `versjon` | Tekstsvar (kort), locked |  | Versjon / Version |  |
+| studienavn | `studienavn` | Tekstsvar (kort), locked |  | Studienavnet ditt / Your study name |  |
 
 - **Receipt:** «Takk, svarene er sendt. Gå tilbake til ATLAS for å fortsette.» / "Thank you, the answers have been sent. Go back to ATLAS to continue."
 
@@ -306,7 +281,7 @@ Each case form has three pages, and each case has one form per role, so each rol
 
 - **Used by:** Step S4 (V3 Erlend), DPS participants.
 - **Address goes in:** `forms["S4.dps"]` in `app/public/atlas-config.json`.
-- **Locked fields:** `rolle`, `intervju`, `studienavn`, `steg`, `vignett`, `versjon`.
+- **Locked fields:** `studienavn`.
 - **Intro:** «Dette skjemaet handler om saken til Erlend. Svar på første side med bare saken på skjermen. Resten svarer du på når du har sett saken med ATLAS. Kritikk er like nyttig som ros. Ved å sende skjemaet samtykker du i at de anonyme svarene brukes i forskningsprosjektet.» / "This form is about Erlend’s case. Answer the first page with only the case on the screen. You answer the rest when you have seen the case with ATLAS. Criticism is as useful as praise. By sending the form, you consent to the anonymous answers being used in the research project."
 
 **Page 1**
@@ -334,12 +309,7 @@ Each case form has three pages, and each case has one form per role, so each rol
 | D-V3-01 | `d_v3_01` | Tekstsvar (langt), at most 3,800 characters | Obligatorisk | Endret det at fastlegen kunne se kriteriene i prioriteringsveilederen, hvordan du leste henvisningen? Virket den mer som fastlegens egen vurdering, mer skrevet for å «komme gjennom», eller var det ingen forskjell? (1-3 setninger) / Did it change how you read the referral that the GP could see the criteria in the priority-setting guideline? Did it seem more like the GP’s own assessment, more written to ‘get through’, or was there no difference? (1-3 sentences) |  |
 | D-V3-02 | `d_v3_02` | Tekstsvar (langt), at most 3,800 characters | Obligatorisk | Hva ved ATLAS var nyttig, og hva fungerte ikke? Hvis du fortsatt ville lest henvisningen med forbehold, hvorfor? (1-3 setninger) / What about ATLAS was useful, and what did not work? If you would still read the referral with reservations, why? (1-3 sentences) |  |
 | D-V3-03 | `d_v3_03` | Flervalg (én), in one row: 1 to 7 | No | Hvor nyttig var ATLAS i denne saken? / How useful was ATLAS in this case? | 1 to 7: Ikke nyttig / Not helpful … Svært nyttig / Very helpful |
-| rolle | `rolle` | Tekstsvar (kort), locked |  | Rolle / Role |  |
-| intervju | `intervju` | Tekstsvar (kort), locked |  | Deltok du i et intervju i dette forskningsprosjektet? / Did you take part in an interview in this research project? |  |
-| studienavn | `studienavn` | Tekstsvar (kort), locked |  | Studienavn / Study name |  |
-| steg | `steg` | Tekstsvar (kort), locked |  | Steg / Step |  |
-| vignett | `vignett` | Tekstsvar (kort), locked |  | Vignett / Vignette |  |
-| versjon | `versjon` | Tekstsvar (kort), locked |  | Versjon / Version |  |
+| studienavn | `studienavn` | Tekstsvar (kort), locked |  | Studienavnet ditt / Your study name |  |
 
 - **Receipt:** «Takk, svarene er sendt. Gå tilbake til ATLAS for å fortsette.» / "Thank you, the answers have been sent. Go back to ATLAS to continue."
 
@@ -347,7 +317,7 @@ Each case form has three pages, and each case has one form per role, so each rol
 
 - **Used by:** Step S5 (V4 Astrid), GPs.
 - **Address goes in:** `forms["S5.fastlege"]` in `app/public/atlas-config.json`.
-- **Locked fields:** `rolle`, `intervju`, `studienavn`, `steg`, `vignett`, `versjon`.
+- **Locked fields:** `studienavn`.
 - **Intro:** «Dette skjemaet handler om saken til Astrid. Svar på første side med bare saken på skjermen. Resten svarer du på når du har sett saken med ATLAS. Kritikk er like nyttig som ros. Ved å sende skjemaet samtykker du i at de anonyme svarene brukes i forskningsprosjektet.» / "This form is about Astrid’s case. Answer the first page with only the case on the screen. You answer the rest when you have seen the case with ATLAS. Criticism is as useful as praise. By sending the form, you consent to the anonymous answers being used in the research project."
 
 **Page 1**
@@ -376,12 +346,7 @@ Each case form has three pages, and each case has one form per role, so each rol
 | D-V4-02 | `d_v4_02` | Tekstsvar (langt), at most 3,800 characters | No | Ville en strukturert tilbakemelding på returen endre hvordan du skriver neste henvisning? / Would structured feedback on the return change how you write the next referral? |  |
 | D-V4-03 | `d_v4_03` | Tekstsvar (langt), at most 3,800 characters | Obligatorisk | Hva ved ATLAS var nyttig, og hva fungerte ikke? Hva mangler? (1-3 setninger) / What about ATLAS was useful, and what did not work? What is missing? (1-3 sentences) |  |
 | D-V4-04 | `d_v4_04` | Flervalg (én), in one row: 1 to 7 | No | Hvor nyttig var ATLAS i denne saken? / How useful was ATLAS in this case? | 1 to 7: Ikke nyttig / Not helpful … Svært nyttig / Very helpful |
-| rolle | `rolle` | Tekstsvar (kort), locked |  | Rolle / Role |  |
-| intervju | `intervju` | Tekstsvar (kort), locked |  | Deltok du i et intervju i dette forskningsprosjektet? / Did you take part in an interview in this research project? |  |
-| studienavn | `studienavn` | Tekstsvar (kort), locked |  | Studienavn / Study name |  |
-| steg | `steg` | Tekstsvar (kort), locked |  | Steg / Step |  |
-| vignett | `vignett` | Tekstsvar (kort), locked |  | Vignett / Vignette |  |
-| versjon | `versjon` | Tekstsvar (kort), locked |  | Versjon / Version |  |
+| studienavn | `studienavn` | Tekstsvar (kort), locked |  | Studienavnet ditt / Your study name |  |
 
 - **Receipt:** «Takk, svarene er sendt. Gå tilbake til ATLAS for å fortsette.» / "Thank you, the answers have been sent. Go back to ATLAS to continue."
 
@@ -389,7 +354,7 @@ Each case form has three pages, and each case has one form per role, so each rol
 
 - **Used by:** Step S5 (V4 Astrid), DPS participants.
 - **Address goes in:** `forms["S5.dps"]` in `app/public/atlas-config.json`.
-- **Locked fields:** `rolle`, `intervju`, `studienavn`, `steg`, `vignett`, `versjon`.
+- **Locked fields:** `studienavn`.
 - **Intro:** «Dette skjemaet handler om saken til Astrid. Svar på første side med bare saken på skjermen. Resten svarer du på når du har sett saken med ATLAS. Kritikk er like nyttig som ros. Ved å sende skjemaet samtykker du i at de anonyme svarene brukes i forskningsprosjektet.» / "This form is about Astrid’s case. Answer the first page with only the case on the screen. You answer the rest when you have seen the case with ATLAS. Criticism is as useful as praise. By sending the form, you consent to the anonymous answers being used in the research project."
 
 **Page 1**
@@ -418,12 +383,7 @@ Each case form has three pages, and each case has one form per role, so each rol
 | D-V4-02 | `d_v4_02` | Tekstsvar (langt), at most 3,800 characters | No | Ville den strukturerte formen i ATLAS (grunner og råd) endre hvordan du skriver neste retur? / Would the structured form in ATLAS (reasons and advice) change how you write the next return? |  |
 | D-V4-03 | `d_v4_03` | Tekstsvar (langt), at most 3,800 characters | Obligatorisk | Hva ved ATLAS var nyttig, og hva fungerte ikke? Hva mangler? (1-3 setninger) / What about ATLAS was useful, and what did not work? What is missing? (1-3 sentences) |  |
 | D-V4-04 | `d_v4_04` | Flervalg (én), in one row: 1 to 7 | No | Hvor nyttig var ATLAS i denne saken? / How useful was ATLAS in this case? | 1 to 7: Ikke nyttig / Not helpful … Svært nyttig / Very helpful |
-| rolle | `rolle` | Tekstsvar (kort), locked |  | Rolle / Role |  |
-| intervju | `intervju` | Tekstsvar (kort), locked |  | Deltok du i et intervju i dette forskningsprosjektet? / Did you take part in an interview in this research project? |  |
-| studienavn | `studienavn` | Tekstsvar (kort), locked |  | Studienavn / Study name |  |
-| steg | `steg` | Tekstsvar (kort), locked |  | Steg / Step |  |
-| vignett | `vignett` | Tekstsvar (kort), locked |  | Vignett / Vignette |  |
-| versjon | `versjon` | Tekstsvar (kort), locked |  | Versjon / Version |  |
+| studienavn | `studienavn` | Tekstsvar (kort), locked |  | Studienavnet ditt / Your study name |  |
 
 - **Receipt:** «Takk, svarene er sendt. Gå tilbake til ATLAS for å fortsette.» / "Thank you, the answers have been sent. Go back to ATLAS to continue."
 
@@ -431,7 +391,7 @@ Each case form has three pages, and each case has one form per role, so each rol
 
 - **Used by:** Step S7 (V2 Torbjørn, optional), GPs.
 - **Address goes in:** `forms["S7.fastlege"]` in `app/public/atlas-config.json`.
-- **Locked fields:** `rolle`, `intervju`, `studienavn`, `steg`, `vignett`, `versjon`.
+- **Locked fields:** `studienavn`.
 - **Intro:** «Dette skjemaet handler om saken til Torbjørn, en valgfri ekstra sak. Kritikk er like nyttig som ros. Ved å sende skjemaet samtykker du i at de anonyme svarene brukes i forskningsprosjektet.» / "This form is about Torbjørn's case, an optional extra case. Criticism is as useful as praise. By sending the form, you consent to the anonymous answers being used in the research project."
 
 **Page**
@@ -441,12 +401,7 @@ Each case form has three pages, and each case has one form per role, so each rol
 | D-V2-01 | `d_v2_01` | Tekstsvar (langt), at most 3,800 characters | No | Er ATLAS raskere, tregere eller like raskt som slik du jobber i dag med denne typen henvisning? / Is ATLAS faster, slower or as fast as the way you work today with this kind of referral? |  |
 | D-V2-02 | `d_v2_02` | Tekstsvar (langt), at most 3,800 characters | No | Er ATLAS nyttig i klare saker, eller først og fremst i gråsonesaker? Er det greit? / Is ATLAS useful in clear cases, or mainly in grey-zone cases? Is that acceptable? |  |
 | D-V2-03 | `d_v2_03` | Flervalg (én), in one row: 1 to 7 | No | Hvor nyttig var ATLAS i denne saken? / How useful was ATLAS in this case? | 1 to 7: Ikke nyttig / Not helpful … Svært nyttig / Very helpful |
-| rolle | `rolle` | Tekstsvar (kort), locked |  | Rolle / Role |  |
-| intervju | `intervju` | Tekstsvar (kort), locked |  | Deltok du i et intervju i dette forskningsprosjektet? / Did you take part in an interview in this research project? |  |
-| studienavn | `studienavn` | Tekstsvar (kort), locked |  | Studienavn / Study name |  |
-| steg | `steg` | Tekstsvar (kort), locked |  | Steg / Step |  |
-| vignett | `vignett` | Tekstsvar (kort), locked |  | Vignett / Vignette |  |
-| versjon | `versjon` | Tekstsvar (kort), locked |  | Versjon / Version |  |
+| studienavn | `studienavn` | Tekstsvar (kort), locked |  | Studienavnet ditt / Your study name |  |
 
 - **Receipt:** «Takk, svarene er sendt. Gå tilbake til ATLAS for å fortsette.» / "Thank you, the answers have been sent. Go back to ATLAS to continue."
 
@@ -454,7 +409,7 @@ Each case form has three pages, and each case has one form per role, so each rol
 
 - **Used by:** Step S8 (V5 two GPs, optional), both roles.
 - **Address goes in:** `forms["S8"]` in `app/public/atlas-config.json`.
-- **Locked fields:** `rolle`, `intervju`, `studienavn`, `steg`, `vignett`, `versjon`.
+- **Locked fields:** `studienavn`.
 - **Intro:** «Dette skjemaet handler om visningen av to fastleger og én pasient, en valgfri ekstra sak. Kritikk er like nyttig som ros. Ved å sende skjemaet samtykker du i at de anonyme svarene brukes i forskningsprosjektet.» / "This form is about the view of two GPs and one patient, an optional extra case. Criticism is as useful as praise. By sending the form, you consent to the anonymous answers being used in the research project."
 
 **Page**
@@ -463,12 +418,7 @@ Each case form has three pages, and each case has one form per role, so each rol
 |---|---|---|---|---|---|
 | D-V5-01 | `d_v5_01` | Tekstsvar (langt), at most 3,800 characters | No | Ville en erfaren fastlege og en ny fastlege bruke ATLAS forskjellig? Hvordan? / Would an experienced GP and a new GP use ATLAS differently? How? |  |
 | D-V5-02 | `d_v5_02` | Tekstsvar (langt), at most 3,800 characters | No | Er det en risiko for at tallene i «Mitt henvisningsmønster» kan virke demotiverende for erfarne fastleger som henviser stadig færre? / Is there a risk that the figures in ‘My referral pattern’ could be demotivating for experienced GPs who refer fewer and fewer? |  |
-| rolle | `rolle` | Tekstsvar (kort), locked |  | Rolle / Role |  |
-| intervju | `intervju` | Tekstsvar (kort), locked |  | Deltok du i et intervju i dette forskningsprosjektet? / Did you take part in an interview in this research project? |  |
-| studienavn | `studienavn` | Tekstsvar (kort), locked |  | Studienavn / Study name |  |
-| steg | `steg` | Tekstsvar (kort), locked |  | Steg / Step |  |
-| vignett | `vignett` | Tekstsvar (kort), locked |  | Vignett / Vignette |  |
-| versjon | `versjon` | Tekstsvar (kort), locked |  | Versjon / Version |  |
+| studienavn | `studienavn` | Tekstsvar (kort), locked |  | Studienavnet ditt / Your study name |  |
 
 - **Receipt:** «Takk, svarene er sendt. Gå tilbake til ATLAS for å fortsette.» / "Thank you, the answers have been sent. Go back to ATLAS to continue."
 
@@ -476,7 +426,7 @@ Each case form has three pages, and each case has one form per role, so each rol
 
 - **Used by:** Any study page after S1, per part of a screen (optional feedback along the way), both roles; no step.
 - **Address goes in:** `forms["S9"]` in `app/public/atlas-config.json`.
-- **Locked fields:** `rolle`, `studienavn`, `side`, `seksjon`, `versjon`.
+- **Locked fields:** `studienavn`, `side`, `seksjon`.
 - **Intro:** «Dette skjemaet gjelder delen av ATLAS du nettopp har sett. Det er frivillig og tar under ett minutt. Kritikk er like nyttig som ros. Ved å sende skjemaet samtykker du i at de anonyme svarene brukes i forskningsprosjektet.» / "This form is about the part of ATLAS you have just seen. It is voluntary and takes less than a minute. Criticism is as useful as praise. By sending the form, you consent to the anonymous answers being used in the research project."
 
 **Page**
@@ -488,11 +438,9 @@ Each case form has three pages, and each case has one form per role, so each rol
 | S9-03 | `s9_03` | Tekstsvar (langt), at most 3,800 characters | No | Hva ville du endret? / What would you change? |  |
 | S9-04 | `s9_04` | Flervalg (én) | No | Leste du noe her som et råd om hva du skulle gjøre? / Did you read anything here as advice on what to do? | Ja / Yes; Nei / No; Usikker / Unsure |
 | S9-05 | `s9_05` | Tekstsvar (langt), at most 3,800 characters | No | Hva? / What? |  |
-| rolle | `rolle` | Tekstsvar (kort), locked |  | Rolle / Role |  |
-| studienavn | `studienavn` | Tekstsvar (kort), locked |  | Studienavn / Study name |  |
+| studienavn | `studienavn` | Tekstsvar (kort), locked |  | Studienavnet ditt / Your study name |  |
 | side | `side` | Tekstsvar (kort), locked |  | Side i ATLAS / Page in ATLAS |  |
 | seksjon | `seksjon` | Tekstsvar (kort), locked |  | Seksjon / Section |  |
-| versjon | `versjon` | Tekstsvar (kort), locked |  | Versjon / Version |  |
 
 - **Receipt:** «Takk, tilbakemeldingen er sendt. Gå tilbake til ATLAS for å fortsette.» / "Thank you, the feedback has been sent. Go back to ATLAS to continue."
 

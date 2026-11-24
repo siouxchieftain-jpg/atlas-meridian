@@ -95,7 +95,7 @@ test('a vignette form sent whole before «Vis ATLAS» counts as sent, and is not
   await expect(page.getByText('Be om mer informasjon').first()).toBeVisible();
   const s3 = (await submissions(page)).filter((s) => s.key === 'S3.fastlege');
   expect(s3).toHaveLength(1);
-  expect(s3[0].fields.steg).toBe('S3');
+  expect(s3[0].fields.steg).toBeUndefined();
 });
 
 test('the stop card covers the form until «Vis ATLAS», and the form can still be shown on purpose', async ({ page }) => {

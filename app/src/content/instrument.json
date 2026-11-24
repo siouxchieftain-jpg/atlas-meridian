@@ -8,8 +8,8 @@
     "en": "Do not write any information about patients or other people."
   },
   "lockedHeading": {
-    "nb": "Feltene under er fylt ut av ATLAS. Du trenger ikke gjøre noe her.",
-    "en": "The fields below are filled in by ATLAS. You do not need to do anything here."
+    "nb": "Fylt ut av ATLAS. Du trenger ikke gjøre noe her.",
+    "en": "Filled in by ATLAS. You do not need to do anything here."
   },
   "forms": [
     {
@@ -25,9 +25,7 @@
       "locked": [
         "rolle",
         "intervju",
-        "studienavn",
-        "steg",
-        "versjon"
+        "studienavn"
       ],
       "pages": [
         {
@@ -184,28 +182,8 @@
               "type": "locked",
               "codebook": "studienavn",
               "text": {
-                "nb": "Studienavn",
-                "en": "Study name"
-              },
-              "required": false
-            },
-            {
-              "id": "steg",
-              "type": "locked",
-              "codebook": "steg",
-              "text": {
-                "nb": "Steg",
-                "en": "Step"
-              },
-              "required": false
-            },
-            {
-              "id": "versjon",
-              "type": "locked",
-              "codebook": "versjon",
-              "text": {
-                "nb": "Versjon",
-                "en": "Version"
+                "nb": "Studienavnet ditt",
+                "en": "Your study name"
               },
               "required": false
             }
@@ -228,11 +206,7 @@
         "en": "This form asks what you think of ATLAS after the three cases, and has a few questions at the end. Criticism is as useful as praise. By sending the form, you consent to the anonymous answers being used in the research project."
       },
       "locked": [
-        "rolle",
-        "intervju",
-        "studienavn",
-        "steg",
-        "versjon"
+        "studienavn"
       ],
       "pages": [
         {
@@ -687,52 +661,12 @@
               "privacyLine": true
             },
             {
-              "id": "rolle",
-              "type": "locked",
-              "codebook": "rolle",
-              "text": {
-                "nb": "Rolle",
-                "en": "Role"
-              },
-              "required": false
-            },
-            {
-              "id": "intervju",
-              "type": "locked",
-              "codebook": "intervju",
-              "text": {
-                "nb": "Deltok du i et intervju i dette forskningsprosjektet?",
-                "en": "Did you take part in an interview in this research project?"
-              },
-              "required": false
-            },
-            {
               "id": "studienavn",
               "type": "locked",
               "codebook": "studienavn",
               "text": {
-                "nb": "Studienavn",
-                "en": "Study name"
-              },
-              "required": false
-            },
-            {
-              "id": "steg",
-              "type": "locked",
-              "codebook": "steg",
-              "text": {
-                "nb": "Steg",
-                "en": "Step"
-              },
-              "required": false
-            },
-            {
-              "id": "versjon",
-              "type": "locked",
-              "codebook": "versjon",
-              "text": {
-                "nb": "Versjon",
-                "en": "Version"
+                "nb": "Studienavnet ditt",
+                "en": "Your study name"
               },
               "required": false
             }
@@ -755,11 +689,7 @@
         "en": "This form asks what you think of ATLAS after the three cases, and has a few questions at the end. Criticism is as useful as praise. By sending the form, you consent to the anonymous answers being used in the research project."
       },
       "locked": [
-        "rolle",
-        "intervju",
-        "studienavn",
-        "steg",
-        "versjon"
+        "studienavn"
       ],
       "pages": [
         {
@@ -1244,52 +1174,12 @@
               "privacyLine": true
             },
             {
-              "id": "rolle",
-              "type": "locked",
-              "codebook": "rolle",
-              "text": {
-                "nb": "Rolle",
-                "en": "Role"
-              },
-              "required": false
-            },
-            {
-              "id": "intervju",
-              "type": "locked",
-              "codebook": "intervju",
-              "text": {
-                "nb": "Deltok du i et intervju i dette forskningsprosjektet?",
-                "en": "Did you take part in an interview in this research project?"
-              },
-              "required": false
-            },
-            {
               "id": "studienavn",
               "type": "locked",
               "codebook": "studienavn",
               "text": {
-                "nb": "Studienavn",
-                "en": "Study name"
-              },
-              "required": false
-            },
-            {
-              "id": "steg",
-              "type": "locked",
-              "codebook": "steg",
-              "text": {
-                "nb": "Steg",
-                "en": "Step"
-              },
-              "required": false
-            },
-            {
-              "id": "versjon",
-              "type": "locked",
-              "codebook": "versjon",
-              "text": {
-                "nb": "Versjon",
-                "en": "Version"
+                "nb": "Studienavnet ditt",
+                "en": "Your study name"
               },
               "required": false
             }
@@ -1312,12 +1202,7 @@
         "en": "This form is about Kari’s case. Answer the first page with only the case on the screen. You answer the rest when you have seen the case with ATLAS. Criticism is as useful as praise. By sending the form, you consent to the anonymous answers being used in the research project."
       },
       "locked": [
-        "rolle",
-        "intervju",
-        "studienavn",
-        "steg",
-        "vignett",
-        "versjon"
+        "studienavn"
       ],
       "pages": [
         {
@@ -1549,62 +1434,12 @@
               "required": false
             },
             {
-              "id": "rolle",
-              "type": "locked",
-              "codebook": "rolle",
-              "text": {
-                "nb": "Rolle",
-                "en": "Role"
-              },
-              "required": false
-            },
-            {
-              "id": "intervju",
-              "type": "locked",
-              "codebook": "intervju",
-              "text": {
-                "nb": "Deltok du i et intervju i dette forskningsprosjektet?",
-                "en": "Did you take part in an interview in this research project?"
-              },
-              "required": false
-            },
-            {
               "id": "studienavn",
               "type": "locked",
               "codebook": "studienavn",
               "text": {
-                "nb": "Studienavn",
-                "en": "Study name"
-              },
-              "required": false
-            },
-            {
-              "id": "steg",
-              "type": "locked",
-              "codebook": "steg",
-              "text": {
-                "nb": "Steg",
-                "en": "Step"
-              },
-              "required": false
-            },
-            {
-              "id": "vignett",
-              "type": "locked",
-              "codebook": "vignett",
-              "text": {
-                "nb": "Vignett",
-                "en": "Vignette"
-              },
-              "required": false
-            },
-            {
-              "id": "versjon",
-              "type": "locked",
-              "codebook": "versjon",
-              "text": {
-                "nb": "Versjon",
-                "en": "Version"
+                "nb": "Studienavnet ditt",
+                "en": "Your study name"
               },
               "required": false
             }
@@ -1627,12 +1462,7 @@
         "en": "This form is about Kari’s case. Answer the first page with only the case on the screen. You answer the rest when you have seen the case with ATLAS. Criticism is as useful as praise. By sending the form, you consent to the anonymous answers being used in the research project."
       },
       "locked": [
-        "rolle",
-        "intervju",
-        "studienavn",
-        "steg",
-        "vignett",
-        "versjon"
+        "studienavn"
       ],
       "pages": [
         {
@@ -1874,62 +1704,12 @@
               "required": false
             },
             {
-              "id": "rolle",
-              "type": "locked",
-              "codebook": "rolle",
-              "text": {
-                "nb": "Rolle",
-                "en": "Role"
-              },
-              "required": false
-            },
-            {
-              "id": "intervju",
-              "type": "locked",
-              "codebook": "intervju",
-              "text": {
-                "nb": "Deltok du i et intervju i dette forskningsprosjektet?",
-                "en": "Did you take part in an interview in this research project?"
-              },
-              "required": false
-            },
-            {
               "id": "studienavn",
               "type": "locked",
               "codebook": "studienavn",
               "text": {
-                "nb": "Studienavn",
-                "en": "Study name"
-              },
-              "required": false
-            },
-            {
-              "id": "steg",
-              "type": "locked",
-              "codebook": "steg",
-              "text": {
-                "nb": "Steg",
-                "en": "Step"
-              },
-              "required": false
-            },
-            {
-              "id": "vignett",
-              "type": "locked",
-              "codebook": "vignett",
-              "text": {
-                "nb": "Vignett",
-                "en": "Vignette"
-              },
-              "required": false
-            },
-            {
-              "id": "versjon",
-              "type": "locked",
-              "codebook": "versjon",
-              "text": {
-                "nb": "Versjon",
-                "en": "Version"
+                "nb": "Studienavnet ditt",
+                "en": "Your study name"
               },
               "required": false
             }
@@ -1952,12 +1732,7 @@
         "en": "This form is about Erlend’s case. Answer the first page with only the case on the screen. You answer the rest when you have seen the case with ATLAS. Criticism is as useful as praise. By sending the form, you consent to the anonymous answers being used in the research project."
       },
       "locked": [
-        "rolle",
-        "intervju",
-        "studienavn",
-        "steg",
-        "vignett",
-        "versjon"
+        "studienavn"
       ],
       "pages": [
         {
@@ -2157,62 +1932,12 @@
               "required": false
             },
             {
-              "id": "rolle",
-              "type": "locked",
-              "codebook": "rolle",
-              "text": {
-                "nb": "Rolle",
-                "en": "Role"
-              },
-              "required": false
-            },
-            {
-              "id": "intervju",
-              "type": "locked",
-              "codebook": "intervju",
-              "text": {
-                "nb": "Deltok du i et intervju i dette forskningsprosjektet?",
-                "en": "Did you take part in an interview in this research project?"
-              },
-              "required": false
-            },
-            {
               "id": "studienavn",
               "type": "locked",
               "codebook": "studienavn",
               "text": {
-                "nb": "Studienavn",
-                "en": "Study name"
-              },
-              "required": false
-            },
-            {
-              "id": "steg",
-              "type": "locked",
-              "codebook": "steg",
-              "text": {
-                "nb": "Steg",
-                "en": "Step"
-              },
-              "required": false
-            },
-            {
-              "id": "vignett",
-              "type": "locked",
-              "codebook": "vignett",
-              "text": {
-                "nb": "Vignett",
-                "en": "Vignette"
-              },
-              "required": false
-            },
-            {
-              "id": "versjon",
-              "type": "locked",
-              "codebook": "versjon",
-              "text": {
-                "nb": "Versjon",
-                "en": "Version"
+                "nb": "Studienavnet ditt",
+                "en": "Your study name"
               },
               "required": false
             }
@@ -2235,12 +1960,7 @@
         "en": "This form is about Erlend’s case. Answer the first page with only the case on the screen. You answer the rest when you have seen the case with ATLAS. Criticism is as useful as praise. By sending the form, you consent to the anonymous answers being used in the research project."
       },
       "locked": [
-        "rolle",
-        "intervju",
-        "studienavn",
-        "steg",
-        "vignett",
-        "versjon"
+        "studienavn"
       ],
       "pages": [
         {
@@ -2450,62 +2170,12 @@
               "required": false
             },
             {
-              "id": "rolle",
-              "type": "locked",
-              "codebook": "rolle",
-              "text": {
-                "nb": "Rolle",
-                "en": "Role"
-              },
-              "required": false
-            },
-            {
-              "id": "intervju",
-              "type": "locked",
-              "codebook": "intervju",
-              "text": {
-                "nb": "Deltok du i et intervju i dette forskningsprosjektet?",
-                "en": "Did you take part in an interview in this research project?"
-              },
-              "required": false
-            },
-            {
               "id": "studienavn",
               "type": "locked",
               "codebook": "studienavn",
               "text": {
-                "nb": "Studienavn",
-                "en": "Study name"
-              },
-              "required": false
-            },
-            {
-              "id": "steg",
-              "type": "locked",
-              "codebook": "steg",
-              "text": {
-                "nb": "Steg",
-                "en": "Step"
-              },
-              "required": false
-            },
-            {
-              "id": "vignett",
-              "type": "locked",
-              "codebook": "vignett",
-              "text": {
-                "nb": "Vignett",
-                "en": "Vignette"
-              },
-              "required": false
-            },
-            {
-              "id": "versjon",
-              "type": "locked",
-              "codebook": "versjon",
-              "text": {
-                "nb": "Versjon",
-                "en": "Version"
+                "nb": "Studienavnet ditt",
+                "en": "Your study name"
               },
               "required": false
             }
@@ -2528,12 +2198,7 @@
         "en": "This form is about Astrid’s case. Answer the first page with only the case on the screen. You answer the rest when you have seen the case with ATLAS. Criticism is as useful as praise. By sending the form, you consent to the anonymous answers being used in the research project."
       },
       "locked": [
-        "rolle",
-        "intervju",
-        "studienavn",
-        "steg",
-        "vignett",
-        "versjon"
+        "studienavn"
       ],
       "pages": [
         {
@@ -2744,62 +2409,12 @@
               "required": false
             },
             {
-              "id": "rolle",
-              "type": "locked",
-              "codebook": "rolle",
-              "text": {
-                "nb": "Rolle",
-                "en": "Role"
-              },
-              "required": false
-            },
-            {
-              "id": "intervju",
-              "type": "locked",
-              "codebook": "intervju",
-              "text": {
-                "nb": "Deltok du i et intervju i dette forskningsprosjektet?",
-                "en": "Did you take part in an interview in this research project?"
-              },
-              "required": false
-            },
-            {
               "id": "studienavn",
               "type": "locked",
               "codebook": "studienavn",
               "text": {
-                "nb": "Studienavn",
-                "en": "Study name"
-              },
-              "required": false
-            },
-            {
-              "id": "steg",
-              "type": "locked",
-              "codebook": "steg",
-              "text": {
-                "nb": "Steg",
-                "en": "Step"
-              },
-              "required": false
-            },
-            {
-              "id": "vignett",
-              "type": "locked",
-              "codebook": "vignett",
-              "text": {
-                "nb": "Vignett",
-                "en": "Vignette"
-              },
-              "required": false
-            },
-            {
-              "id": "versjon",
-              "type": "locked",
-              "codebook": "versjon",
-              "text": {
-                "nb": "Versjon",
-                "en": "Version"
+                "nb": "Studienavnet ditt",
+                "en": "Your study name"
               },
               "required": false
             }
@@ -2822,12 +2437,7 @@
         "en": "This form is about Astrid’s case. Answer the first page with only the case on the screen. You answer the rest when you have seen the case with ATLAS. Criticism is as useful as praise. By sending the form, you consent to the anonymous answers being used in the research project."
       },
       "locked": [
-        "rolle",
-        "intervju",
-        "studienavn",
-        "steg",
-        "vignett",
-        "versjon"
+        "studienavn"
       ],
       "pages": [
         {
@@ -3068,62 +2678,12 @@
               "required": false
             },
             {
-              "id": "rolle",
-              "type": "locked",
-              "codebook": "rolle",
-              "text": {
-                "nb": "Rolle",
-                "en": "Role"
-              },
-              "required": false
-            },
-            {
-              "id": "intervju",
-              "type": "locked",
-              "codebook": "intervju",
-              "text": {
-                "nb": "Deltok du i et intervju i dette forskningsprosjektet?",
-                "en": "Did you take part in an interview in this research project?"
-              },
-              "required": false
-            },
-            {
               "id": "studienavn",
               "type": "locked",
               "codebook": "studienavn",
               "text": {
-                "nb": "Studienavn",
-                "en": "Study name"
-              },
-              "required": false
-            },
-            {
-              "id": "steg",
-              "type": "locked",
-              "codebook": "steg",
-              "text": {
-                "nb": "Steg",
-                "en": "Step"
-              },
-              "required": false
-            },
-            {
-              "id": "vignett",
-              "type": "locked",
-              "codebook": "vignett",
-              "text": {
-                "nb": "Vignett",
-                "en": "Vignette"
-              },
-              "required": false
-            },
-            {
-              "id": "versjon",
-              "type": "locked",
-              "codebook": "versjon",
-              "text": {
-                "nb": "Versjon",
-                "en": "Version"
+                "nb": "Studienavnet ditt",
+                "en": "Your study name"
               },
               "required": false
             }
@@ -3146,12 +2706,7 @@
         "en": "This form is about Torbjørn's case, an optional extra case. Criticism is as useful as praise. By sending the form, you consent to the anonymous answers being used in the research project."
       },
       "locked": [
-        "rolle",
-        "intervju",
-        "studienavn",
-        "steg",
-        "vignett",
-        "versjon"
+        "studienavn"
       ],
       "pages": [
         {
@@ -3199,62 +2754,12 @@
               "required": false
             },
             {
-              "id": "rolle",
-              "type": "locked",
-              "codebook": "rolle",
-              "text": {
-                "nb": "Rolle",
-                "en": "Role"
-              },
-              "required": false
-            },
-            {
-              "id": "intervju",
-              "type": "locked",
-              "codebook": "intervju",
-              "text": {
-                "nb": "Deltok du i et intervju i dette forskningsprosjektet?",
-                "en": "Did you take part in an interview in this research project?"
-              },
-              "required": false
-            },
-            {
               "id": "studienavn",
               "type": "locked",
               "codebook": "studienavn",
               "text": {
-                "nb": "Studienavn",
-                "en": "Study name"
-              },
-              "required": false
-            },
-            {
-              "id": "steg",
-              "type": "locked",
-              "codebook": "steg",
-              "text": {
-                "nb": "Steg",
-                "en": "Step"
-              },
-              "required": false
-            },
-            {
-              "id": "vignett",
-              "type": "locked",
-              "codebook": "vignett",
-              "text": {
-                "nb": "Vignett",
-                "en": "Vignette"
-              },
-              "required": false
-            },
-            {
-              "id": "versjon",
-              "type": "locked",
-              "codebook": "versjon",
-              "text": {
-                "nb": "Versjon",
-                "en": "Version"
+                "nb": "Studienavnet ditt",
+                "en": "Your study name"
               },
               "required": false
             }
@@ -3277,12 +2782,7 @@
         "en": "This form is about the view of two GPs and one patient, an optional extra case. Criticism is as useful as praise. By sending the form, you consent to the anonymous answers being used in the research project."
       },
       "locked": [
-        "rolle",
-        "intervju",
-        "studienavn",
-        "steg",
-        "vignett",
-        "versjon"
+        "studienavn"
       ],
       "pages": [
         {
@@ -3310,62 +2810,12 @@
               "privacyLine": true
             },
             {
-              "id": "rolle",
-              "type": "locked",
-              "codebook": "rolle",
-              "text": {
-                "nb": "Rolle",
-                "en": "Role"
-              },
-              "required": false
-            },
-            {
-              "id": "intervju",
-              "type": "locked",
-              "codebook": "intervju",
-              "text": {
-                "nb": "Deltok du i et intervju i dette forskningsprosjektet?",
-                "en": "Did you take part in an interview in this research project?"
-              },
-              "required": false
-            },
-            {
               "id": "studienavn",
               "type": "locked",
               "codebook": "studienavn",
               "text": {
-                "nb": "Studienavn",
-                "en": "Study name"
-              },
-              "required": false
-            },
-            {
-              "id": "steg",
-              "type": "locked",
-              "codebook": "steg",
-              "text": {
-                "nb": "Steg",
-                "en": "Step"
-              },
-              "required": false
-            },
-            {
-              "id": "vignett",
-              "type": "locked",
-              "codebook": "vignett",
-              "text": {
-                "nb": "Vignett",
-                "en": "Vignette"
-              },
-              "required": false
-            },
-            {
-              "id": "versjon",
-              "type": "locked",
-              "codebook": "versjon",
-              "text": {
-                "nb": "Versjon",
-                "en": "Version"
+                "nb": "Studienavnet ditt",
+                "en": "Your study name"
               },
               "required": false
             }
@@ -3388,11 +2838,9 @@
         "en": "This form is about the part of ATLAS you have just seen. It is voluntary and takes less than a minute. Criticism is as useful as praise. By sending the form, you consent to the anonymous answers being used in the research project."
       },
       "locked": [
-        "rolle",
         "studienavn",
         "side",
-        "seksjon",
-        "versjon"
+        "seksjon"
       ],
       "pages": [
         {
@@ -3475,22 +2923,12 @@
               "privacyLine": true
             },
             {
-              "id": "rolle",
-              "type": "locked",
-              "codebook": "rolle",
-              "text": {
-                "nb": "Rolle",
-                "en": "Role"
-              },
-              "required": false
-            },
-            {
               "id": "studienavn",
               "type": "locked",
               "codebook": "studienavn",
               "text": {
-                "nb": "Studienavn",
-                "en": "Study name"
+                "nb": "Studienavnet ditt",
+                "en": "Your study name"
               },
               "required": false
             },
@@ -3511,16 +2949,6 @@
               "text": {
                 "nb": "Seksjon",
                 "en": "Section"
-              },
-              "required": false
-            },
-            {
-              "id": "versjon",
-              "type": "locked",
-              "codebook": "versjon",
-              "text": {
-                "nb": "Versjon",
-                "en": "Version"
               },
               "required": false
             }
