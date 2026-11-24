@@ -274,7 +274,14 @@ async function editorFor(c) {
 
 const norm = (s) => String(s ?? '').replace(/\s+/g, ' ').replace(/<p>\s*<\/p>/g, '').trim();
 const plain = (s) =>
-  norm(String(s ?? '').replace(/<[^>]*>/g, ' ').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"').replace(/&#39;/g, "'").replace(/&amp;/g, '&'));
+  norm(
+    String(s ?? '')
+      .replace(/<[^>]*>/g, ' ')
+      // Nettskjema keeps some signs as numeric references («=» as &#61;), as it does in the receipt (3.8).
+      .replace(/&#(\d+);/g, (_, n) => String.fromCodePoint(Number(n)))
+      .replace(/&#x([0-9a-f]+);/gi, (_, h) => String.fromCodePoint(parseInt(h, 16)))
+      .replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"').replace(/&#39;/g, "'").replace(/&amp;/g, '&'),
+  );
 
 async function verifyForm(c, form, formId) {
   const want = formElements(form);
