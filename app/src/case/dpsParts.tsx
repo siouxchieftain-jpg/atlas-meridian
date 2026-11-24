@@ -502,6 +502,7 @@ export function AtlasPanelDps({
             reading={d.systemReading}
             readOnly={locked}
             notes={work.notes}
+            inCard={!!only}
           />
           {!only && <Divider />}
         </>

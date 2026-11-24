@@ -18,8 +18,8 @@
         "en": "ATLAS, at the top."
       },
       "do": {
-        "nb": "Velg hvor saken ligger under «Plasser saken». Systemets vurdering vises etter det.",
-        "en": "Choose where the case lies under ‘Place the case’. The system’s assessment appears after that."
+        "nb": "Plasser saken på skalaen.",
+        "en": "Place the case on the scale."
       },
       "lookFor": {
         "nb": "Din egen plassering og systemets vurdering, på samme skala fra «Klart utenfor» til «Klart innenfor».",
@@ -118,6 +118,10 @@
       "tellUs": {
         "nb": "Uklart eller i veien? «Gi tilbakemelding», del 4.",
         "en": "Unclear or in the way? ‘Give feedback’, part 4."
+      },
+      "box": {
+        "nb": "Hvor sikker nå",
+        "en": "How sure now"
       }
     },
     {
@@ -284,8 +288,8 @@
         "en": "ATLAS, at the top."
       },
       "do": {
-        "nb": "Velg hvor saken ligger under «Plasser saken». Fastlegens markør og systemets vurdering vises etter det.",
-        "en": "Choose where the case lies under ‘Place the case’. The GP’s marker and the system’s assessment appear after that."
+        "nb": "Plasser saken på skalaen.",
+        "en": "Place the case on the scale."
       },
       "lookFor": {
         "nb": "Tre markører på én skala: din, fastlegens og systemets vurdering.",
@@ -334,8 +338,8 @@
       "tour": "dps-vurdering",
       "seksjon": "vurdering",
       "part": {
-        "nb": "Vurdering",
-        "en": "Assessment"
+        "nb": "Din vurdering",
+        "en": "Your assessment"
       },
       "where": {
         "nb": "Nederst i ATLAS.",

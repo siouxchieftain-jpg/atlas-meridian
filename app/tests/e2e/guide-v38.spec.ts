@@ -15,7 +15,10 @@ test('3.8: the stop card carries the «Trykk her» mark; the checklist under the
   await expect(page.locator('[data-next-mark]')).toHaveCount(1);
   await page.getByRole('button', { name: 'Start saken' }).click();
   // Before «Vis ATLAS», the locked ATLAS card stands where ATLAS will open.
-  await expect(page.locator('[data-atlas-card="locked"]')).toContainText('Her vises ATLAS etter at du har svart på side 1.');
+  const locked = page.locator('[data-atlas-card="locked"]');
+  await expect(locked).toContainText('ATLAS åpner her når du har svart på side 1 i skjemaet.');
+  // Locked, the card names nothing of what ATLAS shows (review R1).
+  await expect(locked).not.toContainText('Viser usikkerhet');
   await toStopPage(page);
   const stop = panel(page).locator('[data-next-step="show-atlas"]');
   await expect(stop.locator('[data-next-mark]')).toContainText('Trykk her');
@@ -30,7 +33,7 @@ test('3.8: the stop card carries the «Trykk her» mark; the checklist under the
   // ATLAS arrives as its own card: «Med ATLAS», «ATLAS er på», its heading focused.
   const card = page.locator('[data-atlas-card="on"]');
   await expect(card).toContainText('Med ATLAS');
-  await expect(card).toContainText('ATLAS er på');
+  await expect(card).toContainText('ATLAS er nå på for denne saken.');
   await expect(card.getByRole('heading', { level: 2, name: 'ATLAS' })).toBeFocused();
   await expect(page.locator('[data-guide-step][data-done]')).toHaveCount(0);
   await place(page, 3);
@@ -43,6 +46,13 @@ test('3.8: the stop card carries the «Trykk her» mark; the checklist under the
   await next.click();
   await expect(part(2)).toBeVisible();
   await expect(part(1)).toBeHidden();
+  // Focus moves to the new part's heading, and the boxes come back into view (review R2, R3).
+  await expect(part(2).getByRole('heading', { name: 'Hva er uklart i saken?' })).toBeFocused();
+  await expect(box(2)).toBeInViewport();
+  await expect(box(2)).toHaveAttribute('aria-current', 'step');
+  // A box never closes its part (review R10).
+  await box(2).click();
+  await expect(part(2)).toBeVisible();
   // A box can be opened directly.
   await box(4).click();
   await page.getByLabel('Middels', { exact: true }).check({ force: true });
@@ -55,6 +65,9 @@ test('3.8: the stop card carries the «Trykk her» mark; the checklist under the
   await expect(box(5)).toHaveAttribute('data-done', '');
   await expect(part(5).locator('[data-next-mark]').getByRole('button', { name: /Skriv henvisningen/ })).toBeVisible();
   await expect(page.getByText(/^\d av \d gjort$/)).toBeVisible();
+  // The task line says what comes next once the decision is saved (review R8); the title's «Gjenstår» gives way.
+  await expect(page.locator('[data-task-parts]')).toContainText('Neste: skriv og send henvisningen.');
+  await expect(page.locator('[data-case-remaining]')).toBeHidden();
   // «Vis alle delene» shows every part at once, and the choice holds.
   await page.getByRole('button', { name: 'Vis alle delene' }).click();
   for (const n of [1, 2, 3, 4, 5]) await expect(part(n)).toBeVisible();

@@ -281,7 +281,19 @@ export function GpReferral({ caseId }: { caseId: CaseId }) {
       />
       {/* Notices sit under the title (G-16). */}
       <CaseModeBar caseId={caseId} />
-      <AtlasTaskBar caseId={caseId} modules={modules} summaries={summaries} />
+      <AtlasTaskBar caseId={caseId} modules={modules} summaries={summaries}
+        finalStep={{
+          label: s('taskNextWrite'),
+          onClick: () => {
+            setTab('draft');
+            window.requestAnimationFrame(() => {
+              const field = document.querySelector<HTMLTextAreaElement>('[data-referral-draft] textarea');
+              field?.scrollIntoView({ block: 'center', behavior: 'smooth' });
+              field?.focus({ preventScroll: true });
+            });
+          },
+        }}
+      />
       {caseId === 'erlend' && (
         <TabList selectedValue={tab} onTabSelect={(_, d) => setTab(d.value as 'draft' | 'record')}>
           <Tab value="draft">{s('newReferral')}</Tab>
@@ -306,7 +318,9 @@ export function GpReferral({ caseId }: { caseId: CaseId }) {
         <Workspace caseId={caseId} />
       ) : (
         <Panel aria-label={s('newReferral')}>
-          <ReferralEditor caseId={caseId} second={second} />
+          <div data-referral-draft="">
+            <ReferralEditor caseId={caseId} second={second} />
+          </div>
         </Panel>
       )}
     </CaseLayout>

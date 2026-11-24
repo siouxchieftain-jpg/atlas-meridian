@@ -94,6 +94,7 @@ export function BandSection({
   readOnly,
   notes,
   headingLevel = 3,
+  inCard,
 }: {
   viewer: Role;
   own?: number;
@@ -104,6 +105,8 @@ export function BandSection({
   readOnly?: boolean;
   notes?: boolean;
   headingLevel?: 2 | 3;
+  /** In the ATLAS card (3.8): the card carries the caption, and the rule line says the rest; no field hint. */
+  inCard?: boolean;
 }) {
   const cls = useStyles();
   const { s } = useLang();
@@ -149,10 +152,11 @@ export function BandSection({
         other={showOther ? other : undefined}
         system={showSystem ? reading!.placement : undefined}
         legend
+        noCaption={inCard}
         sentence={sentence}
         onTrackClick={!readOnly && onPlace ? (f) => onPlace(snapFraction(f)) : undefined}
       />
-      {!readOnly && onPlace && <PlacementControl value={own} onChange={onPlace} hint={placed ? undefined : s('bandPlaceHint')} />}
+      {!readOnly && onPlace && <PlacementControl value={own} onChange={onPlace} hint={placed || inCard ? undefined : s('bandPlaceHint')} />}
       <DesignNote id={viewer === 'gp' ? 'band' : 'dps-band'} show={!!notes} />
       {showSystem && <ReadingBlock reading={reading!} notes={notes} />}
     </section>

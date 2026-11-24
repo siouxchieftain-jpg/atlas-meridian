@@ -397,7 +397,7 @@
   },
   "guideTitle": {
     "nb": "Informasjonsguiden",
-    "en": "Information completeness guide"
+    "en": "Information guide"
   },
   "guideCount": {
     "nb": "{{n}} av 5 kriterier omtalt",
@@ -4324,12 +4324,12 @@
     "en": "The reply from the GP is shown once you have sent the rest of the form."
   },
   "bandWhoGp": {
-    "nb": "Hvor ligger saken mellom klart utenfor og klart innenfor kriteriene i prioriteringsveilederen? Du plasserer den selv. Systemets vurdering vises etterpå.",
-    "en": "Where does the case lie between clearly outside and clearly within the priority guideline's criteria? You place it yourself. The system's assessment appears afterwards."
+    "nb": "Du plasserer saken selv. Systemets vurdering vises etterpå.",
+    "en": "You place the case yourself. The system's assessment appears afterwards."
   },
   "bandWhoDps": {
-    "nb": "Du plasserer saken selv. Fastlegens plassering og systemets vurdering vises etter at du har plassert den.",
-    "en": "You place the case yourself. The GP's placement and the system's assessment appear after you have placed it."
+    "nb": "Du plasserer saken selv. Fastlegens plassering og systemets vurdering vises etterpå.",
+    "en": "You place the case yourself. The GP's placement and the system's assessment appear afterwards."
   },
   "guideInfoOnly": {
     "nb": "Kun til informasjon",
@@ -4368,8 +4368,8 @@
     "en": "‘Next’"
   },
   "guideAllDone": {
-    "nb": "Alt på denne siden er gjort.",
-    "en": "Everything on this page is done."
+    "nb": "Alle delene er gjort.",
+    "en": "All parts are done."
   },
   "taskShowAll": {
     "nb": "Vis alle delene",
@@ -4400,7 +4400,43 @@
     "en": "You have finished the case. Press ‘Next’ for the rest of the form."
   },
   "atlasOnNow": {
-    "nb": "ATLAS er på. Delene ligger i boksene nedenfor.",
-    "en": "ATLAS is on. Its parts are in the boxes below."
+    "nb": "ATLAS er nå på for denne saken.",
+    "en": "ATLAS is now on for this case."
+  },
+  "bandChoose": {
+    "nb": "Velg plassering",
+    "en": "Choose a position"
+  },
+  "taskNow": {
+    "nb": "Nå",
+    "en": "Now"
+  },
+  "taskNext": {
+    "nb": "Neste",
+    "en": "Next"
+  },
+  "taskNextWrite": {
+    "nb": "Neste: Skriv henvisningen",
+    "en": "Next: Write the referral"
+  },
+  "nextWriteReferral": {
+    "nb": "skriv og send henvisningen",
+    "en": "write and send the referral"
+  },
+  "lockedLead": {
+    "nb": "ATLAS åpner her når du har svart på side 1 i skjemaet.",
+    "en": "ATLAS opens here once you have answered page 1 of the form."
+  },
+  "lockedThinkGp": {
+    "nb": "Tenk gjennom hva du ville gjort med saken ut fra det du ser her.",
+    "en": "Think through what you would do with the case from what you see here."
+  },
+  "lockedThinkDps": {
+    "nb": "Tenk gjennom hvilket utfall du ville valgt ut fra det du ser her.",
+    "en": "Think through which outcome you would choose from what you see here."
+  },
+  "lockedThinkDpsAstrid": {
+    "nb": "Tenk gjennom hvordan du ville svart fastlegen ut fra det du ser her.",
+    "en": "Think through how you would answer the GP from what you see here."
   }
 }

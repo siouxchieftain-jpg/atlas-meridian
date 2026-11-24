@@ -18,7 +18,9 @@ import { useFormHostOptional } from '../study/formHost';
 import { DesignNote, useSelectedToggle } from '../patterns/basics';
 import { Silent } from '../patterns/announce';
 import { AtlasPanelHead } from './CaseLayout';
-import { GuideTaskStrip } from '../guide/GuideLayer';
+import { GuideTaskStrip, TaskParts } from '../guide/GuideLayer';
+import { remainingKey } from './Scenario';
+import { useCaseStatus } from './useCaseStatus';
 import { AtlasCard, clearArrival, hasArrival, markLockedSeen } from '../patterns/AtlasCard';
 
 const useStyles = makeStyles({
@@ -119,9 +121,9 @@ export function CaseModeBar({ caseId }: { caseId: CaseId }) {
       <Silent>
         <LockedSeen caseId={caseId} />
         <AtlasCard on={false} locked>
-          <p className={cls.lockedLead}>{s('placeholderHidden')}</p>
+          <p className={cls.lockedLead}>{s('lockedLead')}</p>
           <p className={cls.lockedLine}>
-            {work.viewer === 'gp' ? s('caseOnlyLine') : caseId === 'astrid' ? s('caseOnlyLineDpsAstrid') : s('caseOnlyLineDps')}
+            {work.viewer === 'gp' ? s('lockedThinkGp') : caseId === 'astrid' ? s('lockedThinkDpsAstrid') : s('lockedThinkDps')}
           </p>
           {!can && !panelShows && (
             <p className={cls.lockedLine} id={reasonId}>
@@ -177,10 +179,22 @@ function LockedSeen({ caseId }: { caseId: CaseId }) {
 }
 
 /** The line that brings the ATLAS part of the task, shown once ATLAS is open (study). */
-export function AtlasTaskBar({ caseId, modules, summaries }: { caseId: CaseId; modules?: Partial<Record<number, ReactNode>>; summaries?: Partial<Record<number, string>> }) {
+export function AtlasTaskBar({
+  caseId,
+  modules,
+  summaries,
+  finalStep,
+}: {
+  caseId: CaseId;
+  modules?: Partial<Record<number, ReactNode>>;
+  summaries?: Partial<Record<number, string>>;
+  /** After the last part, where the work goes on (the referral page: «Neste: Skriv henvisningen»). */
+  finalStep?: { label: string; onClick: () => void };
+}) {
   const { s, t } = useLang();
   const work = useWork();
   const host = useFormHostOptional();
+  const status = useCaseStatus(caseId);
   // With the ATLAS parts in the boxes (3.8), the task card stays after the decision: ATLAS lives there now.
   const phase = work.mode === 'study' ? work.phase(caseId) : undefined;
   const shown = work.mode === 'study' && (modules ? phase !== 'briefing' && phase !== 'uten' : phase === 'atlas');
@@ -190,7 +204,7 @@ export function AtlasTaskBar({ caseId, modules, summaries }: { caseId: CaseId; m
   useEffect(() => {
     if (shown && arrive.current) clearArrival(caseId);
   }, [shown, caseId]);
-  if (!shown) return null;
+  if (!shown || !phase) return null;
   const c = cases[caseId];
   const task = work.viewer === 'gp' ? c.gp.atlasTask : c.dps?.atlasTask;
   if (!task) return null;
@@ -198,22 +212,39 @@ export function AtlasTaskBar({ caseId, modules, summaries }: { caseId: CaseId; m
   const view = currentPath().split('/')[4];
   // «Se deg rundt» has no form to hold.
   const held = !browseFlag() && host?.form?.caseId === caseId && host.form.stage === 'held';
+  const note = held ? (
+    <p style={{ margin: 0 }} data-form-held="">
+      {s('formRestLater')}.
+    </p>
+  ) : undefined;
+  if (!modules)
+    return (
+      <Silent>
+        <GuideTaskStrip role={work.viewer} view={view} task={t(task)} note={note} />
+      </Silent>
+    );
+  // Once every part is done, the task line says what comes next on the page (review R8).
+  const gp = work.gp(caseId);
+  const key = remainingKey(caseId, work.viewer, phase, status);
+  const next =
+    work.viewer === 'gp' && phase === 'atlas' && view === 'konsultasjon' && gp.decisionSaved && gp.decision === 'henvis'
+      ? s('nextWriteReferral')
+      : key
+        ? s(key)
+        : undefined;
   return (
     <Silent>
-      <GuideTaskStrip
+      <TaskParts
+        caseId={caseId}
         role={work.viewer}
         view={view}
         task={t(task)}
         modules={modules}
         summaries={summaries}
         arrive={!!arrive.current}
-        note={
-          held ? (
-            <p style={{ margin: 0 }} data-form-held="">
-              {s('formRestLater')}.
-            </p>
-          ) : undefined
-        }
+        doneTask={next ? `${s('taskNext')}: ${next}.` : undefined}
+        finalStep={finalStep}
+        note={note}
       />
     </Silent>
   );

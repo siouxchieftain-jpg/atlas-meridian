@@ -71,7 +71,6 @@ const useStyles = makeStyles({
   },
   titleLocked: { color: tokens.colorNeutralForeground3 },
   caption: { ...typographyStyles.caption1Strong, color: tokens.colorBrandForeground1 },
-  captionLocked: { color: tokens.colorNeutralForeground3 },
   pill: {
     marginInlineStart: 'auto',
     display: 'inline-flex',
@@ -92,6 +91,7 @@ export function AtlasCard({
   arrive,
   children,
   locked,
+  arriveLine,
 }: {
   /** ATLAS is open on this case. */
   on: boolean;
@@ -100,6 +100,8 @@ export function AtlasCard({
   children?: ReactNode;
   /** Data attribute for the locked card (tests, review notes). */
   locked?: boolean;
+  /** «ATLAS er nå på for denne saken.», until the participant starts on the parts (review R14). */
+  arriveLine?: boolean;
 }) {
   const cls = useStyles();
   const { s, t } = useLang();
@@ -128,13 +130,14 @@ export function AtlasCard({
         <h2 className={mergeClasses(cls.title, !on && cls.titleLocked)} id={headId} ref={headRef} tabIndex={-1}>
           ATLAS
         </h2>
-        <span className={mergeClasses(cls.caption, !on && cls.captionLocked)}>{t(vocab.band.caption)}</span>
+        {/* Locked, the card names nothing of what ATLAS shows (review R1). */}
+        {on && <span className={cls.caption}>{t(vocab.band.caption)}</span>}
         <span className={mergeClasses(cls.pill, !on && cls.pillLocked)}>
           {on ? <Eye16Regular aria-hidden="true" /> : <LockClosed16Regular aria-hidden="true" />}
           {on ? s('medAtlas') : s('utenAtlas')}
         </span>
       </div>
-      {arrive && <p className={cls.arrived}>{s('atlasOnNow')}</p>}
+      {arriveLine && <p className={cls.arrived}>{s('atlasOnNow')}</p>}
       {children}
     </section>
   );

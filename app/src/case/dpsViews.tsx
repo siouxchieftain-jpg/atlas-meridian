@@ -242,6 +242,8 @@ export function DpsAssessment({ caseId }: { caseId: CaseId }) {
   const inTask = work.mode === 'study' && !without && caseId !== 'astrid';
   const modules = inTask
     ? {
+        // What the GP was unsure about comes with ATLAS, so it is ATLAS's first part, in the card (review R5).
+        1: <GpUnsureBlock received={received} />,
         ...(d.systemReading ? { 2: <AtlasPanelDps caseId={caseId} received={received} onSent={onSent} withOutcome only="band" /> } : {}),
         3: <AtlasPanelDps caseId={caseId} received={received} onSent={onSent} withOutcome only="guide" />,
         4: <AtlasPanelDps caseId={caseId} received={received} onSent={onSent} withOutcome only="vurdering" />,
@@ -292,14 +294,14 @@ export function DpsAssessment({ caseId }: { caseId: CaseId }) {
               {t(d.ownRecordLine)}
             </p>
           )}
-          <div ref={pairRef} className={mergeClasses(cls.twoUp, !without && pairWidth >= 1200 && cls.twoUpWide)} data-two-up={!without && pairWidth >= 1200 ? '' : undefined}>
+          <div ref={pairRef} className={mergeClasses(cls.twoUp, !without && !inTask && pairWidth >= 1200 && cls.twoUpWide)} data-two-up={!without && !inTask && pairWidth >= 1200 ? '' : undefined}>
             <Panel aria-label={s('referralAsSent')}>
               <div className={cls.stack}>
                 <h2 className={cls.h2}>{without ? s('referralLetter') : s('referralAsSent')}</h2>
                 <ReferralLetter caseId={caseId} received={received} letterFrame={without} />
               </div>
             </Panel>
-            {!without && <GpUnsureBlock received={received} />}
+            {!without && !inTask && <GpUnsureBlock received={received} />}
           </div>
           {dps.sent && !work.held(caseId) && (
             <Actions>

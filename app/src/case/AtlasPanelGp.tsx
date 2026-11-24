@@ -169,6 +169,7 @@ export function AtlasPanelGp({ caseId, variant, only }: { caseId: CaseId; varian
         reading={content.gp.systemReading}
         readOnly={locked}
         notes={work.notes}
+        inCard={!!only}
       />}
       {div}
       {show('tags') && <div data-section="tags" data-section-done={gp.tags.length > 0 || !!gp.description?.trim() ? '' : undefined}>

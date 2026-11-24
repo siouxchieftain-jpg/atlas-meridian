@@ -24,6 +24,8 @@ export interface BandProps {
   onTrackClick?: (fraction: number) => void;
   /** Smaller vertical spacing. */
   compact?: boolean;
+  /** Leave out «Viser usikkerhet, anbefaler ikke» when the surrounding card already says it (3.8). */
+  noCaption?: boolean;
   className?: string;
 }
 
@@ -124,7 +126,7 @@ function Marker({ value, kind, cls }: { value: number; kind: 'own' | 'other' | '
   );
 }
 
-export function UncertaintyBand({ own, other, system, sentence, legend, onTrackClick, compact, className }: BandProps) {
+export function UncertaintyBand({ own, other, system, sentence, legend, onTrackClick, compact, className, noCaption }: BandProps) {
   const cls = useStyles();
   const { t } = useLang();
   const descId = useId();
@@ -202,7 +204,7 @@ export function UncertaintyBand({ own, other, system, sentence, legend, onTrackC
           {sentence}
         </div>
       )}
-      <div className={cls.caption}>{t(vocab.band.caption)}</div>
+      {!noCaption && <div className={cls.caption}>{t(vocab.band.caption)}</div>}
     </div>
   );
 }
