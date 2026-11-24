@@ -10,7 +10,7 @@ import { useWork } from '../state/work';
 import { DesignNote, Panel, ProvenanceChip } from '../patterns/basics';
 import { InfoGuide, PlainLetter } from '../patterns/clinical';
 import { Actions, Body } from '../patterns/layout';
-import { AtlasPanelGp, Responsibility } from './AtlasPanelGp';
+import { AtlasPanelGp, AtlasPartGp, Responsibility } from './AtlasPanelGp';
 import { CompactBand } from './BandSection';
 import { AtlasPanelHead, CaseLayout } from './CaseLayout';
 import { AtlasPlaceholder, AtlasTaskBar, CaseModeBar, OtherSideButton } from './CaseChrome';
@@ -170,13 +170,26 @@ export function GpConsultation({ caseId }: { caseId: CaseId }) {
   const gp = work.gp(caseId);
   const without = work.withoutAtlas(caseId);
   // Study: the case-only bar carries the placeholder, so the form panel can sit inline beside the case.
+  // Mock (3.8): in the study, the ATLAS parts move into the boxes under «Oppgaven din»; no side panel.
+  const inTask = work.mode === 'study' && !without && caseId !== 'astrid';
   const side = without
     ? work.mode === 'review'
       ? <AtlasPlaceholder caseId={caseId} />
       : undefined
     : caseId === 'astrid'
       ? <AstridSide />
-      : <AtlasPanelGp caseId={caseId} variant="consult" />;
+      : inTask
+        ? undefined
+        : <AtlasPanelGp caseId={caseId} variant="consult" />;
+  const modules = inTask
+    ? {
+        1: <AtlasPartGp caseId={caseId} part="band" />,
+        2: <AtlasPartGp caseId={caseId} part="tags" />,
+        3: <AtlasPartGp caseId={caseId} part="guide" />,
+        4: <AtlasPartGp caseId={caseId} part="confidence" />,
+        ...(caseId !== 'erlend' ? { 5: <AtlasPartGp caseId={caseId} part="decision" /> } : {}),
+      }
+    : undefined;
   const compact = !without && c.gp.systemReading ? <CompactBand own={gp.placement} reading={c.gp.systemReading} /> : undefined;
   return (
     <CaseLayout side={side} compactSummary={compact}>
@@ -188,7 +201,7 @@ export function GpConsultation({ caseId }: { caseId: CaseId }) {
       />
       {/* Notices sit under the title (G-16). */}
       <CaseModeBar caseId={caseId} />
-      <AtlasTaskBar caseId={caseId} />
+      <AtlasTaskBar caseId={caseId} modules={modules} />
       {caseId === 'erlend' && without && c.gp.caseOnlyLetter && (
         <Panel aria-label={s('previousRefusalLetter')}>
           <PlainLetter letter={c.gp.caseOnlyLetter} source="dps" />

@@ -4366,5 +4366,9 @@
   "formNextPreview": {
     "nb": "«Neste»",
     "en": "‘Next’"
+  },
+  "guideAllDone": {
+    "nb": "Alt på denne siden er gjort.",
+    "en": "Everything on this page is done."
   }
 }

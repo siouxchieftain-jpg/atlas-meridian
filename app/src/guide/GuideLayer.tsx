@@ -1,6 +1,6 @@
 import { Button, Popover, PopoverSurface, PopoverTrigger, makeStyles, mergeClasses, shorthands, tokens, typographyStyles } from '@fluentui/react-components';
 import { Checkmark16Filled, Checkmark16Regular, Dismiss16Regular } from '@fluentui/react-icons';
-import { useEffect, useState, useSyncExternalStore, type ReactNode } from 'react';
+import { useEffect, useRef, useState, useSyncExternalStore, type ReactNode } from 'react';
 import { createPortal } from 'react-dom';
 import guideData from '../content/guide.json';
 import { useLang } from '../i18n/i18n';
@@ -188,6 +188,27 @@ const useStyles = makeStyles({
     color: '#FFFFFF',
   },
   boxText: { minWidth: 0 },
+  boxOpen: {
+    ...shorthands.borderColor(guide.coral),
+    boxShadow: `0 0 0 1px ${guide.coral}`,
+    backgroundColor: tokens.colorNeutralBackground1,
+  },
+  modules: { display: 'flex', flexDirection: 'column', gap: tokens.spacingVerticalS },
+  atlasTag: { display: 'flex', alignItems: 'center', gap: '8px', ...typographyStyles.caption1Strong, color: tokens.colorBrandForeground1 },
+  module: {
+    borderRadius: tokens.borderRadiusLarge,
+    border: `1px solid ${tokens.colorNeutralStroke2}`,
+    backgroundColor: tokens.colorNeutralBackground1,
+    padding: '14px 16px 16px',
+    display: 'flex',
+    flexDirection: 'column',
+    gap: tokens.spacingVerticalM,
+    boxShadow: tokens.shadow2,
+  },
+  moduleHead: { display: 'flex', alignItems: 'flex-start', gap: '10px' },
+  moduleDo: { ...typographyStyles.body1, margin: 0, color: tokens.colorNeutralForeground2 },
+  moduleFoot: { display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: tokens.spacingHorizontalS, justifyContent: 'space-between' },
+  allDone: { ...typographyStyles.body1Strong, display: 'flex', alignItems: 'center', gap: '8px', color: tokens.colorPaletteGreenForeground1, margin: 0 },
   progress: { ...typographyStyles.caption1, color: tokens.colorNeutralForeground2 },
 });
 
@@ -304,7 +325,7 @@ export function GuideLayer({ role, view }: { role: 'gp' | 'dps'; view: string | 
       const columns = new Map<HTMLElement, number>();
       for (const { m, el } of found) if (m.place !== 'corner' && el.parentElement) columns.set(el.parentElement, (columns.get(el.parentElement) ?? 0) + 1);
       for (const { m, el } of found) {
-        if (m.place === 'corner') continue;
+        if (m.place === 'corner' || el.closest('[data-task-modules]')) continue;
         const many = el.parentElement && (columns.get(el.parentElement) ?? 0) >= 2;
         const row = many ? Array.from(el.parentElement!.children).filter((c): c is HTMLElement => c instanceof HTMLElement && c.hasAttribute('data-section')) : [el];
         for (const part of row) {
@@ -313,7 +334,9 @@ export function GuideLayer({ role, view }: { role: 'gp' | 'dps'; view: string | 
           part.style.paddingLeft = `${parseFloat(getComputedStyle(part).paddingLeft) + 36}px`;
         }
       }
-      setHosts((prev) => (prev.length === found.length && prev.every((p, i) => p.el === found[i].el) ? prev : found));
+      // Parts that live in the task boxes carry their number on the box, not a pin (3.8 mock).
+      const pinned = found.filter((f) => !f.el.closest('[data-task-modules]'));
+      setHosts((prev) => (prev.length === pinned.length && prev.every((p, i) => p.el === pinned[i].el) ? prev : pinned));
       const present = found.map((f) => f.m.n);
       if (present.join() !== state.present.join()) set({ present });
       // Parts to act on say when they are done (3.8).
@@ -386,12 +409,45 @@ export function GuideLayer({ role, view }: { role: 'gp' | 'dps'; view: string | 
 /** The task line on a case page, with the page's markers as numbered steps that tick off. */
 const TASKS: Record<string, Text> = (guideData as unknown as { tasks: Record<string, Text> }).tasks ?? {};
 
-export function GuideTaskStrip({ role, view, task, note }: { role: 'gp' | 'dps'; view: string | undefined; task: string; note?: ReactNode }) {
+export function GuideTaskStrip({
+  role,
+  view,
+  task,
+  note,
+  modules,
+  atlasLabel,
+}: {
+  role: 'gp' | 'dps';
+  view: string | undefined;
+  task: string;
+  note?: ReactNode;
+  /** Mock (3.8): the ATLAS part each box opens in place, keyed by marker number. */
+  modules?: Partial<Record<number, ReactNode>>;
+  atlasLabel?: ReactNode;
+}) {
   const cls = useStyles();
   const { s, t } = useLang();
   const st = useGuideState();
-  const markers = markersFor(role, view).filter((m) => st.present.includes(m.n));
+  const all = markersFor(role, view);
+  // With modules, the parts live in the boxes, so every box is listed even before its part is found.
+  const markers = modules ? all.filter((m) => modules[m.n] || st.present.includes(m.n)) : all.filter((m) => st.present.includes(m.n));
   const doneCount = markers.filter((m) => isDone(st, m.n)).length;
+  const firstOpen = markers.find((m) => modules?.[m.n] && !isDone(st, m.n))?.n ?? null;
+  const [active, setActive] = useState<number | null>(firstOpen);
+  // When the open part is done, its box ticks, and after a moment the next part opens (3.8 mock).
+  const wasDone = useRef<Record<number, boolean>>({});
+  useEffect(() => {
+    if (!modules) return;
+    for (const m of markers) {
+      const d = isDone(st, m.n);
+      if (d && !wasDone.current[m.n] && m.n === active) {
+        // The last part stays open: its own next step (for example «Skriv henvisning») sits inside it.
+        const next = markers.find((x) => modules[x.n] && !isDone(st, x.n))?.n;
+        if (next !== undefined) window.setTimeout(() => setActive(next), 900);
+      }
+      wasDone.current[m.n] = d;
+    }
+  });
   return (
     <section className={cls.strip} aria-label={s('guideTask')}>
       <span className={cls.eyebrow}>{s('guideTask')}</span>
@@ -403,14 +459,21 @@ export function GuideTaskStrip({ role, view, task, note }: { role: 'gp' | 'dps';
           <ol className={cls.checklist} aria-label={s('guideStepsHere')}>
             {markers.map((m) => {
               const done = isDone(st, m.n);
+              const isOpen = !!modules && m.n === active;
               return (
                 <li key={m.n}>
                   <button
                     type="button"
-                    className={mergeClasses(cls.box, done && cls.boxDone)}
+                    className={mergeClasses(cls.box, done && cls.boxDone, isOpen && cls.boxOpen)}
                     data-guide-step={m.n}
                     data-done={done ? '' : undefined}
+                    aria-expanded={modules?.[m.n] ? isOpen : undefined}
+                    aria-controls={modules?.[m.n] ? `task-part-${m.n}` : undefined}
                     onClick={() => {
+                      if (modules?.[m.n]) {
+                        setActive(isOpen ? null : m.n);
+                        return;
+                      }
                       document.querySelector<HTMLElement>(`[data-guide-pin="${m.n}"]`)?.scrollIntoView({ block: 'center', behavior: 'smooth' });
                       set({ open: m.n });
                     }}
@@ -428,6 +491,32 @@ export function GuideTaskStrip({ role, view, task, note }: { role: 'gp' | 'dps';
           <span className={cls.progress} aria-live="polite">
             {s('guideProgress', { n: doneCount, total: markers.length })}
           </span>
+          {modules && (
+            <div className={cls.modules} data-task-modules="">
+              {doneCount === markers.length && (
+                <p className={cls.allDone} role="status">
+                  <Checkmark16Filled /> {s('guideAllDone')}
+                </p>
+              )}
+              {/* Every part stays in the page, so each can tick itself; only the open one shows. */}
+              {markers.map((m) =>
+                modules[m.n] ? (
+                  <div key={m.n} id={`task-part-${m.n}`} className={cls.module} hidden={m.n !== active} role="region" aria-label={t(m.part)}>
+                    <div className={cls.moduleHead}>
+                      <span className={cls.num} aria-hidden="true">
+                        {isDone(st, m.n) ? <Checkmark16Filled /> : m.n}
+                      </span>
+                      <div style={{ flex: 1, minWidth: 0 }}>
+                        {atlasLabel && <span className={cls.atlasTag}>{atlasLabel}</span>}
+                        <p className={cls.moduleDo}>{t(m.do)}</p>
+                      </div>
+                    </div>
+                    {modules[m.n]}
+                  </div>
+                ) : null,
+              )}
+            </div>
+          )}
         </>
       )}
     </section>

@@ -11,9 +11,9 @@ import {
   typographyStyles,
 } from '@fluentui/react-components';
 import { ArrowSwap20Regular, Eye20Regular, EyeOff20Regular } from '@fluentui/react-icons';
-import { useId } from 'react';
+import { useId, type ReactNode } from 'react';
 import type { CaseId, CoreCaseId } from '../content/types';
-import { cases } from '../content';
+import { cases, vocab } from '../content';
 import { useLang } from '../i18n/i18n';
 import { currentPath, navigate } from '../router/router';
 import { browseFlag } from '../state/persist';
@@ -172,7 +172,7 @@ export function CaseModeBar({ caseId }: { caseId: CaseId }) {
 }
 
 /** The line that brings the ATLAS part of the task, shown once ATLAS is open (study). */
-export function AtlasTaskBar({ caseId }: { caseId: CaseId }) {
+export function AtlasTaskBar({ caseId, modules }: { caseId: CaseId; modules?: Partial<Record<number, ReactNode>> }) {
   const { s, t } = useLang();
   const work = useWork();
   const host = useFormHostOptional();
@@ -190,6 +190,8 @@ export function AtlasTaskBar({ caseId }: { caseId: CaseId }) {
         role={work.viewer}
         view={view}
         task={t(task)}
+        modules={modules}
+        atlasLabel={modules ? `${s('atlasPanel')} · ${t(vocab.band.caption)}` : undefined}
         note={
           held ? (
             <p style={{ margin: 0 }} data-form-held="">
