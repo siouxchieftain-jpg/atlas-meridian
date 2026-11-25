@@ -20,16 +20,18 @@ export interface MockOptions {
   missing?: string[];
   /** The pilot round: the study forms come from «pilotForms» (addresses /a/pilot-<key>). */
   round?: 'pilot' | 'study';
+  /** Form keys drawn as tall as the merged closing form in the panel (about 10,500 px; 3.8.2, F135). */
+  tall?: string[];
   /** The study period (ISO dates). */
   opens?: string;
   closes?: string;
 }
 
-function mockHtml(key: string, failOnce: boolean): string {
+function mockHtml(key: string, failOnce: boolean, tall = false): string {
   const pages = THREE_PAGES.has(key.replace(/^pilot-/, '')) ? 3 : 1;
   return `<!doctype html><html lang="nb"><head><meta charset="utf-8"><title>Mock ${key}</title>
 <style>body{font:14px/20px sans-serif;margin:16px}button{margin:8px 8px 0 0;padding:6px 12px}</style></head>
-<body><h1>Mock Nettskjema ${key}</h1><p id="page"></p><p id="fields"></p><div id="body"></div>
+<body><h1>Mock Nettskjema ${key}</h1><p id="page"></p><p id="fields"></p><div id="body"></div>${tall ? '<div id="tall" style="height:10400px"></div>' : ''}
 <button id="back" type="button">Tilbake</button><button id="next" type="button">Neste</button><button id="send" type="button">Send</button>
 <p id="receipt" hidden>Takk for svaret. <a id="receipt-link" href="http://localhost:4173/sendt.html?skjema=${key.replace(/^pilot-/, '').split('.')[0]}">Tilbake til ATLAS</a></p>
 <script>
@@ -87,7 +89,8 @@ export async function mockNettskjema(target: Page | BrowserContext, opts: MockOp
     const key = decodeURIComponent(url.pathname.replace(/^\/a\//, ''));
     const fail = failOnce.has(key);
     failOnce.delete(key);
-    return route.fulfill({ contentType: 'text/html; charset=utf-8', body: mockHtml(key, fail) });
+    const tall = !!opts.tall?.includes(key.replace(/^pilot-/, ''));
+    return route.fulfill({ contentType: 'text/html; charset=utf-8', body: mockHtml(key, fail, tall) });
   });
 }
 

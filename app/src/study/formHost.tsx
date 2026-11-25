@@ -200,7 +200,9 @@ export function FormHostProvider({ children }: { children: ReactNode }) {
       if (!cur || cur.route !== 'panel') return;
       const data = e.data;
       if (typeof data === 'number' && Number.isFinite(data)) {
-        setForm((f) => (f && f.id === cur.id ? { ...f, loaded: true, timedOut: false, height: Math.max(360, Math.min(6000, data)) } : f));
+        // 3.8.2 (F135): the cap was 6000 px, and the merged closing form runs to about 10,500 px in the panel, so its
+        // «Neste» fell below the cut. 20,000 px still guards against a runaway value.
+        setForm((f) => (f && f.id === cur.id ? { ...f, loaded: true, timedOut: false, height: Math.max(360, Math.min(20000, data)) } : f));
       } else if (data === 'scrollToStart') {
         lastPageChange.current = { id: cur.id, at: Date.now() };
         setForm((f) => (f && f.id === cur.id ? { ...f, pageChanges: f.pageChanges + 1 } : f));

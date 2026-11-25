@@ -4474,5 +4474,17 @@
   "formsInNorwegian": {
     "nb": "Skjemaene er på norsk.",
     "en": "The forms are in Norwegian, as in Nettskjema."
+  },
+  "listAfterCase": {
+    "nb": "Åpnes når du er ferdig med {{name}}",
+    "en": "Opens when you have finished {{name}}"
+  },
+  "guideFullGuideline": {
+    "nb": "Prioriteringsveilederen har flere hensyn enn disse, for eksempel graviditet, rus og barn.",
+    "en": "The priority guideline weighs more than these, for example pregnancy, substance use and children."
+  },
+  "guideFullGuidelineLink": {
+    "nb": "Les hele veilederen hos Helsedirektoratet (åpnes i ny fane)",
+    "en": "Read the whole guideline at the Norwegian Directorate of Health (in Norwegian, opens in a new tab)"
   }
 }
