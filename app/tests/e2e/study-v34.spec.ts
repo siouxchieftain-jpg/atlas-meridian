@@ -154,7 +154,7 @@ test('after the tour: the sheen leads to the list, whose study card holds the sa
   await expect(card.getByRole('heading', { level: 2 })).toHaveText('Sak 1 av 3: Kari Nordli');
   expect(await hasSheen(page, '[data-study-card] [data-open-case]')).toBe(true);
   await expect(page.locator('[data-list-case="kari"] [data-list-open]')).toBeVisible();
-  await expect(page.locator('[data-list-case="erlend"]')).toContainText('Senere i studien');
+  await expect(page.locator('[data-list-case="erlend"]')).toContainText('Åpnes når du er ferdig med Kari');
   // Each case's heading carries its time for screen readers, as the card shows it.
   await expect(page.locator('[data-list-case="kari"] h3')).toHaveText('09:00, Kari Nordli, 34 år');
 

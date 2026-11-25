@@ -2,6 +2,7 @@ import {
   Button,
   Field,
   InfoButton,
+  Link,
   ToggleButton,
   makeStyles,
   mergeClasses,
@@ -14,6 +15,7 @@ import {
   ChevronRight16Regular,
   Circle16Regular,
   Checkmark12Regular,
+  Open16Regular,
   People16Regular,
 } from '@fluentui/react-icons';
 import { useEffect, useId, useRef, useState, type ReactNode } from 'react';
@@ -46,7 +48,12 @@ const useGuide = makeStyles({
   looksFor: { gridColumn: '2 / 4', ...typographyStyles.caption1, color: tokens.colorNeutralForeground3 },
   icon: { marginTop: '2px', color: tokens.colorNeutralForeground2 },
   toggle: { alignSelf: 'flex-start', paddingInline: 0, minWidth: 0 },
+  more: { ...typographyStyles.caption1, color: tokens.colorNeutralForeground2, margin: 0, paddingTop: tokens.spacingVerticalXS },
+  moreLink: { display: 'inline-flex', alignItems: 'center', gap: '4px' },
 });
+
+/** The published priority guideline for adult mental health care (Helsedirektoratet; checked 25 November 2026). */
+export const PRIORITY_GUIDELINE_URL = 'https://www.helsedirektoratet.no/veiledere/prioriteringsveiledere/psykisk-helsevern-for-voksne';
 
 /** Informasjonsguiden: what a text mentions of the five criteria. Never a gate, never a percentage. */
 export function InfoGuide({
@@ -126,6 +133,14 @@ export function InfoGuide({
           <span className={cls.looksFor}>{s('behandlingsnytteNote')}</span>
         </li>
       </ul>
+      {/* The five criteria are the main direction only; the guideline weighs more (3.8.2, F137). */}
+      <p className={cls.more} data-guideline-link="">
+        {s('guideFullGuideline')}{' '}
+        <Link href={PRIORITY_GUIDELINE_URL} target="_blank" rel="noopener noreferrer" className={cls.moreLink}>
+          {s('guideFullGuidelineLink')}
+          <Open16Regular aria-hidden="true" />
+        </Link>
+      </p>
     </div>
   );
 }

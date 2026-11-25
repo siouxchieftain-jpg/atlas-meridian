@@ -233,10 +233,12 @@ function CaseFoot({ caseId, nameId }: { caseId: CoreCaseId; nameId: string }) {
       </Button>
       </>
     );
+  // The cases are done in order (F16): a later case names the one to finish first (3.8.2, F126).
+  const cur = currentCase(st);
   return (
     <span className={cls.later}>
       <LockClosed16Regular aria-hidden="true" />
-      {s('listLaterInStudy')}
+      {cur ? s('listAfterCase', { name: cases[cur].patient.name.split(' ')[0] }) : s('listLaterInStudy')}
     </span>
   );
 }
